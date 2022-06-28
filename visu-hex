@@ -2,6 +2,8 @@
 import sys
 import pygame
 
+# collection of the grid data and where x and y is on the map
+
 def collectGridData(screen, height, width, blockSize, info):
 	total = info[0]["total"]
 	y_count = 0
@@ -18,6 +20,8 @@ def collectGridData(screen, height, width, blockSize, info):
 			x_count += 1
 		y_count += 1
 
+# keeps track on if there are any ants on the starting position
+
 def no_ants_on_start(count, moves):
 	i = 0
 	total = int(moves[0]["total_ants"]) - 1
@@ -25,15 +29,14 @@ def no_ants_on_start(count, moves):
 		return (False)
 	return (True)
 
+# draws the grid and rooms on the map
+
 def drawGrid(screen, height, width, blockSize, info, start, end, count, moves):
 	total = info[0]["total"]
 	y_count = 0
 	for y in range(0, height, blockSize):
 		x_count = 0
 		for x in range(0, width, blockSize):
-			#rect = pygame.Rect(x, y, blockSize, blockSize)
-			#pygame.draw.rect(screen, (200, 200, 200), rect, 1)
-			#only do below if it is one of the rooms
 			i = 0
 			while i < total:
 				if info[i]["x"] == x_count and info[i]["y"] == y_count:
@@ -62,6 +65,8 @@ def drawGrid(screen, height, width, blockSize, info, start, end, count, moves):
 			x_count += 1
 		y_count += 1
 
+# checks if anything is blocking horizontally
+
 def check_if_anything_block_x(info, j, k):
 	i = 0
 	total = info[i]["total"]
@@ -73,6 +78,8 @@ def check_if_anything_block_x(info, j, k):
 		i += 1
 	return (False)
 
+# checks if anything is blocking vertically
+
 def check_if_anything_block_y(info, j, k):
 	i = 0
 	total = info[i]["total"]
@@ -83,6 +90,8 @@ def check_if_anything_block_y(info, j, k):
 			return (True)
 		i += 1
 	return (False)
+
+# draws special connection if other rooms are blocking the path horizontal
 
 def special_connect_draw_y(screen, blockSize, info, i, k):
 	if check_if_anything_block_x(info, i, k) == True and info[i]["grid_x"] < info[k]["grid_x"]:
@@ -96,6 +105,8 @@ def special_connect_draw_y(screen, blockSize, info, i, k):
 	else:
 		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
 
+# draws special connection if other rooms are blocking the path vertically
+
 def special_connect_draw_x(screen, blockSize, info, i, k):
 	if check_if_anything_block_y(info, i, k) == True and info[i]["grid_y"] < info[k]["grid_y"]:
 		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), 20)
@@ -107,6 +118,8 @@ def special_connect_draw_x(screen, blockSize, info, i, k):
 		pygame.draw.line(screen, (100, 100, 100), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
 	else:
 		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+
+# draws connections between all of the rooms
 
 def drawConnections(screen, height, width, blockSize, info):
 	total = info[0]["total"]
@@ -136,6 +149,8 @@ def drawConnections(screen, height, width, blockSize, info):
 			x_count += 1
 		y_count += 1
 
+# draws ants on map and makes sure they are different colors for easier tracking
+
 def draw_ant(screen, height, width, blockSize, info, start, end, moves, current_move):
 	total = info[0]["total"]
 	total_moves = len(moves[current_move]["room"])
@@ -162,6 +177,8 @@ def draw_ant(screen, height, width, blockSize, info, start, end, moves, current_
 			x_count += 1
 		y_count += 1
 
+# draws basic bottom text - printing which move we are currently on
+
 def drawText(screen, height, width, blockSize, prev, count, moves):
 	font=pygame.font.SysFont('arial', blockSize)
 	text=font.render(str(prev + 1) + "/" + str(moves[0]["total"]), True, (0, 0, 0))
@@ -170,6 +187,8 @@ def drawText(screen, height, width, blockSize, prev, count, moves):
 	text=font.render(str(count + 1) + "/" + str(moves[0]["total"]), True, (200, 200, 200))
 	rect=text.get_rect()
 	screen.blit(text, [0 + (int(blockSize) / 2), height - int(blockSize)])
+
+# makes the map and displays it in a new window
 
 def make_map(start, end, info, moves):
 	i = 0
@@ -213,11 +232,7 @@ def make_map(start, end, info, moves):
 	
 	# Fill the background colour to the screen
 	screen.fill(black)
-
 	pygame.display.update()
-
-	# Update the display using flip
-	#pygame.display.flip()
 	
 	# game loop
 	count = -1
@@ -272,6 +287,7 @@ def make_map(start, end, info, moves):
 				sys.exit()
 		pygame.display.update()
 
+# checks if it is a coordinates line or not
 
 def check_if_coordinates(line):
 	i = 0
@@ -299,6 +315,8 @@ def check_if_coordinates(line):
 		return (False)
 	return (True)
 
+# checks if information about which rooms are connected
+
 def check_if_connection(line):
 	i = 0
 	count = 0
@@ -325,6 +343,8 @@ def check_if_connection(line):
 		return (False)
 	return (True)
 
+# checks if it is a valid room from previously
+
 def is_room(line, j, info, total):
 	i = 0
 	room = line[j:len(line)]
@@ -335,6 +355,8 @@ def is_room(line, j, info, total):
 			return (True)
 		i += 1
 	return (False)
+
+# checks if we are by an ants moving line
 
 def check_if_ants_move(line, ants, info, total):
 	i = 0
@@ -371,6 +393,8 @@ def check_if_ants_move(line, ants, info, total):
 	if len(line) == 0:
 		return (False)
 	return (True)
+
+# collects information about the moving of the ants and saves it in a dict
 
 def collect_ant_move(line, ants, info, total, moves, k):
 	i = 0
@@ -414,6 +438,8 @@ def collect_ant_move(line, ants, info, total, moves, k):
 	if len(line) == 0:
 		return (False)
 	return (True)
+
+# Main loop of collecting all of the information including error checking
 
 def main(argv, argc):
 	if argc == 1:
