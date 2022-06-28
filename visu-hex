@@ -156,6 +156,15 @@ def draw_ant(screen, height, width, blockSize, info, start, end, moves, current_
 			x_count += 1
 		y_count += 1
 
+def drawText(screen, height, width, blockSize, prev, count, moves):
+	font=pygame.font.SysFont('arial', blockSize)
+	text=font.render(str(prev + 1) + "/" + str(moves[0]["total"]), True, (0, 0, 0))
+	rect=text.get_rect()
+	screen.blit(text, [0 + (int(blockSize) / 2), height - int(blockSize)])
+	text=font.render(str(count + 1) + "/" + str(moves[0]["total"]), True, (200, 200, 200))
+	rect=text.get_rect()
+	screen.blit(text, [0 + (int(blockSize) / 2), height - int(blockSize)])
+
 def make_map(start, end, info, moves):
 	i = 0
 	total = info[i]["total"]
@@ -204,21 +213,22 @@ def make_map(start, end, info, moves):
 	# Update the display using flip
 	#pygame.display.flip()
 	
-	# Variable to keep our game loop running
-	running = True
 	# game loop
 	count = -1
+	prev = 0
 	space = False
 	while True:
-		if count <= -1:
+		if count <= -1 and prev == 0:
 			collectGridData(screen, window_height, window_width, blockSize, info)
 			drawConnections(screen, window_height, window_width, blockSize, info)
 			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves)
+			drawText(screen, window_height, window_width, blockSize, prev, count, moves)
 			prev = -1
 		elif count != prev and count < moves[0]["total"]:
 			drawConnections(screen, window_height, window_width, blockSize, info)
 			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves)
 			draw_ant(screen, window_height, window_width, blockSize, info, start, end, moves, count)
+			drawText(screen, window_height, window_width, blockSize, prev, count, moves)
 			prev = count
 		if space == True and count < moves[0]["total"]:
 			count += 1
@@ -238,10 +248,10 @@ def make_map(start, end, info, moves):
 						space = False
 				if event.key == pygame.K_r:
 					count = -1
+					prev = 0
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				sys.exit()
-
 		pygame.display.update()
 
 
