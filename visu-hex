@@ -11,7 +11,7 @@ def collectGridData(screen, height, width, blockSize, info):
 			i = 0
 			while i < total:
 				if info[i]["x"] == x_count and info[i]["y"] == y_count:
-					info[i]["grid_x"] = x
+					info[i]["grid_x"] = x + int(blockSize)
 					info[i]["grid_y"] = y + int(blockSize)
 					break
 				i += 1
@@ -44,7 +44,7 @@ def drawGrid(screen, height, width, blockSize, info, start, end, count, moves):
 						color = (0, 200, 0)
 					else:
 						color = (200, 200, 200)
-					pygame.draw.rect(screen, color, pygame.Rect(x, y + int(blockSize), blockSize, blockSize))
+					pygame.draw.rect(screen, color, pygame.Rect(x + int(blockSize), y + int(blockSize), blockSize, blockSize))
 					font=pygame.font.SysFont('arial', blockSize)
 					if info[i]["nbr"] == "start":
 						print_nbr = "s"
@@ -54,9 +54,9 @@ def drawGrid(screen, height, width, blockSize, info, start, end, count, moves):
 						print_nbr = info[i]["nbr"]
 					text=font.render(print_nbr, True, (0, 0, 0))
 					rect=text.get_rect()
-					screen.blit(text, [x, y + int(blockSize)])
+					screen.blit(text, [x + int(blockSize), y + int(blockSize)])
 					if info[i]["nbr"] == start and no_ants_on_start(count, moves) == False:
-						pygame.draw.circle(screen, (200, 0, 0), [info[i]["grid_x"] + int(blockSize) / 2, info[i]["grid_y"] + int(blockSize) / 2], int(blockSize) / 3, 3)
+						pygame.draw.circle(screen, (0, 0, 0), [info[i]["grid_x"] + int(blockSize) / 2, info[i]["grid_y"] + int(blockSize) / 2], int(blockSize) / 3, 3)
 					break
 				i += 1
 			x_count += 1
@@ -149,7 +149,13 @@ def draw_ant(screen, height, width, blockSize, info, start, end, moves, current_
 					j = 0
 					while j < total_moves:
 						if moves[current_move]["room"][j] == info[i]["nbr"]:
-							pygame.draw.circle(screen, (200, 0, 0), [info[i]["grid_x"] + int(blockSize) / 2, info[i]["grid_y"] + int(blockSize) / 2], int(blockSize) / 3, 3)
+							if moves[current_move]["ant"][j] % 2 == 0:
+								color = (0, 0, 200)
+							elif moves[current_move]["ant"][j] % 3 == 0:
+								color = (0, 200, 0)
+							else:
+								color = (200, 0, 0)
+							pygame.draw.circle(screen, color, [info[i]["grid_x"] + int(blockSize) / 2, info[i]["grid_y"] + int(blockSize) / 2], int(blockSize) / 3, 3)
 						j += 1
 					break
 				i += 1
