@@ -370,15 +370,15 @@ def collect_ant_move(line, ants, info, total, moves, k):
 			i += 1
 			l_found = True
 		elif line[i].isnumeric() == True and l_found == True and ant_found == False and room_found == False:
-			nbr = line[i].partition("-")
-			moves[k]["ant"].append(int(nbr[0]))
-			i += 1
-			if int(nbr[0]) <= int(ants):
+			prev = i
+			while line[i].isnumeric() == True and i < len(line):
+				i += 1
+			nbr = line[prev:i]
+			moves[k]["ant"].append(int(nbr))
+			if int(nbr) <= int(ants):
 				ant_found = True
 			else:
 				return (False)
-			while line[i].isnumeric() == True and i < len(line):
-				i += 1
 			if line[i] != '-':
 				return (False)
 			i += 1
@@ -415,74 +415,57 @@ def main(argv, argc):
 		k = 0
 		total = 0
 		coordinates_found = False
-		for line in data:
-			print (line)
-			if line == "##start":
-				if start == "N":
-					start = "F"
-				else:
-					print ("Error")
-			elif line == "##end":
-				if end == "N":
-					end = "F"
-				else:
-					print ("Error")
-			if line.isnumeric() == True:
-				ants = line
-			elif check_if_coordinates(line) == True:
-				nbr = line[0:line.find(" ")]
-				x = int(line[line.find(" ") + 1:line.rfind(" ")])
-				y = int(line[line.rfind(" ") + 1:len(line)])
-				total += 1
-				if start == "F":
-					start = nbr
-				if end == "F":
-					end = nbr
-				info[i] = {"nbr": nbr, "x": x, "y": y, "connect": [], "total": total, "grid_x": 0, "grid_y": 0}
-				i += 1
-				coordinates_found = True
-			elif check_if_connection(line) == True:
-				i = 0
-				nbr = line[0:line.find("-")]
-				while info[i]["nbr"] != nbr:
+		if len(data) != 0:
+			for line in data:
+				print (line)
+				if line == "##start":
+					if start == "N":
+						start = "F"
+					else:
+						print ("Error")
+				elif line == "##end":
+					if end == "N":
+						end = "F"
+					else:
+						print ("Error")
+				if line.isnumeric() == True:
+					ants = line
+				elif check_if_coordinates(line) == True:
+					nbr = line[0:line.find(" ")]
+					x = int(line[line.find(" ") + 1:line.rfind(" ")])
+					y = int(line[line.rfind(" ") + 1:len(line)])
+					total += 1
+					if start == "F":
+						start = nbr
+					if end == "F":
+						end = nbr
+					info[i] = {"nbr": nbr, "x": x, "y": y, "connect": [], "total": total, "grid_x": 0, "grid_y": 0}
 					i += 1
-				info[i]["connect"].append(line[line.find("-") + 1:len(line)])
-			elif coordinates_found == True and check_if_ants_move(line, ants, info, total) == True:
-				moves[k] = {"ant": [], "room": [], "total": 0, "total_ants": ants}
-				collect_ant_move(line, ants, info, total, moves, k)
-				print(moves[k])
-				k += 1
-		i = 0
-		while i < total:
-			info[i]["total"] = total
-			i += 1
-		i = 0
-		while i < k:
-			moves[i]["total"] = k
-			i += 1
-		make_map(start, end, info, moves)
+					coordinates_found = True
+				elif check_if_connection(line) == True:
+					i = 0
+					nbr = line[0:line.find("-")]
+					while info[i]["nbr"] != nbr:
+						i += 1
+					info[i]["connect"].append(line[line.find("-") + 1:len(line)])
+				elif coordinates_found == True and check_if_ants_move(line, ants, info, total) == True:
+					moves[k] = {"ant": [], "room": [], "total": 0, "total_ants": ants}
+					collect_ant_move(line, ants, info, total, moves, k)
+					k += 1
+			i = 0
+			while i < total:
+				info[i]["total"] = total
+				i += 1
+			i = 0
+			while i < k:
+				moves[i]["total"] = k
+				i += 1
+			make_map(start, end, info, moves)
 	else:
 		print("Usage: ./lem-in < maps/subject3.map | ./visu-hex")
 
 if __name__ == "__main__":
 	main(sys.argv, len(sys.argv))
-
-
-#
-#make dict for coordinatees and one for connections
-#koordinates for each one of them
-#
-#ants
-#koordinates
-#	nbr: 0(or "start or "end)
-#	x: 15
-#	y: 20
-#	connect: nbr or end
-#	total: 0
-#
-#kombinations
-#	each nbr add the ones it is connected to aka array thingy as i had in minisynth
-#	
 
 
 #
