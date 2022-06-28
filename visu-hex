@@ -236,6 +236,8 @@ def make_map(start, end, info, moves):
 						space = True
 					elif space == True:
 						space = False
+				if event.key == pygame.K_r:
+					count = -1
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				sys.exit()
