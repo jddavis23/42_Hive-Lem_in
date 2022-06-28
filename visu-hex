@@ -245,16 +245,28 @@ def make_map(start, end, info, moves):
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT and count >= 0:
 					count -= 1
+					space = False
+					print("left key was pressed. display previous move...")
 				if event.key == pygame.K_RIGHT and count < moves[0]["total"]:
+					print("right key was pressed. display next move...")
 					count += 1
+					space = False
 				if event.key == pygame.K_SPACE and count < moves[0]["total"]:
 					if space == False:
+						print("space was pressed. auto play started...")
 						space = True
 					elif space == True:
+						print("space was pressed. auto play stopped...")
 						space = False
 				if event.key == pygame.K_r:
+					print("r was pressed. reset to initial state...")
 					count = -1
 					prev = 0
+					space = False
+				if event.key == pygame.K_ESCAPE:
+					print("ESC was pressed. quitting...")
+					pygame.quit()
+					sys.exit()
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				sys.exit()
@@ -466,14 +478,3 @@ def main(argv, argc):
 
 if __name__ == "__main__":
 	main(sys.argv, len(sys.argv))
-
-
-#
-#
-#TO DO
-#
-#collect info about the ants moves and move accordingly
-#
-#add arrow key commands
-# speed up and down, autoplay with space bar, reset and arrow keys forward and backwards
-#
