@@ -239,7 +239,7 @@ def make_map(start, end, info, moves):
 	prev = 0
 	space = False
 	while True:
-		if count <= -1 and prev == 0:
+		if count <= -1 and prev != -1:
 			collectGridData(screen, window_height, window_width, blockSize, info)
 			drawConnections(screen, window_height, window_width, blockSize, info)
 			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves)
@@ -276,7 +276,6 @@ def make_map(start, end, info, moves):
 				if event.key == pygame.K_r:
 					print("r was pressed. reset to initial state...")
 					count = -1
-					prev = 0
 					space = False
 				if event.key == pygame.K_ESCAPE:
 					print("ESC was pressed. quitting...")
