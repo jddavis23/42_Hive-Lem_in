@@ -22,16 +22,23 @@ def collectGridData(screen, height, width, blockSize, info):
 
 # keeps track on if there are any ants on the starting position
 
-def no_ants_on_start(count, moves):
+def no_ants_on_start(moves):
 	i = 0
-	total = int(moves[0]["total_ants"]) - 1
-	if count < total:
-		return (False)
-	return (True)
+	total = int(moves[0]["total_ants"])
+	while i < total:
+		j = 0
+		while j < len(moves[i]["ant"]):
+			if moves[i]["ant"][j] == total:
+				last = i
+				print("index of last ant")
+				print (last)
+				return (last)
+			j += 1
+		i += 1
 
 # draws the grid and rooms on the map
 
-def drawGrid(screen, height, width, blockSize, info, start, end, count, moves):
+def drawGrid(screen, height, width, blockSize, info, start, end, count, moves, last):
 	total = info[0]["total"]
 	y_count = 0
 	for y in range(0, height, blockSize):
@@ -58,8 +65,10 @@ def drawGrid(screen, height, width, blockSize, info, start, end, count, moves):
 					text=font.render(print_nbr, True, (0, 0, 0))
 					rect=text.get_rect()
 					screen.blit(text, [x + int(blockSize), y + int(blockSize)])
-					if info[i]["nbr"] == start and no_ants_on_start(count, moves) == False:
-						pygame.draw.circle(screen, (0, 0, 0), [info[i]["grid_x"] + int(blockSize) / 2, info[i]["grid_y"] + int(blockSize) / 2], int(blockSize) / 3, 3)
+					#print("index of last ant")
+					#print (last_ant_left_start)
+					if info[i]["nbr"] == start and count < last:
+						pygame.draw.circle(screen, (0, 0, 0), [info[i]["grid_x"] + int(blockSize) / 2, info[i]["grid_y"] + int(blockSize) / 2], int(blockSize) / 4)
 					break
 				i += 1
 			x_count += 1
@@ -170,7 +179,7 @@ def draw_ant(screen, height, width, blockSize, info, start, end, moves, current_
 								color = (0, 200, 0)
 							else:
 								color = (200, 0, 0)
-							pygame.draw.circle(screen, color, [info[i]["grid_x"] + int(blockSize) / 2, info[i]["grid_y"] + int(blockSize) / 2], int(blockSize) / 3, 3)
+							pygame.draw.circle(screen, color, [info[i]["grid_x"] + int(blockSize) / 2, info[i]["grid_y"] + int(blockSize) / 2], int(blockSize) / 4)
 						j += 1
 					break
 				i += 1
@@ -238,34 +247,48 @@ def make_map(start, end, info, moves):
 	count = -1
 	prev = 0
 	space = False
+	space_r = False
+	last = no_ants_on_start(moves)
 	while True:
 		if count <= -1 and prev != -1:
 			collectGridData(screen, window_height, window_width, blockSize, info)
 			drawConnections(screen, window_height, window_width, blockSize, info)
-			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves)
+			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves, last)
 			drawText(screen, window_height, window_width, blockSize, prev, count, moves)
 			prev = -1
-		elif count != prev and count < moves[0]["total"]:
+		elif count != prev and count < moves[0]["total"] and count > -1:
 			drawConnections(screen, window_height, window_width, blockSize, info)
-			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves)
+			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves, last)
 			draw_ant(screen, window_height, window_width, blockSize, info, start, end, moves, count)
 			drawText(screen, window_height, window_width, blockSize, prev, count, moves)
 			prev = count
 		if space == True and count < moves[0]["total"]:
 			count += 1
 			pygame.time.wait(250)
+		if space_r == True and count > -1:
+			count -= 1
+			pygame.time.wait(250)
 		if space == True and count == moves[0]["total"]:
 			space = False
+		if space_r == True and count == -1:
+			space_r = False
 		for event in pygame.event.get():
+			if event.type == pygame.KEYUP:
+				if event.key == pygame.K_RIGHT and count < moves[0]["total"]:
+					space = False
+				if event.key == pygame.K_LEFT and count < moves[0]["total"]:
+					space_r = False
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT and count >= 0:
-					count -= 1
+					#count -= 1
 					space = False
+					space_r = True
 					print("left key was pressed. display previous move...")
 				if event.key == pygame.K_RIGHT and count < moves[0]["total"]:
 					print("right key was pressed. display next move...")
-					count += 1
-					space = False
+					#count += 1
+					space = True
+					space_r = False
 				if event.key == pygame.K_SPACE and count < moves[0]["total"]:
 					if space == False:
 						print("space was pressed. auto play started...")
