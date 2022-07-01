@@ -280,13 +280,11 @@ def make_map(start, end, info, moves):
 					space_r = False
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT and count >= 0:
-					#count -= 1
 					space = False
 					space_r = True
 					print("left key was pressed. display previous move...")
 				if event.key == pygame.K_RIGHT and count < moves[0]["total"]:
 					print("right key was pressed. display next move...")
-					#count += 1
 					space = True
 					space_r = False
 				if event.key == pygame.K_SPACE and count < moves[0]["total"]:

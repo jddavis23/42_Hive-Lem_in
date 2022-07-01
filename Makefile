@@ -5,6 +5,8 @@ CC = gcc -Wall -Wextra -Werror
 C = lemin/
 
 SRC = $(C)main.c
+SRC += $(C)parse.c
+SRC += $(C)error.c
 
 MAKELIB = make -C libft/ fclean && make -C libft/
 
