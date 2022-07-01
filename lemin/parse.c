@@ -58,8 +58,8 @@ static int valid_connection(char *str)
 int	parsing_phase(int *ants)
 {
 	int		ret;
-	char	*line;
 	int		i;
+	char	*line;
 
 	ret = 1;
 	line = NULL;
