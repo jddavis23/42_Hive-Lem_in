@@ -12,10 +12,14 @@
 
 # include "../includes/lemin.h"
 
-static int	only_digits(char *str, int *i, int *ants)
+static int	only_digits(char *str, int *i)
 {
-	*ants = ft_atoi(str);
+	int	len;
+
+	len = ft_strlen(str);
 	if (ft_strcmp("0", str) == 0 || ft_strcmp("\0", str) == 0)
+		return (FALSE);
+	if (len > 10 || (len == 10 && ft_strcmp(str, "2147483647") > 0))
 		return (FALSE);
 	while (*str != '\0')
 	{
@@ -73,8 +77,8 @@ int	parsing_phase(int *ants)
 			return (0);
 		if (!line)
 			break ;
-		if (i == 0 && only_digits(line, &i, ants) == FALSE)
-			return (ERROR);
+		if (i == 0 && only_digits(line, &i) == TRUE)
+			*ants = ft_atoi(line);
 		else if (i == 1 && valid_coordinates(line) == TRUE)
 			ft_printf("call function to collect name of rooms\n");
 		else if (i >= 1 && valid_connection(line) == TRUE)
