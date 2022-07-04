@@ -3,7 +3,17 @@
 
 # include "../libft/libft.h"
 
-int	parsing_phase(int *ants);
+typedef struct  s_room
+{
+	char	**rooms;
+	int		**links;
+	int		start;
+	int		end;
+	int		ants;
+}				t_room;
+
+int	parsing_phase(t_room *pass, char *input);
 int	error(void);
+int	create(t_room *pass, char *input);
 
 #endif

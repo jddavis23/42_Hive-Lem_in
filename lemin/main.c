@@ -6,7 +6,7 @@
 /*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:11:31 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/01 16:11:33 by molesen          ###   ########.fr       */
+/*   Updated: 2022/07/04 13:28:31 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,16 @@
 
 int	main(void)
 {
-	int	ants;
+	/*int	ants;
 
 	if (parsing_phase(&ants) == ERROR)
-		return (error());
+		return (error());*/
+	t_room	*pass;
+	char	*input;
+
+	input = NULL;
+	pass = NULL;
+	if (create(pass, input) == -1)
+		return (0);
 	return (0);
 }
