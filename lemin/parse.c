@@ -15,6 +15,8 @@
 static int	only_digits(char *str, int *i, int *ants)
 {
 	*ants = ft_atoi(str);
+	if (ft_strcmp("0", str) == 0 || ft_strcmp("\0", str) == 0)
+		return (FALSE);
 	while (*str != '\0')
 	{
 		if (ft_isdigit(*str) == 0)
@@ -92,3 +94,5 @@ int	parsing_phase(int *ants)
 	}
 	return (0);
 }
+
+// how to check if path is valid?
