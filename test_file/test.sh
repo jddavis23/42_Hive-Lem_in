@@ -83,15 +83,26 @@ function error_test()
 	test invalid "maps/error/coor_one_room.map" "printf "Error"" error_put
 	test invalid "maps/error/coor_non_digit.map" "printf "Error"" error_put
 	test invalid "maps/error/coor_non_digit2.map" "printf "Error"" error_put
+	test invalid "maps/error/coor_begin_space.map" "printf "Error"" error_put
+	test invalid "maps/error/coor_begin_L.map" "printf "Error"" error_put
 
 	# connection errors
 	printf "\n${BLUE}connection tests${UNCOLOR}"
-	test invalid "maps/error/connnec_too_few.map" "printf "Error"" error_put
-	test invalid "maps/error/connnec_too_few1.map" "printf "Error"" error_put
-	test invalid "maps/error/connnec_too_many.map" "printf "Error"" error_put
-	test invalid "maps/error/connnec_too_many2.map" "printf "Error"" error_put
-	test invalid "maps/error/connnec_too_many3.map" "printf "Error"" error_put
-	test invalid "maps/error/connnec_too_many4.map" "printf "Error"" error_put
+	test invalid "maps/error/connec_too_few.map" "printf "Error"" error_put
+	test invalid "maps/error/connec_too_few1.map" "printf "Error"" error_put
+	test invalid "maps/error/connec_too_many.map" "printf "Error"" error_put
+	test invalid "maps/error/connec_too_many2.map" "printf "Error"" error_put
+	test invalid "maps/error/connec_too_many3.map" "printf "Error"" error_put
+	test invalid "maps/error/connec_too_many4.map" "printf "Error"" error_put
+	test invalid "maps/error/connec_begin_space.map" "printf "Error"" error_put
+	test invalid "maps/error/connec_begin_L.map" "printf "Error"" error_put
+
+	# comments errors
+	printf "\n${BLUE}connection tests${UNCOLOR}"
+	test invalid "maps/error/start_end_wrong_location.map" "printf "Error"" error_put
+	test invalid "maps/error/start_end_wrong_location2.map" "printf "Error"" error_put
+	test invalid "maps/error/start_end_wrong_location3.map" "printf "Error"" error_put
+	test invalid "maps/error/start_end_double.map" "printf "Error"" error_put
 }
 
 # function valid_test()

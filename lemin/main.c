@@ -12,13 +12,18 @@
 
 # include "../includes/lemin.h"
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	int	ants;
 	int	total;
 
-	total = 0;
-	if (parsing_phase(&ants, &total) == ERROR)
-		return (error());
+	if (argc == 1)
+	{
+		total = 0;
+		if (parsing_phase(&ants, &total) == ERROR)
+			return (error());
+	}
+	else if (argv)
+		ft_printf("Usage: ./lem-in < maps/subject.map\n");
 	return (0);
 }

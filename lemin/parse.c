@@ -65,7 +65,7 @@ static int	is_coordinates(char *str)
 {
 	int	i;
 
-	if (*str == 'L')
+	if (*str == 'L' || *str == ' ')
 		return (FALSE);
 	if (ft_word_count(str, ' ') != 3)
 		return (FALSE);
@@ -88,7 +88,7 @@ static int is_connection(char *str)
 		return (FALSE);
 	count = 0;
 	i = 0;
-	if (str[i] == 'L')
+	if (str[i] == 'L' || *str == ' ')
 		return (FALSE);
 	while (str[i] != '\0')
 	{
@@ -105,11 +105,65 @@ static int is_connection(char *str)
 	return (TRUE);
 }
 
+static int	first_start_or_end(char *str, int i)
+{
+	static int	start = FALSE;
+	static int	end = FALSE;
+
+	if (ft_strcmp(str, "##start") == 0)
+	{
+		if (start == TRUE || i > 1)
+			return (ERROR);
+		else
+			start = TRUE;
+	}
+	else if (ft_strcmp(str, "##end") == 0)
+	{
+		if (end == TRUE || i > 1)
+			return (ERROR);
+		else
+			end = TRUE;
+	}
+	return (TRUE);
+}
+
+static int	check_if_valid(char *str, int *i, int *ants, int *total)
+{
+	int	comment;
+
+	comment = is_comment(str);
+	if (*i == 0 && only_digits(str, i) == TRUE)
+		*ants = ft_atoi(str);
+	else if (comment >= TRUE && *i > 0)
+	{
+		if (first_start_or_end(str, *i) == ERROR)
+			return (ERROR);
+		//## start and end has to be done at coordinates and can only happen once.
+		// so if it has already been found it is an error
+		ft_printf("call function to collect comment if it contains ##start or ##end\n");
+	}
+	else if (*i == 1 && is_coordinates(str) == TRUE)
+	{
+		(*total)++;
+		ft_printf("room count: %d\n", *total);
+	}
+	else if (*i > 0 && is_connection(str) == TRUE && *total > 1)
+	{
+		(*i)++;
+		ft_printf("call function to collect connections\n");
+	}
+	else
+	{
+		free(str);
+		return (ERROR);
+	}
+	return (TRUE);
+}
+
 int	parsing_phase(int *ants, int *total)
 {
 	int		ret;
 	int		i;
-	int		comment;
 	char	*line;
 
 	ret = 1;
@@ -118,35 +172,14 @@ int	parsing_phase(int *ants, int *total)
 	while (ret == 1)
 	{
 		ret = get_next_line(0, &line);
+		ft_printf("ret: %d, line: [%s]\n", ret, line);
 		if (ret == ERROR)
 			return (0);
 		if (!line)
 			break ;
-		comment = is_comment(line);
-		if (i == 0 && only_digits(line, &i) == TRUE)
-			*ants = ft_atoi(line);
-		else if (comment >= TRUE && i > 0)
-		{
-			//## start and end has to be done at coordinates and can only happen once.
-			// so if it has already been found it is an error
-			ft_printf("call function to collect comment if it contains ##start or ##end\n");
-		}
-		else if (i == 1 && is_coordinates(line) == TRUE)
-		{
-			(*total)++;
-			ft_printf("room count: %d\n", *total);
-		}
-		else if (i > 0 && is_connection(line) == TRUE && *total > 1)
-		{
-			++i;
-			ft_printf("call function to collect connections\n");
-		}
-		else
-		{
-			free(line);
+		if (check_if_valid(line, &i, ants, total) == ERROR)
 			return (ERROR);
-		}
-		ft_printf("%s\n", line);
+		ft_printf("[%s]\n", line);
 		free(line);
 	}
 	return (0);
