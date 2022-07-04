@@ -12,14 +12,21 @@
 
 # include "../includes/lemin.h"
 
-static int	only_digits(char *str, int *i)
+static int	below_max_int(char *str)
 {
 	int	len;
 
 	len = ft_strlen(str);
+	if (len > 10 || (len == 10 && ft_strcmp(str, "2147483647") > 0))
+		return (FALSE);
+	return (TRUE);
+}
+
+static int	only_digits(char *str, int *i)
+{
 	if (ft_strcmp("0", str) == 0 || ft_strcmp("\0", str) == 0)
 		return (FALSE);
-	if (len > 10 || (len == 10 && ft_strcmp(str, "2147483647") > 0))
+	if (below_max_int(str) == FALSE)
 		return (FALSE);
 	while (*str != '\0')
 	{
@@ -31,31 +38,46 @@ static int	only_digits(char *str, int *i)
 	return (TRUE);
 }
 
-static int	valid_comment(char *str)
+static int	is_comment(char *str)
 {
 	int	count;
 
 	count = 0;
-	while (*str != '\0')
+	while (*str == '#')
 	{
-		if (*str == '#')
-			++count;
+		++count;
 		++str;
 	}
-	if (count > 2)
+	if (count < 1)
 		return (FALSE);
+	return (count);
+}
+
+static int	is_coordinates(char *str)
+{
+	if (*str == 'L')
+		return (FALSE);
+	if (ft_word_count(str, ' ') != 3)
+		return (FALSE);
+		//below_max_int(char *str)
+	// while (*str != '\0')
+	// {
+	// 	++count;
+	// 	++str;
+	// }
+	// return (TRUE);
+	// // count words has to be three
+	// // two last words has to only consist of digits and has to be below max int
+	// // duplicate rooms can first be checked when collecting phase aka jeff has easier time implementing this
+	// if (str)
+	// 	return (TRUE);
 	return (TRUE);
 }
 
-static int	valid_coordinates(char *str)
+static int is_connection(char *str)
 {
-	if (str)
-		return (TRUE);
-	return (TRUE);
-}
-
-static int valid_connection(char *str)
-{
+	//words has to be two split by '-'
+	//has to be digits not above max int
 	if (str)
 		return (TRUE);
 	return (TRUE);
@@ -65,6 +87,7 @@ int	parsing_phase(int *ants)
 {
 	int		ret;
 	int		i;
+	int		comment;
 	char	*line;
 
 	ret = 1;
@@ -77,17 +100,22 @@ int	parsing_phase(int *ants)
 			return (0);
 		if (!line)
 			break ;
+		comment = is_comment(line);
 		if (i == 0 && only_digits(line, &i) == TRUE)
 			*ants = ft_atoi(line);
-		else if (i == 1 && valid_coordinates(line) == TRUE)
+		else if (comment == TRUE && i > 0)
+		{
+			//## start and end has to be done at coordinates and can only happen once.
+			// so if it has already been found it is an error
+			ft_printf("call function to collect comment if it contains ##start or ##end\n");
+		}
+		else if (i == 1 && is_coordinates(line) == TRUE)
 			ft_printf("call function to collect name of rooms\n");
-		else if (i >= 1 && valid_connection(line) == TRUE)
+		else if (i >= 1 && is_connection(line) == TRUE)
 		{
 			++i;
 			ft_printf("call function to collect connections\n");
 		}
-		else if (valid_comment(line) == TRUE && i > 0)
-			ft_printf("call function to collect comment if it contains ##start or ##end\n");
 		else
 		{
 			free(line);
