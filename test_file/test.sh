@@ -63,7 +63,7 @@ function error_test()
 
 	test invalid "maps/error/space_begin.map" "printf "Error"" error_put
 
-	# incorrect ants parameters
+	# incorrect ants errors
 	printf "\n${BLUE}incorrect ants tests${UNCOLOR}"
 	test invalid "maps/error/ant_non.map" "printf "Error"" error_put
 	test invalid "maps/error/ant_neg.map" "printf "Error"" error_put
@@ -73,7 +73,7 @@ function error_test()
 	test invalid "maps/error/ant_above_max_int2.map" "printf "Error"" error_put
 	test invalid "maps/error/ant_above_max_int3.map" "printf "Error"" error_put
 
-	# coordinates parameters
+	# coordinates errors
 	printf "\n${BLUE}coordinates tests${UNCOLOR}"
 	test invalid "maps/error/coor_too_few.map" "printf "Error"" error_put
 	test invalid "maps/error/coor_too_many.map" "printf "Error"" error_put
@@ -84,14 +84,14 @@ function error_test()
 	test invalid "maps/error/coor_non_digit.map" "printf "Error"" error_put
 	test invalid "maps/error/coor_non_digit2.map" "printf "Error"" error_put
 
-	# #greater than MAXINT parameters
-	# printf "\n${BLUE}greater than MAXINT tests${UNCOLOR}"
-	# test invalid "10 2 25 -2147483649 7 -8" "printf "Error"" error_put
-	# test invalid "10 2 25 -2147483650 5 11" "printf "Error"" error_put
-	# test invalid "10 2 25 -214748365155020151 5 11" "printf "Error"" error_put
-	# test invalid "10 2 25 2147483648 7 800" "printf "Error"" error_put
-	# test invalid "10 2 25 200 2147483650 4210 45" "printf "Error"" error_put
-	# test invalid "10 2 25 200 21474836500005 4210 45" "printf "Error"" error_put
+	# connection errors
+	printf "\n${BLUE}connection tests${UNCOLOR}"
+	test invalid "maps/error/connnec_too_few.map" "printf "Error"" error_put
+	test invalid "maps/error/connnec_too_few1.map" "printf "Error"" error_put
+	test invalid "maps/error/connnec_too_many.map" "printf "Error"" error_put
+	test invalid "maps/error/connnec_too_many2.map" "printf "Error"" error_put
+	test invalid "maps/error/connnec_too_many3.map" "printf "Error"" error_put
+	test invalid "maps/error/connnec_too_many4.map" "printf "Error"" error_put
 }
 
 # function valid_test()

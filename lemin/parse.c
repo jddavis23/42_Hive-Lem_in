@@ -81,12 +81,27 @@ static int	is_coordinates(char *str)
 
 static int is_connection(char *str)
 {
+	int	count;
+	int	i;
+
 	if (ft_word_count(str, '-') != 2)
 		return (FALSE);
-	//words has to be two split by '-'
-	//has to be digits not above max int
-	if (str)
-		return (TRUE);
+	count = 0;
+	i = 0;
+	if (str[i] == 'L')
+		return (FALSE);
+	while (str[i] != '\0')
+	{
+		if (str[i] == '-')
+		{
+			if (str[i + 1] == 'L' || str[i + 1] == '#')
+				return (FALSE);
+			++count;
+		}
+		if (count > 1)
+			return (FALSE);
+		++i;
+	}
 	return (TRUE);
 }
 
