@@ -3,7 +3,7 @@
 
 # include "../libft/libft.h"
 
-int	parsing_phase(int *ants);
+int	parsing_phase(int *ants, int *total);
 int	error(void);
 
 #endif

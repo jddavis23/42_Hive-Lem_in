@@ -15,8 +15,10 @@
 int	main(void)
 {
 	int	ants;
+	int	total;
 
-	if (parsing_phase(&ants) == ERROR)
+	total = 0;
+	if (parsing_phase(&ants, &total) == ERROR)
 		return (error());
 	return (0);
 }
