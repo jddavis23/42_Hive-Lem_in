@@ -6,7 +6,7 @@
 /*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:11:51 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/04 13:48:52 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/04 16:59:00 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,49 @@ static int is_connection(char *str)
 	return (TRUE);
 }
 
+
+void	by_line(t_room *pass, char *input)
+{
+	int	flag;
+	int	count;
+	int	i;
+
+	i = 0;
+	count = 0;
+	flag = 1;
+	if (input[i] == '#')
+		return (-1);
+	while (input[i] != '\n' && input[i] != '\0')
+	{
+		if (flag && input[i] != ' ' && input[i] != '-')
+		{
+			 flag = 0;
+			 ++count;
+		}
+		if (input[i] == ' ')
+			flag = 1;
+		++i;
+	}
+	return (count);
+}
+
+char	*ft_strlchr(const char *str, int c, int len)
+{
+	int	i;
+
+	i = 0;
+	if (str)
+	{
+		while (i < len)
+		{
+			if (str[i] == c)
+			   return (&str[i]);
+			++i;
+		}
+	}
+	return (NULL);
+}
+
 int	create(t_room *pass, char *input)	
 {
 	int	count;
@@ -111,7 +154,19 @@ int	create(t_room *pass, char *input)
 		}
 		while (input[i] != '\0')
 		{
-			if (ft_atoi(input) == pass->ants && //skipping ants as already collected 
+			j = by_line(pass, input);
+			if (j == 3)
+			{
+				pass->rooms[i] = ft_strnew(ft_strlen_stop(&input[i], ' '));
+				ft_strlcat(pass->rooms[i++], &input[i], ft_strlen_stop(&input[i], ' '));
+
+			}
+			else if (j == 2 && ft_strlchr(&input[i], '-', ft_strlen_stop(&input[i], '\n')))
+			{
+				
+			}
+
+
 		}
 	}
 	return (1);
