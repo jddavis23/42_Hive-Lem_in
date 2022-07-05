@@ -6,7 +6,7 @@
 /*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:11:51 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/05 13:56:59 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/05 16:41:16 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,19 +187,21 @@ int	count_in(char *str, char *input)
 
 	i = 0;
 	count = 0;
-	if (ft_strlen_stop(input, '-') < ft_strlen_stop(input, '\n'))
-		hold = ft_strlen_stop(input, '-');
-	else
-		hold = ft_strlen_stop(input, '\n');
 	while (input[i] != '\0')
 	{
+		if (ft_strlen_stop(&input[i], '-') < ft_strlen_stop(&input[i], '\n'))
+			hold = ft_strlen_stop(&input[i], '-');
+		else
+			hold = ft_strlen_stop(&input[i], '\n');
 		if (!ft_strncmp(str, &input[i], hold))
 			++count;
+		//ft_printf("--%i\n\n%s\n", count, &input[i]);
 		while (input[i] != '-' && input[i] != '\n' && input[i] != '\0')
 			++i;
 		if (input[i] == '\n' || input[i] == '-')
 			++i;
 	}
+	//exit (0);
 	return (count);
 
 }
@@ -231,6 +233,8 @@ int	create(t_room *pass, char *input)
 		{
 			//delete and return 
 		}
+		pass->rooms[count] = NULL;
+		pass->links[count] = NULL;
 		while (input[i] != '\0')
 		{
 			hold = by_line(&input[i]);
@@ -259,6 +263,14 @@ int	create(t_room *pass, char *input)
 				j = 0;
 				while (pass->rooms[j])
 				{
+					pass->links[j] = (int *) malloc((count_in(pass->rooms[j], &input[i]) + 1) * sizeof(int));
+					if (!pass->links[j])
+					{
+						//free exit
+					}
+					k = 0;
+					while (k < count_in(pass->rooms[j], &input[i]) + 1)
+						pass->links[j][k++] = -1;
 					ft_printf("room %s   %i\n", pass->rooms[j], count_in(pass->rooms[j], &input[i]));
 					++j;
 				}
@@ -278,8 +290,8 @@ int	create(t_room *pass, char *input)
 			}
 			++i;
 		}
-		pass->rooms[count] = NULL;
-		pass->links[count] = NULL;
+		//pass->rooms[count] = NULL;
+		//pass->links[count] = NULL;
 	}
 	j = 0;
 	//while (pass->rooms[j])
@@ -340,7 +352,7 @@ int	parsing_phase(t_room *pass, char **input)
 		}
 		free(line);
 	}
-	return (4);
+	return (5);
 }
 
 // how to check if path is valid?
