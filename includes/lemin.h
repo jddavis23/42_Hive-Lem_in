@@ -12,7 +12,7 @@ typedef struct  s_room
 	int		ants;
 }				t_room;
 
-int	parsing_phase(t_room *pass, char *input);
+int	parsing_phase(t_room *pass, char **input);
 int	error(void);
 int	create(t_room *pass, char *input);
 

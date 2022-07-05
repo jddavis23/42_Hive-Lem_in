@@ -6,7 +6,7 @@
 /*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:11:51 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/04 16:59:00 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/05 13:56:59 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static int is_connection(char *str)
 }
 
 
-void	by_line(t_room *pass, char *input)
+int	by_line(char *input)
 {
 	int	flag;
 	int	count;
@@ -103,14 +103,14 @@ void	by_line(t_room *pass, char *input)
 			 flag = 0;
 			 ++count;
 		}
-		if (input[i] == ' ')
+		if (input[i] == ' ' || input[i] == '-')
 			flag = 1;
 		++i;
 	}
 	return (count);
 }
 
-char	*ft_strlchr(const char *str, int c, int len)
+const char	*ft_strlchr(const char *str, int c, int len)
 {
 	int	i;
 
@@ -127,52 +127,167 @@ char	*ft_strlchr(const char *str, int c, int len)
 	return (NULL);
 }
 
+int	find_indx(t_room *pass, char *input, int count)
+{
+	int	i;
+	int	hold;
+
+	i = 0;
+	if (ft_strlen_stop(input, '-') < ft_strlen_stop(input, '\n'))
+		hold = ft_strlen_stop(input, '-');
+	else
+		hold = ft_strlen_stop(input, '\n');
+	while (ft_strncmp(pass->rooms[i], input, hold) && i < count)
+		++i;
+	if (ft_strncmp(pass->rooms[i], input, hold))
+			return (-1);
+	return (i);
+}
+
+void	realloc_arr(t_room *pass, int k, int insert)
+{
+	int	j;
+	int *temp;
+
+	temp = NULL;
+	j = 0;
+	while (pass->links[k][j] >= 0)
+		++j;
+	temp = (int *) malloc((j + 2) * sizeof(int));
+	if (!temp)
+		//free exit
+	j = 0;
+	while (pass->links[k][j] >= 0)
+	{
+		temp[j] = pass->links[k][j];
+		++j;
+	}
+	free(pass->links[k]);
+	pass->links[k] = temp;
+	pass->links[k][j] = insert;
+	pass->links[k][j + 1] = -2;
+}
+
+void	initial_mal(t_room *pass, int k)
+{
+	if (!pass->links[k])
+	{
+		pass->links[k] = (int *) malloc(1 * sizeof(int));
+		if (!pass->links[k])
+			//free and exit
+		pass->links[k][0] = -2; //only on first iteration
+	}
+}
+
+int	count_in(char *str, char *input)
+{
+	int	i;
+	int	hold;
+	int	count;
+
+	i = 0;
+	count = 0;
+	if (ft_strlen_stop(input, '-') < ft_strlen_stop(input, '\n'))
+		hold = ft_strlen_stop(input, '-');
+	else
+		hold = ft_strlen_stop(input, '\n');
+	while (input[i] != '\0')
+	{
+		if (!ft_strncmp(str, &input[i], hold))
+			++count;
+		while (input[i] != '-' && input[i] != '\n' && input[i] != '\0')
+			++i;
+		if (input[i] == '\n' || input[i] == '-')
+			++i;
+	}
+	return (count);
+
+}
+
 int	create(t_room *pass, char *input)	
 {
 	int	count;
-	//char *input;
 	int	i;
 	int	j;
+	int	k;
+	int	hold;
 
 	i = 0;
 	j = 0;
+	k = 0;
 	pass = (t_room *) malloc(sizeof(t_room));
 	if (!pass)
 		return (-1);
-	count = parsing_phase(pass, input);
+	count = parsing_phase(pass, &input);
 	if (count == -1)
 		return (-1);
 	pass->rooms = NULL;
 	pass->links = NULL;
 	if (count > 0)
 	{
-		pass->rooms = (char **) malloc(count + 1 * sizeof(char *));
-		pass->links = (int **) malloc(count + 1 * sizeof(int *));
+		pass->rooms = (char **) malloc((count + 1) * sizeof(char *));
+		pass->links = (int **) malloc((count + 1) * sizeof(int *));
 		if (!pass->rooms || !pass->links)
 		{
 			//delete and return 
 		}
 		while (input[i] != '\0')
 		{
-			j = by_line(pass, input);
-			if (j == 3)
+			hold = by_line(&input[i]);
+			if (hold < 2)
 			{
-				pass->rooms[i] = ft_strnew(ft_strlen_stop(&input[i], ' '));
-				ft_strlcat(pass->rooms[i++], &input[i], ft_strlen_stop(&input[i], ' '));
+				while (input[i] != '\n')
+					++i;
+			}
+			//ft_printf("%i\n", hold);
+			if (hold == 3)
+			{
+				pass->rooms[j] = ft_strnew(ft_strlen_stop(&input[i], ' '));
+				if (!pass->rooms[j])
+				{
+					exit (0);
+					//free exit
+				}
+				ft_strncat(pass->rooms[j++], &input[i], ft_strlen_stop(&input[i], ' '));
+				ft_printf("%s-\n", pass->rooms[j - 1]);
+				while (input[i] != '\n')
+					++i;
 
 			}
-			else if (j == 2 && ft_strlchr(&input[i], '-', ft_strlen_stop(&input[i], '\n')))
+			else if (hold == 2 && ft_strlchr(&input[i], '-', ft_strlen_stop(&input[i], '\n')))
 			{
-				
+				j = 0;
+				while (pass->rooms[j])
+				{
+					ft_printf("room %s   %i\n", pass->rooms[j], count_in(pass->rooms[j], &input[i]));
+					++j;
+				}
+				exit (0);
+				/*k = find_indx(pass, &input[i]);
+				if (k == -1)
+					//free and exit
+
+				count_in(&input[i]);
+				initial_mal(pass, k);
+				while (input[i] != '-')
+					++i;
+				++i;
+				realloc_arr(pass, k, find_indx(pass, &input[i]));
+				//write(1, &input[i], ft_strlen_stop(&input[i], '\n'));	
+				//ft_printf("\n");*/
 			}
-
-
+			++i;
 		}
+		pass->rooms[count] = NULL;
+		pass->links[count] = NULL;
 	}
+	j = 0;
+	//while (pass->rooms[j])
+	//	ft_printf("%s\n", pass->rooms[j++]);
 	return (1);
 }
 
-int	parsing_phase(t_room *pass, char *input)
+int	parsing_phase(t_room *pass, char **input)
 {
 	int		ret;
 	int		i;
@@ -213,20 +328,19 @@ int	parsing_phase(t_room *pass, char *input)
 			free(line);
 			return (ERROR);
 		}
-		if (!input)
-			input = ft_strjoin(line, "\n");
+		if (!(*input))
+			*input = ft_strjoin(line, "\n");
 		else
 		{
 			temp = ft_strjoin(line, "\n");
-			just = ft_strjoin(input, temp);
-			free(input);
+			just = ft_strjoin(*input, temp);
+			free(*input);
 			free(temp);
-			input = just;
+			*input = just;
 		}
-		ft_printf("%s\n", input);
 		free(line);
 	}
-	return (0);
+	return (4);
 }
 
 // how to check if path is valid?
