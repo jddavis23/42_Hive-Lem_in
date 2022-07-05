@@ -22,13 +22,13 @@ static int	below_max_int(char *str, int len)
 static int	only_digits(char *str, int *i)
 {
 	if (ft_strcmp("0", str) == 0 || ft_strcmp("\0", str) == 0)
-		return (FALSE);
+		return (error(NO_ANTS));
 	if (below_max_int(str, ft_strlen(str)) == FALSE)
-		return (FALSE);
+		return (error(TOO_MANY_ANTS));
 	while (*str != '\0')
 	{
 		if (ft_isdigit(*str) == 0)
-			return (FALSE);
+			return (error(NON_DIGIT_ANTS));
 		str++;
 	}
 	(*i)++;
@@ -84,7 +84,9 @@ static int is_connection(char *str)
 	int	count;
 	int	i;
 
-	if (ft_word_count(str, '-') != 2)
+	// if (ft_word_count(str, '-') != 2)
+	// 	return (FALSE);
+	if (ft_word_count(str, '-') < 2)
 		return (FALSE);
 	count = 0;
 	i = 0;
@@ -94,14 +96,18 @@ static int is_connection(char *str)
 	{
 		if (str[i] == '-')
 		{
-			if (str[i + 1] == 'L' || str[i + 1] == '#')
-				return (FALSE);
+			// if (str[i + 1] == 'L' || str[i + 1] == '#')
+			// 	return (FALSE);
 			++count;
 		}
-		if (count > 1)
+		else if (str[i] == ' ')
 			return (FALSE);
+		// if (count > 1)
+		// 	return (FALSE);
 		++i;
 	}
+	if (count < 1)
+		return (FALSE);
 	return (TRUE);
 }
 
@@ -137,7 +143,7 @@ static int	check_if_valid(char *str, int *i, int *ants, int *total)
 	else if (comment >= TRUE && *i > 0)
 	{
 		if (first_start_or_end(str, *i) == ERROR)
-			return (ERROR);
+			return (error(COMMAND));
 		//## start and end has to be done at coordinates and can only happen once.
 		// so if it has already been found it is an error
 		ft_printf("call function to collect comment if it contains ##start or ##end\n");
@@ -155,7 +161,9 @@ static int	check_if_valid(char *str, int *i, int *ants, int *total)
 	else
 	{
 		free(str);
-		return (ERROR);
+		if (*i == 1)
+			return (error(COORDINATES));
+		return (error(CONNECTION));
 	}
 	return (TRUE);
 }
@@ -172,7 +180,6 @@ int	parsing_phase(int *ants, int *total)
 	while (ret == 1)
 	{
 		ret = get_next_line(0, &line);
-		ft_printf("ret: %d, line: [%s]\n", ret, line);
 		if (ret == ERROR)
 			return (0);
 		if (!line)

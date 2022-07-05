@@ -21,7 +21,7 @@ int	main(int argc, char **argv)
 	{
 		total = 0;
 		if (parsing_phase(&ants, &total) == ERROR)
-			return (error());
+			return (0);
 	}
 	else if (argv)
 		ft_printf("Usage: ./lem-in < maps/subject.map\n");

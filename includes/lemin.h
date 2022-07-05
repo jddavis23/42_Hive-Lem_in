@@ -4,6 +4,16 @@
 # include "../libft/libft.h"
 
 int	parsing_phase(int *ants, int *total);
-int	error(void);
+int	error(int err);
+
+typedef enum
+{
+	NO_ANTS,
+	TOO_MANY_ANTS,
+	NON_DIGIT_ANTS,
+	COMMAND,
+	COORDINATES,
+	CONNECTION
+} error_message;
 
 #endif
