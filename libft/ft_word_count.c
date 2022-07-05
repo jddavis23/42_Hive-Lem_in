@@ -19,7 +19,7 @@ int	ft_word_count(char *str, char c)
 
 	word_count = 0;
 	i = 0;
-	if (str[0] != c)
+	if (str[i++] != c)
 		word_count++;
 	while (str[i] != '\0')
 	{

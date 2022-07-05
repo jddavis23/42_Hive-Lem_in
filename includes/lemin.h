@@ -13,7 +13,7 @@ typedef enum
 	NON_DIGIT_ANTS,
 	COMMAND,
 	COORDINATES,
-	CONNECTION
+	CONNECTION,
 } error_message;
 
 #endif

@@ -163,7 +163,10 @@ static int	check_if_valid(char *str, int *i, int *ants, int *total)
 		free(str);
 		if (*i == 1)
 			return (error(COORDINATES));
-		return (error(CONNECTION));
+		else if (*i > 1)
+			return (error(CONNECTION));
+		else
+			return (error(-1));
 	}
 	return (TRUE);
 }
