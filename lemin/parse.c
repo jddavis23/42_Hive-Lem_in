@@ -144,19 +144,14 @@ static int	check_if_valid(char *str, int *i, int *ants, int *total)
 	{
 		if (first_start_or_end(str, *i) == ERROR)
 			return (error(COMMAND));
-		//## start and end has to be done at coordinates and can only happen once.
-		// so if it has already been found it is an error
-		ft_printf("call function to collect comment if it contains ##start or ##end\n");
 	}
 	else if (*i == 1 && is_coordinates(str) == TRUE)
 	{
 		(*total)++;
-		ft_printf("room count: %d\n", *total);
 	}
 	else if (*i > 0 && is_connection(str) == TRUE && *total > 1)
 	{
 		(*i)++;
-		ft_printf("call function to collect connections\n");
 	}
 	else
 	{
@@ -189,7 +184,6 @@ int	parsing_phase(int *ants, int *total)
 			break ;
 		if (check_if_valid(line, &i, ants, total) == ERROR)
 			return (ERROR);
-		ft_printf("[%s]\n", line);
 		free(line);
 	}
 	return (0);
