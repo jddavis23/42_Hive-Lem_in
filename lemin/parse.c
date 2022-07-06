@@ -6,36 +6,32 @@
 /*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:11:51 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/06 13:31:59 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/06 16:17:59 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/lemin.h"
 
-/*	checks if a given string with digit is below max int or not	*/
-
-static int	below_max_int(char *str, int len)
+static int	below_max_int(char *str)
 {
-	if (len > 10 || (len == 10 && ft_strncmp(str, "2147483647", len) > 0))
+	int	len;
+
+	len = ft_strlen(str);
+	if (len > 10 || (len == 10 && ft_strcmp(str, "2147483647") > 0))
 		return (FALSE);
 	return (TRUE);
 }
 
-/*
-**	checks if the string only contains digits or else return error message
-**	used to check if the amount of ants are correctly specified
-*/
-
 static int	only_digits(char *str, int *i)
 {
 	if (ft_strcmp("0", str) == 0 || ft_strcmp("\0", str) == 0)
-		return (error(NO_ANTS));
-	if (below_max_int(str, ft_strlen(str)) == FALSE)
-		return (error(TOO_MANY_ANTS));
+		return (FALSE);
+	if (below_max_int(str) == FALSE)
+		return (FALSE);
 	while (*str != '\0')
 	{
 		if (ft_isdigit(*str) == 0)
-			return (error(NON_DIGIT_ANTS));
+			return (FALSE);
 		str++;
 	}
 	if (i)
@@ -43,139 +39,48 @@ static int	only_digits(char *str, int *i)
 	return (TRUE);
 }
 
-/*	checks if the read line is a comment	*/
-
 static int	is_comment(char *str)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] == '#')
-		++i;
-	if (i < 1)
-		return (FALSE);
-	return (i);
-}
-
-/*	checks coordinates only consist of digits and space as seperator	*/
-
-static int	is_digit_and_below_max_int(char *str, int *i)
-{
-	(*i)++;
-	if (below_max_int(&str[*i], ft_strlen_stop(&str[*i], ' ')) == FALSE)
-		return (FALSE);
-	while (str[*i] != ' ' && str[*i] != '\0')
-	{
-		if (ft_isdigit(str[*i]) == 0)
-			return (FALSE);
-		(*i)++;
-	}
-	return (TRUE);
-}
-
-/*	function that checks if coordinates are correctly formatted	*/
-
-static int	is_coordinates(char *str)
-{
-	int	i;
-
-	if (*str == 'L' || *str == ' ')
-		return (FALSE);
-	if (ft_word_count(str, ' ') != 3)
-		return (FALSE);
-	i = 0;
-	while (str[i] != ' ')
-		++i;
-	if (is_digit_and_below_max_int(str, &i) == FALSE)
-		return (FALSE);
-	if (is_digit_and_below_max_int(str, &i) == FALSE)
-		return (FALSE);
-	return (TRUE);
-}
-
-/*	checks if connections are correctly formatted	*/
-
-static int is_connection(char *str)
-{
 	int	count;
-	int	i;
 
-	if (ft_word_count(str, '-') < 2)
-		return (FALSE);
 	count = 0;
-	i = 0;
-	if (str[i] == 'L' || *str == ' ')
-		return (FALSE);
-	while (str[i] != '\0')
+	while (*str == '#')
 	{
-		if (str[i] == '-')
-			++count;
-		else if (str[i] == ' ')
-			return (FALSE);
-		++i;
+		++count;
+		++str;
 	}
 	if (count < 1)
 		return (FALSE);
+	return (count);
+}
+
+static int	is_coordinates(char *str)
+{
+	if (*str == 'L')
+		return (FALSE);
+	if (ft_word_count(str, ' ') != 3)
+		return (FALSE);
+		//below_max_int(char *str)
+	// while (*str != '\0')
+	// {
+	// 	++count;
+	// 	++str;
+	// }
+	// return (TRUE);
+	// // count words has to be three
+	// // two last words has to only consist of digits and has to be below max int
+	// // duplicate rooms can first be checked when collecting phase aka jeff has easier time implementing this
+	// if (str)
+	// 	return (TRUE);
 	return (TRUE);
 }
 
-/*
-**	counts the amount of times the command start and end has been found
-**	start and end only can occur once
-**	the line after has to be a room name and its coordinates
-*/
-
-static int	first_start_or_end(char *str, int i, int *command)
+static int is_connection(char *str)
 {
-	if (ft_strcmp(str, "##start") == 0)
-	{
-		if (*command == TRUE || i > 1)
-			return (ERROR);
-		else
-			*command = TRUE;
-	}
-	else if (ft_strcmp(str, "##end") == 0)
-	{
-		if (*command == TRUE || i > 1)
-			return (ERROR);
-		else
-			*command = TRUE;
-	}
-	return (TRUE);
-}
-
-/*
-**	checks if valid line
-**	valid line and their order: number of ants, coordinates, connections
-**	comments/commands can occur anywhere (also before ants?????)
-*/
-
-static int	check_if_valid(char *str, int *i, int *total, int *command)
-{
-	if (*i == 0 && only_digits(str, i) == TRUE)
+	//words has to be two split by '-'
+	//has to be digits not above max int
+	if (str)
 		return (TRUE);
-	else if (is_comment(str) >= TRUE)
-	{
-		if (first_start_or_end(str, *i, command) == ERROR)
-			return (error(COMMAND));
-		return (TRUE);
-	}
-	else if (*i == 1 && is_coordinates(str) == TRUE)
-		(*total)++;
-	else if (*i > 0 && is_connection(str) == TRUE && *total > 1)
-		(*i)++;
-	else
-	{
-		free(str);
-		if (*i == 1)
-			return (error(COORDINATES));
-		else if (*i > 1)
-			return (error(CONNECTION));
-		else
-			return (error(-1));
-	}
-	if (*command == TRUE)
-		*command = FALSE;
 	return (TRUE);
 }
 
@@ -189,7 +94,11 @@ int	by_line(char *input)
 	i = 0;
 	count = 0;
 	flag = 1;
-	if (input[i] == '#')
+	if (input[i] == '#' && input[i + 1] == '#' && !ft_strncmp(&input[2], "start", 5))
+		return (1);
+	else if (input[i] == '#' && input[i + 1] == '#' && !ft_strncmp(&input[2], "end", 3))
+		return (0);
+	else if (input[i] == '#')
 		return (-1);
 	while (input[i] != '\n' && input[i] != '\0')
 	{
@@ -354,6 +263,26 @@ void	match_route(char *room, char *input, int *links, t_room *pass)
 	}
 }
 
+int	duplicated(char **str)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (str[i])
+	{
+		j = i + 1;
+		while (str[j])
+		{
+			if (!ft_strcmp(str[i], str[j]))
+				return (-1);
+			++j;
+		}
+		++i;
+	}
+	return (0);
+}
+
 int	create(t_room *pass, char *input)	
 {
 	int	count;
@@ -368,6 +297,7 @@ int	create(t_room *pass, char *input)
 	k = 0;
 	p = 0;
 	m = 0;
+	hold = -1;
 	pass = (t_room *) malloc(sizeof(t_room));
 	if (!pass)
 		return (-1);
@@ -388,6 +318,19 @@ int	create(t_room *pass, char *input)
 		pass->links[count] = NULL;
 		while (input[i] != '\0')
 		{
+			if (hold <= 1 && hold >= 0)
+			{
+				if (hold == 1)
+					pass->rooms[0] = ft_strnew(ft_strlen_stop(&input[i], ' '));
+				else
+					pass->rooms[count - 1] = ft_strnew(ft_strlen_stop(&input[i], ' '));
+				if (!pass->rooms[0])
+				{
+					exit (0);
+					//free exit
+				}
+				ft_strncat(pass->rooms[0], &input[i], ft_strlen_stop(&input[i], ' '));
+			}
 			hold = by_line(&input[i]);
 			if (hold < 2)
 			{
@@ -403,6 +346,11 @@ int	create(t_room *pass, char *input)
 					//free exit
 				}
 				ft_strncat(pass->rooms[j++], &input[i], ft_strlen_stop(&input[i], ' '));
+				if (j == count)
+				{
+					if (duplicated(pass->rooms) == -1)
+						return (-1); //free and exit
+				}
 				ft_printf("%s-\n", pass->rooms[j - 1]);
 				while (input[i] != '\n')
 					++i;
@@ -445,7 +393,7 @@ int	parsing_phase(t_room *pass, char **input)
 {
 	int		ret;
 	int		i;
-	int		command;
+	int		comment;
 	char	*line;
 	char	*temp;
 	char	*just;  //will think of better way
@@ -454,7 +402,6 @@ int	parsing_phase(t_room *pass, char **input)
 	ret = 1;
 	line = NULL;
 	i = 0;
-	command = FALSE;
 	while (ret == 1)
 	{
 		ret = get_next_line(0, &line);
