@@ -6,7 +6,7 @@
 /*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:11:51 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/06 16:17:59 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/06 17:55:58 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ int	by_line(char *input)
 	count = 0;
 	flag = 1;
 	if (input[i] == '#' && input[i + 1] == '#' && !ft_strncmp(&input[2], "start", 5))
-		return (1);
+		return (5);
 	else if (input[i] == '#' && input[i + 1] == '#' && !ft_strncmp(&input[2], "end", 3))
-		return (0);
+		return (6);
 	else if (input[i] == '#')
 		return (-1);
 	while (input[i] != '\n' && input[i] != '\0')
@@ -159,8 +159,16 @@ void	match_route(char *room, char *input, int *links, t_room *pass)
 				if (temp[j] == '\0')
 					break ;
 				k = 0;
-				while (pass->rooms[k] && ft_strncmp(&temp[j], pass->rooms[k], ft_strlen_stop(&temp[j], '\n')))
+				if (!ft_strcmp(pass->rooms[k], room))
 					++k;
+				while (pass->rooms[k] && ft_strncmp(&temp[j], pass->rooms[k], ft_strlen_stop(&temp[j], '\n')))
+				{
+					++k;
+					if (!pass->rooms[k])
+						exit (0); //and delete
+					if (!ft_strcmp(pass->rooms[k], room))
+						++k;
+				}
 				j = 0;
 				while (links[j] >= 0)
 					++j;
@@ -174,6 +182,8 @@ void	match_route(char *room, char *input, int *links, t_room *pass)
 				while (pass->rooms[k] && !ft_strnstr(&input[i], pass->rooms[k], ft_strlen_stop(&input[i], '\n')))
 				{
 					++k;
+					if (!pass->rooms[k])
+						exit (0); //and delete
 					if (!ft_strcmp(pass->rooms[k], room))
 						++k;
 				}
@@ -220,7 +230,7 @@ int	create(t_room *pass, char *input)
 	int p, m;
 
 	i = 0;
-	j = 0;
+	j = 1;
 	k = 0;
 	p = 0;
 	m = 0;
@@ -245,21 +255,25 @@ int	create(t_room *pass, char *input)
 		pass->links[count] = NULL;
 		while (input[i] != '\0')
 		{
-			if (hold <= 1 && hold >= 0)
+			if (hold == 5 || hold == 6)
 			{
-				if (hold == 1)
-					pass->rooms[0] = ft_strnew(ft_strlen_stop(&input[i], ' '));
+				if (hold == 5)
+					hold = 0;//pass->rooms[0] = ft_strnew(ft_strlen_stop(&input[i], ' '));
 				else
-					pass->rooms[count - 1] = ft_strnew(ft_strlen_stop(&input[i], ' '));
-				if (!pass->rooms[0])
+					hold = count - 1;//pass->rooms[count - 1] = ft_strnew(ft_strlen_stop(&input[i], ' '));
+				pass->rooms[hold] = ft_strnew(ft_strlen_stop(&input[i], ' '));
+				if (!pass->rooms[hold])
 				{
 					exit (0);
 					//free exit
 				}
-				ft_strncat(pass->rooms[0], &input[i], ft_strlen_stop(&input[i], ' '));
+				ft_strncat(pass->rooms[hold], &input[i], ft_strlen_stop(&input[i], ' '));
+				ft_printf("%s-%i\n", pass->rooms[hold], hold);
+				while (input[i] != '\n')
+					++i;
 			}
 			hold = by_line(&input[i]);
-			if (hold < 2)
+			if (hold < 2 || hold == 5 || hold == 6)
 			{
 				while (input[i] != '\n')
 					++i;
@@ -273,24 +287,22 @@ int	create(t_room *pass, char *input)
 					//free exit
 				}
 				ft_strncat(pass->rooms[j++], &input[i], ft_strlen_stop(&input[i], ' '));
-				if (j == count)
-				{
-					if (duplicated(pass->rooms) == -1)
-						return (-1); //free and exit
-				}
-				ft_printf("%s-\n", pass->rooms[j - 1]);
+				ft_printf("%s-%i\n", pass->rooms[j - 1], j - 1);
 				while (input[i] != '\n')
 					++i;
 
 			}
-			else if (hold == 2 && ft_strlchr(&input[i], '-', ft_strlen_stop(&input[i], '\n')))
+			else if (hold == 2)// && ft_strlchr(&input[i], '-', ft_strlen_stop(&input[i], '\n')))
 			{
+				if (duplicated(pass->rooms) == -1)
+					return (-1); //free and exit
 				j = 0;
 				while (pass->rooms[j])
 				{
 					pass->links[j] = (int *) malloc((count_in(pass->rooms[j], &input[i]) + 1) * sizeof(int));
 					if (!pass->links[j])
 					{
+						exit (0);
 						//free exit
 					}
 					k = 0;
