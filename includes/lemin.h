@@ -12,10 +12,6 @@ typedef struct  s_room
 	int		ants;
 }				t_room;
 
-int	parsing_phase(t_room *pass, char **input);
-int	error(void);
-int	create(t_room *pass, char *input);
-
 typedef enum
 {
 	NO_ANTS,
@@ -25,5 +21,12 @@ typedef enum
 	COORDINATES,
 	CONNECTION,
 } error_message;
+
+int	parsing_phase(t_room *pass, char **input);
+int	error(int err);
+int	only_digits(char *str, int *i);
+int	is_coordinates(char *str);
+int is_connection(char *str);
+int	create(t_room *pass, char *input);
 
 #endif

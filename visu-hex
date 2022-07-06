@@ -459,6 +459,18 @@ def collect_ant_move(line, ants, info, total, moves, k):
 		return (False)
 	return (True)
 
+
+
+# make this work no matter room containing -
+# make error checking work with python visuals
+
+def check_rooms(info, line, total):
+	i = 0
+	nbr = line[0:line.find("-")]
+	while info[i]["nbr"] != nbr and i < total:
+		i += 1
+	info[i]["connect"].append(line[line.find("-") + 1:len(line)])
+
 # Main loop of collecting all of the information including error checking
 
 def main(argv, argc):
@@ -502,10 +514,13 @@ def main(argv, argc):
 					coordinates_found = True
 				elif check_if_connection(line) == True:
 					i = 0
-					nbr = line[0:line.find("-")]
-					while info[i]["nbr"] != nbr:
-						i += 1
-					info[i]["connect"].append(line[line.find("-") + 1:len(line)])
+					if line.count('-') == 1:
+						nbr = line[0:line.find("-")]
+						while info[i]["nbr"] != nbr and i < total:
+							i += 1
+						info[i]["connect"].append(line[line.find("-") + 1:len(line)])
+					else:
+						check_rooms(info, line, total)
 				elif coordinates_found == True and check_if_ants_move(line, ants, info, total) == True:
 					moves[k] = {"ant": [], "room": [], "total": 0, "total_ants": ants}
 					collect_ant_move(line, ants, info, total, moves, k)
