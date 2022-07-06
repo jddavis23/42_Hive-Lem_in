@@ -14,13 +14,12 @@
 
 int	main(int argc, char **argv)
 {
-	int	ants;
 	int	total;
 
 	if (argc == 1)
 	{
 		total = 0;
-		if (parsing_phase(&ants, &total) == ERROR)
+		if (parsing_phase(&total) == ERROR)
 			return (0);
 	}
 	else if (argv)

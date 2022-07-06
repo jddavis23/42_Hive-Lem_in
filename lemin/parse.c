@@ -84,8 +84,6 @@ static int is_connection(char *str)
 	int	count;
 	int	i;
 
-	// if (ft_word_count(str, '-') != 2)
-	// 	return (FALSE);
 	if (ft_word_count(str, '-') < 2)
 		return (FALSE);
 	count = 0;
@@ -95,15 +93,9 @@ static int is_connection(char *str)
 	while (str[i] != '\0')
 	{
 		if (str[i] == '-')
-		{
-			// if (str[i + 1] == 'L' || str[i + 1] == '#')
-			// 	return (FALSE);
 			++count;
-		}
 		else if (str[i] == ' ')
 			return (FALSE);
-		// if (count > 1)
-		// 	return (FALSE);
 		++i;
 	}
 	if (count < 1)
@@ -111,39 +103,37 @@ static int is_connection(char *str)
 	return (TRUE);
 }
 
-static int	first_start_or_end(char *str, int i)
+static int	first_start_or_end(char *str, int i, int *command)
 {
-	static int	start = FALSE;
-	static int	end = FALSE;
-
 	if (ft_strcmp(str, "##start") == 0)
 	{
-		if (start == TRUE || i > 1)
+		if (*command == TRUE || i > 1)
 			return (ERROR);
 		else
-			start = TRUE;
+			*command = TRUE;
 	}
 	else if (ft_strcmp(str, "##end") == 0)
 	{
-		if (end == TRUE || i > 1)
+		if (*command == TRUE || i > 1)
 			return (ERROR);
 		else
-			end = TRUE;
+			*command = TRUE;
 	}
 	return (TRUE);
 }
 
-static int	check_if_valid(char *str, int *i, int *ants, int *total)
+static int	check_if_valid(char *str, int *i, int *total, int *command)
 {
 	int	comment;
 
 	comment = is_comment(str);
 	if (*i == 0 && only_digits(str, i) == TRUE)
-		*ants = ft_atoi(str);
-	else if (comment >= TRUE && *i > 0)
+		return (TRUE);
+	else if (comment >= TRUE)
 	{
-		if (first_start_or_end(str, *i) == ERROR)
+		if (first_start_or_end(str, *i, command) == ERROR)
 			return (error(COMMAND));
+		return (TRUE);
 		//## start and end has to be done at coordinates and can only happen once.
 		// so if it has already been found it is an error
 		ft_printf("call function to collect comment if it contains ##start or ##end\n");
@@ -168,18 +158,22 @@ static int	check_if_valid(char *str, int *i, int *ants, int *total)
 		else
 			return (error(-1));
 	}
+	if (*command == TRUE)
+		*command = FALSE;
 	return (TRUE);
 }
 
-int	parsing_phase(int *ants, int *total)
+int	parsing_phase(int *total)
 {
 	int		ret;
 	int		i;
+	int		command;
 	char	*line;
 
 	ret = 1;
 	line = NULL;
 	i = 0;
+	command = FALSE;
 	while (ret == 1)
 	{
 		ret = get_next_line(0, &line);
@@ -187,7 +181,7 @@ int	parsing_phase(int *ants, int *total)
 			return (0);
 		if (!line)
 			break ;
-		if (check_if_valid(line, &i, ants, total) == ERROR)
+		if (check_if_valid(line, &i, total, &command) == ERROR)
 			return (ERROR);
 		ft_printf("[%s]\n", line);
 		free(line);

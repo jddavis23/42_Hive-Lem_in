@@ -3,7 +3,7 @@
 
 # include "../libft/libft.h"
 
-int	parsing_phase(int *ants, int *total);
+int	parsing_phase(int *total);
 int	error(int err);
 
 typedef enum
