@@ -40,20 +40,22 @@ function test()
 	printf "\n$1 test: ${YELLOW}./lem-in < $2${UNCOLOR}\n"
 	var2=$($3)
 	location=$(pwd)
-	if [ "${MYPATH}" == "$location" ]
+	if [ "${MYPATH}" == "$location" ];
 	then
-		var=$((${MYPATH}/lem-in < $2) 2>&1 >/dev/null)
+		var=$(${MYPATH}/lem-in < $2)
+		#var=$((${MYPATH}/lem-in < $2) 2>&1 >/dev/null)
 	else
-		var=$((${MYPATH}/lem-in < ../$2) 2>&1 >/dev/null)
+		var=$(${MYPATH}/lem-in < ../$2)
+		#var=$((${MYPATH}/lem-in < ../$2) 2>&1 >/dev/null)
 	fi
-	if [ "$var" != "$var2" ]
+	if [[ "$var" == *"$var2"* ]];
 	then
+		printf "${GREEN}[${UNCOLOR}$var${GREEN}]${UNCOLOR}\n"
+		printf "		${GREEN}ok${UNCOLOR}\n"
+	else
 		printf "\n${RED}fail: ${UNCOLOR}\n"
 		$4
 		printf "$var\n"
-	else
-		printf "$var\n"
-		printf "		${GREEN}ok${UNCOLOR}\n"
 	fi
 }
 

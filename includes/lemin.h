@@ -3,9 +3,6 @@
 
 # include "../libft/libft.h"
 
-int	parsing_phase(int *total);
-int	error(int err);
-
 typedef enum
 {
 	NO_ANTS,
@@ -15,5 +12,11 @@ typedef enum
 	COORDINATES,
 	CONNECTION,
 } error_message;
+
+int	parsing_phase(int *total);
+int	error(int err);
+int	only_digits(char *str, int *i);
+int	is_coordinates(char *str);
+int is_connection(char *str);
 
 #endif

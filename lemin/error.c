@@ -16,7 +16,7 @@ int	error(int err)
 {
 	//make sure everything is freed that needs to be freed
 	if (err == -1)
-		ft_printf("{red}Error{uncolor}");
+		ft_printf("{red}Error{uncolor}\n");
 	else
 	{
 		ft_printf("{red}Error:{uncolor} ");
@@ -32,6 +32,8 @@ int	error(int err)
 			ft_printf("Incorrect coordinates\n");
 		else if (err == CONNECTION)
 			ft_printf("Incorrect connection\n");
+		else
+			ft_printf("\n");
 	}
 	//ft_putstr_fd("Error\n", 2);
 	return (ERROR);
