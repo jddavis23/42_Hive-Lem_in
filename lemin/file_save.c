@@ -34,16 +34,18 @@ static int	is_comment(char *str)
 
 static int	first_start_or_end(char *str, int i, int *command)
 {
+	if (*command == TRUE)
+		return (ERROR);
 	if (ft_strcmp(str, "##start") == 0)
 	{
-		if (*command == TRUE || i > 1)
+		if (i > 1)
 			return (ERROR);
 		else
 			*command = TRUE;
 	}
 	else if (ft_strcmp(str, "##end") == 0)
 	{
-		if (*command == TRUE || i > 1)
+		if (i > 1)
 			return (ERROR);
 		else
 			*command = TRUE;
@@ -72,15 +74,7 @@ static int	check_if_valid(char *str, int *i, int *total, int *command)
 	else if (*i > 0 && is_connection(str) == TRUE && *total > 1)
 		(*i)++;
 	else
-	{
-		free(str);
-		if (*i == 1)
-			return (error(COORDINATES));
-		else if (*i > 1)
-			return (error(CONNECTION));
-		else
-			return (ERROR);
-	}
+		return (TRUE);
 	if (*command == TRUE)
 		*command = FALSE;
 	return (TRUE);
@@ -106,9 +100,10 @@ int	parsing_phase(int *total)
 			return (0);
 		if (!line)
 			break ;
+		//check_if_valid(line, &i, total, &command);
 		if (check_if_valid(line, &i, total, &command) == ERROR)
 			return (ERROR);
-		//ft_printf("[%s]\n", line);
+		//ft_printf("%s\n", line);
 		free(line);
 	}
 	return (0);

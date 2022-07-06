@@ -35,6 +35,5 @@ int	error(int err)
 		else
 			ft_printf("\n");
 	}
-	//ft_putstr_fd("Error\n", 2);
 	return (ERROR);
 }
