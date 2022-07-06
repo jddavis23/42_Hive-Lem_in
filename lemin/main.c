@@ -14,16 +14,17 @@
 
 int	main(int argc, char **argv)
 {
-	/*int	ants;
-
-	if (parsing_phase(&ants) == ERROR)
-		return (error());*/
 	t_room	*pass;
 	char	*input;
 
-	input = NULL;
-	pass = NULL;
-	if (create(pass, input) == -1)
-		return (0);
+	if (argc == 1)
+	{
+		input = NULL;
+		pass = NULL;
+		if (create(pass, input) == -1)
+			return (0);
+	}
+	else if (argv)
+		ft_printf("Usage: ./lem-in < maps/subject.map\n");
 	return (0);
 }

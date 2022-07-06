@@ -12,6 +12,7 @@
 
 # include "../includes/lemin.h"
 
+<<<<<<< HEAD
 static int	below_max_int(char *str)
 {
 	int	len;
@@ -85,6 +86,8 @@ static int is_connection(char *str)
 }
 
 
+=======
+>>>>>>> e079ff9caa54a1286e3a9ffc5c72e0ea3272fa1a
 int	by_line(char *input)
 {
 	int	flag;
@@ -388,61 +391,3 @@ int	create(t_room *pass, char *input)
 	}
 	return (1);
 }
-
-int	parsing_phase(t_room *pass, char **input)
-{
-	int		ret;
-	int		i;
-	int		comment;
-	char	*line;
-	char	*temp;
-	char	*just;  //will think of better way
-
-	temp = NULL;
-	ret = 1;
-	line = NULL;
-	i = 0;
-	while (ret == 1)
-	{
-		ret = get_next_line(0, &line);
-		if (ret == ERROR)
-			return (0);
-		if (!line)
-			break ;
-		comment = is_comment(line);
-		if (i == 0 && only_digits(line, &i) == TRUE)
-			pass->ants = ft_atoi(line);
-		else if (comment >= TRUE && i > 0)
-		{
-			//## start and end has to be done at coordinates and can only happen once.
-			// so if it has already been found it is an erroir
-			ft_printf("call function to collect comment if it contains ##start or ##end\n");
-		}
-		else if (i == 1 && is_coordinates(line) == TRUE)
-			ft_printf("call function to collect name of rooms\n");
-		else if (i >= 1 && is_connection(line) == TRUE)
-		{
-			++i;
-			ft_printf("call function to collect connections\n");
-		}
-		else
-		{
-			free(line);
-			return (ERROR);
-		}
-		if (!(*input))
-			*input = ft_strjoin(line, "\n");
-		else
-		{
-			temp = ft_strjoin(line, "\n");
-			just = ft_strjoin(*input, temp);
-			free(*input);
-			free(temp);
-			*input = just;
-		}
-		free(line);
-	}
-	return (4);
-}
-
-// how to check if path is valid?
