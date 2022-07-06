@@ -16,4 +16,14 @@ int	parsing_phase(t_room *pass, char **input);
 int	error(void);
 int	create(t_room *pass, char *input);
 
+typedef enum
+{
+	NO_ANTS,
+	TOO_MANY_ANTS,
+	NON_DIGIT_ANTS,
+	COMMAND,
+	COORDINATES,
+	CONNECTION,
+} error_message;
+
 #endif
