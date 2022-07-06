@@ -6,7 +6,7 @@
 /*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:11:51 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/05 16:41:16 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/06 13:31:59 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,15 +195,68 @@ int	count_in(char *str, char *input)
 			hold = ft_strlen_stop(&input[i], '\n');
 		if (!ft_strncmp(str, &input[i], hold))
 			++count;
-		//ft_printf("--%i\n\n%s\n", count, &input[i]);
 		while (input[i] != '-' && input[i] != '\n' && input[i] != '\0')
 			++i;
 		if (input[i] == '\n' || input[i] == '-')
 			++i;
 	}
-	//exit (0);
 	return (count);
 
+}
+
+void	match_route(char *room, char *input, int *links, t_room *pass)
+{
+	int	i;
+	int	j;
+	int k;
+	char	*temp;
+
+	i = 0;
+	j = 0;
+	while (input[i] != '\0')
+	{
+		temp = ft_strnstr(&input[i], room, ft_strlen_stop(&input[i], '\n'));
+		if (temp)
+		{
+			if (temp[-1] == '\n')
+			{
+				while (temp[j] != '-' && temp[j] != '\0')
+					++j;
+				if (temp[j] == '\0')
+					break ;
+				++j;
+				if (temp[j] == '\0')
+					break ;
+				k = 0;
+				while (pass->rooms[k] && ft_strncmp(&temp[j], pass->rooms[k], ft_strlen_stop(&temp[j], '\n')))
+					++k;
+				j = 0;
+				while (links[j] >= 0)
+					++j;
+				links[j] = k;
+			}
+			else if (temp[-1] == '-')
+			{
+				k = 0;
+				if (!ft_strcmp(pass->rooms[k], room))
+					++k;
+				while (pass->rooms[k] && !ft_strnstr(&input[i], pass->rooms[k], ft_strlen_stop(&input[i], '\n')))
+				{
+					++k;
+					if (!ft_strcmp(pass->rooms[k], room))
+						++k;
+				}
+				j = 0;
+				while (links[j] >= 0)
+					++j;
+				links[j] = k;
+			}
+		}
+		while (input[i] != '\n' && input[i] != '\0')
+			++i;
+		if (input[i] == '\n')
+			++i;
+	}
 }
 
 int	create(t_room *pass, char *input)	
@@ -213,10 +266,13 @@ int	create(t_room *pass, char *input)
 	int	j;
 	int	k;
 	int	hold;
+	int p, m;
 
 	i = 0;
 	j = 0;
 	k = 0;
+	p = 0;
+	m = 0;
 	pass = (t_room *) malloc(sizeof(t_room));
 	if (!pass)
 		return (-1);
@@ -243,7 +299,6 @@ int	create(t_room *pass, char *input)
 				while (input[i] != '\n')
 					++i;
 			}
-			//ft_printf("%i\n", hold);
 			if (hold == 3)
 			{
 				pass->rooms[j] = ft_strnew(ft_strlen_stop(&input[i], ' '));
@@ -271,31 +326,23 @@ int	create(t_room *pass, char *input)
 					k = 0;
 					while (k < count_in(pass->rooms[j], &input[i]) + 1)
 						pass->links[j][k++] = -1;
-					ft_printf("room %s   %i\n", pass->rooms[j], count_in(pass->rooms[j], &input[i]));
+					match_route(pass->rooms[j], &input[i], pass->links[j], pass);
 					++j;
 				}
+				while (pass->rooms[p])
+				{
+					m = 0;
+					ft_printf("room %s\n", pass->rooms[p]);
+					while (m <= count_in(pass->rooms[p], &input[i]))
+						ft_printf("%i ", pass->links[p][m++]);
+					ft_printf("\n");
+					++p;
+				}
 				exit (0);
-				/*k = find_indx(pass, &input[i]);
-				if (k == -1)
-					//free and exit
-
-				count_in(&input[i]);
-				initial_mal(pass, k);
-				while (input[i] != '-')
-					++i;
-				++i;
-				realloc_arr(pass, k, find_indx(pass, &input[i]));
-				//write(1, &input[i], ft_strlen_stop(&input[i], '\n'));	
-				//ft_printf("\n");*/
 			}
 			++i;
 		}
-		//pass->rooms[count] = NULL;
-		//pass->links[count] = NULL;
 	}
-	j = 0;
-	//while (pass->rooms[j])
-	//	ft_printf("%s\n", pass->rooms[j++]);
 	return (1);
 }
 
@@ -352,7 +399,7 @@ int	parsing_phase(t_room *pass, char **input)
 		}
 		free(line);
 	}
-	return (5);
+	return (4);
 }
 
 // how to check if path is valid?
