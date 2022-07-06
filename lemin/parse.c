@@ -12,12 +12,19 @@
 
 # include "../includes/lemin.h"
 
+/*	checks if a given string with digit is below max int or not	*/
+
 static int	below_max_int(char *str, int len)
 {
 	if (len > 10 || (len == 10 && ft_strncmp(str, "2147483647", len) > 0))
 		return (FALSE);
 	return (TRUE);
 }
+
+/*
+**	checks if the string only contains digits or else return error message
+**	used to check if the amount of ants are correctly specified
+*/
 
 static int	only_digits(char *str, int *i)
 {
@@ -35,6 +42,8 @@ static int	only_digits(char *str, int *i)
 	return (TRUE);
 }
 
+/*	checks if the read line is a comment	*/
+
 static int	is_comment(char *str)
 {
 	int	i;
@@ -46,6 +55,8 @@ static int	is_comment(char *str)
 		return (FALSE);
 	return (i);
 }
+
+/*	checks coordinates only consist of digits and space as seperator	*/
 
 static int	is_digit_and_below_max_int(char *str, int *i)
 {
@@ -60,6 +71,8 @@ static int	is_digit_and_below_max_int(char *str, int *i)
 	}
 	return (TRUE);
 }
+
+/*	function that checks if coordinates are correctly formatted	*/
 
 static int	is_coordinates(char *str)
 {
@@ -79,13 +92,13 @@ static int	is_coordinates(char *str)
 	return (TRUE);
 }
 
+/*	checks if connections are correctly formatted	*/
+
 static int is_connection(char *str)
 {
 	int	count;
 	int	i;
 
-	// if (ft_word_count(str, '-') != 2)
-	// 	return (FALSE);
 	if (ft_word_count(str, '-') < 2)
 		return (FALSE);
 	count = 0;
@@ -95,15 +108,9 @@ static int is_connection(char *str)
 	while (str[i] != '\0')
 	{
 		if (str[i] == '-')
-		{
-			// if (str[i + 1] == 'L' || str[i + 1] == '#')
-			// 	return (FALSE);
 			++count;
-		}
 		else if (str[i] == ' ')
 			return (FALSE);
-		// if (count > 1)
-		// 	return (FALSE);
 		++i;
 	}
 	if (count < 1)
@@ -111,48 +118,51 @@ static int is_connection(char *str)
 	return (TRUE);
 }
 
-static int	first_start_or_end(char *str, int i)
-{
-	static int	start = FALSE;
-	static int	end = FALSE;
+/*
+**	counts the amount of times the command start and end has been found
+**	start and end only can occur once
+**	the line after has to be a room name and its coordinates
+*/
 
+static int	first_start_or_end(char *str, int i, int *command)
+{
 	if (ft_strcmp(str, "##start") == 0)
 	{
-		if (start == TRUE || i > 1)
+		if (*command == TRUE || i > 1)
 			return (ERROR);
 		else
-			start = TRUE;
+			*command = TRUE;
 	}
 	else if (ft_strcmp(str, "##end") == 0)
 	{
-		if (end == TRUE || i > 1)
+		if (*command == TRUE || i > 1)
 			return (ERROR);
 		else
-			end = TRUE;
+			*command = TRUE;
 	}
 	return (TRUE);
 }
 
-static int	check_if_valid(char *str, int *i, int *ants, int *total)
-{
-	int	comment;
+/*
+**	checks if valid line
+**	valid line and their order: number of ants, coordinates, connections
+**	comments/commands can occur anywhere (also before ants?????)
+*/
 
-	comment = is_comment(str);
+static int	check_if_valid(char *str, int *i, int *total, int *command)
+{
 	if (*i == 0 && only_digits(str, i) == TRUE)
-		*ants = ft_atoi(str);
-	else if (comment >= TRUE && *i > 0)
+		return (TRUE);
+	else if (is_comment(str) >= TRUE)
 	{
-		if (first_start_or_end(str, *i) == ERROR)
+		if (first_start_or_end(str, *i, command) == ERROR)
 			return (error(COMMAND));
+		return (TRUE);
 	}
 	else if (*i == 1 && is_coordinates(str) == TRUE)
-	{
 		(*total)++;
-	}
 	else if (*i > 0 && is_connection(str) == TRUE && *total > 1)
-	{
 		(*i)++;
-	}
 	else
 	{
 		free(str);
@@ -163,18 +173,24 @@ static int	check_if_valid(char *str, int *i, int *ants, int *total)
 		else
 			return (error(-1));
 	}
+	if (*command == TRUE)
+		*command = FALSE;
 	return (TRUE);
 }
 
-int	parsing_phase(int *ants, int *total)
+/*	reads file and stores in string and checks if invalid file	*/
+
+int	parsing_phase(int *total)
 {
 	int		ret;
 	int		i;
+	int		command;
 	char	*line;
 
 	ret = 1;
 	line = NULL;
 	i = 0;
+	command = FALSE;
 	while (ret == 1)
 	{
 		ret = get_next_line(0, &line);
@@ -182,7 +198,7 @@ int	parsing_phase(int *ants, int *total)
 			return (0);
 		if (!line)
 			break ;
-		if (check_if_valid(line, &i, ants, total) == ERROR)
+		if (check_if_valid(line, &i, total, &command) == ERROR)
 			return (ERROR);
 		free(line);
 	}
