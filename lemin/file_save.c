@@ -110,7 +110,6 @@ int	parsing_phase(t_room *pass, char **input)
 			return (0);
 		if (!line)
 			break ;
-		//check_if_valid(line, &i, total, &command);
 		if (i == 0 && only_digits(line, &i) == TRUE)
 			pass->ants = ft_atoi(line);
 		else if (check_if_valid(line, &i, &total, &command) == ERROR)
