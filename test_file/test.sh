@@ -111,6 +111,13 @@ function error_test()
 	test invalid "maps/error/start_end_wrong_location3.map" "printf "Error"" error_put
 	test invalid "maps/error/start_end_wrong_location4.map" "printf "Error"" error_put
 	test invalid "maps/error/start_end_double.map" "printf "Error"" error_put
+
+	# parse errors
+	printf "\n${BLUE}parse tests${UNCOLOR}"
+	test invalid "maps/error/dublicate.map" "printf "Error"" error_put
+	test invalid "maps/error/error_double_comment.map" "printf "Error"" error_put
+	test invalid "maps/error/error_double_start.map" "printf "Error"" error_put
+	test invalid "maps/error/no_room.map" "printf "Error"" error_put
 }
 
 function valid_test()
@@ -125,7 +132,13 @@ function valid_test()
 	test valid "maps/subject2-2.map" "printf "OK"" valid_put
 	test valid "maps/subject3.map" "printf "OK"" valid_put
 	test valid "maps/comments_hash_3.map" "printf "OK"" valid_put
-
+	test valid "maps/multi2.map" "printf "OK"" valid_put
+	test valid "maps/wierd_names.map" "printf "OK"" valid_put
+	test valid "maps/briffard.map" "printf "OK"" valid_put
+	test valid "maps/briffard2.map" "printf "OK"" valid_put
+	test valid "maps/alphabet.map" "printf "OK"" valid_put
+	test valid "maps/alphabet-easy.map" "printf "OK"" valid_put
+	test valid "maps/subject-name.map" "printf "OK"" valid_put
 }
 
 function main()

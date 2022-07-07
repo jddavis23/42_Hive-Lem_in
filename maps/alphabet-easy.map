@@ -1,0 +1,12 @@
+3
+##start
+abc 1 0
+##end
+--new 5 0
+abcdefg 9 0
+bcdefg 15 0
+3 13 0
+abc-abcdefg
+abcdefg-3
+3---new
+bcdefg---new
