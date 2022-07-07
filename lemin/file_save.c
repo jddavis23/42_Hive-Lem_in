@@ -61,13 +61,7 @@ static int	first_start_or_end(char *str, int i, int *command)
 
 static int	check_if_valid(char *str, int *i, int *total, int *command)
 {
-	if (is_comment(str) >= TRUE)
-	{
-		if (first_start_or_end(str, *i, command) == ERROR)
-			return (error(COMMAND));
-		return (TRUE);
-	}
-	else if (*i == 1 && is_coordinates(str) == TRUE)
+	if (*i == 1 && is_coordinates(str) == TRUE)
 		(*total)++;
 	else if (*i > 0 && is_connection(str) == TRUE && *total > 1)
 		(*i)++;
@@ -110,7 +104,12 @@ int	parsing_phase(t_room *pass, char **input)
 			return (0);
 		if (!line)
 			break ;
-		if (i == 0 && only_digits(line, &i) == TRUE)
+		if (is_comment(line) >= TRUE)
+		{
+			if (first_start_or_end(line, i, &command) == ERROR)
+				return (error(COMMAND));
+		}
+		else if (i == 0 && only_digits(line, &i) == TRUE)
 			pass->ants = ft_atoi(line);
 		else if (check_if_valid(line, &i, &total, &command) == ERROR)
 			return (ERROR);

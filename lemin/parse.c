@@ -127,9 +127,9 @@ int	count_in(char *str, char *input)
 		temp = ft_strnstr(&input[i], str, ft_strlen_stop(&input[i], '\n'));
 		if (temp && ((temp[-1] == '\n' && temp[ft_strlen(str)] == '-') || (temp[-1] == '-' && temp[ft_strlen(str)] == '\n')))
 			++count;
-		if (temp && ft_strnstr(&temp[ft_strlen(str)], str, ft_strlen_stop(&temp[ft_strlen(str)], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
+		while (temp && ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
 		{
-			temp = ft_strnstr(&temp[ft_strlen(str)], str, ft_strlen_stop(&temp[ft_strlen(str)], '\n'));
+			temp = ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'));
 			if (temp[-1] == '-' && temp[ft_strlen(str)] == '\n')
 				++count;
 		}
@@ -167,7 +167,9 @@ void	match_route(char *room, char *input, int *links, t_room *pass)
 				{
 					++k;
 					if (!pass->rooms[k])
+					{
 						exit (0); //and delete
+					}
 					if (!ft_strcmp(pass->rooms[k], room))
 						++k;
 				}
@@ -194,9 +196,9 @@ void	match_route(char *room, char *input, int *links, t_room *pass)
 					++j;
 				links[j] = k;
 			}
-			else if (ft_strnstr(&temp[ft_strlen(room)], room, ft_strlen_stop(&temp[ft_strlen(room)], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
+			while (ft_strnstr(&temp[1], room, ft_strlen_stop(&temp[1], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
 			{
-				temp = ft_strnstr(&temp[ft_strlen(room)], room, ft_strlen_stop(&temp[ft_strlen(room)], '\n'));
+				temp = ft_strnstr(&temp[1], room, ft_strlen_stop(&temp[1], '\n'));
 				if (temp && (temp[-1] == '-' && temp[ft_strlen(room)] == '\n'))
 				k = 0;
 				if (!ft_strcmp(pass->rooms[k], room))
@@ -275,6 +277,8 @@ int	create(t_room *pass, char *input)
 		}
 		pass->rooms[count] = NULL;
 		pass->links[count] = NULL;
+		pass->rooms[0] = NULL;
+		pass->rooms[count - 1] = NULL;
 		while (input[i] != '\0')
 		{
 			if (hold == 5 || hold == 6)
@@ -283,6 +287,8 @@ int	create(t_room *pass, char *input)
 					hold = 0;//pass->rooms[0] = ft_strnew(ft_strlen_stop(&input[i], ' '));
 				else
 					hold = count - 1;//pass->rooms[count - 1] = ft_strnew(ft_strlen_stop(&input[i], ' '));
+				if (pass->rooms[hold])
+					exit (0); //free and exit
 				pass->rooms[hold] = ft_strnew(ft_strlen_stop(&input[i], ' '));
 				if (!pass->rooms[hold])
 				{

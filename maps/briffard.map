@@ -1,0 +1,14 @@
+12
+##start
+start 5 6
+##end
+end 7 9
+test-test 2 2
+encore 3 3
+test-encore 4 4
+encore-test 5 5
+test-test-encore
+encore-test-end
+start-encore
+encore-encore-test
+encore-test-test-encore
