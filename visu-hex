@@ -30,8 +30,6 @@ def no_ants_on_start(moves):
 		while j < len(moves[i]["ant"]):
 			if moves[i]["ant"][j] == total:
 				last = i
-				print("index of last ant")
-				print (last)
 				return (last)
 			j += 1
 		i += 1
@@ -65,8 +63,6 @@ def drawGrid(screen, height, width, blockSize, info, start, end, count, moves, l
 					text=font.render(print_nbr, True, (0, 0, 0))
 					rect=text.get_rect()
 					screen.blit(text, [x + int(blockSize), y + int(blockSize)])
-					#print("index of last ant")
-					#print (last_ant_left_start)
 					if info[i]["nbr"] == start and count < last:
 						pygame.draw.circle(screen, (0, 0, 0), [info[i]["grid_x"] + int(blockSize) / 2, info[i]["grid_y"] + int(blockSize) / 2], int(blockSize) / 4)
 					break
@@ -197,6 +193,78 @@ def drawText(screen, height, width, blockSize, prev, count, moves):
 	rect=text.get_rect()
 	screen.blit(text, [0 + (int(blockSize) / 2), height - int(blockSize)])
 
+def checkIfRoomExist(info, room):
+	i = 0
+	while i < info[0]["total"]:
+		if info[i]["nbr"] == room:
+			return False
+		i += 1
+	return True
+
+def checkIfDuplicates(listOfElems, moves, ants, info):
+	for elem in listOfElems:
+		if listOfElems.count(elem) > 1:
+			return True
+		if ants == True and elem > int(moves[0]["total_ants"]):
+			return True
+		if ants == False and checkIfRoomExist(info, elem):
+			return True
+	return False
+
+def ant_moves_twice(moves, screen, height, width, blockSize, init, info):
+	i = 0
+	while i < moves[0]["total"]:
+		if checkIfDuplicates(moves[i]["ant"], moves, True, info) == True:
+			font=pygame.font.SysFont('arial', blockSize)
+			text=font.render("ERROR: ant error at " + str(i) + "/" + str(moves[i]["total"]), True, (200, 0, 0))
+			rect=text.get_rect()
+			screen.blit(text, [0 + (int(blockSize) / 2), height - (int(blockSize) * 2)])
+			if init == True:
+				print ("ERROR")
+				print (moves[i])
+			return True
+		i += 1
+	return False
+
+def room_error(moves, screen, height, width, blockSize, init, info):
+	i = 0
+	while i < moves[0]["total"]:
+		if checkIfDuplicates(moves[i]["room"], moves, False, info) == True:
+			font=pygame.font.SysFont('arial', blockSize)
+			text=font.render("ERROR: room error at " + str(i) + "/" + str(moves[i]["total"]), True, (200, 0, 0))
+			rect=text.get_rect()
+			screen.blit(text, [0 + (int(blockSize) / 2), height - (int(blockSize) * 2)])
+			if init == True:
+				print ("ERROR")
+				print (moves[i])
+			return
+		i += 1
+
+def get_number_of_elements(list):
+	count = 0
+	for element in list:
+		count += 1
+	return count
+
+def drawErrorCheck(screen, height, width, blockSize, info, moves, init):
+	# error if ant moves twice in a round + error if ants doesn't exist
+	# error if two ants are in the same room + room doesn't exist
+	# error if ant moves from one room to a room it is not connected to
+	i = 0
+	while i < moves[0]["total"]:
+		if get_number_of_elements(moves[i]["ant"]) != get_number_of_elements(moves[i]["room"]):
+			font=pygame.font.SysFont('arial', blockSize)
+			text=font.render("ERROR: ant and room error " + str(i) + "/" + str(moves[i]["total"]), True, (200, 0, 0))
+			rect=text.get_rect()
+			screen.blit(text, [0 + (int(blockSize) / 2), height - (int(blockSize) * 2)])
+			if init == True:
+				print ("ERROR")
+				print (moves[i])
+			return
+		i += 1
+	if ant_moves_twice(moves, screen, height, width, blockSize, init, info) == False:
+		room_error(moves, screen, height, width, blockSize, init, info)
+
 # makes the map and displays it in a new window
 
 def make_map(start, end, info, moves):
@@ -249,18 +317,21 @@ def make_map(start, end, info, moves):
 	space = False
 	space_r = False
 	last = no_ants_on_start(moves)
+	drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, True)
 	while True:
 		if count <= -1 and prev != -1:
 			collectGridData(screen, window_height, window_width, blockSize, info)
 			drawConnections(screen, window_height, window_width, blockSize, info)
 			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves, last)
 			drawText(screen, window_height, window_width, blockSize, prev, count, moves)
+			drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, False)
 			prev = -1
 		elif count != prev and count < moves[0]["total"] and count > -1:
 			drawConnections(screen, window_height, window_width, blockSize, info)
 			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves, last)
 			draw_ant(screen, window_height, window_width, blockSize, info, start, end, moves, count)
 			drawText(screen, window_height, window_width, blockSize, prev, count, moves)
+			drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, False)
 			prev = count
 		if space == True and count < moves[0]["total"]:
 			count += 1
@@ -315,51 +386,15 @@ def check_if_coordinates(line):
 	if line.count(" ") != 2:
 		return (False)
 	while i < len(line):
-		if i == 0 and line.find("start") == 0:
-			i += 5
-			count += 1
-		elif i == 0 and line.find("end") == 0:
-			i += 3
-			count += 1
-		elif line[i] == " ":
+		if line[i] == " ":
 			i += 1
-		elif line[i].isnumeric() == True:
+		else:
 			if i == 0:
 				count += 1
 			elif line[i - 1] == " ":
 				count += 1
 			i += 1
-		else:
-			return (False)
 	if count != 3:
-		return (False)
-	return (True)
-
-# checks if information about which rooms are connected
-
-def check_if_connection(line):
-	i = 0
-	count = 0
-	if line.count("-") != 1:
-		return (False)
-	while i < len(line):
-		if line.find("start") == i:
-			i += 5
-			count += 1
-		elif line.find("end") == i:
-			i += 3
-			count += 1
-		elif line[i] == "-":
-			i += 1
-		elif line[i].isnumeric() == True:
-			if i == 0:
-				count += 1
-			elif line[i - 1] == "-":
-				count += 1
-			i += 1
-		else:
-			return (False)
-	if count != 2:
 		return (False)
 	return (True)
 
@@ -459,17 +494,23 @@ def collect_ant_move(line, ants, info, total, moves, k):
 		return (False)
 	return (True)
 
+# works even if room name contains the character '-'
 
-
-# make this work no matter room containing -
-# make error checking work with python visuals
-
-def check_rooms(info, line, total):
+def check_rooms(info, line, total, last):
 	i = 0
-	nbr = line[0:line.find("-")]
-	while info[i]["nbr"] != nbr and i < total:
+	nbr = line[0:last]
+	while i < total:
+		if info[i]["nbr"] == nbr:
+			break
 		i += 1
-	info[i]["connect"].append(line[line.find("-") + 1:len(line)])
+	if i == total:
+		temp = line[last:len(line)]
+		if (temp.find("-") == 0):
+			last += 1
+		check_rooms(info, line, total, last + temp.find("-"))
+	else:
+		info[i]["connect"].append(line[last + 1:len(line)])
+
 
 # Main loop of collecting all of the information including error checking
 
@@ -480,48 +521,52 @@ def main(argv, argc):
 		moves = dict()
 		start = "N"
 		end = "N"
-		ants = 0
+		ants = -1
 		i = 0
 		k = 0
 		total = 0
-		coordinates_found = False
+		ants_move = False
 		if len(data) != 0:
 			for line in data:
 				print (line)
-				if line == "##start":
-					if start == "N":
-						start = "F"
-					else:
-						print ("Error")
-				elif line == "##end":
-					if end == "N":
-						end = "F"
-					else:
-						print ("Error")
-				if line.isnumeric() == True:
-					ants = line
-				elif check_if_coordinates(line) == True:
-					nbr = line[0:line.find(" ")]
-					x = int(line[line.find(" ") + 1:line.rfind(" ")])
-					y = int(line[line.rfind(" ") + 1:len(line)])
-					total += 1
-					if start == "F":
-						start = nbr
-					if end == "F":
-						end = nbr
-					info[i] = {"nbr": nbr, "x": x, "y": y, "connect": [], "total": total, "grid_x": 0, "grid_y": 0}
-					i += 1
-					coordinates_found = True
-				elif check_if_connection(line) == True:
-					i = 0
-					if line.count('-') == 1:
-						nbr = line[0:line.find("-")]
-						while info[i]["nbr"] != nbr and i < total:
-							i += 1
-						info[i]["connect"].append(line[line.find("-") + 1:len(line)])
-					else:
-						check_rooms(info, line, total)
-				elif coordinates_found == True and check_if_ants_move(line, ants, info, total) == True:
+				if len(line) == 0:
+					ants_move = True
+				elif ants_move == False:
+					if line.isnumeric() == True and ants == -1:
+						ants = line
+					elif len(line) > 0 and line[0] == "#":
+						if start == "F" or end == "F":
+							print ("Error")
+						if line == "##start":
+							if start == "N":
+								start = "F"
+							else:
+								print ("Error")
+						elif line == "##end":
+							if end == "N":
+								end = "F"
+							else:
+								print ("Error")
+					elif check_if_coordinates(line) == True:
+						nbr = line[0:line.find(" ")]
+						x = int(line[line.find(" ") + 1:line.rfind(" ")])
+						y = int(line[line.rfind(" ") + 1:len(line)])
+						total += 1
+						if start == "F":
+							start = nbr
+						if end == "F":
+							end = nbr
+						info[i] = {"nbr": nbr, "x": x, "y": y, "connect": [], "total": total, "grid_x": 0, "grid_y": 0}
+						i += 1
+					elif line.count(" ") == 0:
+						last = 0
+						if (line.find("-") == 0):
+							last += 1
+						else:
+							last = line.find("-")
+						check_rooms(info, line, total, last)
+				else:
+					print("MOVE ANTS")
 					moves[k] = {"ant": [], "room": [], "total": 0, "total_ants": ants}
 					collect_ant_move(line, ants, info, total, moves, k)
 					k += 1
