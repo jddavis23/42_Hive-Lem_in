@@ -6,7 +6,7 @@
 /*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:11:51 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/07 13:23:21 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/07 16:14:12 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ int	by_line(char *input)
 	i = 0;
 	count = 0;
 	flag = 1;
-	if (input[i] == '#' && input[i + 1] == '#' && !ft_strncmp(&input[2], "start", 5))
+	if (!ft_strncmp(&input[i], "##start", 7))
 		return (5);
-	else if (input[i] == '#' && input[i + 1] == '#' && !ft_strncmp(&input[2], "end", 3))
+	else if (!ft_strncmp(&input[i], "##end", 5))
 		return (6);
 	else if (input[i] == '#')
 		return (-1);
@@ -127,7 +127,7 @@ int	count_in(char *str, char *input)
 		temp = ft_strnstr(&input[i], str, ft_strlen_stop(&input[i], '\n'));
 		if (temp && ((temp[-1] == '\n' && temp[ft_strlen(str)] == '-') || (temp[-1] == '-' && temp[ft_strlen(str)] == '\n')))
 			++count;
-		if (temp && ft_strnstr(&temp[ft_strlen(str)], str, ft_strlen_stop(&temp[ft_strlen(str)], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
+		while (temp && ft_strnstr(&temp[ft_strlen(str)], str, ft_strlen_stop(&temp[ft_strlen(str)], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
 		{
 			temp = ft_strnstr(&temp[ft_strlen(str)], str, ft_strlen_stop(&temp[ft_strlen(str)], '\n'));
 			if (temp[-1] == '-' && temp[ft_strlen(str)] == '\n')
@@ -155,7 +155,7 @@ void	match_route(char *room, char *input, int *links, t_room *pass)
 		temp = ft_strnstr(&input[i], room, ft_strlen_stop(&input[i], '\n'));
 		if (temp)
 		{
-			if (temp[-1] == '\n' && temp[ft_strlen(room)] == '-')
+			/*if (temp[-1] == '\n' && temp[ft_strlen(room)] == '-')
 			{
 				j += ft_strlen(room);
 				if (temp[j] == '-')
@@ -176,7 +176,8 @@ void	match_route(char *room, char *input, int *links, t_room *pass)
 					++j;
 				links[j] = k;
 			}
-			else if (temp[-1] == '-' && temp[ft_strlen(room)] == '\n')
+			else if (temp[-1] == '-' && temp[ft_strlen(room)] == '\n')*/
+			if ((temp[-1] == '\n' && temp[ft_strlen(room)] == '-') || (temp[-1] == '-' && temp[ft_strlen(room)] == '\n'))
 			{
 				k = 0;
 				if (!ft_strcmp(pass->rooms[k], room))
@@ -194,25 +195,27 @@ void	match_route(char *room, char *input, int *links, t_room *pass)
 					++j;
 				links[j] = k;
 			}
-			else if (ft_strnstr(&temp[ft_strlen(room)], room, ft_strlen_stop(&temp[ft_strlen(room)], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
+			while (ft_strnstr(&temp[ft_strlen(room)], room, ft_strlen_stop(&temp[ft_strlen(room)], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
 			{
 				temp = ft_strnstr(&temp[ft_strlen(room)], room, ft_strlen_stop(&temp[ft_strlen(room)], '\n'));
 				if (temp && (temp[-1] == '-' && temp[ft_strlen(room)] == '\n'))
-				k = 0;
-				if (!ft_strcmp(pass->rooms[k], room))
-					++k;
-				while (pass->rooms[k] && !ft_strnstr(&input[i], pass->rooms[k], ft_strlen_stop(&input[i], '\n')))
 				{
-					++k;
-					if (!pass->rooms[k])
-						exit (0); //and delete
+					k = 0;
 					if (!ft_strcmp(pass->rooms[k], room))
 						++k;
+					while (pass->rooms[k] && !ft_strnstr(&input[i], pass->rooms[k], ft_strlen_stop(&input[i], '\n')))
+					{
+						++k;
+						if (!pass->rooms[k])
+							exit (0); //and delete
+						if (!ft_strcmp(pass->rooms[k], room))
+							++k;
+					}
+					j = 0;
+					while (links[j] >= 0)
+						++j;
+					links[j] = k;
 				}
-				j = 0;
-				while (links[j] >= 0)
-					++j;
-				links[j] = k;
 			}
 		}
 		while (input[i] != '\n' && input[i] != '\0')
