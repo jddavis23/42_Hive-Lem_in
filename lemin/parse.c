@@ -149,10 +149,20 @@ void	initial_mal(t_room *pass, int k)
 int	addi_diff(char *start, char * finish) //undefined behaviour if finish is not infront of start
 {
 	int	count;
+	int	i;
 
+	i = 0;
 	count = 0;
-	while (start != finish)
+	//ft_printf("%s\n%s\n", start, finish);
+	//ft_printf("RRRRRRRRRR\n");
+	while (&start[i] != finish)
+	{
+		//ft_printf("%c", start[i]);
+		++i;
 		++count;
+	}
+	//ft_printf("+++++++\n");
+	//ft_printf("\n");
 	return (count);
 }
 
@@ -174,6 +184,7 @@ int	count_in(char *str, char *input, char **rooms)
 			(temp[-1] == '-' && temp[ft_strlen(str)] == '\n')))
 		{
 			//START DEBUGGING HERE
+			//ft_printf("%s\n", str);
 			if (is_dash(&temp[ft_strlen(str)]) > 1 && (temp[-1] == '\n' && 
 				temp[ft_strlen(str)] == '-'))
 			{
@@ -201,16 +212,24 @@ int	count_in(char *str, char *input, char **rooms)
 					++j;
 				while (rooms[j])
 				{
-					if (!ft_strcmp(rooms[j], str))
+					//ft_printf("-%s-\n+%s+\ncount %i\nroom %s\n", &input[i], str, count, rooms[j]);
+				//ft_printf("ROOM %s STR %s\n", rooms[j], str);
+					if (rooms[j] && !ft_strcmp(rooms[j], str))
 						++j;
-					if (!ft_strncmp(&input[i], rooms[j], addi_diff(&input[i], temp)))
-						++count;
+					if (rooms[j] && !ft_strncmp(&input[i], rooms[j], addi_diff(&input[i], &temp[-1])))
+				{
+					++count;
+					break ;
+				}
+				//	ft_printf("ÅÅÅÅÅÅÅ\n");
 					++j;
 				}
 
 			}
 			else
+			{
 				++count;
+			}
 		}
 		while (temp && ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
 		{
@@ -367,6 +386,7 @@ int	create(t_room *pass, char *input)
 		pass->links[count] = NULL;
 		pass->rooms[0] = NULL;
 		pass->rooms[count - 1] = NULL;
+		pass->rooms[count] = NULL;
 		while (input[i] != '\0')
 		{
 			if (hold == 5 || hold == 6)
@@ -402,6 +422,7 @@ int	create(t_room *pass, char *input)
 					exit (0);
 					//free exit
 				}
+				//pass->rooms[j + 1] = NULL;
 				ft_strncat(pass->rooms[j++], &input[i], ft_strlen_stop(&input[i], ' '));
 				ft_printf("%s-%i\n", pass->rooms[j - 1], j - 1);
 				while (input[i] != '\n')
@@ -424,6 +445,7 @@ int	create(t_room *pass, char *input)
 					k = 0;
 					while (k < count_in(pass->rooms[j], &input[i], pass->rooms) + 1)
 						pass->links[j][k++] = -1;
+					//ft_printf("kkkkkkkkkkkkk %s %i\n", pass->rooms[j], k -1);
 					match_route(pass->rooms[j], &input[i], pass->links[j], pass);
 					++j;
 				}
