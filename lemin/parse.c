@@ -188,7 +188,7 @@ int	count_in(char *str, char *input, char **rooms)
 			if (is_dash(&temp[ft_strlen(str)]) > 1 && (temp[-1] == '\n' && 
 				temp[ft_strlen(str)] == '-'))
 			{
-				while (*temp != '-')
+				while (*temp != '-') //this will not work if - is in the name. use something to get to end of name
 					++temp;
 				if (*temp == '-')
 					++temp;
