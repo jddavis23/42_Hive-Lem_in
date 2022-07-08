@@ -29,6 +29,40 @@ const char	*ft_strlchr(const char *str, int c, int len)
 	return (NULL);
 }
 
+int	is_dash(char *str)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (str[i] != '\n')
+	{
+		if (str[i] == '-')
+			++count;
+		++i;
+	}
+	return (count);
+}
+
+int	funki(char *full, char *inside)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (&full[i] != inside)
+	{
+		if (full[i] == '-')
+			++count;
+		++i;
+	}
+	return (count);
+}
+	
+
+
 int	by_line(char *input)
 {
 	int	flag;
@@ -112,12 +146,23 @@ void	initial_mal(t_room *pass, int k)
 	}
 }
 
-int	count_in(char *str, char *input)
+int	addi_diff(char *start, char * finish) //undefined behaviour if finish is not infront of start
+{
+	int	count;
+
+	count = 0;
+	while (start != finish)
+		++count;
+	return (count);
+}
+
+int	count_in(char *str, char *input, char **rooms)
 {
 	int	i;
 	//int	hold;
 	int	count;
 	char	*temp;
+	int	j;
 	//int		wait = 0;
 
 	i = 0;
@@ -125,8 +170,48 @@ int	count_in(char *str, char *input)
 	while (input[i] != '\0')
 	{
 		temp = ft_strnstr(&input[i], str, ft_strlen_stop(&input[i], '\n'));
-		if (temp && ((temp[-1] == '\n' && temp[ft_strlen(str)] == '-') || (temp[-1] == '-' && temp[ft_strlen(str)] == '\n')))
-			++count;
+		if (temp && ((temp[-1] == '\n' && temp[ft_strlen(str)] == '-') ||
+			(temp[-1] == '-' && temp[ft_strlen(str)] == '\n')))
+		{
+			//START DEBUGGING HERE
+			if (is_dash(&temp[ft_strlen(str)]) > 1 && (temp[-1] == '\n' && 
+				temp[ft_strlen(str)] == '-'))
+			{
+				while (*temp != '-')
+					++temp;
+				if (*temp == '-')
+					++temp;
+				j = 0;
+				if (!ft_strcmp(rooms[j], str))
+					++j;
+				while (rooms[j])
+				{
+					if (!ft_strcmp(rooms[j], str))
+						++j;
+					if (!ft_strncmp(temp, rooms[j], ft_strlen_stop(temp, '\n')))
+						++count;
+					++j;
+				}
+			}
+			else if (funki(&input[i], temp) > 1 && 
+				(temp[-1] == '-' && temp[ft_strlen(str)] == '\n'))
+			{
+				j = 0;
+				if (!ft_strcmp(rooms[j], str))
+					++j;
+				while (rooms[j])
+				{
+					if (!ft_strcmp(rooms[j], str))
+						++j;
+					if (!ft_strncmp(&input[i], rooms[j], addi_diff(&input[i], temp)))
+						++count;
+					++j;
+				}
+
+			}
+			else
+				++count;
+		}
 		while (temp && ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
 		{
 			temp = ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'));
@@ -330,14 +415,14 @@ int	create(t_room *pass, char *input)
 				j = 0;
 				while (pass->rooms[j])
 				{
-					pass->links[j] = (int *) malloc((count_in(pass->rooms[j], &input[i]) + 1) * sizeof(int));
+					pass->links[j] = (int *) malloc((count_in(pass->rooms[j], &input[i], pass->rooms) + 1) * sizeof(int));
 					if (!pass->links[j])
 					{
 						exit (0);
 						//free exit
 					}
 					k = 0;
-					while (k < count_in(pass->rooms[j], &input[i]) + 1)
+					while (k < count_in(pass->rooms[j], &input[i], pass->rooms) + 1)
 						pass->links[j][k++] = -1;
 					match_route(pass->rooms[j], &input[i], pass->links[j], pass);
 					++j;
@@ -345,8 +430,8 @@ int	create(t_room *pass, char *input)
 				while (pass->rooms[p])
 				{
 					m = 0;
-					ft_printf("room %s count [%i]\n", pass->rooms[p], count_in(pass->rooms[p], &input[i]));
-					while (m <= count_in(pass->rooms[p], &input[i]))
+					ft_printf("room %s count [%i]\n", pass->rooms[p], count_in(pass->rooms[p], &input[i], pass->rooms));
+					while (m <= count_in(pass->rooms[p], &input[i], pass->rooms))
 						ft_printf("%i ", pass->links[p][m++]);
 					ft_printf("\n");
 					++p;
