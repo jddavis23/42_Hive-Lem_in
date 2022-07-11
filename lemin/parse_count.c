@@ -113,11 +113,9 @@ static int	newline_minus(char **rooms, char *str, char *temp)
 
 int	count_in(char *str, char *input, char **rooms)
 {
-	int	i;
-	//int	hold;
-	int	count;
+	int		i;
+	int		count;
 	char	*temp;
-	//int		wait = 0;
 
 	i = 0;
 	count = 0;

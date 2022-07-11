@@ -71,10 +71,8 @@ static void newline_minus_collect(t_room *pass, int k, char *temp)
 
 void match_in(char *str, char *input, t_room *pass, int k)
 {
-	int	i;
-	//int	hold;
+	int		i;
 	char	*temp;
-	//int		wait = 0;
 
 	i = 0;
 	while (input[i] != '\0')
