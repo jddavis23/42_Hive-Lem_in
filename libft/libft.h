@@ -165,5 +165,6 @@ int					ft_color_print(const char *str, t_flag *flag);
 void				ft_flag_adjuster(t_flag *flag);
 void				ft_str_error(char *str, t_flag *flag);
 int					ft_error(t_flag *flag);
+const char			*ft_strlchr(const char *str, int c, int len);
 
 #endif

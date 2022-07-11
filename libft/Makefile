@@ -110,6 +110,7 @@ SRCS += ft_printf_ftoa.c
 SRCS += ft_printf_ftoa_end.c
 SRCS += ft_printf_bonus.c
 SRCS += ft_printf_error.c
+SRCS += ft_strlchr.c
 
 OBJS = $(SRCS:.c=.o)
 
