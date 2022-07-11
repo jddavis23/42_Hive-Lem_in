@@ -9,6 +9,8 @@ SRC += $(C)error.c
 SRC += $(C)file_save.c
 SRC += $(C)file_check.c
 SRC += $(C)parse.c
+SRC += $(C)parse_count.c
+SRC += $(C)parse_collect.c
 
 MAKELIB = make -C libft/ fclean && make -C libft/
 

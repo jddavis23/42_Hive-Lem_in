@@ -3,46 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/01 16:11:51 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/11 13:04:03 by jdavis           ###   ########.fr       */
+/*   Created: 2022/07/11 13:20:42 by jdavis            #+#    #+#             */
+/*   Updated: 2022/07/11 13:20:44 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/lemin.h"
-
-int	is_dash(char *str)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (str[i] != '\n')
-	{
-		if (str[i] == '-')
-			++count;
-		++i;
-	}
-	return (count);
-}
-
-int	funki(char *full, char *inside)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (&full[i] != inside)
-	{
-		if (full[i] == '-')
-			++count;
-		++i;
-	}
-	return (count);
-}
 
 int	by_line(char *input)
 {
@@ -75,200 +43,16 @@ int	by_line(char *input)
 	return (count);
 }
 
-void	initial_mal(t_room *pass, int k)
-{
-	if (!pass->links[k])
-	{
-		pass->links[k] = (int *) malloc(1 * sizeof(int));
-		if (!pass->links[k])
-			//free and exit
-		pass->links[k][0] = -2; //only on first iteration
-	}
-}
-
-int	addi_diff(char *start, char * finish) //undefined behaviour if finish is not infront of start
-{
-	int	count;
-	int	i;
-
-	i = 0;
-	count = 0;
-	while (&start[i] != finish)
-	{
-		++i;
-		++count;
-	}
-	return (count);
-}
-
-void	collect_index(t_room *pass, int j, int i)
-{
-	int	k;
-
-	k = 0;
-	while (pass->links[i][k] >= 0)
-		++k;
-	pass->links[i][k] = j;
-}
-
-void	minus_newline_collect(t_room *pass, int k, char *input, char *temp)
-{
-	int		j;
-	char	arr[addi_diff(input, &temp[-1]) + 1];
-
-	j = 0;
-	ft_bzero(arr, addi_diff(input, &temp[-1]) + 1);
-	ft_strncpy(arr, input, addi_diff(input, &temp[-1]));
-	//ft_printf("ARR %s\n", arr);
-	if (!ft_strcmp(pass->rooms[j], pass->rooms[k]))
-		++j;
-	while (pass->rooms[j])
-	{
-		if (pass->rooms[j] && !ft_strcmp(pass->rooms[j], pass->rooms[k]))
-			++j;
-		if (pass->rooms[j] && !ft_strcmp(arr, pass->rooms[j]))
-		{
-			//ft_printf("FOUND %s  INPPUT %s\n", rooms[j], input);
-			collect_index(pass, j, k);
-			break ;
-		}
-		++j;
-	}
-}
-
-int	minus_newline(char **rooms, char *str, char *input, char *temp)
-{
-	int		j;
-	int		count;
-	char	arr[addi_diff(input, &temp[-1]) + 1];
-
-	count = 0;
-	j = 0;
-	ft_bzero(arr, addi_diff(input, &temp[-1]) + 1);
-	ft_strncpy(arr, input, addi_diff(input, &temp[-1]));
-	//ft_printf("ARR %s\n", arr);
-	if (!ft_strcmp(rooms[j], str))
-		++j;
-	while (rooms[j])
-	{
-		if (rooms[j] && !ft_strcmp(rooms[j], str))
-			++j;
-		if (rooms[j] && !ft_strcmp(arr, rooms[j]))
-		{
-			//ft_printf("FOUND %s  INPPUT %s\n", rooms[j], input);
-			++count;
-			break ;
-		}
-		++j;
-	}
-	return (count);
-}
-
-static void newline_minus_collect(t_room *pass, int k, char *temp)
-{
-	int	j;
-	int	len;
-
-	j = 0;
-	len = ft_strlen(pass->rooms[k]); 
-	if (!ft_strcmp(pass->rooms[j], pass->rooms[k]))
-		++j;
-	while (pass->rooms[j])
-	{
-		if (!ft_strcmp(pass->rooms[j], pass->rooms[k]))
-			++j;
-		if (!ft_strncmp(&temp[len + 1], pass->rooms[j], ft_strlen_stop(&temp[len + 1], '\n')))
-		{
-			collect_index(pass, j, k);
-			break;
-		}
-		++j;
-	}
-}
-
-void match_in(char *str, char *input, t_room *pass, int k)
-{
-	int	i;
-	//int	hold;
-	char	*temp;
-	//int		wait = 0;
-
-	i = 0;
-	while (input[i] != '\0')
-	{
-		temp = ft_strnstr(&input[i], str, ft_strlen_stop(&input[i], '\n'));
-		if (temp && ((temp[-1] == '\n' && temp[ft_strlen(str)] == '-') ||
-			(temp[-1] == '-' && temp[ft_strlen(str)] == '\n')))
-		{
-			if (is_dash(&temp[ft_strlen(str)]) >= 1 && (temp[-1] == '\n' && 
-				temp[ft_strlen(str)] == '-'))
-				newline_minus_collect(pass, k, temp);
-			else if (funki(&input[i], temp) >= 1 && 
-				(temp[-1] == '-' && temp[ft_strlen(str)] == '\n'))
-				minus_newline_collect(pass, k, &input[i], temp);
-		}
-		while (temp && ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
-		{
-			temp = ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'));
-			minus_newline_collect(pass, k, &input[i], temp);
-		}
-		while (input[i] != '\n')
-			++i;
-		++i;
-	}
-}
-
-int	count_in(char *str, char *input, char **rooms)
-{
-	int	i;
-	//int	hold;
-	int	count;
-	char	*temp;
-	int	j;
-	//int		wait = 0;
-
-	i = 0;
-	count = 0;
-	while (input[i] != '\0')
-	{
-		temp = ft_strnstr(&input[i], str, ft_strlen_stop(&input[i], '\n'));
-		if (temp && ((temp[-1] == '\n' && temp[ft_strlen(str)] == '-') ||
-			(temp[-1] == '-' && temp[ft_strlen(str)] == '\n')))
-		{
-			if (is_dash(&temp[ft_strlen(str)]) >= 1 && (temp[-1] == '\n' && 
-				temp[ft_strlen(str)] == '-'))
-			{
-				j = 0;
-				if (!ft_strcmp(rooms[j], str))
-					++j;
-				while (rooms[j])
-				{
-					if (!ft_strcmp(rooms[j], str))
-						++j;
-					if (!ft_strncmp(&temp[ft_strlen(str) + 1], rooms[j], ft_strlen_stop(&temp[ft_strlen(str) + 1], '\n')))
-					{
-						++count;
-						break;
-					}
-					++j;
-				}
-			}
-			else if (funki(&input[i], temp) >= 1 && 
-				(temp[-1] == '-' && temp[ft_strlen(str)] == '\n'))
-				count += minus_newline(rooms, str, &input[i], temp);
-		}
-		while (temp && ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
-		{
-			temp = ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'));
-			count += minus_newline(rooms, str, &input[i], temp);
-		}
-		while (input[i] != '\n')
-			++i;
-		++i;
-	}
-	return (count);
-
-}
+// void	initial_mal(t_room *pass, int k)
+// {
+// 	if (!pass->links[k])
+// 	{
+// 		pass->links[k] = (int *) malloc(1 * sizeof(int));
+// 		if (!pass->links[k])
+// 			//free and exit
+// 		pass->links[k][0] = -2; //only on first iteration
+// 	}
+// }
 
 int	duplicated(char **str)
 {
