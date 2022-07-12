@@ -3,22 +3,30 @@
 
 # include "../libft/libft.h"
 
+typedef struct		s_index
+{
+	int				index;
+	struct s_index *next;
+}					t_index;
+
+typedef struct		s_path
+{
+	//char			*str;
+	int				len;
+	struct s_index	*index;
+	struct s_path	*next;
+}					t_path;
+
 typedef struct  s_room
 {
 	char	**rooms;
 	int		**links;
 	int		end;
 	int		ants;
-	int		**distance;
+	int		distance[500];
 	int		total;
+	t_path			*head;
 }				t_room;
-
-typedef struct		s_path
-{
-	char			*str;
-	int				len;
-	struct s_path	*next;
-}					t_path;
 
 typedef enum
 {
