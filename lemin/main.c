@@ -6,7 +6,7 @@
 /*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:11:31 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/04 13:28:31 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/12 12:49:00 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	main(int argc, char **argv)
 			return (0);
 		if (create(pass, input) == -1)
 			return (0);
+		distance(pass);
 		if (path_finder(pass) == ERROR)
 			return (0);
 	}
