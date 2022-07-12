@@ -20,8 +20,12 @@ int	main(int argc, char **argv)
 	if (argc == 1)
 	{
 		input = NULL;
-		pass = NULL;
+		pass = (t_room *) malloc(sizeof(t_room));
+		if (!pass)
+			return (0);
 		if (create(pass, input) == -1)
+			return (0);
+		if (path_finder(pass) == ERROR)
 			return (0);
 	}
 	else if (argv)

@@ -89,10 +89,8 @@ int	create(t_room *pass, char *input)
 	p = 0;
 	m = 0;
 	hold = -1;
-	pass = (t_room *) malloc(sizeof(t_room));
-	if (!pass)
-		return (-1);
 	count = parsing_phase(pass, &input);
+	pass->total = count;
 	if (count == -1)
 		return (-1);
 	pass->rooms = NULL;
@@ -180,7 +178,8 @@ int	create(t_room *pass, char *input)
 					ft_printf("\n");
 					++p;
 				}
-				exit (0);
+				return (0);
+			//	exit (0);
 			}
 			++i;
 		}

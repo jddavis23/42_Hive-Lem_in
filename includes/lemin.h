@@ -10,7 +10,16 @@ typedef struct  s_room
 	int		start;
 	int		end;
 	int		ants;
+	int		**distance;
+	int		total;
 }				t_room;
+
+typedef struct		s_path
+{
+	char			*str;
+	int				len;
+	struct s_path	*next;
+}					t_path;
 
 typedef enum
 {
@@ -22,6 +31,7 @@ typedef enum
 	CONNECTION,
 } error_message;
 
+// error handling
 int	parsing_phase(t_room *pass, char **input);
 int	error(int err);
 int	only_digits(char *str, int *i);
@@ -35,5 +45,8 @@ int		count_in(char *str, char *input, char **rooms);
 int		addi_diff(char *start, char *finish);
 int		dash_in_section(char *full, char *inside);
 int		is_dash(char *str);
+
+// path finder
+int		path_finder(t_room *pass);
 
 #endif
