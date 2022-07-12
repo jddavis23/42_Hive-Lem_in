@@ -43,7 +43,7 @@ int	parsing_phase(t_room *pass, char **input);
 int	error(int err);
 int	only_digits(char *str, int *i);
 int	is_coordinates(char *str);
-int is_connection(char *str);
+int	is_connection(char *str);
 int	create(t_room *pass, char *input);
 
 // parsing
