@@ -6,7 +6,7 @@
 /*   By: jdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:12:51 by jdavis            #+#    #+#             */
-/*   Updated: 2022/07/12 14:20:13 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/12 16:53:09 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ void	recurs(t_room *pass, int **links, int dist, int indx)
 		}
 		++j;
 	}
-	if (j == 1)
+	if (j == 1 && indx != 0)
 		return ;
+	ft_printf("HERE\n");
 	while (links[indx][i] >= 0)
 	{
 		ft_printf("room %s  room indx %i prev %i\n", pass->rooms[links[indx][i]], links[indx][i], indx);
@@ -41,7 +42,9 @@ void	recurs(t_room *pass, int **links, int dist, int indx)
 			++i;
 		if (links[indx][i] < 0)
 			return ;
-		if (dist >= pass->distance[links[indx][i]] && pass->distance[links[indx][i]] != 0) //double check
+		while (links[indx][i] >= 0 && dist >= pass->distance[links[indx][i]] && pass->distance[links[indx][i]] != 0) //double check
+			++i;
+		if (links[indx][i] < 0)
 			return ;
 		if (dist + 1 < pass->distance[links[indx][i]] && pass->distance[links[indx][i]] != 0)
 			pass->distance[links[indx][i]] = dist + 1;
