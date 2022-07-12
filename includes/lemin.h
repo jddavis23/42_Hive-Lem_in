@@ -6,6 +6,7 @@
 typedef struct		s_index
 {
 	int				index;
+	int				prev_index;
 	struct s_index *next;
 }					t_index;
 
@@ -26,6 +27,7 @@ typedef struct  s_room
 	int		distance[500];
 	int		total;
 	t_path			*head;
+	t_index			*index_head;
 }				t_room;
 
 typedef enum
