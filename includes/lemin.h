@@ -7,7 +7,6 @@ typedef struct  s_room
 {
 	char	**rooms;
 	int		**links;
-	int		start;
 	int		end;
 	int		ants;
 	int		**distance;

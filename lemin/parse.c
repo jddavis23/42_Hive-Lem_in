@@ -91,6 +91,7 @@ int	create(t_room *pass, char *input)
 	hold = -1;
 	count = parsing_phase(pass, &input);
 	pass->total = count;
+	pass->end = pass->total - 1;
 	if (count == -1)
 		return (-1);
 	pass->rooms = NULL;

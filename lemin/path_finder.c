@@ -56,7 +56,6 @@ int	path_finder(t_room *pass)
 	int	max;
 	//t_path	*;
 
-	pass->end = pass->total - 1;
 	max = calc_max(len_array(pass->links[0]), len_array(pass->links[pass->end]));
 	make_temp(distance);
 
