@@ -13,8 +13,10 @@ typedef struct		s_index
 typedef struct		s_path
 {
 	//char			*str;
+	int				nbr;
 	int				len;
-	struct s_index	*index;
+	t_index	*index_head;
+	struct s_index	*move;
 	struct s_path	*next;
 }					t_path;
 
@@ -26,8 +28,9 @@ typedef struct  s_room
 	int		ants;
 	int		distance[500];
 	int		total;
-	t_path			*head;
-	t_index			*index_head;
+	int		path_nbr;
+	t_path	*head;
+	t_index	*index_head;
 }				t_room;
 
 typedef enum
