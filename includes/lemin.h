@@ -29,8 +29,6 @@ typedef struct  s_room
 	int		distance[500];
 	int		total;
 	int		path_nbr;
-	t_path	*head;
-	t_index	*index_head;
 }				t_room;
 
 typedef enum
