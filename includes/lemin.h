@@ -15,6 +15,7 @@ typedef struct		s_path
 	//char			*str;
 	int				nbr;
 	int				len;
+	int				found;
 	t_index	*index_head;
 	struct s_index	*move;
 	struct s_path	*next;

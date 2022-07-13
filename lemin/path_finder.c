@@ -48,160 +48,24 @@ static void	make_temp(t_room *pass)
 	distance[13] = 0;*/
 
 	// maps/subject-short.map
+	// pass->distance[0] = 0;
+	// pass->distance[1] = 1;
+	// pass->distance[2] = 2;
+	// pass->distance[3] = pass->total;
+
+	//maps/subject2-1.map
 	pass->distance[0] = 0;
 	pass->distance[1] = 1;
-	pass->distance[2] = 2;
-	pass->distance[3] = pass->total;
+	pass->distance[2] = 1;
+	pass->distance[3] = 2;
+	pass->distance[4] = pass->total;
 }
-/*
-static void	find_path(t_path *path, t_room *pass, int i, int prev_index)
-{
-	int	j;
-	int	len;
-	int	first;
-	t_index *prev_path;
-	t_path	*new;
 
-	j = 0;
-	prev_path = path->index;
-	first = TRUE;
-	// if (i == 0)
-	// {
-	// 	path->index = path->index->next;
-	// 	path->index = ft_indexnew(0);
-	// 	ft_indexadd_front(&prev_path, path->index);
-	// 	//path->index = path->index->next;
-	// 	//path->next = NULL;
-	// 	path->len++;
-	// 	//
-	// 	//put end.
-	// }
-	// else 
-	ft_printf("distance[i]: %d	prev: %d\n", pass->distance[i], prev_index);
-		
-	if (pass->distance[i] <= pass->distance[prev_index])
-	{
-		if (!path->index)
-		{
-			path->index = ft_indexnew(i, prev_index);
-			ft_indexadd_front(&pass->index_head, path->index);
-		}
-		else
-		{
-			path->index = path->index->next;
-			path->index = ft_indexnew(i, prev_index);
-			ft_indexadd_front(&pass->index_head, path->index);
-		}
-		path->len++;
-		len = len_array(pass->links[i]);
-		while (j < len)
-		{
-			if (pass->links[i][j] == 0)
-			{
-				ft_printf("FOUND START![%d]\n", path->index->index);
-				return ;
-			}
-			ft_printf("distance[passlinks i j]: %d	prev: %d\n", pass->distance[pass->links[i][j]], pass->distance[prev_index]);
-			if (pass->distance[pass->links[i][j]] <= pass->distance[prev_index] && prev_index != pass->end && pass->links[i][j] != pass->end)
-			{
-				
-				if (first == FALSE)
-				{
-					// ft_printf("HEllo\n");
-					// //path = path->next;
-					// ft_printf("len: %d\n", path->len);
-					t_path *hello;
-					
-					hello = pass->head;
-					// while (pass->head)
-					// {
-					// 	while (pass->head->index)
-					// 	{
-					// 		ft_printf("index: %d\n", pass->head->index->index);
-					
-					// 		pass->head->index = pass->head->index->next;
-					// 	}
-					// 	pass->head = pass->head->next;
-					// }
-					new = copy_struct(pass, i);
-					ft_printf("new: %d\n", new->len);
-					new = new->next;
-					find_path(new, pass, pass->links[i][j], pass->distance[pass->links[i][j]]);
-					// ft_printf("len: %d\n", pass->head->len);
-					
-					// pass->head = hello;
-					// while (pass->head->next)
-					// {
-					// 	while (pass->head->index->next)
-					// 	{
-					// 		ft_printf("index: %d\n", pass->head->index->index);
-					// 		pass->head->index = pass->head->index->next;
-					// 	}
-					// 	pass->head = pass->head->next;
-					// }
-					// ft_printf("distance links thingy: %d\n", j);
-					// pass->head = hello;
-					// NEED TO MAKE FUNCTION TO COPY STRUCT
-					//copy struct and all its values until certain point
-					// until 'i' has been found.
-				}
-				else
-				{
-					first = FALSE;
-					find_path(path, pass, pass->links[i][j], pass->distance[pass->links[i][j]]);
-				}
-			}
-			++j;
-		}
-		
-		// collect new number to string 
-		// update length
-		// set next == null.
-		//(void)path;
-	}
-}
-*/
 /*is it an error if there in the instructions shows a path connected to the same room twice?*/
 /*
 create a function that handles creating a new node with a variable and putting it to the linked list of indexes
 make identical function for the path linked list.
 */
-
-static t_path	*ft_pathnew()
-{
-	t_path	*new;
-
-	new = (t_path *)malloc(sizeof(t_path));
-	if (!new)
-		return (NULL);
-	new->len = 0;
-	new->move = NULL;
-	new->next = NULL;
-	return (new);
-}
-
-static void	ft_path_add(t_path **path, t_path *new)
-{
-	if (!path || !new)
-		return ;
-	(*path)->next = new;
-	*path = (*path)->next;
-}
-
-static void	create_path(t_path **path, t_room *pass)
-{
-	t_path *new;
-
-	new = *path;
-	new = ft_pathnew();
-	new->nbr = pass->path_nbr;
-	pass->path_nbr++;
-	if (*path)
-		ft_path_add(path, new);
-	else
-		*path = new;
-}
-
 
 static t_index	*ft_indexnew(int index, int prev)
 {
@@ -240,6 +104,44 @@ static void	create_index(t_index **move, t_path *path, int i, int prev_index)
 		new = ft_indexnew(i, prev_index);
 		ft_indexadd_front(&path->index_head, new);
 	}
+	path->len++;
+}
+
+static t_path	*ft_pathnew()
+{
+	t_path	*new;
+
+	new = (t_path *)malloc(sizeof(t_path));
+	if (!new)
+		return (NULL);
+	new->len = 0;
+	new->move = NULL;
+	new->next = NULL;
+	return (new);
+}
+
+static void	ft_path_add(t_path **path, t_path *new)
+{
+	if (!path || !new)
+		return ;
+	(*path)->next = new;
+	*path = (*path)->next;
+}
+
+static void	create_path(t_path **path, t_room *pass)
+{
+	t_path *new;
+
+	new = *path;
+	new = ft_pathnew();
+	new->nbr = pass->path_nbr;
+	new->found = FALSE;
+	pass->path_nbr++;
+	if (*path)
+		ft_path_add(path, new);
+	else
+		*path = new;
+	create_index(&(*path)->move, *path, pass->end, 0);
 }
 
 static void	copy_struct(t_path **path, t_room *pass, int i)
@@ -248,7 +150,6 @@ static void	copy_struct(t_path **path, t_room *pass, int i)
 	t_path *new;
 	t_path *src;
 	t_path *head;
-	t_path *temp;
 
 	first = TRUE;
 	new = ft_pathnew();
@@ -268,7 +169,6 @@ static void	copy_struct(t_path **path, t_room *pass, int i)
 		}
 		else
 		{
-			temp = new;
 			new->move->next = ft_indexnew(src->move->index, src->move->prev_index);
 			new->move = new->move->next;
 		}
@@ -282,12 +182,67 @@ static void	copy_struct(t_path **path, t_room *pass, int i)
 	ft_path_add(path, head);
 }
 
+static int	is_start(t_path *path, t_room *pass, int i, int len)
+{
+	int	j;
+
+	j = 0;
+	while (j < len)
+	{
+		if (pass->links[i][j] == 0)
+		{
+			ft_printf("FOUND START!\n");
+			path->found = TRUE;
+			return (TRUE);
+		}
+		++j;
+	}
+	return (FALSE);
+}
+
+static void	find_path(t_path *path, t_room *pass, int i, int prev_index)
+{
+	int	j;
+	int	len;
+	t_index *prev_path;
+
+	j = 0;
+	prev_path = path->move;
+	//ft_printf("distance[i]: %d	prev: %d, prev_index: %d\n", pass->distance[i], pass->distance[prev_index], prev_index);
+	if (pass->distance[i] <= pass->distance[prev_index])
+	{
+		create_index(&path->move, path, i, prev_index);
+		len = len_array(pass->links[i]);
+		if (is_start(path, pass, i, len) == TRUE)
+			return ;
+		while (j < len)
+		{
+			//ft_printf("distance[passlinks i j]: %d	prev: %d, prev_index: %d\n", pass->distance[pass->links[i][j]], pass->distance[prev_index], prev_index);
+			if (pass->distance[pass->links[i][j]] <= pass->distance[prev_index] && pass->distance[pass->links[i][j]] != 0)
+			{
+				
+				if (path->found == TRUE)
+				{
+					copy_struct(&path, pass, pass->links[i][j]);
+					find_path(path, pass, pass->links[i][j], pass->distance[pass->links[i][j]]);
+					path->found = FALSE;
+				}
+				else
+				{
+					find_path(path, pass, pass->links[i][j], pass->distance[pass->links[i][j]]);
+				}
+			}
+			++j;
+		}
+	}
+}
+
 int	path_finder(t_room *pass)
 {
 	int	max;
 	int	len;
 	int	i;
-	//int	index;
+	int	index;
 	t_path *head;
 	t_path	*path;
 
@@ -297,118 +252,24 @@ int	path_finder(t_room *pass)
 		return (ERROR);
 	make_temp(pass);
 	path = NULL;
-	i = 0;
 	pass->path_nbr = 1;
+	i = 0;
 	create_path(&path, pass);
 	head = path;
-	ft_printf("created first path\n");
-	path->len = i;
-	++i;
-	int j = 0;
-	create_index(&path->move, path, j, j+1);
-	++j;
-	create_index(&path->move, path, j, j+1);
-	++j;
-	create_index(&path->move, path, j, j+1);
-	++j;
-	create_index(&path->move, path, j, j+1);
-	++j;
-	ft_printf("created first index\n");
-	create_path(&path, pass);
-	path->len = i;
-	++i;
-	j = 5;
-	create_index(&path->move, path, j, j-1);
-	--j;
-	create_index(&path->move, path, j, j-1);
-	--j;
-	create_index(&path->move, path, j, j-1);
-	--j;
-	create_index(&path->move, path, j, j-1);
-	--j;
-	ft_printf("created second path\n");
-	copy_struct(&path, pass, 5);
-	create_path(&path, pass);
-	path->len = i;
-	++i;
-	j = 0;
-	create_index(&path->move, path, j, j+1);
-	++j;
-	create_index(&path->move, path, j, j+1);
-	++j;
-	create_index(&path->move, path, j, j+1);
-	++j;
-	create_index(&path->move, path, j, j+1);
-	++j;
-	ft_printf("created second path\n");
-	create_path(&path, pass);
-	path->len = i;
-	++i;
-	j = 0;
-	create_index(&path->move, path, j+2, j);
-	++j;
-	create_index(&path->move, path, j+2, j);
-	++j;
-	create_index(&path->move, path, j+2, j);
-	++j;
-	create_index(&path->move, path, j+2, j);
-	++j;
-	ft_printf("created second path\n");
-	create_path(&path, pass);
-	path->len = i;
-	++i;
-	j = 0;
-	create_index(&path->move, path, j, j+1);
-	++j;
-	create_index(&path->move, path, j, j+1);
-	++j;
-	create_index(&path->move, path, j, j+1);
-	++j;
-	create_index(&path->move, path, j, j+1);
-	++j;
-	ft_printf("created second path\n");
-	i = 0;
-	//head = path;
-	// path = ft_pathnew();
-	// ft_indexadd_front(&pass->index_head, path->index);
-	// path->index = pass->index_head;
 	while (i < len)
 	{
-		// index = pass->links[pass->end][i];
-		// if (index == 0)
-		// {
-		// 	//use path that leads directly to start. can move everything at the same time
-		// 	break ;
-		// }
-		// else if (i > 0)
-		// {
-		// 	path->next = ft_pathnew();
-		// 	path = path->next;
-		// 	pass->head = path;
-		// 	path->next = NULL;
-		// 	ft_indexadd_front(&pass->index_head, path->index);
-		// 	path->index = pass->index_head;
-		// }
-		//find_path(path, pass, index, pass->end);
-		//move the path
-		//path->nextf
-		ft_printf("len: %d\n", path->len);
+		index = pass->links[pass->end][i];
+		if (index == 0)
+		{
+			//use path that leads directly to start. can move everything at the same time
+			break ;
+		}
+		else if (i > 0)
+			create_path(&path, pass);
+		find_path(path, pass, index, pass->end);
+		// if no path error exit
 		++i;
 	}
-	// i = 0;
-	// path = pass->head;
-	// while (path)
-	// {
-	// 	path->len = i;
-	// 	while (path->index)
-	// 	{
-	// 		ft_printf("index: %d\n", path->index->index);
-	
-	// 		path->index = path->index->next;
-	// 	}
-	// 	++i;
-	// 	path = path->next;
-	// }
 	path = head;
 	i = 0;
 	while (path)
