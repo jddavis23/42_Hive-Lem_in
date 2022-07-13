@@ -249,8 +249,8 @@ static void	ft_indexadd(t_index **index, t_index *new)
 {
 	if (!index || !new)
 		return ;
-	(*index)->next = new;
-	*index = (*index)->next; 
+	new->next = *index;
+	*index = new;
 }
 
 static void	create_index(t_index **move, t_path *path, int i, int prev_index)
@@ -267,7 +267,7 @@ static void	create_index(t_index **move, t_path *path, int i, int prev_index)
 	else
 	{
 		new = ft_indexnew(i, prev_index);
-		ft_indexadd(move, new);
+		ft_indexadd(&path->index_head, new);
 	}
 }
 
