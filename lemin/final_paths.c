@@ -6,7 +6,7 @@
 /*   By: jdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:00:01 by jdavis            #+#    #+#             */
-/*   Updated: 2022/07/13 13:27:22 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/14 15:51:08 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ void	absolute_path(t_room * pass)
 				{
 					if (tmp_path->move->index == tmp_index->index)
 					{
-						find_diff(t_ //experiement with functions only person in elements and see if their values change. In theory, values should not because shifting value of address passed in and not what is containing that address.					}
+
+					}
 				}
 			}
 		}
+		++J;
 	}
 }
