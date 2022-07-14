@@ -3,6 +3,24 @@
 
 # include "../libft/libft.h"
 
+typedef struct		s_index
+{
+	int				index;
+	int				prev_index;
+	struct s_index *next;
+}					t_index;
+
+typedef struct		s_path
+{
+	//char			*str;
+	int				nbr;
+	int				len;
+	int				found;
+	t_index	*index_head;
+	struct s_index	*move;
+	struct s_path	*next;
+}					t_path;
+
 typedef struct  s_room
 {
 	char	**rooms;
@@ -11,14 +29,9 @@ typedef struct  s_room
 	int		ants;
 	int		*distance;
 	int		total;
+	int		path_nbr;
+	t_path	*head;
 }				t_room;
-
-typedef struct		s_path
-{
-	char			*str;
-	int				len;
-	struct s_path	*next;
-}					t_path;
 
 typedef enum
 {
@@ -35,7 +48,7 @@ int	parsing_phase(t_room *pass, char **input);
 int	error(int err);
 int	only_digits(char *str, int *i);
 int	is_coordinates(char *str);
-int is_connection(char *str);
+int	is_connection(char *str);
 int	create(t_room *pass, char *input);
 
 // parsing
