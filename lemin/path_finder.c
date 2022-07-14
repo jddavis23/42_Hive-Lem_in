@@ -108,7 +108,10 @@ static void	create_path(t_path **path, t_room *pass)
 	if (*path)
 		ft_path_add(path, new);
 	else
+	{
 		*path = new;
+		pass->head = *path;
+	}
 	create_index(&(*path)->move, *path, pass->end, 0);
 }
 
@@ -126,6 +129,14 @@ static void	copy_struct(t_path **path, t_room *pass, int i)
 	head = new;
 	while (src->move)
 	{
+		if (src->move->index == i || src->move->next == NULL)
+		{
+			break ;
+		}
+		src->move = src->move->next;
+	}
+	while (src->move)
+	{
 		new->len++;
 		if (first == TRUE)
 		{
@@ -139,52 +150,44 @@ static void	copy_struct(t_path **path, t_room *pass, int i)
 			new->move->next = ft_indexnew(src->move->index, src->move->prev_index);
 			new->move = new->move->next;
 		}
-		if (new->move->index == i || src->move->next == NULL)
-		{
-			new->move->next = NULL;
-			break ;
-		}
 		src->move = src->move->next;
 	}
+	new->move->next = NULL;
 	ft_path_add(path, head);
 }
 
-static void	find_path(t_path *path, t_room *pass, int i, int prev_index)
+static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 {
 	int	j;
 	int	len;
-	t_index *prev_path;
 
 	j = 0;
-	prev_path = path->move;
-	if (pass->distance[i] <= pass->distance[prev_index])
+	if (pass->distance[i] <= pass->distance[prev_index] && pass->distance[i] != 0)
 	{
-		create_index(&path->move, path, i, prev_index);
+		if (prev_index == pass->end)
+			create_path(path, pass);
+		create_index(&(*path)->move, *path, i, prev_index);
 		len = len_array(pass->links[i]);
-		ft_printf("%d", pass->links[i]);
-		ft_printf("len:[%d]\n", len);
-					
 		while (j < len)
 		{
 			if (pass->links[i][j] == 0)
 			{
 				ft_printf("FOUND START!\n");
-				path->found = TRUE;
+				(*path)->found = TRUE;
 				return ;
 			}
-			if (pass->distance[pass->links[i][j]] <= pass->distance[prev_index] && pass->distance[pass->links[i][j]] != 0)
+			if (pass->distance[pass->links[i][j]] <= pass->distance[i] && pass->distance[pass->links[i][j]] != 0 && pass->links[i][j] != prev_index)
 			{
-				
-				if (path->found == TRUE)
+			
+				if ((*path)->found == TRUE)
 				{
-					ft_printf("HELLO[%d]len:[%d], previndex[%d]\n", pass->links[i][j], len, prev_index);
-					copy_struct(&path, pass, pass->links[i][j]);
-					path->found = FALSE;
-					find_path(path, pass, pass->links[i][j], pass->distance[pass->links[i][j]]);
+					copy_struct(path, pass, i);
+					(*path)->found = FALSE;
+					find_path(&(*path), pass, pass->links[i][j], i);
 				}
 				else
 				{
-					find_path(path, pass, pass->links[i][j], pass->distance[pass->links[i][j]]);
+					find_path(&(*path), pass, pass->links[i][j], i);
 				}
 			}
 			++j;
@@ -192,12 +195,20 @@ static void	find_path(t_path *path, t_room *pass, int i, int prev_index)
 	}
 }
 
+/*
+
+./lem-in < maps/subject3-1.map
+doesn't update path nbr
+
+pick path with lowest distance
+
+*/
+
 int	path_finder(t_room *pass)
 {
 	int	max;
 	int	len;
 	int	i;
-	t_path *head;
 	t_path	*path;
 
 	len = len_array(pass->links[pass->end]);
@@ -207,35 +218,33 @@ int	path_finder(t_room *pass)
 	path = NULL;
 	pass->path_nbr = 1;
 	i = 0;
-	create_path(&path, pass);
-	head = path;
 	while (i < len)
 	{
-		ft_printf("len:[%d]\n", len);
-					
 		if (pass->links[pass->end][i] == 0)
 		{
+			create_path(&path, pass);
 			ft_printf("FOUND START!\n");
 			path->found = TRUE;
 			break ;
 		}
-		if (i > 0)
-			create_path(&path, pass);
-		find_path(path, pass, pass->links[pass->end][i], pass->end);
-		// if no path error exit
+		find_path(&path, pass, pass->links[pass->end][i], pass->end);
 		++i;
 	}
-	if (path->found == FALSE)
+	if (!path)
+	{
 		ft_printf("ERROR\n");
-	path = head;
+		exit(0);
+	}
+	path = pass->head;
 	i = 0;
+	ft_printf("\n{green}PATHS:{uncolor} \n");
 	while (path)
 	{
 		path->move = path->index_head;
 		ft_printf("path\nnbr: %d	Len: %d	nbr of struct: %d\n", path->nbr, path->len, i);
 		while (path->move)
 		{
-			ft_printf("index: %d\n", path->move->index);
+			ft_printf("room: %s\n", pass->rooms[path->move->index]);
 	
 			path->move = path->move->next;
 		}

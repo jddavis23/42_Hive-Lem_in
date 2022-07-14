@@ -23,17 +23,14 @@ void	recurs(t_room *pass, int **links, int dist, int indx)
 	{
 		if (links[indx][j] == pass->end)
 		{
-			ft_printf("END\n'");
 			return ;
 		}
 		++j;
 	}
 	if (j == 1 && indx != 0)
 		return ;
-	ft_printf("HERE\n");
 	while (links[indx][i] >= 0)
 	{
-		ft_printf("room %s  room indx %i prev %i\n", pass->rooms[links[indx][i]], links[indx][i], indx);
 		//if (indx == 1)
 		//	exit (0);
 		if (links[indx][i] == indx)
@@ -50,10 +47,8 @@ void	recurs(t_room *pass, int **links, int dist, int indx)
 			pass->distance[links[indx][i]] = dist + 1;
 		else if (dist + 1 > pass->distance[links[indx][i]] && pass->distance[links[indx][i]] == 0)
 			pass->distance[links[indx][i]] = dist + 1;
-		ft_printf("moon %s distance %i  prev dist %i\n\n", pass->rooms[links[indx][i]], pass->distance[links[indx][i]], dist);
 		if (links[indx][i] != 0)
 		{
-			ft_printf("HERE\n");
 			recurs(pass, pass->links, pass->distance[links[indx][i]], links[indx][i]);
 		}
 		++i;
@@ -75,10 +70,13 @@ void	distance(t_room *pass)
 	while (i < pass->total)
 		pass->distance[i++] = 0;
 	recurs(pass, pass->links, pass->distance[0], 0);
+	pass->distance[pass->end] = pass->total;
 	i = 0;
+	ft_printf("\n");
 	while (i < pass->total)
 	{
 		ft_printf("room %s  distance %i\n", pass->rooms[i], pass->distance[i]);
 		++i;
 	}
+	ft_printf("\n");
 }

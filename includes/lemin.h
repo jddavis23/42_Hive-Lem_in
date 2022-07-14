@@ -30,6 +30,7 @@ typedef struct  s_room
 	int		*distance;
 	int		total;
 	int		path_nbr;
+	t_path	*head;
 }				t_room;
 
 typedef enum
