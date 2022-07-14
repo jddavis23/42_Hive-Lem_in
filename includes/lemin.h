@@ -27,7 +27,7 @@ typedef struct  s_room
 	int		**links;
 	int		end;
 	int		ants;
-	int		distance[500];
+	int		*distance;
 	int		total;
 	int		path_nbr;
 }				t_room;
@@ -59,5 +59,6 @@ int		is_dash(char *str);
 
 // path finder
 int		path_finder(t_room *pass);
+void	distance(t_room *pass);
 
 #endif
