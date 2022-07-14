@@ -29,38 +29,6 @@ static int	len_array(int *links)
 	return (i);
 }
 
-static void	make_temp(t_room *pass)
-{
-	// maps/subject3-1.map
-	/*distance[0] = 0;
-	distance[1] = 1;
-	distance[2] = 1;
-	distance[3] = 2;
-	distance[4] = 2;
-	distance[5] = 2;
-	distance[6] = 2;
-	distance[7] = 1;
-	distance[8] = 2;
-	distance[9] = 3;
-	distance[10] = 0;
-	distance[11] = 0;
-	distance[12] = 0;
-	distance[13] = 0;*/
-
-	// maps/subject-short.map
-	pass->distance[0] = 0;
-	pass->distance[1] = 1;
-	pass->distance[2] = 2;
-	pass->distance[3] = pass->total;
-
-	//maps/subject2-1.map
-	// pass->distance[0] = 0;
-	// pass->distance[1] = 1;
-	// pass->distance[2] = 1;
-	// pass->distance[3] = 2;
-	// pass->distance[4] = pass->total;
-}
-
 /*is it an error if there in the instructions shows a path connected to the same room twice?*/
 /*
 create a function that handles creating a new node with a variable and putting it to the linked list of indexes
@@ -236,7 +204,6 @@ int	path_finder(t_room *pass)
 	max = calc_max(len_array(pass->links[0]), len);
 	if (max < 1)
 		return (ERROR);
-	make_temp(pass);
 	path = NULL;
 	pass->path_nbr = 1;
 	i = 0;
