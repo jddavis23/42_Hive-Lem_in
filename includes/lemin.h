@@ -60,7 +60,11 @@ int		dash_in_section(char *full, char *inside);
 int		is_dash(char *str);
 
 // path finder
-int		path_finder(t_room *pass);
 void	distance(t_room *pass);
+int		path_finder(t_room *pass, int len);
+int		len_array(int *links);
+void	create_index(t_index **move, t_path *path, int i, int prev_index);
+void	create_path(t_path **path, t_room *pass);
+void	copy_path(t_path **new, t_path **src, t_room *pass, t_path **head);
 
 #endif
