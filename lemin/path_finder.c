@@ -64,13 +64,13 @@ static void	create_index(t_index **move, t_path *path, int i, int prev_index)
 	if (!(*move))
 	{
 		*move = ft_indexnew(i, prev_index);
-		path->index_head = *move;
+		path->move_head = *move;
 		path->move = *move;
 	}
 	else
 	{
 		new = ft_indexnew(i, prev_index);
-		ft_indexadd_front(&path->index_head, new);
+		ft_indexadd_front(&path->move_head, new);
 	}
 	path->len++;
 }
@@ -125,7 +125,7 @@ static void	copy_struct(t_path **path, t_room *pass, int i)
 	first = TRUE;
 	new = ft_pathnew();
 	src = *path;
-	src->move = src->index_head;
+	src->move = src->move_head;
 	head = new;
 	while (src->move)
 	{
@@ -141,7 +141,7 @@ static void	copy_struct(t_path **path, t_room *pass, int i)
 		if (first == TRUE)
 		{
 			new->move = ft_indexnew(src->move->index, src->move->prev_index);
-			new->index_head = new->move;
+			new->move_head = new->move;
 			new->nbr = pass->path_nbr;
 			pass->path_nbr++;
 			first = FALSE;
@@ -175,6 +175,8 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 			{
 				ft_printf("FOUND START!\n");
 				(*path)->found = TRUE;
+				if ((*path)->len > pass->longest_path)
+					pass->longest_path = (*path)->len;
 				return ;
 			}
 			if (pass->distance[pass->links[i][j]] <= pass->distance[i] && pass->distance[pass->links[i][j]] != 0 && pass->links[i][j] != prev_index)
@@ -196,28 +198,19 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 	}
 }
 
-/*
-
-./lem-in < maps/subject3-1.map
-doesn't update path nbr
-
-pick path with lowest distance
-
-*/
-
 int	path_finder(t_room *pass)
 {
-	int	max;
 	int	len;
 	int	i;
 	t_path	*path;
 
 	len = len_array(pass->links[pass->end]);
-	max = calc_max(len_array(pass->links[0]), len);
-	if (max < 1)
+	pass->max_paths = calc_max(len_array(pass->links[0]), len);
+	if (pass->max_paths < 1)
 		return (ERROR);
 	path = NULL;
 	pass->path_nbr = 1;
+	pass->longest_path = 0;
 	i = 0;
 	while (i < len)
 	{
@@ -238,10 +231,11 @@ int	path_finder(t_room *pass)
 	}
 	path = pass->head;
 	i = 0;
+	ft_printf("longest path %d\n", pass->longest_path);
 	ft_printf("\n{green}PATHS:{uncolor} \n");
 	while (path)
 	{
-		path->move = path->index_head;
+		path->move = path->move_head;
 		ft_printf("path\nnbr: %d	Len: %d	nbr of struct: %d\n", path->nbr, path->len, i);
 		while (path->move)
 		{

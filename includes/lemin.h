@@ -12,11 +12,10 @@ typedef struct		s_index
 
 typedef struct		s_path
 {
-	//char			*str;
 	int				nbr;
 	int				len;
 	int				found;
-	t_index	*index_head;
+	t_index	*move_head;
 	struct s_index	*move;
 	struct s_path	*next;
 }					t_path;
@@ -30,6 +29,8 @@ typedef struct  s_room
 	int		*distance;
 	int		total;
 	int		path_nbr;
+	int		longest_path;
+	int		max_paths;
 	t_path	*head;
 }				t_room;
 
