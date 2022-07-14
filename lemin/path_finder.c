@@ -143,6 +143,7 @@ static void	copy_struct(t_path **path, t_room *pass, int i)
 			new->move = ft_indexnew(src->move->index, src->move->prev_index);
 			new->index_head = new->move;
 			new->nbr = pass->path_nbr;
+			pass->path_nbr++;
 			first = FALSE;
 		}
 		else
