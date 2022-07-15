@@ -55,7 +55,8 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 				(*path)->found = TRUE;
 				// if ((*path)->len > pass->longest_path)
 				// 	pass->longest_path = (*path)->len;
-				initialize_path_finder(path, pass, &pass->final_head);
+				ft_printf("path: %d\n", (*path)->nbr);
+				initialize_path_finder(path, pass);
 				//del_last_path(*path, pass);
 				//return ;
 			}
@@ -98,56 +99,87 @@ static int	count_moves(t_path *path)
 	i = 0;
 	while (path)
 	{
-		path->move = path->move_head;
-		while (path->move)
-		{
-			++i;
-			path->move = path->move->next;
-		}
+		i += path->len;
 		path = path->next;
 	}
 	return (i);
 }
 
-static void	compare_and_copy(t_path **path, t_room *pass, t_path **final)
+static int	loop_to_end(t_path *file)
 {
-	//compare the two structs with each other to select which one to keep;
-	// comes down to amount of ants, amount of paths, maybe moves in each path.
-	/*
-	if amount of ants < len of paths
-		pick path with fewest turns
-	else if one has more paths
-		pick the one with most paths
-	else if they have same amount of paths
-		pick the one with fewest moves collectively
-	
-	*/
-	*path = pass->head;
+	while (file->next)
+	{
+		file = file->next;
+	}
+	return (file->nbr);
+}
+
+static void	compare_and_copy(t_path **path, t_room *pass)
+{
 	if (pass->final_head)
 	{
-		int count;
-		count = 0;
-		count = count_moves(*path);
-		ft_printf("count: %d\n", count);
+		int	final_length;
+		
+		final_length = loop_to_end(pass->final_head);
+		ft_printf("final: %d, path: %d\n", final_length, (*path)->nbr);
+		if (final_length < (*path)->nbr)
+		{
+		ft_printf("pass->head: %p\n", pass->head);
+	
+			// free(pass->final_head);
+			// pass->final_head = cpy_pth(pass->head);
+			ft_printf("final: %d, path: %d\n", final_length, (*path)->nbr);
+		}
+		else if (final_length == (*path)->nbr)
+		{
+			if (count_moves(pass->final_head) > count_moves(*path))
+			{
+				// ft_printf("pass->head: %p\n", pass->head);
+	
+				// free(pass->final_head);
+				pass->final_head = cpy_pth(pass->head);
+			}
+		}
 	}
 	else
 	{
-		*final = cpy_pth(*path);
-		pass->final_head = *final;
-		ft_printf("final_head: %p\n", pass->final_head);
-		ft_printf("final copied\n");
-		*final = pass->final_head;
+		// int	final_length;
+		// t_path *final;
+		// int i;
+		
+		pass->final_head = cpy_pth(pass->head);
+	// 	final_length = loop_to_end(pass->final_head);
+	// 	ft_printf("final: %d, path: %d\n", final_length, (*path)->nbr);
+	// 	final = pass->head;
+	// i = 0;
+	// ft_printf("\n{green}finalS:{uncolor} \n");
+	// while (final)
+	// {
+	// 	final->move = final->move_head;
+	// 	ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+	// 	while (final->move)
+	// 	{
+	// 		ft_printf("room: %s\n", pass->rooms[final->move->index]);
+	
+	// 		final->move = final->move->next;
+	// 	}
+	// 	++i;
+	// 	final = final->next;
+	// }
+	// 	exit(0);
 	}
 }
 
-void	initialize_path_finder(t_path **path, t_room *pass, t_path **final)
+void	initialize_path_finder(t_path **path, t_room *pass)
 {
 	int	i;
 
 	i = pass->i;
+	pass->path_nbr = 1;
 	pass->i++;
 	while (i < pass->len)
 	{
+		ft_printf("i = %i\n", i);
 		if (pass->links[pass->end][i] == 0)
 		{
 			create_path(path, pass);
@@ -165,8 +197,8 @@ void	initialize_path_finder(t_path **path, t_room *pass, t_path **final)
 		++i;
 	}
 	// check with stored path
-	compare_and_copy(path, pass, final);
-	ft_printf("final_head: %p\n", pass->final_head);
+	ft_printf("finish struct!\n");
+	compare_and_copy(path, pass);
 }
 
 static void	create_used(t_room *pass)
@@ -194,14 +226,13 @@ int	path_finder(t_room *pass)
 	create_used(pass);
 	pass->i = 0;
 	pass->final_head = NULL;
-	initialize_path_finder(&path, pass, &final);
+	initialize_path_finder(&path, pass);
 	if (!path)
 	{
 		ft_printf("ERROR\n");
 		exit(0);
 	}
 	final = pass->final_head;
-	ft_printf("final_head: %p\n", pass->final_head);
 	i = 0;
 	ft_printf("\n{green}finalS:{uncolor} \n");
 	while (final)
@@ -249,11 +280,23 @@ int	path_finder(t_room *pass)
 	return (0);
 }
 
-
 /*
 
-check leaks and make sure everything is freed
+	TO DO:
 
-make the function for printing out the final ants movement.
+	if amount of ants < len of paths
+		pick path with fewest turns
+
+	do we want to collect the shortest path also.
+
+	try out with example we tried on paper
+
+
+
+
+	check leaks and make sure everything is freed
+
+	make the function for printing out the final ants movement.
+
 
 */

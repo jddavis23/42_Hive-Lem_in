@@ -200,6 +200,7 @@ void del_last_path(t_path **path, t_room *pass)
 		free(*path);
 		*path = NULL;
 		*path = prev;
+		pass->path_nbr--;
 	}
 }
 
