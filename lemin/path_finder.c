@@ -6,7 +6,7 @@
 /*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 09:38:32 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/12 09:38:35 by molesen          ###   ########.fr       */
+/*   Updated: 2022/07/15 13:30:59 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,15 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 				(*path)->found = TRUE;
 				// if ((*path)->len > pass->longest_path)
 				// 	pass->longest_path = (*path)->len;
-				initialize_path_finder(path, pass);
+				initialize_path_finder(path, pass, &pass->final_head);
+				//del_last_path(*path, pass);
 				//return ;
 			}
 			if (pass->distance[pass->links[i][j]] <= pass->distance[i] && pass->distance[pass->links[i][j]] != 0 && pass->links[i][j] != prev_index && pass->used[pass->links[i][j]] == FALSE)
 			{
-				// if ((*path)->found == TRUE)
-				// {
-				// 	copy_struct(path, pass, i);
-				// 	(*path)->found = FALSE;
-				// 	find_path(&(*path), pass, pass->links[i][j], i);
-				// }
-				// else
 				find_path(&(*path), pass, pass->links[i][j], i);
 				pass->used[pass->links[i][j]] = FALSE;
+				del_first_index(*path);
 			}
 			j++;
 		}
@@ -114,7 +109,7 @@ static int	count_moves(t_path *path)
 	return (i);
 }
 
-static void	compare_and_copy(t_path **path, t_room *pass)
+static void	compare_and_copy(t_path **path, t_room *pass, t_path **final)
 {
 	//compare the two structs with each other to select which one to keep;
 	// comes down to amount of ants, amount of paths, maybe moves in each path.
@@ -127,16 +122,25 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 		pick the one with fewest moves collectively
 	
 	*/
-	int count;
-
-	count = 0;
-	path = &pass->head;
-	count = count_moves(*path);
-
-	ft_printf("count: %d\n", count);
+	*path = pass->head;
+	if (pass->final_head)
+	{
+		int count;
+		count = 0;
+		count = count_moves(*path);
+		ft_printf("count: %d\n", count);
+	}
+	else
+	{
+		*final = cpy_pth(*path);
+		pass->final_head = *final;
+		ft_printf("final_head: %p\n", pass->final_head);
+		ft_printf("final copied\n");
+		*final = pass->final_head;
+	}
 }
 
-void	initialize_path_finder(t_path **path, t_room *pass)
+void	initialize_path_finder(t_path **path, t_room *pass, t_path **final)
 {
 	int	i;
 
@@ -154,11 +158,15 @@ void	initialize_path_finder(t_path **path, t_room *pass)
 			break ;
 		}
 		if (pass->used[pass->links[pass->end][i]] == FALSE)
+		{
 			find_path(&(*path), pass, pass->links[pass->end][i], pass->end);
+			del_last_path(path, pass);
+		}
 		++i;
 	}
 	// check with stored path
-	compare_and_copy(path, pass);
+	compare_and_copy(path, pass, final);
+	ft_printf("final_head: %p\n", pass->final_head);
 }
 
 static void	create_used(t_room *pass)
@@ -175,36 +183,69 @@ static void	create_used(t_room *pass)
 
 int	path_finder(t_room *pass)
 {
-	int	i;
+	int i;
 	t_path	*path;
+	t_path	*final;
 
 	path = NULL;
+	final = NULL;
 	pass->path_nbr = 1;
 	pass->longest_path = 0;
 	create_used(pass);
 	pass->i = 0;
-	initialize_path_finder(&path, pass);
+	pass->final_head = NULL;
+	initialize_path_finder(&path, pass, &final);
 	if (!path)
 	{
 		ft_printf("ERROR\n");
 		exit(0);
 	}
-	path = pass->head;
+	final = pass->final_head;
+	ft_printf("final_head: %p\n", pass->final_head);
 	i = 0;
-	ft_printf("\n{green}PATHS:{uncolor} \n");
-	while (path)
+	ft_printf("\n{green}finalS:{uncolor} \n");
+	while (final)
 	{
-		path->move = path->move_head;
-		ft_printf("path\nnbr: %d	Len: %d	nbr of struct: %d\n", path->nbr, path->len, i);
-		while (path->move)
+		final->move = final->move_head;
+		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+		while (final->move)
 		{
-			ft_printf("room: %s\n", pass->rooms[path->move->index]);
+			ft_printf("room: %s\n", pass->rooms[final->move->index]);
 	
-			path->move = path->move->next;
+			final->move = final->move->next;
 		}
 		++i;
-		path = path->next;
+		final = final->next;
 	}
+	// t_path *help = NULL;
+	// t_path *top;
+	// help = cpy_pth(path);
+	// top = help;
+	// while (path && help)
+	// {
+	// 	ft_printf("nbr %i  len %i  found %i\n", path->nbr, path->len, path->found);
+	// 	ft_printf("nbr %i  len %i  found %i\n\n", help->nbr, help->len, help->found);
+	// 	path->move = path->move_head;
+	// 	while (path->move && path->move)
+	// 	{
+	// 		ft_printf("index %i\n", path->move->index);
+	// 		ft_printf("index %i\n", help->move->index);
+	// 		path->move = path->move->next;
+	// 		help->move = help->move->next;
+	// 	}
+	// 	ft_printf("\n");
+	// 	path = path->next;
+	// 	help = help->next;
+	// }
+
+	// help = top;
+	// help->move = help->move_head;
+	// ft_printf("nbr %i", help->move);
+	// ft_printf("nbr2 %i\n", help->move->next);
+	// del_first_index(help);
+	// ft_printf("nbr %i", help->move);
+
+	
 	return (0);
 }
 

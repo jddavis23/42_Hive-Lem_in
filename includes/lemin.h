@@ -34,6 +34,7 @@ typedef struct  s_room
 	int		max_paths;
 	int		i;
 	t_path	*head;
+	t_path	*final_head;
 }				t_room;
 
 typedef enum
@@ -68,6 +69,9 @@ int		len_array(int *links);
 void	create_index(t_index **move, t_path *path, int i);
 void	create_path(t_path **path, t_room *pass);
 void	copy_path(t_path **new, t_path **src, t_room *pass, t_path **head);
-void	initialize_path_finder(t_path **path, t_room *pass);
+void	initialize_path_finder(t_path **path, t_room *pass, t_path **final);
+t_path	*cpy_pth(t_path *file);
+void	del_first_index(t_path *file);
+void	del_last_path(t_path **path, t_room *pass);
 
 #endif
