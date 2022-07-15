@@ -6,11 +6,11 @@
 /*   By: jdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:00:01 by jdavis            #+#    #+#             */
-/*   Updated: 2022/07/14 17:36:09 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/15 12:01:57 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	compare_paths(t_index *first, t_index *second)
+/*int	compare_paths(t_index *first, t_index *second)
 {
 	t_index *head_first;
 	t_index *head_second;
@@ -113,4 +113,5 @@ void	absolute_path(t_room * pass)
 		tmp_path = pass->head;
 		++J;
 	}
-}
+}*/
+
