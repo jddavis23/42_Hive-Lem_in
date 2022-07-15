@@ -53,7 +53,6 @@ void	recurs(t_room *pass, int **links, int dist, int indx)
 		}
 		++i;
 	}
-
 }
 
 void	distance(t_room *pass)

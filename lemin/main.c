@@ -33,7 +33,6 @@ int	main(int argc, char **argv)
 {
 	t_room	*pass;
 	char	*input;
-	int		len;
 
 	if (argc == 1)
 	{
@@ -44,11 +43,11 @@ int	main(int argc, char **argv)
 		if (create(pass, input) == -1)
 			return (0);
 		distance(pass);
-		len = len_array(pass->links[pass->end]);
-		pass->max_paths = calc_max(len_array(pass->links[0]), len);
+		pass->len = len_array(pass->links[pass->end]);
+		pass->max_paths = calc_max(len_array(pass->links[0]), pass->len);
 		if (pass->max_paths < 1)
 			return (ERROR);
-		if (path_finder(pass, len) == ERROR)
+		if (path_finder(pass) == ERROR)
 			return (0);
 	}
 	else if (argv)

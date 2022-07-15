@@ -12,7 +12,7 @@
 
 # include "../includes/lemin.h"
 
-static t_index	*ft_indexnew(int index, int prev)
+static t_index	*ft_indexnew(int index)
 {
 	t_index	*new;
 
@@ -20,25 +20,24 @@ static t_index	*ft_indexnew(int index, int prev)
 	if (!new)
 		return (NULL);
 	new->index = index;
-	new->prev_index = prev;
 	new->next = NULL;
 	return (new);
 }
 
-void	create_index(t_index **move, t_path *path, int i, int prev_index)
+void	create_index(t_index **move, t_path *path, int i)
 {
 	t_index	*new;
 
 	new = NULL;
 	if (!(*move))
 	{
-		*move = ft_indexnew(i, prev_index);
+		*move = ft_indexnew(i);
 		path->move_head = *move;
 		path->move = *move;
 	}
 	else
 	{
-		new = ft_indexnew(i, prev_index);
+		new = ft_indexnew(i);
 		new->next = path->move_head;
 		path->move_head = new;
 	}
@@ -77,7 +76,7 @@ void	create_path(t_path **path, t_room *pass)
 		*path = new;
 		pass->head = *path;
 	}
-	create_index(&(*path)->move, *path, pass->end, 0);
+	create_index(&(*path)->move, *path, pass->end);
 }
 
 void	copy_path(t_path **new, t_path **src, t_room *pass, t_path **head)
@@ -92,7 +91,7 @@ void	copy_path(t_path **new, t_path **src, t_room *pass, t_path **head)
 		(*new)->len++;
 		if (first == TRUE)
 		{
-			(*new)->move = ft_indexnew((*src)->move->index, (*src)->move->prev_index);
+			(*new)->move = ft_indexnew((*src)->move->index);
 			(*new)->move_head = (*new)->move;
 			(*new)->nbr = pass->path_nbr;
 			pass->path_nbr++;
@@ -100,7 +99,7 @@ void	copy_path(t_path **new, t_path **src, t_room *pass, t_path **head)
 		}
 		else
 		{
-			(*new)->move->next = ft_indexnew((*src)->move->index, (*src)->move->prev_index);
+			(*new)->move->next = ft_indexnew((*src)->move->index);
 			(*new)->move = (*new)->move->next;
 		}
 		(*src)->move = (*src)->move->next;

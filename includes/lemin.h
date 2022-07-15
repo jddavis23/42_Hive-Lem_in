@@ -6,7 +6,6 @@
 typedef struct		s_index
 {
 	int				index;
-	int				prev_index;
 	struct s_index *next;
 }					t_index;
 
@@ -27,10 +26,13 @@ typedef struct  s_room
 	int		end;
 	int		ants;
 	int		*distance;
+	int		*used;
 	int		total;
 	int		path_nbr;
+	int		len;
 	int		longest_path;
 	int		max_paths;
+	int		i;
 	t_path	*head;
 }				t_room;
 
@@ -61,10 +63,11 @@ int		is_dash(char *str);
 
 // path finder
 void	distance(t_room *pass);
-int		path_finder(t_room *pass, int len);
+int		path_finder(t_room *pass);
 int		len_array(int *links);
-void	create_index(t_index **move, t_path *path, int i, int prev_index);
+void	create_index(t_index **move, t_path *path, int i);
 void	create_path(t_path **path, t_room *pass);
 void	copy_path(t_path **new, t_path **src, t_room *pass, t_path **head);
+void	initialize_path_finder(t_path **path, t_room *pass);
 
 #endif
