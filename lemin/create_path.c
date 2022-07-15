@@ -1,0 +1,108 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   create_path.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/14 16:46:56 by molesen           #+#    #+#             */
+/*   Updated: 2022/07/14 16:53:26 by molesen          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+# include "../includes/lemin.h"
+
+static t_index	*ft_indexnew(int index, int prev)
+{
+	t_index	*new;
+
+	new = (t_index *)malloc(sizeof(t_index));
+	if (!new)
+		return (NULL);
+	new->index = index;
+	new->prev_index = prev;
+	new->next = NULL;
+	return (new);
+}
+
+void	create_index(t_index **move, t_path *path, int i, int prev_index)
+{
+	t_index	*new;
+
+	new = NULL;
+	if (!(*move))
+	{
+		*move = ft_indexnew(i, prev_index);
+		path->move_head = *move;
+		path->move = *move;
+	}
+	else
+	{
+		new = ft_indexnew(i, prev_index);
+		new->next = path->move_head;
+		path->move_head = new;
+	}
+	path->len++;
+}
+
+static t_path	*ft_pathnew()
+{
+	t_path	*new;
+
+	new = (t_path *)malloc(sizeof(t_path));
+	if (!new)
+		return (NULL);
+	new->len = 0;
+	new->move = NULL;
+	new->next = NULL;
+	return (new);
+}
+
+void	create_path(t_path **path, t_room *pass)
+{
+	t_path *new;
+
+	new = *path;
+	new = ft_pathnew();
+	new->nbr = pass->path_nbr;
+	new->found = FALSE;
+	pass->path_nbr++;
+	if (*path)
+	{
+		(*path)->next = new;
+		*path = (*path)->next;
+	}
+	else
+	{
+		*path = new;
+		pass->head = *path;
+	}
+	create_index(&(*path)->move, *path, pass->end, 0);
+}
+
+void	copy_path(t_path **new, t_path **src, t_room *pass, t_path **head)
+{
+	int	first;
+
+	first = TRUE;
+	*new = ft_pathnew();
+	*head = *new;
+	while ((*src)->move)
+	{
+		(*new)->len++;
+		if (first == TRUE)
+		{
+			(*new)->move = ft_indexnew((*src)->move->index, (*src)->move->prev_index);
+			(*new)->move_head = (*new)->move;
+			(*new)->nbr = pass->path_nbr;
+			pass->path_nbr++;
+			first = FALSE;
+		}
+		else
+		{
+			(*new)->move->next = ft_indexnew((*src)->move->index, (*src)->move->prev_index);
+			(*new)->move = (*new)->move->next;
+		}
+		(*src)->move = (*src)->move->next;
+	}
+}

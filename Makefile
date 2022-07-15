@@ -13,6 +13,8 @@ SRC += $(C)parse_count.c
 SRC += $(C)parse_collect.c
 SRC += $(C)path_finder.c
 SRC += $(C)distance.c
+SRC += $(C)create_path.c
+SRC += $(C)final_paths.c
 
 MAKELIB = make -C libft/ fclean && make -C libft/
 

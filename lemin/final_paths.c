@@ -6,9 +6,11 @@
 /*   By: jdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:00:01 by jdavis            #+#    #+#             */
-/*   Updated: 2022/07/15 12:01:57 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/15 13:33:20 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../includes/lemin.h"
 
 /*int	compare_paths(t_index *first, t_index *second)
 {
@@ -114,4 +116,81 @@ void	absolute_path(t_room * pass)
 		++J;
 	}
 }*/
+
+t_index	*cpy_indx(t_path *file, t_path *new)
+{
+	t_index *n_index;
+	t_index *n_index_head;
+	//t_index *temp;
+
+	n_index_head = (t_index *) malloc(sizeof(t_index));
+	n_index = n_index_head;
+	file->move = file->move_head;
+	while (file->move)
+	{
+		n_index->index = file->move->index;
+		//temp = file->move;
+		file->move = file->move->next;
+		//free(temp);
+		if (file->move)
+		{
+			n_index->next = (t_index *) malloc(sizeof(t_index));
+			n_index = n_index->next;
+		}
+	}
+	n_index->next = NULL;
+	n_index = n_index_head;
+	new->move = n_index;
+	return (n_index_head);
+}
+
+t_path	*cpy_pth(t_path *file)
+{
+	t_path *n_path;
+	t_path *n_path_head;
+	//t_path *temp;
+
+	n_path_head = (t_path *) malloc(sizeof(t_path));
+	n_path = n_path_head;
+	while (file)
+	{
+		n_path->nbr = file->nbr;
+		n_path->len = file->len;
+		n_path->found = file->found;
+		n_path->move_head = cpy_indx(file, n_path);
+		//temp = file;
+		file = file->next;
+		//free(temp);
+		if (file)
+			n_path->next = (t_path *) malloc(sizeof(t_path));
+		n_path = n_path->next;
+	}
+	n_path = n_path_head;
+	return (n_path);
+}
+
+void del_first_index(t_path *file)
+{
+	t_index	*temp;
+	file->move = file->move_head;
+
+	temp = file->move;
+	file->move = file->move->next;
+	free(temp);
+	file->move_head = file->move;
+}
+
+void del_last_path(t_path *path)
+{
+	t_path *head;
+
+	head = path;
+	while (path)
+	{
+		if (!path->next)
+			free(path);
+		path = path->next;
+	}
+	path = head;
+}
 
