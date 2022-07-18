@@ -120,20 +120,13 @@ void	initialize_path_finder(t_path **path, t_room *pass)
 {
 	int	i;
 
-	// if (begin == TRUE)
-	// {
-		// i = pass->i;
-		// pass->path_nbr = 1;
-		// pass->i++;
-	// }
-	// else
-	// removed the above
 	i = 0;
 	while (i < pass->len)
 	{
 		if (pass->links[pass->end][i] == 0)
 		{
 			create_path(path, pass);
+			pass->head->found = TRUE;
 			ft_printf("FOUND START!\n");
 			break ;
 		}
@@ -158,7 +151,6 @@ void	initialize_path_finder(t_path **path, t_room *pass)
 		while (temp)
 		{
 			ft_printf("temp\nnbr: %d	Len: %d	nbr of struct: %d\n", temp->nbr, temp->len, i);
-		
 			temp->move = temp->move_head;
 			while (temp->move)
 			{
@@ -211,10 +203,10 @@ int	path_finder(t_room *pass)
 	{
 		final->move = final->move_head;
 		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+		
 		while (final->move)
 		{
 			ft_printf("room: %s\n", pass->rooms[final->move->index]);
-	
 			final->move = final->move->next;
 		}
 		++i;
@@ -248,7 +240,6 @@ int	path_finder(t_room *pass)
 	// del_first_index(help);
 	// ft_printf("nbr %i", help->move);
 
-	
 	return (0);
 }
 

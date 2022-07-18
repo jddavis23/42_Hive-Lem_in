@@ -162,8 +162,12 @@ t_path	*cpy_pth(t_path *file)
 		file = file->next;
 		//free(temp);
 		if (file)
+		{
 			n_path->next = (t_path *) malloc(sizeof(t_path));
-		n_path = n_path->next;
+			n_path = n_path->next;
+		}
+		else
+			n_path->next = NULL;
 	}
 	n_path = n_path_head;
 	return (n_path);
@@ -218,7 +222,7 @@ void del_last_path(t_path **path, t_room *pass)
 			while (head)
 			{
 				prev = head;
-				if (!head->next || !head->next->next)
+				if (!head->next->next)
 					break ;
 				head = head->next;
 			}
@@ -233,7 +237,7 @@ void del_last_path(t_path **path, t_room *pass)
 			prev->next = NULL;
 			*path = prev;
 			pass->path_nbr--;
+			ft_printf(" prev: %p, prev->next: %p\n", prev, prev->next);
 		}
 	}
 }
-
