@@ -12,28 +12,6 @@
 
 # include "../includes/lemin.h"
 
-// static void	copy_struct(t_path **path, t_room *pass, int i)
-// {
-// 	t_path *new;
-// 	t_path *src;
-// 	t_path *head;
-
-// 	src = *path;
-// 	src->move = src->move_head;
-// 	while (src->move)
-// 	{
-// 		if (src->move->index == i || src->move->next == NULL)
-// 			break ;
-// 		src->move = src->move->next;
-// 	}
-// 	new = NULL;
-// 	head = NULL;
-// 	copy_path(&new, &src, pass, &head);
-// 	new->move->next = NULL;
-// 	(*path)->next = head;
-// 	*path = (*path)->next;
-// }
-
 static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 {
 	int	len;
@@ -41,8 +19,6 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 
 	if (pass->distance[i] <= pass->distance[prev_index] && pass->distance[i] != 0)
 	{
-		if (prev_index == pass->end)
-			create_path(path, pass);
 		create_index(&(*path)->move, *path, i);
 		pass->used[i] = TRUE;
 		len = len_array(pass->links[i]);
@@ -52,13 +28,8 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 			if (pass->links[i][j] == 0)
 			{
 				ft_printf("FOUND START!\n");
-				(*path)->found = TRUE;
-				// if ((*path)->len > pass->longest_path)
-				// 	pass->longest_path = (*path)->len;
-				ft_printf("path: %d\n", (*path)->nbr);
+				pass->head->found = TRUE;
 				initialize_path_finder(path, pass);
-				//del_last_path(*path, pass);
-				//return ;
 			}
 			if (pass->distance[pass->links[i][j]] <= pass->distance[i] && pass->distance[pass->links[i][j]] != 0 && pass->links[i][j] != prev_index && pass->used[pass->links[i][j]] == FALSE)
 			{
@@ -71,26 +42,6 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 		pass->used[i] = FALSE;
 	}
 }
-
-/*
-
-compare two structs and their paths
-
-i want the comparison to be a comparison between the amount of index elements in each path each struct contains
-
-ex if you have
-
-struct 1
-ABC
-FDK
-
-struct2
-ABC
-FDBML
-
-i want struct1 to return 6 and struct2 to return 8. because struct1 returned 1 we want to keep struct1
-
-*/
 
 static int	count_moves(t_path *path)
 {
@@ -119,24 +70,20 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 	if (pass->final_head)
 	{
 		int	final_length;
-		
 		final_length = loop_to_end(pass->final_head);
-		ft_printf("final: %d, path: %d\n", final_length, (*path)->nbr);
 		if (final_length < (*path)->nbr)
 		{
-		ft_printf("pass->head: %p\n", pass->head);
-	
-			// free(pass->final_head);
-			// pass->final_head = cpy_pth(pass->head);
+			//free(pass->final_head);
+			pass->final_head = cpy_pth(pass->head);
 			ft_printf("final: %d, path: %d\n", final_length, (*path)->nbr);
 		}
 		else if (final_length == (*path)->nbr)
 		{
-			if (count_moves(pass->final_head) > count_moves(*path))
+			if (count_moves(pass->final_head) > count_moves(pass->head))
 			{
-				// ft_printf("pass->head: %p\n", pass->head);
+				ft_printf("pass->final_head: %d, head: %d\n", count_moves(pass->final_head), count_moves(pass->head));
 	
-				// free(pass->final_head);
+				//free(pass->final_head);
 				pass->final_head = cpy_pth(pass->head);
 			}
 		}
@@ -146,11 +93,11 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 		// int	final_length;
 		// t_path *final;
 		// int i;
-		
+		// ft_printf("path: %d\n", (*path)->nbr);
 		pass->final_head = cpy_pth(pass->head);
-	// 	final_length = loop_to_end(pass->final_head);
-	// 	ft_printf("final: %d, path: %d\n", final_length, (*path)->nbr);
-	// 	final = pass->head;
+		// final_length = loop_to_end(pass->final_head);
+		// ft_printf("final: %d, path: %d\n", final_length, (*path)->nbr);
+	//	final = pass->final_head;
 	// i = 0;
 	// ft_printf("\n{green}finalS:{uncolor} \n");
 	// while (final)
@@ -166,7 +113,6 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 	// 	++i;
 	// 	final = final->next;
 	// }
-	// 	exit(0);
 	}
 }
 
@@ -174,31 +120,57 @@ void	initialize_path_finder(t_path **path, t_room *pass)
 {
 	int	i;
 
-	i = pass->i;
-	pass->path_nbr = 1;
-	pass->i++;
+	// if (begin == TRUE)
+	// {
+		// i = pass->i;
+		// pass->path_nbr = 1;
+		// pass->i++;
+	// }
+	// else
+	// removed the above
+	i = 0;
 	while (i < pass->len)
 	{
-		ft_printf("i = %i\n", i);
 		if (pass->links[pass->end][i] == 0)
 		{
 			create_path(path, pass);
 			ft_printf("FOUND START!\n");
-			// path->found = TRUE;
-			// if (path->len > pass->longest_path)
-			// 	pass->longest_path = path->len;
 			break ;
 		}
-		if (pass->used[pass->links[pass->end][i]] == FALSE)
+		if (pass->used[pass->links[pass->end][i]] == FALSE && pass->distance[i] <= pass->distance[pass->end])
 		{
+			create_path(path, pass);
 			find_path(&(*path), pass, pass->links[pass->end][i], pass->end);
 			del_last_path(path, pass);
 		}
 		++i;
 	}
-	// check with stored path
 	ft_printf("finish struct!\n");
-	compare_and_copy(path, pass);
+	if (pass->head && pass->head->found == TRUE)
+	{
+		int	temp_length;
+		t_path *temp;
+		int i;
+		temp_length = loop_to_end(pass->head);
+		temp = pass->head;
+		i = 0;
+		ft_printf("\n{cyan}tempS:{uncolor} \n");
+		while (temp)
+		{
+			ft_printf("temp\nnbr: %d	Len: %d	nbr of struct: %d\n", temp->nbr, temp->len, i);
+		
+			temp->move = temp->move_head;
+			while (temp->move)
+			{
+				ft_printf("room: %s\n", pass->rooms[temp->move->index]);
+				temp->move = temp->move->next;
+			}
+			++i;
+			temp = temp->next;
+		}
+		compare_and_copy(path, pass);
+		pass->head->found = FALSE;
+	}
 }
 
 static void	create_used(t_room *pass)
@@ -227,7 +199,7 @@ int	path_finder(t_room *pass)
 	pass->i = 0;
 	pass->final_head = NULL;
 	initialize_path_finder(&path, pass);
-	if (!path)
+	if (!pass->final_head)
 	{
 		ft_printf("ERROR\n");
 		exit(0);
@@ -284,6 +256,9 @@ int	path_finder(t_room *pass)
 
 	TO DO:
 
+	./lem-in < maps/subject3-1.map
+	only displays one path
+
 	if amount of ants < len of paths
 		pick path with fewest turns
 
@@ -298,5 +273,14 @@ int	path_finder(t_room *pass)
 
 	make the function for printing out the final ants movement.
 
+
+*/
+
+
+/*
+
+TO DO:
+
+EXIT if we can't find a room that get referenced in the connections (now it segmentfault)
 
 */

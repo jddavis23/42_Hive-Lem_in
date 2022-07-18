@@ -172,12 +172,24 @@ t_path	*cpy_pth(t_path *file)
 void del_first_index(t_path *file)
 {
 	t_index	*temp;
-	file->move = file->move_head;
-
-	temp = file->move;
-	file->move = file->move->next;
-	free(temp);
-	file->move_head = file->move;
+	if (file->move_head)
+	{
+		file->move = file->move_head;
+		temp = file->move;
+		if (file->move->next)
+		{
+			file->move = file->move->next;
+			free(temp);
+			file->move_head = file->move;
+			file->len--;
+		}
+		else
+		{
+			free(temp);
+			file->move = NULL;
+			file->move_head = NULL;
+		}
+	}
 }
 
 void del_last_path(t_path **path, t_room *pass)
@@ -188,19 +200,40 @@ void del_last_path(t_path **path, t_room *pass)
 	if (*path)
 	{
 		head = pass->head;
-		while (head)
+		if (!head->next)
 		{
-			prev = head;
-			if (!head->next || !head->next->next)
-			 	break ;
-			head = head->next;
+			head->move = head->move_head;
+			while (head->move)
+			{
+				del_first_index(head);
+			}
+			*path = head;
+			free(*path);
+			*path = NULL;
+			pass->path_nbr--;
+			pass->head = NULL;
 		}
-		prev->next = NULL;
-		*path = head->next;
-		free(*path);
-		*path = NULL;
-		*path = prev;
-		pass->path_nbr--;
+		else
+		{
+			while (head)
+			{
+				prev = head;
+				if (!head->next || !head->next->next)
+					break ;
+				head = head->next;
+			}
+			*path = head->next;
+			(*path)->move = (*path)->move_head;
+			while ((*path)->move)
+			{
+				del_first_index(*path);
+			}
+			free(*path);
+			*path = NULL;
+			prev->next = NULL;
+			*path = prev;
+			pass->path_nbr--;
+		}
 	}
 }
 
