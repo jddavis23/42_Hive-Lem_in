@@ -68,6 +68,7 @@ static int	check_if_valid(char *str, int *i, int *total, int *command)
 	else
 	{
 		free(str);
+		str = NULL;
 		if (*i == 1)
 			return (error(COORDINATES));
 		else if (*i > 1)
@@ -82,7 +83,7 @@ static int	check_if_valid(char *str, int *i, int *total, int *command)
 
 /*	reads file and stores in string and checks if invalid file	*/
 
-int	parsing_phase(t_room *pass, char **input)
+int	file_save(t_room *pass, char **input)
 {
 	int		ret;
 	int		i;
@@ -101,7 +102,7 @@ int	parsing_phase(t_room *pass, char **input)
 	{
 		ret = get_next_line(0, &line);
 		if (ret == ERROR)
-			return (0);
+			return (ERROR);
 		if (!line)
 			break ;
 		if (is_comment(line) >= TRUE)

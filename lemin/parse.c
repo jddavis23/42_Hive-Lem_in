@@ -88,12 +88,13 @@ int	create(t_room *pass, char *input)
 	k = 0;
 	p = 0;
 	m = 0;
-	hold = -1;
-	count = parsing_phase(pass, &input);
+	hold = ERROR;
+	count = file_save(pass, &input);
 	pass->total = count;
 	pass->end = pass->total - 1;
-	if (count == -1)
-		return (-1);
+	if (count == ERROR)
+		return (error_free(pass, input, 0));
+	ft_printf("HELLO\n");
 	pass->rooms = NULL;
 	pass->links = NULL;
 	if (count > 0)
@@ -102,7 +103,7 @@ int	create(t_room *pass, char *input)
 		pass->links = (int **) malloc((count + 1) * sizeof(int *));
 		if (!pass->rooms || !pass->links)
 		{
-			//delete and return 
+			return (error_free(pass, input, 0));
 		}
 		pass->rooms[count] = NULL;
 		pass->links[count] = NULL;
@@ -122,7 +123,7 @@ int	create(t_room *pass, char *input)
 				pass->rooms[hold] = ft_strnew(ft_strlen_stop(&input[i], ' '));
 				if (!pass->rooms[hold])
 				{
-					exit (0);
+					return (error_free(pass, input, hold));
 					//free exit
 				}
 				ft_strncat(pass->rooms[hold], &input[i], ft_strlen_stop(&input[i], ' '));
@@ -141,7 +142,7 @@ int	create(t_room *pass, char *input)
 				pass->rooms[j] = ft_strnew(ft_strlen_stop(&input[i], ' '));
 				if (!pass->rooms[j])
 				{
-					exit (0);
+					return (error_free(pass, input, j));
 					//free exit
 				}
 				//pass->rooms[j + 1] = NULL;
@@ -161,8 +162,7 @@ int	create(t_room *pass, char *input)
 					pass->links[j] = (int *) malloc((count_in(pass->rooms[j], &input[i], pass->rooms) + 1) * sizeof(int));
 					if (!pass->links[j])
 					{
-						exit (0);
-						//free exit
+						return (error_free(pass, input, j));
 					}
 					k = 0;
 					while (k < count_in(pass->rooms[j], &input[i], pass->rooms) + 1)

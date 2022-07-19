@@ -40,7 +40,7 @@ int	main(int argc, char **argv)
 		pass = (t_room *) malloc(sizeof(t_room));
 		if (!pass)
 			return (0);
-		if (create(pass, input) == -1)
+		if (create(pass, input) == ERROR)
 			return (0);
 		distance(pass);
 		pass->len = len_array(pass->links[pass->end]);
@@ -54,3 +54,17 @@ int	main(int argc, char **argv)
 		ft_printf("Usage: ./lem-in < maps/subject.map\n");
 	return (0);
 }
+
+/*
+
+Maps that should be considered an error but it accepts
+
+	./lem-in < maps/error/connec_too_many.map
+	./lem-in < maps/error/connec_too_many2.map
+	./lem-in < maps/error/connec_too_many3.map
+	./lem-in < maps/error/connec_too_many4.map
+
+	./lem-in < maps/error/space_at_end.map
+	
+
+*/

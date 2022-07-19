@@ -12,6 +12,43 @@
 
 # include "../includes/lemin.h"
 
+static void	free2d_int(int **links, int j)
+{
+	int	i;
+
+	i = 0;
+	while (i < j)
+	{
+		free(links[j]);
+	}
+	free(links);
+}
+
+int	error_free(t_room *pass, char *input, int j)
+{
+	if (pass->rooms)
+	{
+		pass->rooms = ft_free2d(pass->rooms);
+	}
+	if (pass->links)
+	{
+		free2d_int(pass->links, j);
+	}
+	if (pass->distance)
+		free(pass->distance);
+	if (pass->used)
+		free(pass->used);
+	if (pass)
+	{
+		free(pass);
+	}
+	if (input)
+	{
+		free(input);
+	}
+	return (ERROR);
+}
+
 int	error(int err)
 {
 	//make sure everything is freed that needs to be freed
