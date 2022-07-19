@@ -14,16 +14,17 @@
 
 /*	function that checks if a room is already in use	*/
 
-static void	create_used(t_room *pass)
+static int	create_used(t_room *pass)
 {
 	int	i;
 
 	i = 0;
 	pass->used = (int *) malloc(pass->total * sizeof(int));
 	if (!pass->used)
-		exit(0);
+		return (error_path(pass, TRUE));
 	while (i < pass->total)
 		pass->used[i++] = FALSE;
+	return (0);
 }
 
 /*	checks if end has been correctly sorted	*/
@@ -76,14 +77,23 @@ int	path_finder(t_room *pass)
 	final = NULL;
 	pass->path_nbr = 1;
 	pass->longest_path = 0;
-	create_used(pass);
+	if (create_used(pass) == ERROR)
+		return (ERROR);
 	sort_end(pass);
 	pass->final_head = NULL;
 	initialize_path_finder(&path, pass);
 	if (!pass->final_head)
 	{
 		ft_printf("ERROR\n");
-		exit(0);
+		// int i;
+		// i = 0;
+		// while ( i < pass->total)
+		// {
+		// 	while (links[i] != -1)
+		// 	ft_printf("pass->links[%d]: %p\n", i, pass->links[i]);
+		// 	++i;
+		// }
+		return (error_path(pass, TRUE));
 	}
 	final = pass->final_head;
 	i = 0;
@@ -127,7 +137,7 @@ int	path_finder(t_room *pass)
 	// ft_printf("nbr2 %i\n", help->move->next);
 	// del_first_index(help);
 	// ft_printf("nbr %i", help->move);
-
+	error_path(pass, FALSE);
 	return (0);
 }
 

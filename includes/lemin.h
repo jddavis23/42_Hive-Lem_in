@@ -53,7 +53,8 @@ int	is_coordinates(char *str);
 int	is_connection(char *str);
 int	create(t_room *pass, char *input);
 int	error(int err);
-int	error_free(t_room *pass, char *input, int j);
+int	error_free(t_room *pass, char *input, int j, int first);
+int	error_path(t_room *pass, int first);
 
 // parsing
 void	match_in(char *str, char *input, t_room *pass, int k);
@@ -72,5 +73,7 @@ void	initialize_path_finder(t_path **path, t_room *pass);
 t_path	*cpy_pth(t_path *file);
 void	del_first_index(t_path *file);
 void	del_last_path(t_path **path, t_room *pass);
+void	free_and_del_path(t_path **path, t_room *pass);
+void	del_path(t_path **path, t_room *pass);
 
 #endif

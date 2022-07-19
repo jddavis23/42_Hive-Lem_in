@@ -12,44 +12,54 @@
 
 # include "../includes/lemin.h"
 
-static char	**free2d(char **dest)
-{
-	int	i;
-
-	i = 0;
-	while (&dest[i])
-	{
-		ft_strdel(&dest[i]);
-		i++;
-	}
-	free(dest);
-	return (NULL);
-}
-
-static void	free2d_int(t_room *pass, int j)
+static int	**free2d_int(int **links, int j)
 {
 	int	i;
 
 	i = 0;
 	while (i < j)
 	{
-		free(pass->links[i]);
+		// int k = 0;
+		// ft_printf("pass->links[%d]: %p\n", i, links[i]);
+		// while (links[i][k] != -1)
+		// {
+		// 	ft_printf("1pass->links[%d][%d]: %p\n", i, k, links[i][k]);
+		// 	++k;
+		// }
+		// ft_printf("1pass->links[%d][%d]: %p\n", i, k, links[i][k]);
+		free(links[i]);
 		++i;
 	}
-	free(pass->links);
-	pass->links = NULL;
+	free(links);
+	return (NULL);
 }
 
-int	error_free(t_room *pass, char *input, int j)
+int	error_free(t_room *pass, char *input, int j, int first)
 {
+	if (first == FALSE)
+	{
+		ft_printf("{red}Error:{uncolor} during parsing phase\n");
+	}
+	// ft_printf("pass->rooms: %p\n", pass->rooms);
+	// int i;
+	// int k;
+	// i = 0;
+	// while (i < pass->total)
+	// {
+	// 	k = 0;
+	// 	ft_printf("pass->rooms[%d]: %p\n", i, pass->rooms[i]);
+	// 	while (pass->rooms[i][k] != '\0')
+	// 	{
+	// 		ft_printf("pass->rooms[%d][%d]: %p\n", i, k, pass->rooms[i][k]);
+	// 		++k;
+	// 	}
+	// 	ft_printf("pass->rooms[%d][%d]: %p\n", i, k, pass->rooms[i][k]);
+	// 	++i;
+	// }
 	if (pass->rooms)
-	{
-		pass->rooms = free2d(pass->rooms);
-	}
+		pass->rooms = ft_free2d(pass->rooms);
 	if (pass->links)
-	{
-		free2d_int(pass, j);
-	}
+		pass->links = free2d_int(pass->links, j);
 	if (pass->distance)
 		free(pass->distance);
 	if (pass->used)
@@ -58,6 +68,8 @@ int	error_free(t_room *pass, char *input, int j)
 		free(pass);
 	if (input)
 		free(input);
+	ft_printf("HERE\n");
+		
 	return (ERROR);
 }
 
@@ -85,4 +97,37 @@ int	error(int err)
 			ft_printf("\n");
 	}
 	return (ERROR);
+}
+
+void	del_path(t_path **path, t_room *pass)
+{
+	t_path	*head;
+
+	head = (*path)->next;
+	while (*path)
+	{
+		free_and_del_path(path, pass);
+		*path = head;
+		if (head->next)
+			head = head->next;
+		else
+			head = NULL;
+	}
+}
+
+int	error_path(t_room *pass, int first)
+{
+	if (first == TRUE)
+		ft_printf("{red}Error:{uncolor} no paths found\n");
+	if (pass->final_head)
+	{
+		del_path(&pass->final_head, pass);
+	}
+	if (pass->head)
+	{
+		del_path(&pass->head, pass);
+	}
+	// if (pass->links)
+	// 	pass->links = free2d_int(pass->links, j);
+	return (error_free(pass, NULL, pass->total, TRUE));
 }

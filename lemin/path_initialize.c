@@ -44,6 +44,7 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 		if (final_length < (*path)->nbr)
 		{
 			//free(pass->final_head);
+			del_path(&pass->final_head, pass);
 			pass->final_head = cpy_pth(pass->head);
 			ft_printf("final: %d, path: %d\n", final_length, (*path)->nbr);
 		}
@@ -53,7 +54,7 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 			{
 				ft_printf("pass->final_head: %d, head: %d\n", count_moves(pass->final_head), count_moves(pass->head));
 	
-				//free(pass->final_head);
+				del_path(&pass->final_head, pass);
 				pass->final_head = cpy_pth(pass->head);
 			}
 		}

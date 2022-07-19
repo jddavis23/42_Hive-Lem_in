@@ -91,7 +91,7 @@ void del_first_index(t_path *file)
 	}
 }
 
-static void	free_and_del_path(t_path **path, t_room *pass)
+void	free_and_del_path(t_path **path, t_room *pass)
 {
 	while ((*path)->move)
 		del_first_index(*path);

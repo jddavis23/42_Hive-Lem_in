@@ -40,9 +40,14 @@ int	main(int argc, char **argv)
 		pass = (t_room *) malloc(sizeof(t_room));
 		if (!pass)
 			return (0);
+		
 		if (create(pass, input) == ERROR)
 			return (0);
+		
+		free(input);
+		input = NULL;
 		distance(pass);
+		
 		pass->len = len_array(pass->links[pass->end]);
 		pass->max_paths = calc_max(len_array(pass->links[0]), pass->len);
 		if (pass->max_paths < 1)
@@ -66,8 +71,6 @@ Maps that should be considered an error but it accepts
 
 	./lem-in < maps/error/space_at_end.map
 
-
-freeing too much of the pass->rooms free2d function. not sure what is the cause
-	leaks -atExit -- ./lem-in < maps/error_parsing/error_double_start.map
-
+	doesn't display error if room name doesn't exist
+	./lem-in < maps/error_parsing/no_room.map
 */
