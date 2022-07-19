@@ -78,30 +78,3 @@ void	create_path(t_path **path, t_room *pass)
 	}
 	create_index(&(*path)->move, *path, pass->end);
 }
-
-void	copy_path(t_path **new, t_path **src, t_room *pass, t_path **head)
-{
-	int	first;
-
-	first = TRUE;
-	*new = ft_pathnew();
-	*head = *new;
-	while ((*src)->move)
-	{
-		(*new)->len++;
-		if (first == TRUE)
-		{
-			(*new)->move = ft_indexnew((*src)->move->index);
-			(*new)->move_head = (*new)->move;
-			(*new)->nbr = pass->path_nbr;
-			pass->path_nbr++;
-			first = FALSE;
-		}
-		else
-		{
-			(*new)->move->next = ft_indexnew((*src)->move->index);
-			(*new)->move = (*new)->move->next;
-		}
-		(*src)->move = (*src)->move->next;
-	}
-}

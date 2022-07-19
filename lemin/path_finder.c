@@ -36,9 +36,10 @@ static int	loop_to_end(t_path *file)
 
 static void	compare_and_copy(t_path **path, t_room *pass)
 {
+	int	final_length;
+
 	if (pass->final_head)
 	{
-		int	final_length;
 		final_length = loop_to_end(pass->final_head);
 		if (final_length < (*path)->nbr)
 		{
