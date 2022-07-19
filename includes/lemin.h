@@ -32,7 +32,6 @@ typedef struct  s_room
 	int		len;
 	int		longest_path;
 	int		max_paths;
-	int		i;
 	t_path	*head;
 	t_path	*final_head;
 }				t_room;
