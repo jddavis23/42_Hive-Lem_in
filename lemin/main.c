@@ -65,6 +65,9 @@ Maps that should be considered an error but it accepts
 	./lem-in < maps/error/connec_too_many4.map
 
 	./lem-in < maps/error/space_at_end.map
-	
+
+
+freeing too much of the pass->rooms free2d function. not sure what is the cause
+	leaks -atExit -- ./lem-in < maps/error_parsing/error_double_start.map
 
 */

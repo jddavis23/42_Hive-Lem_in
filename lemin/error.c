@@ -12,40 +12,52 @@
 
 # include "../includes/lemin.h"
 
-static void	free2d_int(int **links, int j)
+static char	**free2d(char **dest)
+{
+	int	i;
+
+	i = 0;
+	while (&dest[i])
+	{
+		ft_strdel(&dest[i]);
+		i++;
+	}
+	free(dest);
+	return (NULL);
+}
+
+static void	free2d_int(t_room *pass, int j)
 {
 	int	i;
 
 	i = 0;
 	while (i < j)
 	{
-		free(links[j]);
+		free(pass->links[i]);
+		++i;
 	}
-	free(links);
+	free(pass->links);
+	pass->links = NULL;
 }
 
 int	error_free(t_room *pass, char *input, int j)
 {
 	if (pass->rooms)
 	{
-		pass->rooms = ft_free2d(pass->rooms);
+		pass->rooms = free2d(pass->rooms);
 	}
 	if (pass->links)
 	{
-		free2d_int(pass->links, j);
+		free2d_int(pass, j);
 	}
 	if (pass->distance)
 		free(pass->distance);
 	if (pass->used)
 		free(pass->used);
 	if (pass)
-	{
 		free(pass);
-	}
 	if (input)
-	{
 		free(input);
-	}
 	return (ERROR);
 }
 

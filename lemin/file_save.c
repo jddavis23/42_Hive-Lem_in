@@ -108,7 +108,10 @@ int	file_save(t_room *pass, char **input)
 		if (is_comment(line) >= TRUE)
 		{
 			if (first_start_or_end(line, i, &command) == ERROR)
+			{
+				free(line);
 				return (error(COMMAND));
+			}
 		}
 		else if (i == 0 && only_digits(line, &i) == TRUE)
 			pass->ants = ft_atoi(line);
