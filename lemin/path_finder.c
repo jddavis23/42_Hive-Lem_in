@@ -178,6 +178,43 @@ static void	create_used(t_room *pass)
 		pass->used[i++] = FALSE;
 }
 
+static int	is_sorted(t_room *pass)
+{
+	int	i;
+
+	i = 0;
+	while (i < (pass->len - 1))
+	{
+		if (pass->distance[pass->links[pass->end][i]] > pass->distance[pass->links[pass->end][i + 1]])
+			return (FALSE);
+		++i;
+	}
+	return (TRUE);
+}
+
+/*	sorts the links of the end. Shortest paths in the beginning	*/
+
+static void	sort_end(t_room *pass)
+{
+	int	i;
+	int	temp;
+
+	i = 0;
+	while (is_sorted(pass) == FALSE)
+	{
+		if (pass->distance[pass->links[pass->end][i]] > pass->distance[pass->links[pass->end][i + 1]])
+		{
+			temp = pass->links[pass->end][i];
+			pass->links[pass->end][i] = pass->links[pass->end][i + 1];
+			pass->links[pass->end][i + 1] = temp;
+		}
+		if (i < (pass->len - 1))
+			++i;
+		else
+			i = 0;
+	}
+}
+
 int	path_finder(t_room *pass)
 {
 	int i;
@@ -189,6 +226,7 @@ int	path_finder(t_room *pass)
 	pass->path_nbr = 1;
 	pass->longest_path = 0;
 	create_used(pass);
+	sort_end(pass);
 	pass->final_head = NULL;
 	initialize_path_finder(&path, pass);
 	if (!pass->final_head)
@@ -245,9 +283,6 @@ int	path_finder(t_room *pass)
 /*
 
 	TO DO:
-
-	./lem-in < maps/subject3-1.map
-	only displays one path
 
 	if amount of ants < len of paths
 		pick path with fewest turns

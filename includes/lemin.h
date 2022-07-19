@@ -6,7 +6,7 @@
 typedef struct		s_index
 {
 	int				index;
-	struct s_index *next;
+	struct s_index	*next;
 }					t_index;
 
 typedef struct		s_path
@@ -14,7 +14,7 @@ typedef struct		s_path
 	int				nbr;
 	int				len;
 	int				found;
-	t_index	*move_head;
+	t_index			*move_head;
 	struct s_index	*move;
 	struct s_path	*next;
 }					t_path;
