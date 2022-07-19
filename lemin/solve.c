@@ -6,7 +6,7 @@
 /*   By: jdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 10:59:22 by jdavis            #+#    #+#             */
-/*   Updated: 2022/07/19 13:24:14 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/19 13:47:47 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	solve(t_room *pass)
 		while (find)
 		{
 			ft_printf("%i  %i   %i   %i\n", find->len, first_len, i, find->nbr);
-			if (find->len > first_len || i >= find->nbr)
+			if (find->len > first_len || i >= pass->ants)
 				break ;
 			++i;
 			find = find->next;
