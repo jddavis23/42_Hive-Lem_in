@@ -50,6 +50,7 @@ static void	sort_end(t_room *pass)
 	int	temp;
 
 	i = 0;
+	// might remove is sorted from while loop and instead put in bottom - depends what is faster - check with bigger values
 	while (is_sorted(pass) == FALSE)
 	{
 		if (pass->distance[pass->links[pass->end][i]] > pass->distance[pass->links[pass->end][i + 1]])
@@ -137,25 +138,20 @@ int	path_finder(t_room *pass)
 	if amount of ants < len of paths
 		pick path with fewest turns
 
-	do we want to collect the shortest path also.
+	do we want to collect the shortest path also?
 
 	try out with example we tried on paper
 
 
 
 
+
 	check leaks and make sure everything is freed
 
+	EXIT if we can't find a room that get referenced in the connections (now it segmentfault)
+
+
+
 	make the function for printing out the final ants movement.
-
-
-*/
-
-
-/*
-
-TO DO:
-
-EXIT if we can't find a room that get referenced in the connections (now it segmentfault)
 
 */

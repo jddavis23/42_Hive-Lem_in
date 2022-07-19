@@ -47,12 +47,13 @@ typedef enum
 } error_message;
 
 // error handling
-int	parsing_phase(t_room *pass, char **input);
-int	error(int err);
+int	file_save(t_room *pass, char **input);
 int	only_digits(char *str, int *i);
 int	is_coordinates(char *str);
 int	is_connection(char *str);
 int	create(t_room *pass, char *input);
+int	error(int err);
+int	error_free(t_room *pass, char *input, int j);
 
 // parsing
 void	match_in(char *str, char *input, t_room *pass, int k);
