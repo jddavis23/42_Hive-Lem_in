@@ -41,18 +41,15 @@ int	main(int argc, char **argv)
 		if (!pass)
 			return (0);
 		
-		if (create(pass, input) == ERROR)
+		if (create(pass, &input) == ERROR)
 			return (0);
-		
-		free(input);
-		input = NULL;
 		distance(pass);
 		
 		pass->len = len_array(pass->links[pass->end]);
 		pass->max_paths = calc_max(len_array(pass->links[0]), pass->len);
 		if (pass->max_paths < 1)
 			return (ERROR);
-		if (path_finder(pass) == ERROR)
+		if (path_finder(pass, input) == ERROR)
 			return (0);
 	}
 	else if (argv)
@@ -73,4 +70,7 @@ Maps that should be considered an error but it accepts
 
 	doesn't display error if room name doesn't exist
 	./lem-in < maps/error_parsing/no_room.map
+
+	frees too much
+	./lem-in < maps/error_parsing/dublicate.map
 */

@@ -12,11 +12,17 @@
 
 # include "../includes/lemin.h"
 
-static int	**free2d_int(int **links, int j)
+static int	**free2d_int(int **links, int j, int end)
 {
 	int	i;
 
 	i = 0;
+	if (links[i])
+	{
+		free(links[i]);
+		links[i] = NULL;
+	}
+	++i;
 	while (i < j)
 	{
 		// int k = 0;
@@ -28,7 +34,13 @@ static int	**free2d_int(int **links, int j)
 		// }
 		// ft_printf("1pass->links[%d][%d]: %p\n", i, k, links[i][k]);
 		free(links[i]);
+		links[i] = NULL;
 		++i;
+	}
+	if (links[end])
+	{
+		free(links[end]);
+		links[end] = NULL;
 	}
 	free(links);
 	return (NULL);
@@ -59,7 +71,7 @@ int	error_free(t_room *pass, char *input, int j, int first)
 	if (pass->rooms)
 		pass->rooms = ft_free2d(pass->rooms);
 	if (pass->links)
-		pass->links = free2d_int(pass->links, j);
+		pass->links = free2d_int(pass->links, j, pass->end);
 	if (pass->distance)
 		free(pass->distance);
 	if (pass->used)
@@ -69,7 +81,6 @@ int	error_free(t_room *pass, char *input, int j, int first)
 	if (input)
 		free(input);
 	ft_printf("HERE\n");
-		
 	return (ERROR);
 }
 
@@ -99,35 +110,33 @@ int	error(int err)
 	return (ERROR);
 }
 
-void	del_path(t_path **path, t_room *pass)
+void	del_path(t_path **path)
 {
-	t_path	*head;
+	t_path	*temp;
 
-	head = (*path)->next;
 	while (*path)
 	{
-		free_and_del_path(path, pass);
-		*path = head;
-		if (head->next)
-			head = head->next;
-		else
-			head = NULL;
+		temp = (*path)->next;
+		(*path)->move = (*path)->move_head;
+		while ((*path)->move)
+			del_first_index(*path);
+		(*path)->move_head = NULL;
+		free(*path);
+		*path = temp;
 	}
 }
 
-int	error_path(t_room *pass, int first)
+int	error_path(t_room *pass, char *input, int first)
 {
 	if (first == TRUE)
 		ft_printf("{red}Error:{uncolor} no paths found\n");
 	if (pass->final_head)
 	{
-		del_path(&pass->final_head, pass);
+		del_path(&pass->final_head);
 	}
 	if (pass->head)
 	{
-		del_path(&pass->head, pass);
+		del_path(&pass->head);
 	}
-	// if (pass->links)
-	// 	pass->links = free2d_int(pass->links, j);
-	return (error_free(pass, NULL, pass->total, TRUE));
+	return (error_free(pass, input, pass->total, TRUE));
 }

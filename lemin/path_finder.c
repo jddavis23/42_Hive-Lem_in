@@ -21,7 +21,7 @@ static int	create_used(t_room *pass)
 	i = 0;
 	pass->used = (int *) malloc(pass->total * sizeof(int));
 	if (!pass->used)
-		return (error_path(pass, TRUE));
+		return (ERROR);
 	while (i < pass->total)
 		pass->used[i++] = FALSE;
 	return (0);
@@ -67,7 +67,7 @@ static void	sort_end(t_room *pass)
 	}
 }
 
-int	path_finder(t_room *pass)
+int	path_finder(t_room *pass, char *input)
 {
 	int i;
 	t_path	*path;
@@ -78,7 +78,7 @@ int	path_finder(t_room *pass)
 	pass->path_nbr = 1;
 	pass->longest_path = 0;
 	if (create_used(pass) == ERROR)
-		return (ERROR);
+		return (error_path(pass, input, TRUE));
 	sort_end(pass);
 	pass->final_head = NULL;
 	initialize_path_finder(&path, pass);
@@ -93,7 +93,7 @@ int	path_finder(t_room *pass)
 		// 	ft_printf("pass->links[%d]: %p\n", i, pass->links[i]);
 		// 	++i;
 		// }
-		return (error_path(pass, TRUE));
+		return (error_path(pass, input, TRUE));
 	}
 	final = pass->final_head;
 	i = 0;
@@ -137,7 +137,9 @@ int	path_finder(t_room *pass)
 	// ft_printf("nbr2 %i\n", help->move->next);
 	// del_first_index(help);
 	// ft_printf("nbr %i", help->move);
-	error_path(pass, FALSE);
+	if (input)
+		i = 0;
+	error_path(pass, input, FALSE);
 	return (0);
 }
 

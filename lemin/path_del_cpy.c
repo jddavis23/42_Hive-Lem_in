@@ -71,6 +71,7 @@ t_path	*cpy_pth(t_path *file)
 void del_first_index(t_path *file)
 {
 	t_index	*temp;
+
 	if (file->move_head)
 	{
 		file->move = file->move_head;
@@ -93,6 +94,7 @@ void del_first_index(t_path *file)
 
 void	free_and_del_path(t_path **path, t_room *pass)
 {
+	(*path)->move = (*path)->move_head;
 	while ((*path)->move)
 		del_first_index(*path);
 	free(*path);

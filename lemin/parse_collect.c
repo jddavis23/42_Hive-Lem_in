@@ -69,6 +69,8 @@ static void newline_minus_collect(t_room *pass, int k, char *temp)
 	}
 }
 
+/*	recursive function. looks for the connections	*/
+
 void match_in(char *str, char *input, t_room *pass, int k)
 {
 	int		i;
