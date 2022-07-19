@@ -6,7 +6,7 @@
 /*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:11:31 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/12 12:49:00 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/19 12:42:13 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	main(int argc, char **argv)
 			return (ERROR);
 		if (path_finder(pass) == ERROR)
 			return (0);
+		solve(pass);
 	}
 	else if (argv)
 		ft_printf("Usage: ./lem-in < maps/subject.map\n");

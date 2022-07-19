@@ -71,5 +71,6 @@ void	initialize_path_finder(t_path **path, t_room *pass);
 t_path	*cpy_pth(t_path *file);
 void	del_first_index(t_path *file);
 void	del_last_path(t_path **path, t_room *pass);
+void	solve(t_room *pass);
 
 #endif

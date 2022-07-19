@@ -16,6 +16,7 @@ SRC += $(C)path_finder.c
 SRC += $(C)path_create.c
 SRC += $(C)path_del_cpy.c
 SRC += $(C)path_initialize.c
+SRC += $(C)solve.c
 
 MAKELIB = make -C libft/ fclean && make -C libft/
 
