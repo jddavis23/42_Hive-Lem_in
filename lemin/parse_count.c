@@ -110,54 +110,44 @@ static int	newline_minus(char **rooms, char *str, char *temp, char *input)
 		}
 		++j;
 	}
-	ft_printf("%s---\n", str);
 	if (!rooms[j])
 	{
 		j = 0;
 		i = 0;
 		while (rooms[j])
 		{
-			//ft_printf("HERE %p\n", rooms[j]);
 			if (rooms[j] && !ft_strcmp(rooms[j], str))
 				++j;
-			//ft_printf("MAN\n");
 			while (rooms[j])
 			{
-				//ft_printf("HERE1\n");
 				if (rooms[j] && !ft_strcmp(rooms[j], str))
 					++j;
 				if (rooms[j] && ft_strstr(rooms[j], str))
 					break;
-					//ft_printf("HERE6\n");
 				++j;
 			}
 			if (rooms[j])
 				help = ft_strnstr(input, rooms[j], ft_strlen(rooms[j]));
 			if (rooms[j] && help && help[-1] == '\n' && help[ft_strlen(rooms[j])] == '-')
 			{
-				//ft_printf("HERE9\n");
 				i = 0;
 				if (rooms[i] && !ft_strcmp(rooms[i], rooms[j]))
 					++i;
 				while (rooms[i])
 				{
-					//ft_printf("HERE2\n");
 					if (rooms[i] && !ft_strcmp(rooms[i], rooms[j]))
 						++i;
-					if (rooms[i] && !ft_strncmp(&help[ft_strlen(rooms[i]) + 1], rooms[i], ft_strlen_stop(&help[ft_strlen(rooms[i]) + 1], '\n')))
-					{
-						i = -1;
+					if (rooms[i] && !ft_strncmp(&help[ft_strlen(rooms[j]) + 1], rooms[i], ft_strlen_stop(&help[ft_strlen(rooms[j]) + 1], '\n')))
 						break ;
-					}
 					++i;
 				}
-				if (i == -1)
+				if (rooms[i])
 					break ;
 			}
 			if (rooms[j])
 			++j;
 		}
-		if (i != -1)
+		if (!rooms[i] || !rooms[j])
 			return (-1);
 	}
 	return (count);
