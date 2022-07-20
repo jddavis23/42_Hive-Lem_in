@@ -12,6 +12,8 @@
 
 # include "../includes/lemin.h"
 
+/*	creates a new index element	*/
+
 static t_index	*ft_indexnew(int index)
 {
 	t_index	*new;
@@ -23,6 +25,8 @@ static t_index	*ft_indexnew(int index)
 	new->next = NULL;
 	return (new);
 }
+
+/*	creates index element and adds it onto path->move's linked list	*/
 
 void	create_index(t_index **move, t_path *path, int i)
 {
@@ -44,6 +48,8 @@ void	create_index(t_index **move, t_path *path, int i)
 	path->len++;
 }
 
+/*	creates a new path	*/
+
 static t_path	*ft_pathnew()
 {
 	t_path	*new;
@@ -56,6 +62,8 @@ static t_path	*ft_pathnew()
 	new->next = NULL;
 	return (new);
 }
+
+/*	creates path element and adds it onto the linked list of paths	*/
 
 void	create_path(t_path **path, t_room *pass)
 {

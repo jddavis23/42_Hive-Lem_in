@@ -12,6 +12,8 @@
 
 # include "../includes/lemin.h"
 
+/*	frees all the elements in 2d int array	*/
+
 static int	**free2d_int(int **links, int j, int end)
 {
 	int	i;
@@ -25,14 +27,6 @@ static int	**free2d_int(int **links, int j, int end)
 	++i;
 	while (i < j)
 	{
-		// int k = 0;
-		// ft_printf("pass->links[%d]: %p\n", i, links[i]);
-		// while (links[i][k] != -1)
-		// {
-		// 	ft_printf("1pass->links[%d][%d]: %p\n", i, k, links[i][k]);
-		// 	++k;
-		// }
-		// ft_printf("1pass->links[%d][%d]: %p\n", i, k, links[i][k]);
 		free(links[i]);
 		links[i] = NULL;
 		++i;
@@ -46,28 +40,12 @@ static int	**free2d_int(int **links, int j, int end)
 	return (NULL);
 }
 
+/*	frees everything that needs to be freed	*/
+
 int	error_free(t_room *pass, char *input, int j, int first)
 {
 	if (first == FALSE)
-	{
 		ft_printf("{red}Error:{uncolor} during parsing phase\n");
-	}
-	// ft_printf("pass->rooms: %p\n", pass->rooms);
-	// int i;
-	// int k;
-	// i = 0;
-	// while (i < pass->total)
-	// {
-	// 	k = 0;
-	// 	ft_printf("pass->rooms[%d]: %p\n", i, pass->rooms[i]);
-	// 	while (pass->rooms[i][k] != '\0')
-	// 	{
-	// 		ft_printf("pass->rooms[%d][%d]: %p\n", i, k, pass->rooms[i][k]);
-	// 		++k;
-	// 	}
-	// 	ft_printf("pass->rooms[%d][%d]: %p\n", i, k, pass->rooms[i][k]);
-	// 	++i;
-	// }
 	if (pass->rooms)
 		pass->rooms = ft_free2d(pass->rooms);
 	if (pass->links)
@@ -80,13 +58,13 @@ int	error_free(t_room *pass, char *input, int j, int first)
 		free(pass);
 	if (input)
 		free(input);
-	ft_printf("HERE\n");
 	return (ERROR);
 }
 
+/*	specific invalid map error messages	*/
+
 int	error(int err)
 {
-	//make sure everything is freed that needs to be freed
 	if (err == -1)
 		ft_printf("{red}Error{uncolor}\n");
 	else
@@ -110,6 +88,8 @@ int	error(int err)
 	return (ERROR);
 }
 
+/*	frees and deletes a path struct	*/
+
 void	del_path(t_path **path)
 {
 	t_path	*temp;
@@ -126,17 +106,19 @@ void	del_path(t_path **path)
 	}
 }
 
+
+/*
+**	function called in two scenarious
+**	upon error in path finding phase or upon finished program
+*/
+
 int	error_path(t_room *pass, char *input, int first)
 {
 	if (first == TRUE)
 		ft_printf("{red}Error:{uncolor} no paths found\n");
 	if (pass->final_head)
-	{
 		del_path(&pass->final_head);
-	}
 	if (pass->head)
-	{
 		del_path(&pass->head);
-	}
 	return (error_free(pass, input, pass->total, TRUE));
 }

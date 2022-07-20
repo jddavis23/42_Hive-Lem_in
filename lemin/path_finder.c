@@ -1,169 +1,121 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path_finder.c                                      :+:      :+:    :+:   */
+/*   path_initialize.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/12 09:38:32 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/15 13:30:59 by jdavis           ###   ########.fr       */
+/*   Created: 2022/07/19 10:31:10 by molesen           #+#    #+#             */
+/*   Updated: 2022/07/19 10:31:12 by molesen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/lemin.h"
 
-/*	function that checks if a room is already in use	*/
-
-static int	create_used(t_room *pass)
+static int	count_moves(t_path *path)
 {
 	int	i;
 
 	i = 0;
-	pass->used = (int *) malloc(pass->total * sizeof(int));
-	if (!pass->used)
-		return (ERROR);
-	while (i < pass->total)
-		pass->used[i++] = FALSE;
-	return (0);
+	while (path)
+	{
+		i += path->len;
+		path = path->next;
+	}
+	return (i);
 }
 
-/*	checks if end has been correctly sorted	*/
+static int	loop_to_end(t_path *file)
+{
+	while (file->next)
+	{
+		file = file->next;
+	}
+	return (file->nbr);
+}
 
-static int	is_sorted(t_room *pass)
+static void	compare_and_copy(t_path **path, t_room *pass)
+{
+	int	final_length;
+
+	if (pass->final_head)
+	{
+		final_length = loop_to_end(pass->final_head);
+		if (final_length < (*path)->nbr)
+		{
+			del_path(&pass->final_head);
+			pass->final_head = cpy_pth(pass->head);
+		}
+		else if (final_length == (*path)->nbr)
+		{
+			if (count_moves(pass->final_head) > count_moves(pass->head))
+			{
+				del_path(&pass->final_head);
+				pass->final_head = cpy_pth(pass->head);
+			}
+		}
+	}
+	else
+		pass->final_head = cpy_pth(pass->head);
+}
+
+static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
+{
+	int	len;
+	int	j;
+
+	if (pass->distance[i] <= pass->distance[prev_index] && pass->distance[i] != 0)
+	{
+		create_index(&(*path)->move, *path, i);
+		pass->used[i] = TRUE;
+		len = len_array(pass->links[i]);
+		j = 0;
+		while (j < len)
+		{
+			if (pass->links[i][j] == 0)
+			{
+				ft_printf("FOUND START!\n");
+				pass->head->found = TRUE;
+				path_finder(path, pass);
+			}
+			if (pass->distance[pass->links[i][j]] <= pass->distance[i] && pass->distance[pass->links[i][j]] != 0 && pass->links[i][j] != prev_index && pass->used[pass->links[i][j]] == FALSE)
+			{
+				find_path(&(*path), pass, pass->links[i][j], i);
+				pass->used[pass->links[i][j]] = FALSE;
+				del_first_index(*path);
+			}
+			j++;
+		}
+		pass->used[i] = FALSE;
+	}
+}
+
+void	path_finder(t_path **path, t_room *pass)
 {
 	int	i;
 
 	i = 0;
-	while (i < (pass->len - 1))
+	while (i < pass->len)
 	{
-		if (pass->distance[pass->links[pass->end][i]] > pass->distance[pass->links[pass->end][i + 1]])
-			return (FALSE);
+		if (pass->links[pass->end][i] == 0)
+		{
+			create_path(path, pass);
+			pass->head->found = TRUE;
+			ft_printf("FOUND START!\n");
+			break ;
+		}
+		if (pass->used[pass->links[pass->end][i]] == FALSE && pass->distance[i] <= pass->distance[pass->end])
+		{
+			create_path(path, pass);
+			find_path(&(*path), pass, pass->links[pass->end][i], pass->end);
+			del_last_path(path, pass);
+		}
 		++i;
 	}
-	return (TRUE);
-}
-
-/*	sorts the links of the end. Shortest paths in the beginning	*/
-
-static void	sort_end(t_room *pass)
-{
-	int	i;
-	int	temp;
-
-	i = 0;
-	// might remove is sorted from while loop and instead put in bottom - depends what is faster - check with bigger values
-	while (is_sorted(pass) == FALSE)
+	ft_printf("finish struct!\n");
+	if (pass->head && pass->head->found == TRUE)
 	{
-		if (pass->distance[pass->links[pass->end][i]] > pass->distance[pass->links[pass->end][i + 1]])
-		{
-			temp = pass->links[pass->end][i];
-			pass->links[pass->end][i] = pass->links[pass->end][i + 1];
-			pass->links[pass->end][i + 1] = temp;
-		}
-		if (i < (pass->len - 1))
-			++i;
-		else
-			i = 0;
+		compare_and_copy(path, pass);
+		pass->head->found = FALSE;
 	}
 }
-
-int	path_finder(t_room *pass, char *input)
-{
-	int i;
-	t_path	*path;
-	t_path	*final;
-
-	path = NULL;
-	final = NULL;
-	pass->path_nbr = 1;
-	pass->longest_path = 0;
-	if (create_used(pass) == ERROR)
-		return (error_path(pass, input, TRUE));
-	sort_end(pass);
-	pass->final_head = NULL;
-	initialize_path_finder(&path, pass);
-	if (!pass->final_head)
-	{
-		ft_printf("ERROR\n");
-		// int i;
-		// i = 0;
-		// while ( i < pass->total)
-		// {
-		// 	while (links[i] != -1)
-		// 	ft_printf("pass->links[%d]: %p\n", i, pass->links[i]);
-		// 	++i;
-		// }
-		return (error_path(pass, input, TRUE));
-	}
-	final = pass->final_head;
-	i = 0;
-	ft_printf("\n{green}finalS:{uncolor} \n");
-	while (final)
-	{
-		final->move = final->move_head;
-		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
-		while (final->move)
-		{
-			ft_printf("room: %s\n", pass->rooms[final->move->index]);
-			final->move = final->move->next;
-		}
-		++i;
-		final = final->next;
-	}
-	// t_path *help = NULL;
-	// t_path *top;
-	// help = cpy_pth(path);
-	// top = help;
-	// while (path && help)
-	// {
-	// 	ft_printf("nbr %i  len %i  found %i\n", path->nbr, path->len, path->found);
-	// 	ft_printf("nbr %i  len %i  found %i\n\n", help->nbr, help->len, help->found);
-	// 	path->move = path->move_head;
-	// 	while (path->move && path->move)
-	// 	{
-	// 		ft_printf("index %i\n", path->move->index);
-	// 		ft_printf("index %i\n", help->move->index);
-	// 		path->move = path->move->next;
-	// 		help->move = help->move->next;
-	// 	}
-	// 	ft_printf("\n");
-	// 	path = path->next;
-	// 	help = help->next;
-	// }
-
-	// help = top;
-	// help->move = help->move_head;
-	// ft_printf("nbr %i", help->move);
-	// ft_printf("nbr2 %i\n", help->move->next);
-	// del_first_index(help);
-	// ft_printf("nbr %i", help->move);
-	if (input)
-		i = 0;
-	error_path(pass, input, FALSE);
-	return (0);
-}
-
-/*
-
-	TO DO:
-
-	if amount of ants < len of paths
-		pick path with fewest turns
-
-	do we want to collect the shortest path also?
-
-	try out with example we tried on paper
-
-
-
-
-
-	check leaks and make sure everything is freed
-
-	EXIT if we can't find a room that get referenced in the connections (now it segmentfault)
-
-
-
-	make the function for printing out the final ants movement.
-
-*/

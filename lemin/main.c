@@ -49,7 +49,7 @@ int	main(int argc, char **argv)
 		pass->max_paths = calc_max(len_array(pass->links[0]), pass->len);
 		if (pass->max_paths < 1)
 			return (ERROR);
-		if (path_finder(pass, input) == ERROR)
+		if (initialize_path_finder(pass, input) == ERROR)
 			return (0);
 	}
 	else if (argv)
@@ -73,4 +73,22 @@ Maps that should be considered an error but it accepts
 
 	frees too much
 	./lem-in < maps/error_parsing/dublicate.map
+*/
+
+
+/*
+
+	TO DO:
+
+	if amount of ants < len of paths
+		pick path with fewest turns
+
+	do we want to collect the shortest path also?
+
+	try out with example we tried on paper
+
+
+
+	make the function for printing out the final ants movement.
+
 */

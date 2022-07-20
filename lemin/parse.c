@@ -43,17 +43,6 @@ int	by_line(char *input)
 	return (count);
 }
 
-// void	initial_mal(t_room *pass, int k)
-// {
-// 	if (!pass->links[k])
-// 	{
-// 		pass->links[k] = (int *) malloc(1 * sizeof(int));
-// 		if (!pass->links[k])
-// 			//free and exit
-// 		pass->links[k][0] = -2; //only on first iteration
-// 	}
-// }
-
 int	duplicated(char **str)
 {
 	int	i;
@@ -82,7 +71,7 @@ static void	set_to_null(t_room *pass)
 	while (i < pass->total)
 	{
 		pass->rooms[i] = NULL;
-		//pass->links[i] = NULL;
+		pass->links[i] = NULL;
 		++i;
 	}
 	pass->rooms[i] = NULL;
@@ -114,8 +103,6 @@ int	create(t_room *pass, char **input)
 	{
 		pass->rooms = (char **) malloc((pass->total + 1) * sizeof(char *));
 		pass->links = (int **) malloc(pass->total * sizeof(int *));
-		ft_printf("pass->rooms: %p\n", pass->rooms);
-		ft_printf("pass->links: %p\n", pass->links);
 		if (!pass->rooms || !pass->links)
 		{
 			ft_printf("here\n");
@@ -126,7 +113,6 @@ int	create(t_room *pass, char **input)
 		{
 			if (hold == 5 || hold == 6)
 			{
-				ft_printf("ANYHTING\n");
 				if (hold == 5)
 					hold = 0;//pass->rooms[0] = ft_strnew(ft_strlen_stop(&input[i], ' '));
 				else
@@ -200,7 +186,6 @@ int	create(t_room *pass, char **input)
 					++p;
 				}
 				return (0);
-			//	exit (0);
 			}
 			++i;
 		}

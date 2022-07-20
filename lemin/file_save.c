@@ -81,6 +81,26 @@ static int	check_if_valid(char *str, int *i, int *total, int *command)
 	return (TRUE);
 }
 
+/*	saves line to input	*/
+
+static void	save_line(char **input, char **line)
+{
+	char	*temp;
+	char	*just;  //will think of better way
+
+	if (!(*input))
+		*input = ft_strjoin(*line, "\n");
+	else
+	{
+		temp = ft_strjoin(*line, "\n");
+		just = ft_strjoin(*input, temp);
+		free(*input);
+		free(temp);
+		*input = just;
+	}
+	free(*line);
+}
+
 /*	reads file and stores in string and checks if invalid file	*/
 
 int	file_save(t_room *pass, char **input)
@@ -89,8 +109,6 @@ int	file_save(t_room *pass, char **input)
 	int		i;
 	int		command;
 	char	*line;
-	char	*temp;
-	char	*just;  //will think of better way
 	int		total;
 
 	ret = 1;
@@ -117,19 +135,7 @@ int	file_save(t_room *pass, char **input)
 			pass->ants = ft_atoi(line);
 		else if (check_if_valid(line, &i, &total, &command) == ERROR)
 			return (ERROR);
-		if (!(*input))
-			*input = ft_strjoin(line, "\n");
-		else
-		{
-			temp = ft_strjoin(line, "\n");
-			just = ft_strjoin(*input, temp);
-			free(*input);
-			free(temp);
-			*input = just;
-		}
-		free(line);
+		save_line(input, &line);
 	}
 	return (total);
 }
-
-// how to check if path is valid?
