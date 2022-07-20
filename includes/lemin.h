@@ -19,6 +19,13 @@ typedef struct		s_path
 	struct s_path	*next;
 }					t_path;
 
+typedef struct		s_ants
+{
+	int				ant;
+	t_index			*index;
+	struct s_ants	*next;
+}					t_ants;
+
 typedef struct  s_room
 {
 	char	**rooms;

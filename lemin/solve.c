@@ -19,6 +19,52 @@
 	i = 0;
 }*/
 
+static void	create_ants(t_ants **ants_move, int ant, t_index *index)
+{
+	t_ants	*new;
+
+	new = (t_ants *)malloc(sizeof(t_ants));
+	if (!new)
+		return ;
+	new->ant = ant;
+	new->index = index;
+	new->next = NULL;
+	if (*ants_move)
+	{
+		ft_printf("HEREIEJRIEJRI2222222\n");
+		
+		(*ants_move)->next = new;
+		*ants_move = (*ants_move)->next;
+	}
+	else
+	{
+		ft_printf("HEREIEJRIEJRI\n");
+		*ants_move = new;
+	}
+}
+
+static t_ants	*path_setter(t_ants **ants_move, t_room *pass, int path_count)
+{
+	t_path	*path;
+	static t_ants	*head = NULL;
+	static int	current_ant = 1;
+	int		i;
+
+	i = 0;
+	path = pass->final_head;
+	while (path && i < path_count && current_ant <= pass->ants)
+	{
+		create_ants(ants_move, current_ant, path->move_head);
+		ft_printf("ants->ant: %d	ants->path: %p\n", (*ants_move)->ant, (*ants_move)->index);
+		if (!head)
+		 	head = *ants_move;
+		current_ant++;
+		path = path->next;
+		++i;
+	}
+	return (head);
+}
+
 static int	diff_prev(t_room *pass, int len)
 {
 	t_path *path;
@@ -79,6 +125,8 @@ void	solve(t_room *pass)
 	//int	next_len;
 	//int	selected_paths;
 	t_path	*path;
+	t_ants	*ants_move;
+	t_ants	*head;
 
 	i = 1;
 	path = pass->final_head;
@@ -93,7 +141,28 @@ void	solve(t_room *pass)
 		path = path->next;
 		++i;
 	}
+	//int	current_ant;
 	ft_printf("paths: %i\n", i);
+	//current_ant = 1;
+	ants_move = NULL;//printf error malloc message
+	head = path_setter(&ants_move, pass, i);
+	ft_printf("head->>ant: %d\n", head->ant);
+	while (head)
+	{
+
+		path_setter(&ants_move, pass, i);
+		while (head)
+		{
+			ft_printf("ants: %d		index: %d\n", head->ant, head->index->index);
+			head = head->next;
+		}
+		break ;
+		//printing function
+		// uses delete function if ant reached the end
+
+		//logic function
+		// create_ants
+	}
 }
 
 /*
