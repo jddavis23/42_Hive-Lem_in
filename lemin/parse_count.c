@@ -110,34 +110,41 @@ static int	newline_minus(char **rooms, char *str, char *temp, char *input)
 		}
 		++j;
 	}
+	ft_printf("%s---\n", str);
 	if (!rooms[j])
 	{
 		j = 0;
 		i = 0;
 		while (rooms[j])
 		{
-			if (!ft_strcmp(rooms[j], str))
+			//ft_printf("HERE %p\n", rooms[j]);
+			if (rooms[j] && !ft_strcmp(rooms[j], str))
 				++j;
+			//ft_printf("MAN\n");
 			while (rooms[j])
 			{
-				if (!ft_strcmp(rooms[j], str))
+				//ft_printf("HERE1\n");
+				if (rooms[j] && !ft_strcmp(rooms[j], str))
 					++j;
-				if (ft_strstr(rooms[j], str))
+				if (rooms[j] && ft_strstr(rooms[j], str))
 					break;
+					//ft_printf("HERE6\n");
 				++j;
 			}
 			if (rooms[j])
 				help = ft_strnstr(input, rooms[j], ft_strlen(rooms[j]));
 			if (rooms[j] && help && help[-1] == '\n' && help[ft_strlen(rooms[j])] == '-')
 			{
+				//ft_printf("HERE9\n");
 				i = 0;
-				if (!ft_strcmp(rooms[i], rooms[j]))
+				if (rooms[i] && !ft_strcmp(rooms[i], rooms[j]))
 					++i;
 				while (rooms[i])
-				{		
-					if (!ft_strcmp(rooms[i], rooms[j]))
+				{
+					//ft_printf("HERE2\n");
+					if (rooms[i] && !ft_strcmp(rooms[i], rooms[j]))
 						++i;
-					if (!ft_strncmp(&help[ft_strlen(rooms[i]) + 1], rooms[i], ft_strlen_stop(&help[ft_strlen(rooms[i]) + 1], '\n')))
+					if (rooms[i] && !ft_strncmp(&help[ft_strlen(rooms[i]) + 1], rooms[i], ft_strlen_stop(&help[ft_strlen(rooms[i]) + 1], '\n')))
 					{
 						i = -1;
 						break ;
@@ -147,6 +154,8 @@ static int	newline_minus(char **rooms, char *str, char *temp, char *input)
 				if (i == -1)
 					break ;
 			}
+			if (rooms[j])
+			++j;
 		}
 		if (i != -1)
 			return (-1);
@@ -179,12 +188,21 @@ int	count_in(char *str, char *input, char **rooms)
 			}
 			else if (dash_in_section(&input[i], temp) >= 1 && 
 				(temp[-1] == '-' && temp[ft_strlen(str)] == '\n'))
-				count += minus_newline(rooms, str, &input[i], temp);
+			{
+				error = minus_newline(rooms, str, &input[i], temp);
+				if (error == -1)
+					return (-1);
+				count += error; 
+			}
+				//count += minus_newline(rooms, str, &input[i], temp);
 		}
 		while (temp && ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
 		{
 			temp = ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'));
-			count += minus_newline(rooms, str, &input[i], temp);
+			error = minus_newline(rooms, str, &input[i], temp);
+			if (error == -1)
+				return (-1);
+			count += error; 
 		}
 		while (input[i] != '\n')
 			++i;
