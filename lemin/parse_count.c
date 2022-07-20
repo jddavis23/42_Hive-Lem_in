@@ -88,10 +88,12 @@ static int	minus_newline(char **rooms, char *str, char *input, char *temp)
 	return (count);
 }
 
-static int	newline_minus(char **rooms, char *str, char *temp)
+static int	newline_minus(char **rooms, char *str, char *temp, char *input)
 {
-	int	j;
-	int	count;
+	int		j;
+	int		i;
+	int		count;
+	char	*help;
 
 	j = 0;
 	count = 0;
@@ -108,6 +110,47 @@ static int	newline_minus(char **rooms, char *str, char *temp)
 		}
 		++j;
 	}
+	if (!rooms[j])
+	{
+		j = 0;
+		i = 0;
+		while (rooms[j])
+		{
+			if (!ft_strcmp(rooms[j], str))
+				++j;
+			while (rooms[j])
+			{
+				if (!ft_strcmp(rooms[j], str))
+					++j;
+				if (ft_strstr(rooms[j], str))
+					break;
+				++j;
+			}
+			if (rooms[j])
+				help = ft_strnstr(input, rooms[j], ft_strlen(rooms[j]));
+			if (rooms[j] && help && help[-1] == '\n' && help[ft_strlen(rooms[j])] == '-')
+			{
+				i = 0;
+				if (!ft_strcmp(rooms[i], rooms[j]))
+					++i;
+				while (rooms[i])
+				{		
+					if (!ft_strcmp(rooms[i], rooms[j]))
+						++i;
+					if (!ft_strncmp(&help[ft_strlen(rooms[i]) + 1], rooms[i], ft_strlen_stop(&help[ft_strlen(rooms[i]) + 1], '\n')))
+					{
+						i = -1;
+						break ;
+					}
+					++i;
+				}
+				if (i == -1)
+					break ;
+			}
+		}
+		if (i != -1)
+			return (-1);
+	}
 	return (count);
 }
 
@@ -116,6 +159,7 @@ int	count_in(char *str, char *input, char **rooms)
 	int		i;
 	int		count;
 	char	*temp;
+	int		error;
 
 	i = 0;
 	count = 0;
@@ -127,7 +171,12 @@ int	count_in(char *str, char *input, char **rooms)
 		{
 			if (is_dash(&temp[ft_strlen(str)]) >= 1 && (temp[-1] == '\n' && 
 				temp[ft_strlen(str)] == '-'))
-				count += newline_minus(rooms, str, temp);
+			{
+				error = newline_minus(rooms, str, temp,  &input[i]);
+				if (error == -1)
+					return (-1);
+				count += error; //newline_minus(rooms, str, temp,  &input[i]);
+			}
 			else if (dash_in_section(&input[i], temp) >= 1 && 
 				(temp[-1] == '-' && temp[ft_strlen(str)] == '\n'))
 				count += minus_newline(rooms, str, &input[i], temp);

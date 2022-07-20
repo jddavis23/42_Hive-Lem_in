@@ -84,6 +84,7 @@ int	create(t_room *pass, char **input)
 	int	k;
 	int	hold;
 	int p, m;
+	int	count;
 
 	i = 0;
 	j = 1;
@@ -164,6 +165,9 @@ int	create(t_room *pass, char **input)
 				while (pass->rooms[j])
 				{
 					ft_printf("j: %d\n", j);
+					count = count_in(pass->rooms[j], &((*input)[i]), pass->rooms);
+					if (count == -1)
+						exit (0);
 					pass->links[j] = (int *) malloc((count_in(pass->rooms[j], &((*input)[i]), pass->rooms) + 1) * sizeof(int));
 					if (!pass->links[j])
 					{
