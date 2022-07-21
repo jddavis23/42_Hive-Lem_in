@@ -67,18 +67,17 @@ static int	minus_newline(char **rooms, char *str, char *input, char *temp)
 	int		count;
 	char	*arr;//arr[addi_diff(input, &temp[-1]) + 1];
 	int		i;
+	char	*hold;
 
 	count = 0;
+	hold = temp;
 	j = addi_diff(input, &temp[-1]);
-	//arr = NULL;
 	arr = ft_strnew(j);
 	if (!arr)
 	{
 		exit (0); //wipe everything
 	} 
-	//ft_bzero(arr, addi_diff(input, &temp[-1]) + 1);
 	ft_strncpy(arr, input, j); //addi_diff(input, &temp[-1]));
-	//ft_printf("ARR %s\n", arr);
 	j = 0;
 	if (!ft_strcmp(rooms[j], str))
 		++j;
@@ -88,7 +87,6 @@ static int	minus_newline(char **rooms, char *str, char *input, char *temp)
 			++j;
 		if (rooms[j] && !ft_strcmp(arr, rooms[j]))
 		{
-			//ft_printf("FOUND %s  INPPUT %s\n", rooms[j], input);
 			++count;
 			break ;
 		}
@@ -96,21 +94,12 @@ static int	minus_newline(char **rooms, char *str, char *input, char *temp)
 	}
 	free(arr);
 	arr = NULL;
-	/*if (!rooms[j])
-	{
-		i = 0;
-		while (rooms[i])
-		{
-			if (ft_strstr
-		}
-	}*/
 	if (!rooms[j])
 	{
 		j = 0;
 		i = -1;
 		while (rooms[j])
 		{
-			ft_printf("str %s\n", str);
 			if (rooms[j] && !ft_strcmp(rooms[j], str))
 				++j;
 			while (rooms[j])
@@ -126,10 +115,8 @@ static int	minus_newline(char **rooms, char *str, char *input, char *temp)
 			temp = NULL;
 			if (rooms[j])
 				temp = ft_strstr(input, rooms[j]);
-			ft_printf("\nROOMJ %s\n\nINPUT\n%s\nTEMP %p\n", rooms[j], input, temp);
 			if (rooms[j] && temp && temp[-1] == '-' && temp[ft_strlen(rooms[j])] == '\n')
 			{
-		ft_printf("HERE4\n");
 				i = 0;
 				if (rooms[i] && !ft_strcmp(rooms[i], rooms[j]))
 					++i;
@@ -139,7 +126,6 @@ static int	minus_newline(char **rooms, char *str, char *input, char *temp)
 						++i;
 					if (rooms[i] && !ft_strncmp(input, rooms[i], ft_strlen(rooms[i])))//, ft_strlen_stop(&help[ft_strlen(rooms[j]) + 1], '\n')))
 					{
-						ft_printf("NOW\n");
 						arr = ft_strnew(addi_diff(input, &temp[-1]));
 						if (!arr)
 						{
@@ -147,10 +133,7 @@ static int	minus_newline(char **rooms, char *str, char *input, char *temp)
 						}
 						ft_strncpy(arr, input, addi_diff(input, &temp[-1]));
 						if (ft_strcmp(arr, rooms[i]))
-						{
-							ft_printf("\nRIIM %s\nLOOK %s\n", rooms[i], arr);
 							break ;
-						}
 						free(arr);
 						arr = NULL;
 					}
@@ -162,11 +145,8 @@ static int	minus_newline(char **rooms, char *str, char *input, char *temp)
 			if (rooms[j])
 				++j;
 		}
-		if ((i != -1 && !rooms[i]) || i == -1)
-		{
-			ft_printf("CHECKING\n");
+		if ((i != -1 && !rooms[i]) || (i == -1 && hold[-1] == '-'))
 			return (-1);
-		}
 	}
 	if (arr)
 		free(arr);
@@ -208,7 +188,9 @@ static int	newline_minus(char **rooms, char *str, char *temp, char *input)
 				if (rooms[j] && !ft_strcmp(rooms[j], str))
 					++j;
 				if (rooms[j] && ft_strstr(rooms[j], str))
-					break;
+					break ;
+				else if (ft_strstr(str, rooms[j]))
+					return (0);
 				++j;
 			}
 			if (rooms[j])
@@ -253,7 +235,7 @@ int	count_in(char *str, char *input, char **rooms)
 		//error with checking if line is comment to skipp
 		diff = count;
 		temp = ft_strnstr(&input[i], str, ft_strlen_stop(&input[i], '\n'));
-		if (temp && temp[0] != '#' && ((temp[-1] == '\n' && temp[ft_strlen(str)] == '-') ||
+		if (temp && input[i] != '#' && ((temp[-1] == '\n' && temp[ft_strlen(str)] == '-') ||
 			(temp[-1] == '-' && temp[ft_strlen(str)] == '\n')))
 		{
 			if (is_dash(&temp[ft_strlen(str)]) >= 1 && (temp[-1] == '\n' && 
@@ -274,7 +256,7 @@ int	count_in(char *str, char *input, char **rooms)
 			}
 				//count += minus_newline(rooms, str, &input[i], temp);
 		}
-		while (temp && temp[0] != '#' && ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n')) && diff == count) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
+		while (temp && input[i] != '#' && ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n')) && diff == count) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
 		{
 			temp = ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'));
 			error = minus_newline(rooms, str, &input[i], temp);
