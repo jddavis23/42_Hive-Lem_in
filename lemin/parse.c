@@ -43,17 +43,6 @@ int	by_line(char *input)
 	return (count);
 }
 
-// void	initial_mal(t_room *pass, int k)
-// {
-// 	if (!pass->links[k])
-// 	{
-// 		pass->links[k] = (int *) malloc(1 * sizeof(int));
-// 		if (!pass->links[k])
-// 			//free and exit
-// 		pass->links[k][0] = -2; //only on first iteration
-// 	}
-// }
-
 int	duplicated(char **str)
 {
 	int	i;
@@ -74,14 +63,28 @@ int	duplicated(char **str)
 	return (0);
 }
 
-int	create(t_room *pass, char *input)	
+static void	set_to_null(t_room *pass)
 {
-	int	count;
+	int	i;
+
+	i = 0;
+	while (i < pass->total)
+	{
+		pass->rooms[i] = NULL;
+		pass->links[i] = NULL;
+		++i;
+	}
+	pass->rooms[i] = NULL;
+}
+
+int	create(t_room *pass, char **input)	
+{
 	int	i;
 	int	j;
 	int	k;
 	int	hold;
 	int p, m;
+	int	count;
 
 	i = 0;
 	j = 1;
@@ -89,111 +92,108 @@ int	create(t_room *pass, char *input)
 	p = 0;
 	m = 0;
 	hold = ERROR;
-	count = file_save(pass, &input);
-	pass->total = count;
-	pass->end = pass->total - 1;
 	pass->rooms = NULL;
 	pass->links = NULL;
 	pass->distance = NULL;
 	pass->used = NULL;
-	if (count == ERROR)
-		return (error_free(pass, input, 0));
-	if (count > 0)
+	pass->total = file_save(pass, input);
+	pass->end = pass->total - 1;
+	if (pass->total == ERROR)
+		return (error_free(pass, *input, 0, TRUE));
+	if (pass->total > 0)
 	{
-		pass->rooms = (char **) malloc((count + 1) * sizeof(char *));
-		pass->links = (int **) malloc((count + 1) * sizeof(int *));
+		pass->rooms = (char **) malloc((pass->total + 1) * sizeof(char *));
+		pass->links = (int **) malloc(pass->total * sizeof(int *));
 		if (!pass->rooms || !pass->links)
 		{
 			ft_printf("here\n");
-			return (error_free(pass, input, 0));
+			return (error_free(pass, *input, 0, FALSE));
 		}
-		pass->rooms[count] = NULL;
-		pass->links[count] = NULL;
-		pass->rooms[0] = NULL;
-		pass->rooms[count - 1] = NULL;
-		pass->rooms[count] = NULL;
-		while (input[i] != '\0')
+		set_to_null(pass);
+		while ((*input)[i] != '\0')
 		{
 			if (hold == 5 || hold == 6)
 			{
 				if (hold == 5)
 					hold = 0;//pass->rooms[0] = ft_strnew(ft_strlen_stop(&input[i], ' '));
 				else
-					hold = count - 1;//pass->rooms[count - 1] = ft_strnew(ft_strlen_stop(&input[i], ' '));
+					hold = pass->total - 1;//pass->rooms[count - 1] = ft_strnew(ft_strlen_stop(&input[i], ' '));
 				if (pass->rooms[hold])
 				{
 					ft_printf("here6\n");
-					return (error_free(pass, input, 0));
+					return (error_free(pass, *input, 0, FALSE));
 				}
-				pass->rooms[hold] = ft_strnew(ft_strlen_stop(&input[i], ' '));
+				pass->rooms[hold] = ft_strnew(ft_strlen_stop(&((*input)[i]), ' '));
 				if (!pass->rooms[hold])
 				{
 					ft_printf("here2\n");
-					return (error_free(pass, input, 0));
+					return (error_free(pass, *input, 0, FALSE));
 				}
-				ft_strncat(pass->rooms[hold], &input[i], ft_strlen_stop(&input[i], ' '));
+				ft_strncat(pass->rooms[hold], &((*input)[i]), ft_strlen_stop(&((*input)[i]), ' '));
 				ft_printf("%s-%i\n", pass->rooms[hold], hold);
-				while (input[i] != '\n')
+				while ((*input)[i] != '\n')
 					++i;
 			}
-			hold = by_line(&input[i]);
+			hold = by_line(&((*input)[i]));
 			if (hold < 2 || hold == 5 || hold == 6)
 			{
-				while (input[i] != '\n')
+				while ((*input)[i] != '\n')
 					++i;
 			}
 			if (hold == 3)
 			{
-				pass->rooms[j] = ft_strnew(ft_strlen_stop(&input[i], ' '));
+				pass->rooms[j] = ft_strnew(ft_strlen_stop(&((*input)[i]), ' '));
 				if (!pass->rooms[j])
 				{
 					ft_printf("here3\n");
-					return (error_free(pass, input, 0));
-					//free exit
+					return (error_free(pass, *input, 0, FALSE));
 				}
 				//pass->rooms[j + 1] = NULL;
-				ft_strncat(pass->rooms[j++], &input[i], ft_strlen_stop(&input[i], ' '));
+				ft_strncat(pass->rooms[j++], &((*input)[i]), ft_strlen_stop(&((*input)[i]), ' '));
 				ft_printf("%s-%i\n", pass->rooms[j - 1], j - 1);
-				while (input[i] != '\n')
+				while ((*input)[i] != '\n')
 					++i;
-
 			}
 			else if (hold == 2)// && ft_strlchr(&input[i], '-', ft_strlen_stop(&input[i], '\n')))
 			{
 				if (duplicated(pass->rooms) == ERROR)
 				{
 					ft_printf("here5\n");
-					return (error_free(pass, input, 0));
+					return (error_free(pass, *input, 0, FALSE));
 				}
 				j = 0;
 				while (pass->rooms[j])
 				{
-					pass->links[j] = (int *) malloc((count_in(pass->rooms[j], &input[i], pass->rooms) + 1) * sizeof(int));
+					ft_printf("j: %d\n", j);
+					count = count_in(pass->rooms[j], &((*input)[i]), pass->rooms);
+					if (count == -1)
+						exit (0);
+					pass->links[j] = (int *) malloc((count_in(pass->rooms[j], &((*input)[i]), pass->rooms) + 1) * sizeof(int));
 					if (!pass->links[j])
 					{
 						ft_printf("here4\n");
-						return (error_free(pass, input, j));
+						return (error_free(pass, *input, j, FALSE));
 					}
 					k = 0;
-					while (k < count_in(pass->rooms[j], &input[i], pass->rooms) + 1)
+					while (k < count_in(pass->rooms[j], &((*input)[i]), pass->rooms) + 1)
 						pass->links[j][k++] = -1;
-					match_in(pass->rooms[j], &input[i], pass, j);
+					match_in(pass->rooms[j], &((*input)[i]), pass, j);
 					++j;
 				}
 				while (pass->rooms[p])
 				{
 					m = 0;
-					ft_printf("room %s count [%i]\n", pass->rooms[p], count_in(pass->rooms[p], &input[i], pass->rooms));
-					while (m <= count_in(pass->rooms[p], &input[i], pass->rooms))
+					ft_printf("room %s count [%i]\n", pass->rooms[p], count_in(pass->rooms[p], &((*input)[i]), pass->rooms));
+					while (m <= count_in(pass->rooms[p], &((*input)[i]), pass->rooms))
 						ft_printf("%i ", pass->links[p][m++]);
 					ft_printf("\n");
 					++p;
 				}
 				return (0);
-			//	exit (0);
 			}
 			++i;
 		}
 	}
+	
 	return (1);
 }

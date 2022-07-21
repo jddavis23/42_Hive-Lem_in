@@ -80,7 +80,7 @@ int	is_coordinates(char *str)
 
 /*	checks if connections are correctly formatted	*/
 
-int is_connection(char *str)
+int	is_connection(char *str)
 {
 	int	count;
 	int	i;

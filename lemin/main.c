@@ -40,14 +40,16 @@ int	main(int argc, char **argv)
 		pass = (t_room *) malloc(sizeof(t_room));
 		if (!pass)
 			return (0);
-		if (create(pass, input) == ERROR)
+		
+		if (create(pass, &input) == ERROR)
 			return (0);
 		distance(pass);
+		
 		pass->len = len_array(pass->links[pass->end]);
 		pass->max_paths = calc_max(len_array(pass->links[0]), pass->len);
 		if (pass->max_paths < 1)
 			return (ERROR);
-		if (path_finder(pass) == ERROR)
+		if (initialize_path_finder(pass, input) == ERROR)
 			return (0);
 		solve(pass);
 	}
@@ -67,8 +69,27 @@ Maps that should be considered an error but it accepts
 
 	./lem-in < maps/error/space_at_end.map
 
+	doesn't display error if room name doesn't exist
+	./lem-in < maps/error_parsing/no_room.map
 
-freeing too much of the pass->rooms free2d function. not sure what is the cause
-	leaks -atExit -- ./lem-in < maps/error_parsing/error_double_start.map
+	frees too much
+	./lem-in < maps/error_parsing/dublicate.map
+*/
+
+
+/*
+
+	TO DO:
+
+	if amount of ants < len of paths
+		pick path with fewest turns
+
+	do we want to collect the shortest path also?
+
+	try out with example we tried on paper
+
+
+
+	make the function for printing out the final ants movement.
 
 */

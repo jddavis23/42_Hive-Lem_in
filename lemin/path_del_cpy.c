@@ -35,6 +35,7 @@ static t_index	*cpy_indx(t_path *file, t_path *new)
 	}
 	n_index->next = NULL;
 	n_index = n_index_head;
+	// should this below be switched to n_index_head?? that way it will always start with the head
 	new->move = n_index;
 	return (n_index_head);
 }
@@ -71,6 +72,7 @@ t_path	*cpy_pth(t_path *file)
 void del_first_index(t_path *file)
 {
 	t_index	*temp;
+
 	if (file->move_head)
 	{
 		file->move = file->move_head;
@@ -91,8 +93,9 @@ void del_first_index(t_path *file)
 	}
 }
 
-static void	free_and_del_path(t_path **path, t_room *pass)
+void	free_and_del_path(t_path **path, t_room *pass)
 {
+	(*path)->move = (*path)->move_head;
 	while ((*path)->move)
 		del_first_index(*path);
 	free(*path);

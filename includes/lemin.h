@@ -61,9 +61,10 @@ int	file_save(t_room *pass, char **input);
 int	only_digits(char *str, int *i);
 int	is_coordinates(char *str);
 int	is_connection(char *str);
-int	create(t_room *pass, char *input);
+int	create(t_room *pass, char **input);
 int	error(int err);
-int	error_free(t_room *pass, char *input, int j);
+int	error_free(t_room *pass, char *input, int j, int first);
+int	error_path(t_room *pass, char *input, int first);
 
 // parsing
 void	match_in(char *str, char *input, t_room *pass, int k);
@@ -74,14 +75,16 @@ int		is_dash(char *str);
 
 // path finder
 void	distance(t_room *pass);
-int		path_finder(t_room *pass);
+int		initialize_path_finder(t_room *pass, char *input);
 int		len_array(int *links);
 void	create_index(t_index **move, t_path *path, int i);
 void	create_path(t_path **path, t_room *pass);
-void	initialize_path_finder(t_path **path, t_room *pass);
+void	path_finder(t_path **path, t_room *pass);
 t_path	*cpy_pth(t_path *file);
 void	del_first_index(t_path *file);
 void	del_last_path(t_path **path, t_room *pass);
 void	solve(t_room *pass);
+void	free_and_del_path(t_path **path, t_room *pass);
+void	del_path(t_path **path);
 
 #endif
