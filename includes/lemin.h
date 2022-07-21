@@ -14,9 +14,11 @@ typedef struct		s_path
 	int				nbr;
 	int				len;
 	int				found;
+	int				max_ants;
 	t_index			*move_head;
 	struct s_index	*move;
 	struct s_path	*next;
+	struct s_path	*prev;//is this possible?
 }					t_path;
 
 typedef struct		s_ants

@@ -12,13 +12,6 @@
 
 #include "../includes/lemin.h"
 
-/*void	picking_struct(t_path *path, int not_here)
-{
-	int	i;
-
-	i = 0;
-}*/
-
 static void	create_ants(t_ants **ants_move, int ant, t_index *index)
 {
 	t_ants	*new;
@@ -31,39 +24,17 @@ static void	create_ants(t_ants **ants_move, int ant, t_index *index)
 	new->next = NULL;
 	if (*ants_move)
 	{
-		ft_printf("HEREIEJRIEJRI2222222\n");
-		
 		(*ants_move)->next = new;
 		*ants_move = (*ants_move)->next;
 	}
 	else
 	{
-		ft_printf("HEREIEJRIEJRI\n");
 		*ants_move = new;
 	}
 }
 
-static t_ants	*path_setter(t_ants **ants_move, t_room *pass, int path_count)
-{
-	t_path	*path;
-	static t_ants	*head = NULL;
-	static int	current_ant = 1;
-	int		i;
-
-	i = 0;
-	path = pass->final_head;
-	while (path && i < path_count && current_ant <= pass->ants)
-	{
-		create_ants(ants_move, current_ant, path->move_head);
-		ft_printf("ants->ant: %d	ants->path: %p\n", (*ants_move)->ant, (*ants_move)->index);
-		if (!head)
-		 	head = *ants_move;
-		current_ant++;
-		path = path->next;
-		++i;
-	}
-	return (head);
-}
+// this could be collected and stored somewhere since this will not change.
+// we call this function multiple times so we shouldn't keep calculating this
 
 static int	diff_prev(t_room *pass, int len)
 {
@@ -82,9 +53,52 @@ static int	diff_prev(t_room *pass, int len)
 	return (count);
 }
 
+static void	path_calc(int remain_ants, t_path **path)
+{
+	ft_printf("path->prev: %p\n", (*path)->prev);
+	while (*path && (*path)->prev)
+	{
+		ft_printf("Here end: %p, remain_ants: %d, max_ants: %d\n", *path, remain_ants, (*path)->max_ants);
+		if (remain_ants <= (*path)->max_ants)
+			break ;
+		*path = (*path)->prev;//want this to be path->prev
+	}
+}
+
+
+//instesad of path_count... put in a pointer pointing to the path?
+static t_ants	*path_setter(t_ants **ants_move, t_room *pass, t_path **end, int add)
+{
+	t_path	*path;
+	static t_ants	*head = NULL;
+	static int	current_ant = 0;
+
+	path = pass->final_head;
+	//path_count has to change depending on amount of ants left
+	if (add == FALSE)
+	{
+		ft_printf("ants: %d, current_ant: %d\n", pass->ants, current_ant);
+		if (current_ant >= pass->ants)
+			exit(0);
+		path_calc(pass->ants - current_ant, end);
+	}
+	ft_printf("Here end->nbr: %d\n", (*end)->nbr);
+	while (path && path->nbr <= (*end)->nbr && current_ant < pass->ants)
+	{
+		ft_printf("Here5\n");
+	
+		current_ant++;
+		create_ants(ants_move, current_ant, path->move_head);
+		if (!head)
+			head = *ants_move;
+		path = path->next;
+	}
+	return (head);
+}
+
 void	solve(t_room *pass)
 {
-	int	i;
+	//int	i;
 	/*
 	int	first_len;
 	t_path *find;
@@ -120,43 +134,54 @@ void	solve(t_room *pass)
 	ft_printf("amount of paths chosen %i\n", i);
 	*/
 	int dif;
-	int	ants;
-	//int current_len;
-	//int	next_len;
-	//int	selected_paths;
+	// //int current_len;
+	// //int	next_len;
+	// //int	selected_paths;
 	t_path	*path;
 	t_ants	*ants_move;
 	t_ants	*head;
+	t_path	*prev;
 
-	i = 1;
 	path = pass->final_head;
+	prev = NULL;
 	while (path && path->next)
 	{
-		dif = diff_prev(pass, path->len) + ((path->next->len - path->len) * i);
-		ants = dif + i;
-		ft_printf("dif prev: %d, next half: %d\n", diff_prev(pass, path->len), ((path->next->len - path->len) * i));
-		ft_printf("i: %d, ants: %d, dif: %d\n", i, ants, dif);
-		if (pass->ants <= ants)
+		dif = diff_prev(pass, path->len) + ((path->next->len - path->len) * path->nbr);
+		path->max_ants = dif + path->nbr;
+		path->prev = prev;
+		
+		if (pass->ants <= path->max_ants)
 			break ;
+		prev = path;
 		path = path->next;
-		++i;
 	}
+	path->prev = prev;
+	ft_printf("path->nbr: %d, prev: %p, path->prev: %p\n", path->nbr, prev, path->prev);
+	
 	//int	current_ant;
-	ft_printf("paths: %i\n", i);
 	//current_ant = 1;
 	ants_move = NULL;//printf error malloc message
-	head = path_setter(&ants_move, pass, i);
-	ft_printf("head->>ant: %d\n", head->ant);
-	while (head)
+	head = path_setter(&ants_move, pass, &path, TRUE);
+	//ft_printf("paths: %i\n", i);
+	
+	ft_printf("head->ant: %d\n", head->ant);
+	t_ants *temp;
+	temp = head;
+	int k;
+	k = 0;
+	while (temp)
 	{
-
-		path_setter(&ants_move, pass, i);
-		while (head)
+		
+		path_setter(&ants_move, pass, &path, FALSE);
+		while (temp)
 		{
-			ft_printf("ants: %d		index: %d\n", head->ant, head->index->index);
-			head = head->next;
+			ft_printf("ants: %d		index: %d\n",temp->ant,temp->index->index);
+			temp = temp->next;
 		}
-		break ;
+		temp = head;
+		++k;
+		if (k > 10)
+			break ;
 		//printing function
 		// uses delete function if ant reached the end
 
