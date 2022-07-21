@@ -99,6 +99,6 @@ int	initialize_path_finder(t_room *pass, char *input)
 		++i;
 		final = final->next;
 	}
-	error_path(pass, input, FALSE);
+	//error_path(pass, input, FALSE);
 	return (0);
 }
