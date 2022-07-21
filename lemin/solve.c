@@ -91,50 +91,8 @@ static t_ants	*path_setter(t_ants **ants_move, t_room *pass, t_path **end, int a
 	return (head);
 }
 
-/*
-static t_ants	*print_ants_move(t_ants *ants_move, t_room *pass)
-{
-	//printing struct and deleting elements
-}
-*/
-
 void	solve(t_room *pass)
 {
-	//int	i;
-	/*
-	int	first_len;
-	t_path *find;
-
-	i = 1;
-	find = pass->final_head;
-	first_len = find->len;
-	if (pass->ants <= first_len && (i < find->nbr || pass->ants > i))
-	{
-		find = find->next;
-		while (find)
-		{
-			ft_printf("%i  %i   %i   %i\n", find->len, first_len, i, find->nbr);
-			if (find->len > first_len || i >= pass->ants)
-				break ;
-			++i;
-			find = find->next;
-		}
-		//only use that path
-	}
-	else if (pass->ants > first_len)
-	{
-		find = find->next;
-		while (find)
-		{
-			ft_printf("%i  %i   %i   %i\n", find->len, pass->ants, i, find->nbr);
-			if (find->len > pass->ants || i >= pass->ants)
-				break ;
-			++i;
-			find = find->next;
-		}
-	}
-	ft_printf("amount of paths chosen %i\n", i);
-	*/
 	int dif;
 	t_path	*path;
 	t_ants	*ants_move;
@@ -175,11 +133,6 @@ void	solve(t_room *pass)
 		if (k > 10)
 			break ;
 		path_setter(&ants_move, pass, &path, FALSE);
-		//printing function
-		// uses delete function if ant reached the end
-
-		//logic function
-		// create_ants
 	}
 }
 
