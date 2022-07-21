@@ -196,4 +196,6 @@ NON SOLVER STUFF that need to be done
 
 - check if we need to free more as we go eks links, used and distance as we go
 
+- do we want to collect the shortest path also? have amount of ants determine what kind of combo of paths we priorities
+
 */
