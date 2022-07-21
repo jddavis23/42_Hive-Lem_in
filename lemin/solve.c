@@ -20,21 +20,20 @@ static void	create_ants(t_ants **ants_move, int ant, t_index *index)
 	if (!new)
 		return ;
 	new->ant = ant;
-	new->index = index;
+	new->move = index;
 	new->next = NULL;
 	if (*ants_move)
 	{
+		new->prev = *ants_move;
 		(*ants_move)->next = new;
 		*ants_move = (*ants_move)->next;
 	}
 	else
 	{
+		new->prev = NULL;
 		*ants_move = new;
 	}
 }
-
-// this could be collected and stored somewhere since this will not change.
-// we call this function multiple times so we shouldn't keep calculating this
 
 static int	diff_prev(t_room *pass, int len)
 {
@@ -55,18 +54,18 @@ static int	diff_prev(t_room *pass, int len)
 
 static void	path_calc(int remain_ants, t_path **path)
 {
-	ft_printf("path->prev: %p\n", (*path)->prev);
+	//ft_printf("path->prev: %p\n", (*path)->prev);
 	while (*path && (*path)->prev)
 	{
-		ft_printf("Here end: %p, remain_ants: %d, max_ants: %d\n", *path, remain_ants, (*path)->max_ants);
-		if (remain_ants <= (*path)->max_ants)
+		//ft_printf("Here end: %p, remain_ants: %d, max_ants: %d\n", *path, remain_ants, (*path)->max_ants);
+		//if (remain_ants <= (*path)->max_ants)
+		//	break ;
+		if (remain_ants > (*path)->prev->max_ants)
 			break ;
-		*path = (*path)->prev;//want this to be path->prev
+		*path = (*path)->prev;
 	}
 }
 
-
-//instesad of path_count... put in a pointer pointing to the path?
 static t_ants	*path_setter(t_ants **ants_move, t_room *pass, t_path **end, int add)
 {
 	t_path	*path;
@@ -74,7 +73,6 @@ static t_ants	*path_setter(t_ants **ants_move, t_room *pass, t_path **end, int a
 	static int	current_ant = 0;
 
 	path = pass->final_head;
-	//path_count has to change depending on amount of ants left
 	if (add == FALSE)
 	{
 		ft_printf("ants: %d, current_ant: %d\n", pass->ants, current_ant);
@@ -82,11 +80,8 @@ static t_ants	*path_setter(t_ants **ants_move, t_room *pass, t_path **end, int a
 			exit(0);
 		path_calc(pass->ants - current_ant, end);
 	}
-	ft_printf("Here end->nbr: %d\n", (*end)->nbr);
 	while (path && path->nbr <= (*end)->nbr && current_ant < pass->ants)
 	{
-		ft_printf("Here5\n");
-	
 		current_ant++;
 		create_ants(ants_move, current_ant, path->move_head);
 		if (!head)
@@ -95,6 +90,13 @@ static t_ants	*path_setter(t_ants **ants_move, t_room *pass, t_path **end, int a
 	}
 	return (head);
 }
+
+/*
+static t_ants	*print_ants_move(t_ants *ants_move, t_room *pass)
+{
+	//printing struct and deleting elements
+}
+*/
 
 void	solve(t_room *pass)
 {
@@ -134,9 +136,6 @@ void	solve(t_room *pass)
 	ft_printf("amount of paths chosen %i\n", i);
 	*/
 	int dif;
-	// //int current_len;
-	// //int	next_len;
-	// //int	selected_paths;
 	t_path	*path;
 	t_ants	*ants_move;
 	t_ants	*head;
@@ -156,32 +155,26 @@ void	solve(t_room *pass)
 		path = path->next;
 	}
 	path->prev = prev;
-	ft_printf("path->nbr: %d, prev: %p, path->prev: %p\n", path->nbr, prev, path->prev);
-	
-	//int	current_ant;
-	//current_ant = 1;
-	ants_move = NULL;//printf error malloc message
+	ants_move = NULL;
 	head = path_setter(&ants_move, pass, &path, TRUE);
-	//ft_printf("paths: %i\n", i);
 	
-	ft_printf("head->ant: %d\n", head->ant);
 	t_ants *temp;
 	temp = head;
 	int k;
 	k = 0;
 	while (temp)
 	{
-		
-		path_setter(&ants_move, pass, &path, FALSE);
+		//head = print_ants_move(head, pass);
 		while (temp)
 		{
-			ft_printf("ants: %d		index: %d\n",temp->ant,temp->index->index);
+			ft_printf("ants: %d		index: %d\n",temp->ant,temp->move->index);
 			temp = temp->next;
 		}
 		temp = head;
 		++k;
 		if (k > 10)
 			break ;
+		path_setter(&ants_move, pass, &path, FALSE);
 		//printing function
 		// uses delete function if ant reached the end
 
@@ -244,6 +237,10 @@ keep looping until everything is printed(while struct of ants_movement is true):
 
 NON SOLVER STUFF that need to be done
 
-need to make sorting function if our path struct happened to be not sorted in order of length
+- need to make sorting function if our path struct happened to be not sorted in order of length
+
+- need to make sure when we copy to final_head that it also sets path->move to path->move_head;
+
+- check if we need to free more as we go eks links, used and distance as we go
 
 */

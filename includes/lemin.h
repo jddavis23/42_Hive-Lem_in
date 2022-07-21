@@ -18,14 +18,15 @@ typedef struct		s_path
 	t_index			*move_head;
 	struct s_index	*move;
 	struct s_path	*next;
-	struct s_path	*prev;//is this possible?
+	struct s_path	*prev;
 }					t_path;
 
 typedef struct		s_ants
 {
 	int				ant;
-	t_index			*index;
+	t_index			*move;
 	struct s_ants	*next;
+	struct s_ants	*prev;
 }					t_ants;
 
 typedef struct  s_room
