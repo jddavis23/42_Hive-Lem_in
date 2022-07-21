@@ -67,6 +67,31 @@ static void	sort_end(t_room *pass)
 	}
 }
 
+static int	check_if_sorted(t_path *path)
+{
+	while (path && path->next)
+	{
+		if (path->len > path->next->len)
+			return (FALSE);
+		path = path->next;
+	}
+	return (TRUE);
+}
+
+static void	quick_sort(t_path **path)
+{
+	t_path *head;
+
+	head = *path;
+	while (check_if_sorted(*path) == FALSE)
+	{
+
+		*path = (*path)->next;
+		//quick sort or any other sorting algo
+	}
+	*path = head;
+}
+
 int	initialize_path_finder(t_room *pass, char *input)
 {
 	int i;
@@ -76,7 +101,6 @@ int	initialize_path_finder(t_room *pass, char *input)
 	path = NULL;
 	final = NULL;
 	pass->path_nbr = 1;
-	pass->longest_path = 0;
 	if (create_used(pass) == ERROR)
 		return (error_path(pass, input, TRUE));
 	sort_end(pass);
@@ -99,6 +123,28 @@ int	initialize_path_finder(t_room *pass, char *input)
 		++i;
 		final = final->next;
 	}
-	error_path(pass, input, FALSE);
+	// try to test if this is ever happening??
+	quick_sort(&pass->final_head);
+	final = pass->final_head;
+	i = 0;
+	ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+	while (final)
+	{
+		final->move = final->move_head;
+		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+		while (final->move)
+		{
+			ft_printf("room: %s\n", pass->rooms[final->move->index]);
+			final->move = final->move->next;
+		}
+		++i;
+		final = final->next;
+	}
+	if (pass->links)
+		pass->links = free2d_int(pass->links, pass->total, pass->end);
+	if (pass->distance)
+		free(pass->distance);
+	if (pass->used)
+		free(pass->used);
 	return (0);
 }

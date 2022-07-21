@@ -33,6 +33,7 @@ int	main(int argc, char **argv)
 {
 	t_room	*pass;
 	char	*input;
+	int		max_paths;
 
 	if (argc == 1)
 	{
@@ -46,12 +47,13 @@ int	main(int argc, char **argv)
 		distance(pass);
 		
 		pass->len = len_array(pass->links[pass->end]);
-		pass->max_paths = calc_max(len_array(pass->links[0]), pass->len);
-		if (pass->max_paths < 1)
+		max_paths = calc_max(len_array(pass->links[0]), pass->len);
+		if (max_paths < 1)
 			return (ERROR);
 		if (initialize_path_finder(pass, input) == ERROR)
 			return (0);
 		solve(pass);
+		error_path(pass, input, FALSE);
 	}
 	else if (argv)
 		ft_printf("Usage: ./lem-in < maps/subject.map\n");
@@ -60,24 +62,9 @@ int	main(int argc, char **argv)
 
 /*
 
-Maps that should be considered an error but it accepts
+	Maps that should be considered an error but it accepts
 
-	./lem-in < maps/error/connec_too_many.map
-	./lem-in < maps/error/connec_too_many2.map
-	./lem-in < maps/error/connec_too_many3.map
-	./lem-in < maps/error/connec_too_many4.map
-
-	./lem-in < maps/error/space_at_end.map
-
-	doesn't display error if room name doesn't exist
-	./lem-in < maps/error_parsing/no_room.map
-
-	frees too much
-	./lem-in < maps/error_parsing/dublicate.map
-*/
-
-
-/*
+		./lem-in < maps/error/space_at_end.map
 
 	TO DO:
 
@@ -87,9 +74,5 @@ Maps that should be considered an error but it accepts
 	do we want to collect the shortest path also?
 
 	try out with example we tried on paper
-
-
-
-	make the function for printing out the final ants movement.
 
 */

@@ -14,7 +14,7 @@
 
 /*	frees all the elements in 2d int array	*/
 
-static int	**free2d_int(int **links, int j, int end)
+int	**free2d_int(int **links, int j, int end)
 {
 	int	i;
 

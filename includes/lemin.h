@@ -33,15 +33,13 @@ typedef struct  s_room
 {
 	char	**rooms;
 	int		**links;
-	int		end;
-	int		ants;
 	int		*distance;
 	int		*used;
+	int		end;
+	int		ants;
 	int		total;
 	int		path_nbr;
 	int		len;
-	int		longest_path;
-	int		max_paths;
 	t_path	*head;
 	t_path	*final_head;
 }				t_room;
@@ -65,6 +63,7 @@ int	create(t_room *pass, char **input);
 int	error(int err);
 int	error_free(t_room *pass, char *input, int j, int first);
 int	error_path(t_room *pass, char *input, int first);
+int	**free2d_int(int **links, int j, int end);
 
 // parsing
 void	match_in(char *str, char *input, t_room *pass, int k);

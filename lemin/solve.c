@@ -140,16 +140,6 @@ void	solve(t_room *pass)
 
 Logic of printing
 
-We have amount of selected paths.
-
-
-struct ants_movement
-{
-	int		ant;
-	t_path	*path;// or t_index index? or *path->move
-	ants_movement *next;
-}
-
 would need:
 - delete function: that deletes current path if the current path has printed the 'end' room
 	needs to point correctly to next room when ant is being taken out
@@ -192,10 +182,17 @@ NON SOLVER STUFF that need to be done
 
 - need to make sorting function if our path struct happened to be not sorted in order of length
 
+Need Jeffs help to locate this one
 - need to make sure when we copy to final_head that it also sets path->move to path->move_head;
 
-- check if we need to free more as we go eks links, used and distance as we go
-
+Jeffs help is needed to discuss the logic here
 - do we want to collect the shortest path also? have amount of ants determine what kind of combo of paths we priorities
+
+- adding bonusses
+
+	-h : help  message
+	-l : leaks check
+	-m : prints out move number before the ants that are moved
+	-p : prints amount of paths
 
 */
