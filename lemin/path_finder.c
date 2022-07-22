@@ -45,6 +45,7 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 		{
 			del_path(&pass->final_head);
 			pass->final_head = cpy_pth(pass->head);
+			//ft_printf("finish struct!\n");
 		}
 		else if (final_length == (*path)->nbr)
 		{
@@ -52,11 +53,32 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 			{
 				del_path(&pass->final_head);
 				pass->final_head = cpy_pth(pass->head);
+				//ft_printf("finish struct!\n");
 			}
 		}
+		// t_path *final;
+		// int i;
+		// final = pass->head;
+		// i = 0;
+		// ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+		// while (final)
+		// {
+		// 	final->move = final->move_head;
+		// 	ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+		// 	while (final->move)
+		// 	{
+		// 		ft_printf("room: %s\n", pass->rooms[final->move->index]);
+		// 		final->move = final->move->next;
+		// 	}
+		// 	++i;
+		// 	final = final->next;
+		// }
 	}
 	else
+	{
+		//ft_printf("finish struct!\n");
 		pass->final_head = cpy_pth(pass->head);
+	}
 }
 
 static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
@@ -112,7 +134,6 @@ void	path_finder(t_path **path, t_room *pass)
 		}
 		++i;
 	}
-	//ft_printf("finish struct!\n");
 	if (pass->head && pass->head->found == TRUE)
 	{
 		compare_and_copy(path, pass);

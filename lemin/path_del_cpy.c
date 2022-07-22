@@ -35,7 +35,6 @@ static t_index	*cpy_indx(t_path *file, t_path *new)
 	}
 	n_index->next = NULL;
 	n_index = n_index_head;
-	// should this below be switched to n_index_head?? that way it will always start with the head
 	new->move = n_index;
 	return (n_index_head);
 }

@@ -41,17 +41,21 @@ int	main(int argc, char **argv)
 		pass = (t_room *) malloc(sizeof(t_room));
 		if (!pass)
 			return (0);
-		
 		if (create(pass, &input) == ERROR)
 			return (0);
+		//ft_printf("finished parsing...\nstarting path finder...\n");
 		distance(pass);
-		
 		pass->len = len_array(pass->links[pass->end]);
 		max_paths = calc_max(len_array(pass->links[0]), pass->len);
 		if (max_paths < 1)
 			return (ERROR);
 		if (initialize_path_finder(pass, input) == ERROR)
 			return (0);
+		//ft_printf("finished pathfinder...\nstart printing...\n");
+		
+		ft_printf("%s\n", input);
+		free (input);
+		input = NULL;
 		solve(pass);
 		error_path(pass, input, FALSE);
 	}

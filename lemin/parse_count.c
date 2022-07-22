@@ -29,7 +29,6 @@ int	is_dash(char *str)
 	return (count);
 }
 
-
 int	dash_in_section(char *full, char *inside)
 {
 	int	i;

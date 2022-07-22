@@ -528,7 +528,6 @@ def check_rooms(info, line, total, last):
 	else:
 		info[i]["connect"].append(line[last + 1:len(line)])
 
-
 # Main loop of collecting all of the information including error checking
 
 def main(argv, argc):

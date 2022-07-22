@@ -146,7 +146,8 @@ int	initialize_path_finder(t_room *pass, char *input)
 		free(pass->distance);
 	if (pass->used)
 		free(pass->used);
-	ft_printf("%s\n", input);
-	free (input);
+	pass->links = NULL;
+	pass->distance = NULL;
+	pass->used = NULL;
 	return (0);
 }
