@@ -19,39 +19,69 @@ void	recurs(t_room *pass, int **links, int dist, int indx)
 
 	j = 0;
 	i = 0;
+	// if (pass->distance[6] == 10)
+	// 	exit(0);
 	while (links[indx][j] >= 0)
 	{
 		if (links[indx][j] == pass->end)
 		{
+			ft_printf("HERE1111111\n");
 			return ;
 		}
 		++j;
 	}
-	if (j == 1 && indx != 0)
+	ft_printf("^^^\n");
+	if ((j == 1 && indx != 0) || (indx == 0 && dist > 0))
+	{
+		ft_printf("HELLO JEFF\n");
 		return ;
+	}
 	while (links[indx][i] >= 0)
 	{
 		//if (indx == 1)
 		//	exit (0);
 		if (links[indx][i] == indx)
 			++i;
-		if (links[indx][i] == 0)
+		else if (links[indx][i] == 0)
 			++i;
 		if (links[indx][i] < 0)
-			return ;
-		while (links[indx][i] >= 0 && dist >= pass->distance[links[indx][i]] && pass->distance[links[indx][i]] != 0) //double check
-			++i;
-		if (links[indx][i] < 0)
-			return ;
-		if (dist + 1 < pass->distance[links[indx][i]] && pass->distance[links[indx][i]] != 0)
-			pass->distance[links[indx][i]] = dist + 1;
-		else if (dist + 1 > pass->distance[links[indx][i]] && pass->distance[links[indx][i]] == 0)
-			pass->distance[links[indx][i]] = dist + 1;
-		if (links[indx][i] != 0)
 		{
+			ft_printf("HELLLLLLLLOOOOO\n");
+			return ;
+		}
+		while (links[indx][i] >= 0 && dist + 1 <= pass->distance[links[indx][i]])// && pass->distance[links[indx][i]] != 0) //double check
+		{
+			ft_printf("links[indx][i]: %d, dist %d, distance: %d\n", links[indx][i], dist, pass->distance[links[indx][i]]);
+			++i;
+		}
+		ft_printf("ROOM: %s	distance: %d\n", pass->rooms[links[indx][i]], pass->distance[links[indx][i]]);
+		if (links[indx][i] < 0)
+		{
+			ft_printf("$$$$$$$$$$\n");
+			return ;
+		}
+		if (dist + 1 > pass->distance[links[indx][i]])// && indx != 0)// && pass->distance[links[indx][i]] != 0 && indx != 0)
+		{
+			pass->distance[links[indx][i]] = dist + 1;
+		}
+		// else if (dist + 1 > pass->distance[links[indx][i]] && pass->distance[links[indx][i]] == 0 && indx != 0)
+		// {
+		// 	pass->distance[links[indx][i]] = dist + 1;
+		// 	ft_printf("ROOM: %s	distance: %d\n", pass->rooms[links[indx][i]], pass->distance[links[indx][i]]);
+			
+		// } 
+		if (links[indx][i] != 0)// && pass->distance[links[indx][i]] + 1 <=  )
+		{
+			ft_printf("ANYTHING i : %d\n", i);
+			//ft_printf("ROOM: %s	distance: %d\n", pass->rooms[9], pass->distance[9]);
+		
 			recurs(pass, pass->links, pass->distance[links[indx][i]], links[indx][i]);
 		}
+		ft_printf("after i : %i %s\n", i, pass->rooms[links[indx][i]]);
 		++i;
+		if (links[indx][i] == 8)
+			++i;
+		ft_printf("after i : %i %s, came from room %s\n", i, pass->rooms[links[indx][i]], pass->rooms[indx]);
 	}
 }
 
@@ -71,11 +101,11 @@ void	distance(t_room *pass)
 	recurs(pass, pass->links, pass->distance[0], 0);
 	pass->distance[pass->end] = pass->total;
 	i = 0;
-	// ft_printf("\n");
-	// while (i < pass->total)
-	// {
-	// 	ft_printf("room %s  distance %i\n", pass->rooms[i], pass->distance[i]);
-	// 	++i;
-	// }
-	// ft_printf("\n");
+	ft_printf("\n");
+	while (i < pass->total)
+	{
+		ft_printf("room %s  distance %i\n", pass->rooms[i], pass->distance[i]);
+		++i;
+	}
+	ft_printf("\n");
 }

@@ -34,7 +34,7 @@ static int	is_sorted(t_room *pass)
 	int	i;
 
 	i = 0;
-	while (i < (pass->len - 1))
+	while (i < (pass->len - 2))
 	{
 		if (pass->distance[pass->links[pass->end][i]] > pass->distance[pass->links[pass->end][i + 1]])
 			return (FALSE);
@@ -60,7 +60,7 @@ static void	sort_end(t_room *pass)
 			pass->links[pass->end][i] = pass->links[pass->end][i + 1];
 			pass->links[pass->end][i + 1] = temp;
 		}
-		if (i < (pass->len - 1))
+		if (i < (pass->len - 2))
 			++i;
 		else
 			i = 0;
@@ -101,6 +101,7 @@ int	initialize_path_finder(t_room *pass, char *input)
 	path = NULL;
 	final = NULL;
 	pass->path_nbr = 1;
+	ft_printf("here\n");
 	if (create_used(pass) == ERROR)
 		return (error_path(pass, input, TRUE));
 	sort_end(pass);
