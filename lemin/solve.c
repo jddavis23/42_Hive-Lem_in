@@ -66,16 +66,15 @@ static void	path_calc(int remain_ants, t_path **path)
 	}
 }
 
-static t_ants	*path_setter(t_ants **ants_move, t_room *pass, t_path **end, int add)
+static t_ants	*path_setter(t_ants **ants_move, t_room *pass, t_path **end, t_ants *head)
 {
 	t_path	*path;
-	static t_ants	*head = NULL;
 	static int	current_ant = 0;
 
 	path = pass->final_head;
-	if (add == FALSE)
+	if (head)
 	{
-		ft_printf("ants: %d, current_ant: %d\n", pass->ants, current_ant);
+		//ft_printf("ants: %d, current_ant: %d\n", pass->ants, current_ant);
 		if (current_ant >= pass->ants)
 			exit(0);
 		path_calc(pass->ants - current_ant, end);
@@ -89,6 +88,43 @@ static t_ants	*path_setter(t_ants **ants_move, t_room *pass, t_path **end, int a
 		path = path->next;
 	}
 	return (head);
+}
+
+t_ants	*print_ants_move(t_ants *head,t_room *pass)
+{
+	t_ants	*send;
+	t_ants	*temp;
+	t_ants	*prev;
+	int		i;
+
+	send = head;
+	i = 0;
+	while (head)
+	{
+		ft_printf("L%d-%s", head->ant, pass->rooms[head->move->index]);
+		if (head->move->index == pass->end)
+		{
+			prev = head->prev;
+			temp = head->next;
+			free(head);
+			head = temp;
+			if (head)
+				head->prev = prev;
+			if (i == 0)
+				send = head;
+		}
+		else
+		{
+			head->move = head->move->next;
+			head = head->next;
+		}
+		if (!head)
+			ft_printf("\n");
+		else
+			ft_printf(" ");
+		++i;
+	}
+	return (send); //careful what returning, could have changed
 }
 
 void	solve(t_room *pass)
@@ -114,25 +150,23 @@ void	solve(t_room *pass)
 	}
 	path->prev = prev;
 	ants_move = NULL;
-	head = path_setter(&ants_move, pass, &path, TRUE);
+	head = NULL;
+	head = path_setter(&ants_move, pass, &path, head);
 	
 	t_ants *temp;
 	temp = head;
 	int k;
 	k = 0;
-	while (temp)
+	while (head)
 	{
-		//head = print_ants_move(head, pass);
-		while (temp)
+		head = print_ants_move(head, pass);
+		if (!head)
 		{
-			ft_printf("ants: %d		index: %d\n",temp->ant,temp->move->index);
-			temp = temp->next;
+			ants_move = NULL;
+			head = path_setter(&ants_move, pass, &path, head);
 		}
-		temp = head;
-		++k;
-		if (k > 10)
-			break ;
-		path_setter(&ants_move, pass, &path, FALSE);
+		else
+			path_setter(&ants_move, pass, &path, head);
 	}
 }
 
