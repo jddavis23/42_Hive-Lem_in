@@ -192,7 +192,8 @@ Jeffs help is needed to discuss the logic here
 
 	-h : help  message
 	-l : leaks check
-	-m : prints out move number before the ants that are moved
-	-p : prints amount of paths
+	-m/lines : prints out amount of move pr line/amount of lines
+	-p : prints amount of paths selected before printing the final movement of the ants
+	-t : bonus that displays the time it took to run the program
 
 */
