@@ -75,4 +75,9 @@ int	main(int argc, char **argv)
 
 	try out with example we tried on paper
 
+
+
+
+	delete in parse_count >> # include <string.h>
+
 */

@@ -201,9 +201,9 @@ def checkIfRoomExist(info, room):
 		i += 1
 	return True
 
-def checkIfDuplicates(listOfElems, moves, ants, info):
+def checkIfDuplicates(listOfElems, moves, ants, info, end):
 	for elem in listOfElems:
-		if listOfElems.count(elem) > 1:
+		if listOfElems.count(elem) > 1 and elem != end:
 			return True
 		if ants == True and elem > int(moves[0]["total_ants"]):
 			return True
@@ -211,12 +211,18 @@ def checkIfDuplicates(listOfElems, moves, ants, info):
 			return True
 	return False
 
-def ant_moves_twice(moves, screen, height, width, blockSize, init, info):
+def checkIfOnlyLastRoom(listOfElems, end):
+	for elem in listOfElems:
+		if elem != end:
+			return True
+	return False
+
+def ant_moves_twice(moves, screen, height, width, blockSize, init, info, end):
 	i = 0
 	while i < moves[0]["total"]:
-		if checkIfDuplicates(moves[i]["ant"], moves, True, info) == True:
+		if checkIfDuplicates(moves[i]["ant"], moves, True, info, end) == True:
 			font=pygame.font.SysFont('arial', blockSize)
-			text=font.render("ERROR: ant error at " + str(i) + "/" + str(moves[i]["total"]), True, (200, 0, 0))
+			text=font.render("ERROR: ant error at " + str(i + 1) + "/" + str(moves[i]["total"]), True, (200, 0, 0))
 			rect=text.get_rect()
 			screen.blit(text, [0 + (int(blockSize) / 2), height - (int(blockSize) * 2)])
 			if init == True:
@@ -226,12 +232,21 @@ def ant_moves_twice(moves, screen, height, width, blockSize, init, info):
 		i += 1
 	return False
 
-def room_error(moves, screen, height, width, blockSize, init, info):
+def room_error(moves, screen, height, width, blockSize, init, info, end):
 	i = 0
-	while i < moves[0]["total"]:
-		if checkIfDuplicates(moves[i]["room"], moves, False, info) == True:
+	while i < len(moves):
+		if i == len(moves) - 1 and checkIfOnlyLastRoom(moves[i]["room"], end) == True:
 			font=pygame.font.SysFont('arial', blockSize)
-			text=font.render("ERROR: room error at " + str(i) + "/" + str(moves[i]["total"]), True, (200, 0, 0))
+			text=font.render("ERROR: room error at " + str(i + 1) + "/" + str(moves[i]["total"]), True, (200, 0, 0))
+			rect=text.get_rect()
+			screen.blit(text, [0 + (int(blockSize) / 2), height - (int(blockSize) * 2)])
+			if init == True:
+				print ("ERROR")
+				print (moves[i])
+			return
+		elif checkIfDuplicates(moves[i]["room"], moves, False, info, end) == True:
+			font=pygame.font.SysFont('arial', blockSize)
+			text=font.render("ERROR: room error at " + str(i + 1) + "/" + str(moves[i]["total"]), True, (200, 0, 0))
 			rect=text.get_rect()
 			screen.blit(text, [0 + (int(blockSize) / 2), height - (int(blockSize) * 2)])
 			if init == True:
@@ -246,7 +261,9 @@ def get_number_of_elements(list):
 		count += 1
 	return count
 
-def drawErrorCheck(screen, height, width, blockSize, info, moves, init):
+# need to make it diplay error if last move doesnt end with the last rooms being the last rooms
+
+def drawErrorCheck(screen, height, width, blockSize, info, moves, init, end):
 	# error if ant moves twice in a round + error if ants doesn't exist
 	# error if two ants are in the same room + room doesn't exist
 	# error if ant moves from one room to a room it is not connected to
@@ -262,8 +279,8 @@ def drawErrorCheck(screen, height, width, blockSize, info, moves, init):
 				print (moves[i])
 			return
 		i += 1
-	if ant_moves_twice(moves, screen, height, width, blockSize, init, info) == False:
-		room_error(moves, screen, height, width, blockSize, init, info)
+	if ant_moves_twice(moves, screen, height, width, blockSize, init, info, end) == False:
+		room_error(moves, screen, height, width, blockSize, init, info, end)
 
 # makes the map and displays it in a new window
 
@@ -317,21 +334,21 @@ def make_map(start, end, info, moves):
 	space = False
 	space_r = False
 	last = no_ants_on_start(moves)
-	drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, True)
+	drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, True, end)
 	while True:
 		if count <= -1 and prev != -1:
 			collectGridData(screen, window_height, window_width, blockSize, info)
 			drawConnections(screen, window_height, window_width, blockSize, info)
 			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves, last)
 			drawText(screen, window_height, window_width, blockSize, prev, count, moves)
-			drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, False)
+			drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, False, end)
 			prev = -1
 		elif count != prev and count < moves[0]["total"] and count > -1:
 			drawConnections(screen, window_height, window_width, blockSize, info)
 			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves, last)
 			draw_ant(screen, window_height, window_width, blockSize, info, start, end, moves, count)
 			drawText(screen, window_height, window_width, blockSize, prev, count, moves)
-			drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, False)
+			drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, False, end)
 			prev = count
 		if space == True and count < moves[0]["total"]:
 			count += 1

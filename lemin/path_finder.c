@@ -74,7 +74,7 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 		{
 			if (pass->links[i][j] == 0)
 			{
-				ft_printf("FOUND START!\n");
+				//ft_printf("FOUND START!\n");
 				pass->head->found = TRUE;
 				path_finder(path, pass);
 			}
@@ -101,7 +101,7 @@ void	path_finder(t_path **path, t_room *pass)
 		{
 			create_path(path, pass);
 			pass->head->found = TRUE;
-			ft_printf("FOUND START!\n");
+			//ft_printf("FOUND START!\n");
 			break ;
 		}
 		if (pass->used[pass->links[pass->end][i]] == FALSE && pass->distance[i] <= pass->distance[pass->end])
@@ -112,7 +112,7 @@ void	path_finder(t_path **path, t_room *pass)
 		}
 		++i;
 	}
-	ft_printf("finish struct!\n");
+	//ft_printf("finish struct!\n");
 	if (pass->head && pass->head->found == TRUE)
 	{
 		compare_and_copy(path, pass);

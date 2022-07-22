@@ -71,11 +71,11 @@ void	distance(t_room *pass)
 	recurs(pass, pass->links, pass->distance[0], 0);
 	pass->distance[pass->end] = pass->total;
 	i = 0;
-	ft_printf("\n");
-	while (i < pass->total)
-	{
-		ft_printf("room %s  distance %i\n", pass->rooms[i], pass->distance[i]);
-		++i;
-	}
-	ft_printf("\n");
+	// ft_printf("\n");
+	// while (i < pass->total)
+	// {
+	// 	ft_printf("room %s  distance %i\n", pass->rooms[i], pass->distance[i]);
+	// 	++i;
+	// }
+	// ft_printf("\n");
 }

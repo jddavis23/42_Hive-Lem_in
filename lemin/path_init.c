@@ -110,41 +110,43 @@ int	initialize_path_finder(t_room *pass, char *input)
 		return (error_path(pass, input, TRUE));
 	final = pass->final_head;
 	i = 0;
-	ft_printf("\n{green}finalS:{uncolor} \n");
-	while (final)
-	{
-		final->move = final->move_head;
-		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
-		while (final->move)
-		{
-			ft_printf("room: %s\n", pass->rooms[final->move->index]);
-			final->move = final->move->next;
-		}
-		++i;
-		final = final->next;
-	}
+	// ft_printf("\n{green}finalS:{uncolor} \n");
+	// while (final)
+	// {
+	// 	final->move = final->move_head;
+	// 	ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+	// 	while (final->move)
+	// 	{
+	// 		ft_printf("room: %s\n", pass->rooms[final->move->index]);
+	// 		final->move = final->move->next;
+	// 	}
+	// 	++i;
+	// 	final = final->next;
+	// }
 	// try to test if this is ever happening??
 	quick_sort(&pass->final_head);
-	final = pass->final_head;
-	i = 0;
-	ft_printf("\n{green}after sort: finalS:{uncolor} \n");
-	while (final)
-	{
-		final->move = final->move_head;
-		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
-		while (final->move)
-		{
-			ft_printf("room: %s\n", pass->rooms[final->move->index]);
-			final->move = final->move->next;
-		}
-		++i;
-		final = final->next;
-	}
+	// final = pass->final_head;
+	// i = 0;
+	// ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+	// while (final)
+	// {
+	// 	final->move = final->move_head;
+	// 	ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+	// 	while (final->move)
+	// 	{
+	// 		ft_printf("room: %s\n", pass->rooms[final->move->index]);
+	// 		final->move = final->move->next;
+	// 	}
+	// 	++i;
+	// 	final = final->next;
+	// }
 	if (pass->links)
 		pass->links = free2d_int(pass->links, pass->total, pass->end);
 	if (pass->distance)
 		free(pass->distance);
 	if (pass->used)
 		free(pass->used);
+	ft_printf("%s\n", input);
+	free (input);
 	return (0);
 }
