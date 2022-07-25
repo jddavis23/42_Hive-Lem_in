@@ -40,6 +40,7 @@ typedef struct  s_room
 	int		total;
 	int		path_nbr;
 	int		len;
+	int		row;
 	t_path	*head;
 	t_path	*final_head;
 }				t_room;

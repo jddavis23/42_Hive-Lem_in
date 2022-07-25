@@ -35,23 +35,27 @@ int	main(int argc, char **argv)
 	char	*input;
 	int		max_paths;
 
-	if (argc == 1)
+	if (argc == 1 || (argc == 2 && ft_strcmp(argv[1], "-r") == 0))
 	{
 		input = NULL;
 		pass = (t_room *) malloc(sizeof(t_room));
 		if (!pass)
 			return (0);
-		
+		if (argc == 2)
+			pass->row = TRUE;
+		else
+			pass->row = FALSE;
 		if (create(pass, &input) == ERROR)
 			return (0);
 		distance(pass);
-		
+		//exit(0);
 		pass->len = len_array(pass->links[pass->end]);
 		max_paths = calc_max(len_array(pass->links[0]), pass->len);
 		if (max_paths < 1)
 			return (ERROR);
 		if (initialize_path_finder(pass, input) == ERROR)
 			return (0);
+		ft_printf("%s\n", input);
 		solve(pass);
 		error_path(pass, input, FALSE);
 	}
@@ -74,5 +78,18 @@ int	main(int argc, char **argv)
 	do we want to collect the shortest path also?
 
 	try out with example we tried on paper
+
+*/
+
+/*
+
+flowten1.c
+- it keeps looping to find other paths but has already located a path that fits our requirements at first try. needs a quicker way to exit
+
+flowthousand1.c
+- same problem as in flowten1.c
+
+big1.txt
+- same problem as the two above
 
 */

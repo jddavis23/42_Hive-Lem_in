@@ -130,7 +130,7 @@ int	create(t_room *pass, char **input)
 					return (error_free(pass, *input, 0, FALSE));
 				}
 				ft_strncat(pass->rooms[hold], &((*input)[i]), ft_strlen_stop(&((*input)[i]), ' '));
-				ft_printf("%s-%i\n", pass->rooms[hold], hold);
+				//ft_printf("%s-%i\n", pass->rooms[hold], hold);
 				while ((*input)[i] != '\n')
 					++i;
 			}
@@ -150,7 +150,7 @@ int	create(t_room *pass, char **input)
 				}
 				//pass->rooms[j + 1] = NULL;
 				ft_strncat(pass->rooms[j++], &((*input)[i]), ft_strlen_stop(&((*input)[i]), ' '));
-				ft_printf("%s-%i\n", pass->rooms[j - 1], j - 1);
+				//ft_printf("%s-%i\n", pass->rooms[j - 1], j - 1);
 				while ((*input)[i] != '\n')
 					++i;
 			}
@@ -164,7 +164,6 @@ int	create(t_room *pass, char **input)
 				j = 0;
 				while (pass->rooms[j])
 				{
-					ft_printf("j: %d\n", j);
 					count = count_in(pass->rooms[j], &((*input)[i]), pass->rooms);
 					if (count == -1)
 						exit (0);
@@ -180,15 +179,15 @@ int	create(t_room *pass, char **input)
 					match_in(pass->rooms[j], &((*input)[i]), pass, j);
 					++j;
 				}
-				while (pass->rooms[p])
-				{
-					m = 0;
-					ft_printf("room %s count [%i]\n", pass->rooms[p], count_in(pass->rooms[p], &((*input)[i]), pass->rooms));
-					while (m <= count_in(pass->rooms[p], &((*input)[i]), pass->rooms))
-						ft_printf("%i ", pass->links[p][m++]);
-					ft_printf("\n");
-					++p;
-				}
+				// while (pass->rooms[p])
+				// {
+				// 	m = 0;
+				// 	ft_printf("room %s count [%i]\n", pass->rooms[p], count_in(pass->rooms[p], &((*input)[i]), pass->rooms));
+				// 	while (m <= count_in(pass->rooms[p], &((*input)[i]), pass->rooms))
+				// 		ft_printf("%i ", pass->links[p][m++]);
+				// 	ft_printf("\n");
+				// 	++p;
+				// }
 				return (0);
 			}
 			++i;

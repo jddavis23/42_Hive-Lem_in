@@ -100,7 +100,8 @@ t_ants	*print_ants_move(t_ants *head,t_room *pass)
 
 	send = head;
 	i = 0;
-	ft_printf("line: %d\n", line);
+	if (pass->row == TRUE)
+		ft_printf("{purple}row: %d{uncolor}\n", line);
 	++line;
 	while (head)
 	{
@@ -163,7 +164,6 @@ void	solve(t_room *pass)
 	ants_move = NULL;
 	head = NULL;
 	head = path_setter(&ants_move, pass, &path, head);
-	
 	t_ants *temp;
 	temp = head;
 	int k;
