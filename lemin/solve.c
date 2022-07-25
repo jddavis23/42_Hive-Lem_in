@@ -100,7 +100,7 @@ t_ants	*print_ants_move(t_ants *head,t_room *pass)
 
 	send = head;
 	i = 0;
-	//ft_printf("line: %d\n", line);
+	ft_printf("line: %d\n", line);
 	++line;
 	while (head)
 	{
@@ -112,8 +112,12 @@ t_ants	*print_ants_move(t_ants *head,t_room *pass)
 			if (head)
 				free(head);
 			head = temp;
+			if (prev)
+				prev->next = head;
 			if (head)
+			{
 				head->prev = prev;
+			}
 			if (i == 0)
 			{
 				i = -1;
