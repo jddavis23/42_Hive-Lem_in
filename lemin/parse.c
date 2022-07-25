@@ -6,7 +6,7 @@
 /*   By: jdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 13:20:42 by jdavis            #+#    #+#             */
-/*   Updated: 2022/07/11 13:20:44 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/25 12:08:21 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,15 +180,15 @@ int	create(t_room *pass, char **input)
 					match_in(pass->rooms[j], &((*input)[i]), pass, j);
 					++j;
 				}
-				// while (pass->rooms[p])
-				// {
-				// 	m = 0;
-				// 	ft_printf("room %s count [%i]\n", pass->rooms[p], count_in(pass->rooms[p], &((*input)[i]), pass->rooms));
-				// 	while (m <= count_in(pass->rooms[p], &((*input)[i]), pass->rooms))
-				// 		ft_printf("%i ", pass->links[p][m++]);
-				// 	ft_printf("\n");
-				// 	++p;
-				// }
+				 while (pass->rooms[p])
+				 {
+				 	m = 0;
+				 	ft_printf("room %s count [%i]\n", pass->rooms[p], count_in(pass->rooms[p], &((*input)[i]), pass->rooms));
+				 	while (m <= count_in(pass->rooms[p], &((*input)[i]), pass->rooms))
+				 		ft_printf("%i ", pass->links[p][m++]);
+				 	ft_printf("\n");
+				 	++p;
+				 }
 				return (0);
 			}
 			++i;
