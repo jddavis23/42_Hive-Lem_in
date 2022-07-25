@@ -167,14 +167,14 @@ int	create(t_room *pass, char **input)
 					count = count_in(pass->rooms[j], &((*input)[i]), pass->rooms);
 					if (count == -1)
 						exit (0);
-					pass->links[j] = (int *) malloc((count_in(pass->rooms[j], &((*input)[i]), pass->rooms) + 1) * sizeof(int));
+					pass->links[j] = (int *) malloc((count + 1) * sizeof(int));
 					if (!pass->links[j])
 					{
 						ft_printf("here4\n");
 						return (error_free(pass, *input, j, FALSE));
 					}
 					k = 0;
-					while (k < count_in(pass->rooms[j], &((*input)[i]), pass->rooms) + 1)
+					while (k < count + 1)
 						pass->links[j][k++] = -1;
 					match_in(pass->rooms[j], &((*input)[i]), pass, j);
 					++j;
