@@ -34,7 +34,7 @@ static int	is_sorted(t_room *pass)
 	int	i;
 
 	i = 0;
-	while (i < (pass->len - 1))
+	while (i < (pass->len - 2))
 	{
 		if (pass->distance[pass->links[pass->end][i]] > pass->distance[pass->links[pass->end][i + 1]])
 			return (FALSE);
@@ -60,7 +60,7 @@ static void	sort_end(t_room *pass)
 			pass->links[pass->end][i] = pass->links[pass->end][i + 1];
 			pass->links[pass->end][i + 1] = temp;
 		}
-		if (i < (pass->len - 1))
+		if (i < (pass->len - 2))
 			++i;
 		else
 			i = 0;
@@ -101,6 +101,7 @@ int	initialize_path_finder(t_room *pass, char *input)
 	path = NULL;
 	final = NULL;
 	pass->path_nbr = 1;
+	ft_printf("here\n");
 	if (create_used(pass) == ERROR)
 		return (error_path(pass, input, TRUE));
 	sort_end(pass);
@@ -110,41 +111,44 @@ int	initialize_path_finder(t_room *pass, char *input)
 		return (error_path(pass, input, TRUE));
 	final = pass->final_head;
 	i = 0;
-	ft_printf("\n{green}finalS:{uncolor} \n");
-	while (final)
-	{
-		final->move = final->move_head;
-		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
-		while (final->move)
-		{
-			ft_printf("room: %s\n", pass->rooms[final->move->index]);
-			final->move = final->move->next;
-		}
-		++i;
-		final = final->next;
-	}
+	// ft_printf("\n{green}finalS:{uncolor} \n");
+	// while (final)
+	// {
+	// 	final->move = final->move_head;
+	// 	ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+	// 	while (final->move)
+	// 	{
+	// 		ft_printf("room: %s\n", pass->rooms[final->move->index]);
+	// 		final->move = final->move->next;
+	// 	}
+	// 	++i;
+	// 	final = final->next;
+	// }
 	// try to test if this is ever happening??
 	quick_sort(&pass->final_head);
-	final = pass->final_head;
-	i = 0;
-	ft_printf("\n{green}after sort: finalS:{uncolor} \n");
-	while (final)
-	{
-		final->move = final->move_head;
-		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
-		while (final->move)
-		{
-			ft_printf("room: %s\n", pass->rooms[final->move->index]);
-			final->move = final->move->next;
-		}
-		++i;
-		final = final->next;
-	}
+	// final = pass->final_head;
+	// i = 0;
+	// ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+	// while (final)
+	// {
+	// 	final->move = final->move_head;
+	// 	ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+	// 	while (final->move)
+	// 	{
+	// 		ft_printf("room: %s\n", pass->rooms[final->move->index]);
+	// 		final->move = final->move->next;
+	// 	}
+	// 	++i;
+	// 	final = final->next;
+	// }
 	if (pass->links)
 		pass->links = free2d_int(pass->links, pass->total, pass->end);
 	if (pass->distance)
 		free(pass->distance);
 	if (pass->used)
 		free(pass->used);
+	pass->links = NULL;
+	pass->distance = NULL;
+	pass->used = NULL;
 	return (0);
 }
