@@ -38,6 +38,29 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 {
 	int	final_length;
 
+	ft_printf("head: %p, move_head: %p, index: %d\n", pass->head, pass->head->move_head, pass->head->move_head->index);
+				
+				ft_printf("head of pointer: %p, move_head: %p	 index: %d\n", pass->head, pass->head->move_head, pass->head->move_head->index);
+				t_path *final;
+				t_index *temp;
+				int i;
+				final = pass->head;
+				i = 0;
+				ft_printf("\n{green}after STTART FOUND: finalS:{uncolor} \n");
+				while (final)
+				{
+					temp = final->move_head;
+					final->move = final->move_head;
+					ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+					while (final->move)
+					{
+						ft_printf("room: %s\n", pass->rooms[final->move->index]);
+						final->move = final->move->next;
+					}
+					final->move_head = temp;
+					++i;
+					final = final->next;
+				}
 	if (pass->final_head)
 	{
 		final_length = loop_to_end(pass->final_head);
@@ -45,6 +68,7 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 		{
 			del_path(&pass->final_head);
 			pass->final_head = cpy_pth(pass->head);
+			//ft_printf("finish struct!\n");
 		}
 		else if (final_length == (*path)->nbr)
 		{
@@ -52,11 +76,55 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 			{
 				del_path(&pass->final_head);
 				pass->final_head = cpy_pth(pass->head);
+				//ft_printf("finish struct!\n");
 			}
 		}
+		// t_path *final;
+		// t_index *temp;
+		// int i;
+		// final = pass->final_head;
+		// i = 0;
+		// ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+		// while (final)
+		// {
+		// 	temp = final->move_head;
+		// 	final->move = final->move_head;
+		// 	ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+		// 	while (final->move)
+		// 	{
+		// 		ft_printf("room: %s\n", pass->rooms[final->move->index]);
+		// 		final->move = final->move->next;
+		// 	}
+		// 	final->move_head = temp;
+		// 	++i;
+		// 	final = final->next;
+		// }
 	}
 	else
+	{
+		//ft_printf("finish struct!\n");
 		pass->final_head = cpy_pth(pass->head);
+		// t_path *final;
+		// t_index *temp;
+		// int i;
+		// final = pass->final_head;
+		// i = 0;
+		// ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+		// while (final)
+		// {
+		// 	temp = final->move_head;
+		// 	final->move = final->move_head;
+		// 	ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+		// 	while (final->move)
+		// 	{
+		// 		ft_printf("room: %s\n", pass->rooms[final->move->index]);
+		// 		final->move = final->move->next;
+		// 	}
+		// 	final->move_head = temp;
+		// 	++i;
+		// 	final = final->next;
+		// }
+	}
 }
 
 static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
@@ -66,7 +134,7 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 
 	if (pass->distance[i] <= pass->distance[prev_index] && pass->distance[i] != 0)
 	{
-		create_index(&(*path)->move, *path, i);
+		create_index(&(*path)->move_head, *path, i);
 		pass->used[i] = TRUE;
 		len = len_array(pass->links[i]);
 		j = 0;
@@ -74,9 +142,34 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 		{
 			if (pass->links[i][j] == 0)
 			{
+
+				//ft_printf("head: %p, move_head: %p, index: %d\n", pass->head, pass->head->move_head, pass->head->move_head->index);
 				ft_printf("FOUND START!\n");
 				pass->head->found = TRUE;
 				path_finder(path, pass);
+				// ft_printf("head: %p, move_head: %p, index: %d\n", pass->head, pass->head->move_head, pass->head->move_head->index);
+				
+				// ft_printf("head of pointer: %p, move_head: %p	 index: %d\n", pass->head, pass->head->move_head, pass->head->move_head->index);
+				// t_path *final;
+				// t_index *temp;
+				// int i;
+				// final = pass->head;
+				// i = 0;
+				// ft_printf("\n{green}after STTART FOUND: finalS:{uncolor} \n");
+				// while (final)
+				// {
+				// 	temp = final->move_head;
+				// 	final->move = final->move_head;
+				// 	ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+				// 	while (final->move)
+				// 	{
+				// 		ft_printf("room: %s\n", pass->rooms[final->move->index]);
+				// 		final->move = final->move->next;
+				// 	}
+				// 	final->move_head = temp;
+				// 	++i;
+				// 	final = final->next;
+				// }
 			}
 			if (pass->distance[pass->links[i][j]] <= pass->distance[i] && pass->distance[pass->links[i][j]] != 0 && pass->links[i][j] != prev_index && pass->used[pass->links[i][j]] == FALSE)
 			{
@@ -112,7 +205,6 @@ void	path_finder(t_path **path, t_room *pass)
 		}
 		++i;
 	}
-	ft_printf("finish struct!\n");
 	if (pass->head && pass->head->found == TRUE)
 	{
 		compare_and_copy(path, pass);
