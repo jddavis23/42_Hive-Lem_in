@@ -40,6 +40,7 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 
 	if (pass->final_head)
 	{
+
 		final_length = loop_to_end(pass->final_head);
 		if (final_length < (*path)->nbr)
 		{
@@ -76,6 +77,7 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 		// 	++i;
 		// 	final = final->next;
 		// }
+		//exit(0);
 	}
 	else
 	{
@@ -163,16 +165,16 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 void	path_finder(t_path **path, t_room *pass)
 {
 	int	i;
-	static int count = 0;
+	//static int count = 0;
 
 	i = 0;
 	while (i < pass->len)
 	{
 		// temp solution to the constant looping problem
-		if (count > 15 || pass->final_head)
-		{
-			return ;
-		}
+		// if (count > 15 || pass->final_head)
+		// {
+		// 	return ;
+		// }
 		if (pass->links[pass->end][i] == 0)
 		{
 			create_path(path, pass);
@@ -192,6 +194,14 @@ void	path_finder(t_path **path, t_room *pass)
 	{
 		compare_and_copy(path, pass);
 		pass->head->found = FALSE;
-		count++;
+		//count++;
 	}
 }
+
+
+/*
+
+creater than amount of ants - compare and copy emmidiately
+- if it is less moves() than the final_path we already have
+
+*/
