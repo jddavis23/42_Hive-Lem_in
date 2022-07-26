@@ -54,30 +54,31 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 			{
 				del_path(&pass->final_head);
 				pass->final_head = cpy_pth(pass->head);
-				//ft_printf("finish struct!\n");
+			// 	ft_printf("finish struct!\n");
+			// 	t_path *final;
+			// t_index *temp;
+			// int i;
+			// final = pass->final_head;
+			// i = 0;
+			// ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+			// while (final)
+			// {
+			// 	temp = final->move_head;
+			// 	final->move = final->move_head;
+			// 	ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+			// 	while (final->move)
+			// 	{
+			// 		ft_printf("room: %s\n", pass->rooms[final->move->index]);
+			// 		final->move = final->move->next;
+			// 	}
+			// 	final->move_head = temp;
+			// 	++i;
+			// 	final = final->next;
+			// }
+			// exit(0);
 			}
+			
 		}
-		// t_path *final;
-		// t_index *temp;
-		// int i;
-		// final = pass->final_head;
-		// i = 0;
-		// ft_printf("\n{green}after sort: finalS:{uncolor} \n");
-		// while (final)
-		// {
-		// 	temp = final->move_head;
-		// 	final->move = final->move_head;
-		// 	ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
-		// 	while (final->move)
-		// 	{
-		// 		ft_printf("room: %s\n", pass->rooms[final->move->index]);
-		// 		final->move = final->move->next;
-		// 	}
-		// 	final->move_head = temp;
-		// 	++i;
-		// 	final = final->next;
-		// }
-		//exit(0);
 	}
 	else
 	{
@@ -143,16 +144,16 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 void	path_finder(t_path **path, t_room *pass)
 {
 	int	i;
-	static int count = 0;
+	//static int count = 0;
 
 	i = 0;
 	while (i < pass->len)
 	{
 		// temp solution to the constant looping problem
-		if (count > 15 || pass->final_head)
-		{
-			return ;
-		}
+		// if (count > 15 || pass->final_head)
+		// {
+		// 	return ;
+		// }
 		if (pass->links[pass->end][i] == 0)
 		{
 			create_path(path, pass);
@@ -160,7 +161,7 @@ void	path_finder(t_path **path, t_room *pass)
 			//ft_printf("FOUND START!\n");
 			break ;
 		}
-		if (pass->used[pass->links[pass->end][i]] == FALSE && pass->distance[i] <= pass->distance[pass->end])
+		if (pass->used[pass->links[pass->end][i]] == FALSE && pass->distance[i] <= pass->distance[pass->end] && pass->distance[i] != 0)
 		{
 			create_path(path, pass);
 			find_path(&(*path), pass, pass->links[pass->end][i], pass->end);
@@ -172,7 +173,7 @@ void	path_finder(t_path **path, t_room *pass)
 	{
 		compare_and_copy(path, pass);
 		pass->head->found = FALSE;
-		count++;
+		//count++;
 	}
 }
 

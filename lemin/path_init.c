@@ -45,6 +45,24 @@ static int	is_sorted(t_room *pass, int indx)
 	return (TRUE);
 }
 
+static int	is_sorted_end(t_room *pass, int indx)
+{
+	int	i;
+
+	i = 0;
+	if (pass->links[indx][i] == -1 || pass->links[indx][i + 1] == -1)
+		return (TRUE);
+	while (pass->links[indx][i + 1] != -1)
+	{
+		if (pass->distance[pass->links[indx][i]] < pass->distance[pass->links[indx][i + 1]] && pass->distance[pass->links[indx][i]] == 0)
+			return (FALSE);
+		if (pass->distance[pass->links[indx][i]] > pass->distance[pass->links[indx][i + 1]] && pass->distance[pass->links[indx][i + 1]] != 0)
+			return (FALSE);
+		++i;
+	}
+	return (TRUE);
+}
+
 /*	sorts the links of the end. Shortest paths in the beginning	*/
 
 static void	sort_distance(t_room *pass)
@@ -56,28 +74,53 @@ static void	sort_distance(t_room *pass)
 	i = 0;
 	indx = 1;
 	// might remove is sorted from while loop and instead put in bottom - depends what is faster - check with bigger values
+	i = 0;
 	while (indx < pass->total)
 	{
 		i = 0;
-		while (is_sorted(pass, indx) == FALSE)
+		if (indx == pass->end)
 		{
-			i = 0;
-			if (pass->links[indx][i] == -1 || pass->links[indx][i + 1] == -1)
-				break ;
-			while (pass->links[indx][i + 1] != -1)
+			while (is_sorted_end(pass, indx) == FALSE)
 			{
-				if (pass->distance[pass->links[indx][i]] > pass->distance[pass->links[indx][i + 1]])
+				i = 0;
+				if (pass->links[indx][i] == -1 || pass->links[indx][i + 1] == -1)
+					break ;
+				while (pass->links[indx][i + 1] != -1)
 				{
-					temp = pass->links[indx][i];
-					pass->links[indx][i] = pass->links[indx][i + 1];
-					pass->links[indx][i + 1] = temp;
+					if (pass->distance[pass->links[indx][i]] > pass->distance[pass->links[indx][i + 1]] && pass->distance[pass->links[indx][i + 1]] != 0)
+					{
+						temp = pass->links[indx][i];
+						pass->links[indx][i] = pass->links[indx][i + 1];
+						pass->links[indx][i + 1] = temp;
+					}
+					else if (pass->distance[pass->links[indx][i]] < pass->distance[pass->links[indx][i + 1]] && pass->distance[pass->links[indx][i]] == 0)
+					{
+						temp = pass->links[indx][i];
+						pass->links[indx][i] = pass->links[indx][i + 1];
+						pass->links[indx][i + 1] = temp;
+					}
+					++i;
 				}
-				++i;
 			}
-			// if (i < (pass->len - 2))
-			// 	++i;
-			// else
-			// 	i = 0;
+		}
+		else
+		{
+			while (is_sorted(pass, indx) == FALSE)
+			{
+				i = 0;
+				if (pass->links[indx][i] == -1 || pass->links[indx][i + 1] == -1)
+					break ;
+				while (pass->links[indx][i + 1] != -1)
+				{
+					if (pass->distance[pass->links[indx][i]] > pass->distance[pass->links[indx][i + 1]])
+					{
+						temp = pass->links[indx][i];
+						pass->links[indx][i] = pass->links[indx][i + 1];
+					pass->links[indx][i + 1] = temp;
+					}
+					++i;
+				}
+			}
 		}
 		++indx;
 	}
@@ -120,23 +163,23 @@ int	initialize_path_finder(t_room *pass, char *input)
 	if (create_used(pass) == ERROR)
 		return (error_path(pass, input, TRUE));
 	sort_distance(pass);
-	i = 0;
-	int p = 0;
-	while (i < pass->total)
-	{
-		p = 0;
-		ft_printf("rooms %s: ", pass->rooms[i]);
-		while (pass->links[i][p] != -1)
-		{
-			ft_printf("%i ", pass->links[i][p]);
-			++p;
-		}
-		ft_printf("%i ", pass->links[i][p]);
-		ft_printf("\n");
-		++i;
-	}
+	// i = 0;
+	// int p = 0;
+	// while (i < pass->total)
+	// {
+	// 	p = 0;
+	// 	ft_printf("rooms %s: ", pass->rooms[i]);
+	// 	while (pass->links[i][p] != -1)
+	// 	{
+	// 		ft_printf("%i ", pass->distance[pass->links[i][p]]);
+	// 		++p;
+	// 	}
+	// 	ft_printf("%i ", pass->distance[pass->links[i][p]]);
+	// 	ft_printf("\n");
+	// 	++i;
+	// }
 	
-	exit(0);
+	// exit(0);
 	pass->final_head = NULL;
 	path_finder(&path, pass);
 	if (!pass->final_head)
@@ -173,6 +216,7 @@ int	initialize_path_finder(t_room *pass, char *input)
 	// 	++i;
 	// 	final = final->next;
 	// }
+	// exit (0);
 	if (pass->links)
 		pass->links = free2d_int(pass->links, pass->total, pass->end);
 	if (pass->distance)
