@@ -126,29 +126,7 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 				//ft_printf("FOUND START!\n");
 				pass->head->found = TRUE;
 				path_finder(path, pass);
-				// ft_printf("head: %p, move_head: %p, index: %d\n", pass->head, pass->head->move_head, pass->head->move_head->index);
-				
-				// ft_printf("head of pointer: %p, move_head: %p	 index: %d\n", pass->head, pass->head->move_head, pass->head->move_head->index);
-				// t_path *final;
-				// t_index *temp;
-				// int i;
-				// final = pass->head;
-				// i = 0;
-				// ft_printf("\n{green}after STTART FOUND: finalS:{uncolor} \n");
-				// while (final)
-				// {
-				// 	temp = final->move_head;
-				// 	final->move = final->move_head;
-				// 	ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
-				// 	while (final->move)
-				// 	{
-				// 		ft_printf("room: %s\n", pass->rooms[final->move->index]);
-				// 		final->move = final->move->next;
-				// 	}
-				// 	final->move_head = temp;
-				// 	++i;
-				// 	final = final->next;
-				// }
+				return ;
 			}
 			if (pass->distance[pass->links[i][j]] <= pass->distance[i] && pass->distance[pass->links[i][j]] != 0 && pass->links[i][j] != prev_index && pass->used[pass->links[i][j]] == FALSE)
 			{
@@ -165,16 +143,16 @@ static void	find_path(t_path **path, t_room *pass, int i, int prev_index)
 void	path_finder(t_path **path, t_room *pass)
 {
 	int	i;
-	//static int count = 0;
+	static int count = 0;
 
 	i = 0;
 	while (i < pass->len)
 	{
 		// temp solution to the constant looping problem
-		// if (count > 15 || pass->final_head)
-		// {
-		// 	return ;
-		// }
+		if (count > 15 || pass->final_head)
+		{
+			return ;
+		}
 		if (pass->links[pass->end][i] == 0)
 		{
 			create_path(path, pass);
@@ -194,7 +172,7 @@ void	path_finder(t_path **path, t_room *pass)
 	{
 		compare_and_copy(path, pass);
 		pass->head->found = FALSE;
-		//count++;
+		count++;
 	}
 }
 
@@ -203,5 +181,21 @@ void	path_finder(t_path **path, t_room *pass)
 
 creater than amount of ants - compare and copy emmidiately
 - if it is less moves() than the final_path we already have
+
+
+BEFORE CHANGES
+time ./lem-in -r < big2.txt
+- 107 rows (max limit is 72)
+- ./lem-in -r < big2.txt  2.30s user 0.03s system 90% cpu 2.584 total
+
+time ./lem-in -r < big1.txt
+- 69 rows (max limit is 54)
+- ./lem-in -r < big1.txt  2.45s user 0.01s system 98% cpu 2.494 total
+
+
+try to add:
+- sort distance by lowest each time
+- if connected to start dont try any other connections
+
 
 */
