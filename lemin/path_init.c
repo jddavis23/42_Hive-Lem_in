@@ -151,6 +151,30 @@ static void	quick_sort(t_path **path)
 	*path = head;
 }
 
+// static void	printf_struct(t_room *pass)
+// {
+// 	t_path *final;
+// 	t_index *temp;
+// 	int i;
+// 	final = pass->final_head;
+// 	i = 0;
+// 	ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+// 	while (final)
+// 	{
+// 		temp = final->move_head;
+// 		final->move = final->move_head;
+// 		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+// 		while (final->move)
+// 		{
+// 			ft_printf("room: %s\n", pass->rooms[final->move->index]);
+// 			final->move = final->move->next;
+// 		}
+// 		final->move_head = temp;
+// 		++i;
+// 		final = final->next;
+// 	}
+// }
+
 int	initialize_path_finder(t_room *pass, char *input)
 {
 	int i;
@@ -165,23 +189,59 @@ int	initialize_path_finder(t_room *pass, char *input)
 	sort_distance(pass);
 	// i = 0;
 	// int p = 0;
-	// while (i < pass->total)
-	// {
-	// 	p = 0;
-	// 	ft_printf("rooms %s: ", pass->rooms[i]);
-	// 	while (pass->links[i][p] != -1)
-	// 	{
-	// 		ft_printf("%i ", pass->distance[pass->links[i][p]]);
-	// 		++p;
-	// 	}
-	// 	ft_printf("%i ", pass->distance[pass->links[i][p]]);
-	// 	ft_printf("\n");
-	// 	++i;
-	// }
-	
+	// int j = 0;
+	// int m;
+	// while (pass->rooms[p])
+	// 			{
+	// 				m = 0;
+	// 				if (p == 0)
+	// 				{
+	// 					ft_printf("room %s-----\n\n", pass->rooms[p]);
+	// 					while (pass->links[p][m] >= 0)
+	// 					{
+	// 						ft_printf("\nroom %s\n", pass->rooms[pass->links[p][m]]);
+						
+	// 						//ft_printf("\n%d { ", pass->links[m][]);
+	// 						int q = 0;
+	// 						while (pass->links[pass->links[p][m]][q] != -1)
+	// 						{
+						
+	// 							ft_printf("\n%s ", pass->rooms[pass->links[pass->links[p][m]][q]]);
+	// 							j = 0;
+	// 							while (pass->links[pass->links[pass->links[p][m]][q]][j]  >= 0)
+	// 							{
+	// 								ft_printf("distance %i ", pass->distance[pass->links[pass->links[pass->links[p][m]][q]][j++]]);
+	// 							}
+	// 							q++;
+	// 						}
+	// 						m++;
+	// 						ft_printf("}");
+	// 					}
+	// 					ft_printf("\n\n");
+	// 				}
+	// 				++p;
+	// 			}
 	// exit(0);
+	// i = 0;
+	// int p = 0;
+	// int m;
+	// while (pass->rooms[p])
+	// {
+	// 	m = 0;
+	// 	if (p == pass->end)
+	// 	{
+	// 		ft_printf("room %s-----\n\n", pass->rooms[p]);
+	// 		while (pass->links[p][m] >= 0)
+	// 		{
+	// 			ft_printf("\nroom %d\n", pass->distance[pass->links[p][m]]);
+	// 			m++;
+	// 		}
+	// 		ft_printf("\n\n");
+	// 	}
+	// 	++p;
+	// }
 	pass->final_head = NULL;
-	path_finder(&path, pass);
+	path_finder(&path, pass, 0);
 	if (!pass->final_head)
 		return (error_path(pass, input, TRUE));
 	final = pass->final_head;
@@ -200,7 +260,12 @@ int	initialize_path_finder(t_room *pass, char *input)
 	// 	final = final->next;
 	// }
 	// try to test if this is ever happening??
+	//exit(0);
+	// ft_printf("found struct\n");
+	// printf_struct(pass);
+	// exit(0);
 	quick_sort(&pass->final_head);
+	//exit(0);
 	// final = pass->final_head;
 	// i = 0;
 	// ft_printf("\n{green}after sort: finalS:{uncolor} \n");

@@ -176,16 +176,39 @@ int	create(t_room *pass, char **input)
 					k = 0;
 					while (k < count + 1)
 						pass->links[j][k++] = -1;
-					match_in(pass->rooms[j], &((*input)[i]), pass, j);
+					match_in(pass->rooms[j], &((*input)[i]), pass->rooms, j, pass);
+					/*if (!ft_strcmp(pass->rooms[j], "Cqp4"))
+					{
+						k = 0;
+						while (pass->links[j][k] >= 0)
+						{
+							ft_printf("%s\n", pass->rooms[pass->links[j][k++]]);
+						}
+					}*/
 					++j;
 				}
 				// while (pass->rooms[p])
 				// {
 				// 	m = 0;
-				// 	ft_printf("room %s count [%i]\n", pass->rooms[p], count_in(pass->rooms[p], &((*input)[i]), pass->rooms));
-				// 	while (m <= count_in(pass->rooms[p], &((*input)[i]), pass->rooms))
-				// 		ft_printf("%i ", pass->links[p][m++]);
-				// 	ft_printf("\n");
+				// 	if (p == 0)
+				// 	{
+				// 		ft_printf("room %s count [%i]\n\n", pass->rooms[p], count);
+				// 		while (pass->links[p][m] >= 0)
+				// 		{
+				// 			ft_printf("\nroom %s\n", pass->rooms[pass->links[p][m]]);
+						
+				// 			//ft_printf("\n%d { ", pass->links[m][]);
+				// 			int q = 0;
+				// 			while (pass->links[pass->links[p][m]][q] != -1)
+				// 			{
+				// 				ft_printf("%d ", pass->links[pass->links[p][m]][q]);
+				// 				q++;
+				// 			}
+				// 			m++;
+				// 			ft_printf("}");
+				// 		}
+				// 		ft_printf("\n");
+				// 	}
 				// 	++p;
 				// }
 				return (0);
