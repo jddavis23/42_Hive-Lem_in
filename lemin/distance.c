@@ -12,44 +12,54 @@
 
 #include "../includes/lemin.h"
 
-void	recurs(t_room *pass, int **links, int dist, int indx)
+void	recurs(t_room *pass, int **links, int dist, int indx, int prev)
 {
 	int	i;
 	int	j;
+	static int k = 0;
 
 	j = 0;
 	i = 0;
 	while (links[indx][j] >= 0)
 	{
 		if (links[indx][j] == pass->end)
-		{
 			return ;
-		}
 		++j;
 	}
-	if (j == 1 && indx != 0)
+	if ((j == 1 && indx != 0))// || (indx == 0 && dist > 0))
+	{
+		pass->distance[indx] = -1;
+		++k;
 		return ;
+	}
 	while (links[indx][i] >= 0)
 	{
-		//if (indx == 1)
-		//	exit (0);
-		if (links[indx][i] == indx)
-			++i;
+		//if (links[indx][i] == indx)
+		//	++i; else 
 		if (links[indx][i] == 0)
 			++i;
 		if (links[indx][i] < 0)
 			return ;
-		while (links[indx][i] >= 0 && dist >= pass->distance[links[indx][i]] && pass->distance[links[indx][i]] != 0) //double check
+		while ((links[indx][i] >= 0 && (dist + 1 < pass->distance[links[indx][i]])) || links[indx][i] == prev)// || pass->distance[links[indx][i]] == 1)
 			++i;
 		if (links[indx][i] < 0)
 			return ;
-		if (dist + 1 < pass->distance[links[indx][i]] && pass->distance[links[indx][i]] != 0)
-			pass->distance[links[indx][i]] = dist + 1;
-		else if (dist + 1 > pass->distance[links[indx][i]] && pass->distance[links[indx][i]] == 0)
-			pass->distance[links[indx][i]] = dist + 1;
-		if (links[indx][i] != 0)
+		if (dist + 1 > pass->distance[links[indx][i]] ||  prev == 0)
 		{
-			recurs(pass, pass->links, pass->distance[links[indx][i]], links[indx][i]);
+			//if (pass->distance[links[indx][i]] != 1)
+				pass->distance[links[indx][i]] = dist + 1;
+		}
+		if (links[indx][i] != 0)
+			recurs(pass, pass->links, pass->distance[links[indx][i]], links[indx][i], indx);
+		if (k)
+		{
+			j = 0;
+			while (pass->links[indx][j] != -1)
+				++j;
+			if (j < 3)
+				pass->distance[indx] = -1;
+			else
+				--k;
 		}
 		++i;
 	}
@@ -68,7 +78,7 @@ void	distance(t_room *pass)
 	}
 	while (i < pass->total)
 		pass->distance[i++] = 0;
-	recurs(pass, pass->links, pass->distance[0], 0);
+	recurs(pass, pass->links, 0, 0, 0);
 	pass->distance[pass->end] = pass->total;
 	i = 0;
 	ft_printf("\n");
