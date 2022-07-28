@@ -67,8 +67,8 @@ int	error_path(t_room *pass, char *input, int first);
 int	**free2d_int(int **links, int j, int end);
 
 // parsing
-//void	match_in(char *str, char *input, t_room *pass, int k);
-int		match_in(char *str, char *input, char **rooms, int k, t_room *pass);
+void	match_in(char *str, char *input, t_room *pass, int k);
+//int		match_in(char *str, char *input, char **rooms, int k, t_room *pass);
 int		count_in(char *str, char *input, char **rooms);
 int		addi_diff(char *start, char *finish);
 int		dash_in_section(char *full, char *inside);

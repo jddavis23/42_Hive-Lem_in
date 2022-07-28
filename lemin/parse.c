@@ -176,7 +176,8 @@ int	create(t_room *pass, char **input)
 					k = 0;
 					while (k < count + 1)
 						pass->links[j][k++] = -1;
-					match_in(pass->rooms[j], &((*input)[i]), pass->rooms, j, pass);
+					match_in(pass->rooms[j], &((*input)[i]), pass, j);
+					//match_in(pass->rooms[j], &((*input)[i]), pass->rooms, j, pass);
 					/*if (!ft_strcmp(pass->rooms[j], "Cqp4"))
 					{
 						k = 0;

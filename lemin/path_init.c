@@ -12,21 +12,6 @@
 
 # include "../includes/lemin.h"
 
-/*	function that checks if a room is already in use	*/
-
-static int	create_used(t_room *pass)
-{
-	int	i;
-
-	i = 0;
-	pass->used = (int *) malloc(pass->total * sizeof(int));
-	if (!pass->used)
-		return (ERROR);
-	while (i < pass->total)
-		pass->used[i++] = FALSE;
-	return (0);
-}
-
 /*	checks if end has been correctly sorted	*/
 
 static int	is_sorted(t_room *pass, int indx)
@@ -184,8 +169,6 @@ int	initialize_path_finder(t_room *pass, char *input)
 	path = NULL;
 	final = NULL;
 	pass->path_nbr = 1;
-	if (create_used(pass) == ERROR)
-		return (error_path(pass, input, TRUE));
 	sort_distance(pass);
 	// i = 0;
 	// int p = 0;
@@ -240,6 +223,26 @@ int	initialize_path_finder(t_room *pass, char *input)
 	// 	}
 	// 	++p;
 	// }
+	i = 0;
+	while (i < pass->total)
+	{
+		pass->used[i] = FALSE;
+		++i;
+	}
+	i = 0;
+	while (pass->rooms[i])
+	{
+		//int k = 0;
+		ft_printf("ROOM{%s}-[%d]: \n", pass->rooms[i], pass->distance[i]);
+		// while (pass->links[i][k] >= 0)
+		// {
+		// 	ft_printf("room[%s]-[%d]	", pass->rooms[pass->links[i][k]], pass->distance[pass->links[i][k]]);
+		// 	++k;
+		// }
+		ft_printf("\n\n");
+		++i;
+	}
+	exit(0);
 	pass->final_head = NULL;
 	path_finder(&path, pass, 0);
 	if (!pass->final_head)
@@ -264,6 +267,7 @@ int	initialize_path_finder(t_room *pass, char *input)
 	// ft_printf("found struct\n");
 	// printf_struct(pass);
 	// exit(0);
+	// printf_struct(pass);
 	quick_sort(&pass->final_head);
 	//exit(0);
 	// final = pass->final_head;

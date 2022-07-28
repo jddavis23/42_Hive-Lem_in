@@ -29,6 +29,21 @@ int	len_array(int *links)
 	return (i);
 }
 
+/*	function checking room is already in use	*/
+
+static int	create_used(t_room *pass)
+{
+	int	i;
+
+	i = 0;
+	pass->used = (int *) malloc(pass->total * sizeof(int));
+	if (!pass->used)
+		return (ERROR);
+	while (i < pass->total)
+		pass->used[i++] = FALSE;
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_room	*pass;
@@ -47,8 +62,9 @@ int	main(int argc, char **argv)
 			pass->row = FALSE;
 		if (create(pass, &input) == ERROR)
 			return (0);
+		if (create_used(pass) == ERROR)
+			return (error_path(pass, input, TRUE));
 		distance(pass);
-		//exit(0);
 		pass->len = len_array(pass->links[pass->end]);
 		max_paths = calc_max(len_array(pass->links[0]), pass->len);
 		if (max_paths < 1)
