@@ -48,7 +48,7 @@ int	main(int argc, char **argv)
 		if (create(pass, &input) == ERROR)
 			return (0);
 		distance(pass);
-		//exit(0);
+		exit(0);
 		pass->len = len_array(pass->links[pass->end]);
 		max_paths = calc_max(len_array(pass->links[0]), pass->len);
 		if (max_paths < 1)
