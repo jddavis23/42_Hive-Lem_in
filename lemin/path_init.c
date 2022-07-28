@@ -101,7 +101,6 @@ int	initialize_path_finder(t_room *pass, char *input)
 	path = NULL;
 	final = NULL;
 	pass->path_nbr = 1;
-	ft_printf("here\n");
 	if (create_used(pass) == ERROR)
 		return (error_path(pass, input, TRUE));
 	sort_end(pass);
@@ -152,3 +151,9 @@ int	initialize_path_finder(t_room *pass, char *input)
 	pass->used = NULL;
 	return (0);
 }
+
+/*
+
+smallest path... based on amount of ants
+
+*/
