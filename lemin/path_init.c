@@ -242,7 +242,6 @@ int	initialize_path_finder(t_room *pass, char *input)
 		ft_printf("\n\n");
 		++i;
 	}
-	exit(0);
 	pass->final_head = NULL;
 	path_finder(&path, pass, 0);
 	if (!pass->final_head)
