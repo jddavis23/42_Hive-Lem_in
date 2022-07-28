@@ -6,7 +6,7 @@
 /*   By: jdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:12:51 by jdavis            #+#    #+#             */
-/*   Updated: 2022/07/25 12:43:01 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/07/28 12:05:45 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	recurs(t_room *pass, int **links, int dist, int indx, int prev)
 {
 	int	i;
 	int	j;
+	static int k = 0;
 
 	j = 0;
 	i = 0;
@@ -26,7 +27,11 @@ void	recurs(t_room *pass, int **links, int dist, int indx, int prev)
 		++j;
 	}
 	if ((j == 1 && indx != 0))// || (indx == 0 && dist > 0))
+	{
+		pass->distance[indx] = -1;
+		++k;
 		return ;
+	}
 	while (links[indx][i] >= 0)
 	{
 		//if (links[indx][i] == indx)
@@ -46,6 +51,16 @@ void	recurs(t_room *pass, int **links, int dist, int indx, int prev)
 		}
 		if (links[indx][i] != 0)
 			recurs(pass, pass->links, pass->distance[links[indx][i]], links[indx][i], indx);
+		if (k)
+		{
+			j = 0;
+			while (pass->links[indx][j] != -1)
+				++j;
+			if (j < 3)
+				pass->distance[indx] = -1;
+			else
+				--k;
+		}
 		++i;
 	}
 }
