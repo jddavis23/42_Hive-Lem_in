@@ -447,13 +447,14 @@ static int check_connect(t_room *pass, int indx, int nbr)
 	i = 0;
 	if (!pass->info[CONNECT][indx])
 	{
-		while (pass->distance[pass->links[indx][i]] > 0 || pass->links[indx][i] == 0)
+		while (pass->distance[pass->links[indx][i]] >= 0 && pass->links[indx][i] != -1)
 		{
 			pass->info[CONNECT][indx]++;
+			//ft_printf("found start, room: %s, link: %s\n", pass->rooms[indx], pass->rooms[pass->links[indx][i]]);
 			if (pass->links[indx][i] == 0)
 			{
 				//start found;
-				ft_printf("found start\n");
+				//ft_printf("found start, room: %s, link: %s, nbr: %d\n", pass->rooms[indx], pass->rooms[pass->links[indx][i]], nbr - 1);
 				pass->info[CURRENT][nbr - 1] = 0;
 				pass->info[CONNECT][indx] = 0;
 				return (FALSE);
@@ -493,8 +494,10 @@ static int	all_paths_found(t_room *pass)
 	int	i;
 
 	i = 0;
+	ft_printf("all paths found: ");
 	while (i < pass->total)
 	{
+		ft_printf("%d \n", pass->info[CURRENT][i]);
 		if (pass->info[CURRENT][i] != 0)
 		{
 			return (FALSE);
@@ -533,14 +536,12 @@ static int	check_neighbors(t_room *pass, int prev, int indx, int nbr)
 	locked = 0;
 	// if something is free choose that
 	ft_printf("update values: %s\n", pass->rooms[indx]);
-			
+	
 	while (pass->distance[pass->links[indx][i]] >= 0)
 	{
-		ft_printf("update values: %s\n", pass->rooms[pass->links[indx][i]]);
 		if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->info[PATH][pass->links[indx][i]] != prev && \
 			pass->info[PREV][pass->links[indx][i]] == 0)
 		{
-			ft_printf("update values: %s\n", pass->rooms[pass->links[indx][i]]);
 			update_values(pass, i, indx, nbr);
 			return (-1);
 		}
@@ -668,7 +669,7 @@ static void	print_output(t_room *pass)
 		nbr = pass->info[PATH][pass->links[0][i]];
 		if (nbr != 0)
 		{
-			ft_printf("{green}PATH [%d]{uncolor}\n", nbr);
+			ft_printf("{green}PATH [%d] LEN[%d]{uncolor}\n", nbr, pass->info[LEN][pass->links[0][i]]);
 			prev = pass->info[PREV][pass->links[0][i]];
 			ft_printf("%s\n", pass->rooms[pass->links[0][i]]);
 			while (prev > 0)
@@ -688,6 +689,7 @@ void	path_finder(t_path **path, t_room *pass, int i)
 	
 	i = 0;
 	pass->info[PREV][pass->end] = -1;
+	pass->info[LEN][pass->end] = 1;
 	while (pass->distance[pass->links[pass->end][i]] > 0)
 	{
 		if (pass->info[PATH][pass->links[pass->end][i]] == 0 && pass->info[PREV][pass->links[pass->end][i]] == 0)
@@ -709,8 +711,6 @@ void	path_finder(t_path **path, t_room *pass, int i)
 			{
 				ft_printf("path: %d, %s\n", pass->info[PATH][pass->links[pass->end][i]], pass->rooms[pass->links[pass->end][i]]);
 				solve_conflict(pass, pass->info[PREV][pass->info[CURRENT][i]], pass->info[CURRENT][i], i + 1);
-				print_output(pass);exit (0);
-
 			}
 			++i;
 		}

@@ -188,30 +188,31 @@ int	create(t_room *pass, char **input)
 					}*/
 					++j;
 				}
-				// while (pass->rooms[p])
-				// {
-				// 	m = 0;
-				// 	if (p == 0)
-				// 	{
-				// 		ft_printf("room %s count [%i]\n\n", pass->rooms[p], count);
-				// 		while (pass->links[p][m] >= 0)
-				// 		{
-				// 			ft_printf("\nroom %s\n", pass->rooms[pass->links[p][m]]);
+				while (pass->rooms[p])
+				{
+					m = 0;
+					if (p == 0)
+					{
+						ft_printf("room %s count [%i]\n\n", pass->rooms[p], count);
+						while (pass->links[p][m] >= 0)
+						{
+							ft_printf("\nroom %s{\n", pass->rooms[pass->links[p][m]]);
 						
-				// 			//ft_printf("\n%d { ", pass->links[m][]);
-				// 			int q = 0;
-				// 			while (pass->links[pass->links[p][m]][q] != -1)
-				// 			{
-				// 				ft_printf("%d ", pass->links[pass->links[p][m]][q]);
-				// 				q++;
-				// 			}
-				// 			m++;
-				// 			ft_printf("}");
-				// 		}
-				// 		ft_printf("\n");
-				// 	}
-				// 	++p;
-				// }
+							//ft_printf("\n%d { ", pass->links[m][]);
+							int q = 0;
+							while (pass->links[pass->links[p][m]][q] != -1)
+							{
+								ft_printf("%d ", pass->links[pass->links[p][m]][q]);
+								q++;
+							}
+							m++;
+							ft_printf("}");
+						}
+						ft_printf("\n");
+					}
+					++p;
+				}
+				
 				return (0);
 			}
 			++i;
