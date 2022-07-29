@@ -474,7 +474,7 @@ static void	move_index(t_room *pass, int prev, int indx, int nbr)
 	i = 0;
 	if (pass->info[CONNECT][indx] == 2)
 	{
-		while (pass->distance[pass->links[indx][i]] > 0)
+		while (pass->distance[pass->links[indx][i]] > 0 && pass->links[indx][i] != -1)
 		{
 			if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->info[PATH][pass->links[indx][i]] != prev && \
 				pass->info[PREV][pass->links[indx][i]] == 0)
@@ -530,28 +530,30 @@ how to solve conflict
 static int	check_neighbors(t_room *pass, int prev, int indx, int nbr)
 {
 	int	i;
-	int	locked;
+	int j;
 
 	i = 0;
-	locked = 0;
+	j = 0;
 	// if something is free choose that
 	ft_printf("update values: %s\n", pass->rooms[indx]);
 	
-	while (pass->distance[pass->links[indx][i]] >= 0)
+	while (pass->distance[pass->links[indx][i]] >= 0 && pass->links[indx][i] != -1)
 	{
 		if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->info[PATH][pass->links[indx][i]] != prev && \
 			pass->info[PREV][pass->links[indx][i]] == 0)
 		{
 			update_values(pass, i, indx, nbr);
-			return (-1);
+			return (FALSE);
 		}
 		else if (pass->info[PATH][pass->links[indx][i]] != prev)
 		{
-			locked = pass->info[PATH][pass->links[indx][i]];
+			ft_printf("here\n");
+			ft_printf("locked: %s", pass->rooms[pass->links[indx][i]]);
+			pass->info[CONFLICT][j++] = pass->info[PATH][pass->links[indx][i]];
 		}
 		++i;
 	}
-	return (locked);
+	return (TRUE);
 }
 
 static int	check_neighbors_recursive(t_room *pass, int prev, int indx, int nbr)
@@ -563,16 +565,16 @@ static int	check_neighbors_recursive(t_room *pass, int prev, int indx, int nbr)
 	locked = 0;
 	i = 0;
 	// if something is free choose that
-	while (pass->distance[pass->links[indx][i]] > 0)
+	while (pass->distance[pass->links[indx][i]] > 0 && pass->links[indx][i] != -1)
 	{
-		if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->info[PATH][pass->links[indx][i]] != prev && \
+		if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->links[indx][i] != prev && \
 			pass->info[PREV][pass->links[indx][i]] == 0)
 		{
 
 			//update_values(pass, i, indx, nbr);
 			return (-1);
 		}
-		else if (pass->info[PATH][pass->links[indx][i]] != prev)
+		else if (pass->links[indx][i] != prev)
 		{
 			locked = pass->info[PATH][pass->links[indx][i]];
 		}
@@ -630,31 +632,97 @@ int	other_path(t_room *pass, int nbr)
 	// else
 }
 
+static void	clean_conflict(t_room *pass)
+{
+	int	i;
+
+	i = 0;
+	while (i < pass->total)
+	{
+		pass->info[CONFLICT][i++] = FALSE;
+	}
+}
+
+static int	check_connections(t_room *pass, int indx, int nbr)
+{
+	if (pass || indx || nbr)
+		return (FALSE);
+	return (FALSE);
+}
+
+static void	delete_path(t_room *pass, int nbr)
+{
+	int	i;
+
+	i = 0;
+	while (i < pass->total)
+	{
+		if (pass->info[PATH][i] == nbr)
+		{
+			pass->info[PATH][i] = 0;
+			pass->info[LEN][i] = 0;
+			pass->info[PREV][i] = 0;
+			pass->info[CURRENT][nbr - 1] = 0;
+		}
+		++i;
+	}
+}
+
+static void	longest_path_delete(t_room *pass, int prev, int indx)
+{
+	int	longest;
+
+	int	i;
+	int j;
+
+	i = 0;
+	j = 0;
+	longest = pass->info[PATH][indx];
+	while (pass->distance[pass->links[indx][i]] >= 0 && pass->links[indx][i] != -1)
+	{
+		if (pass->links[indx][i] != prev)
+		{
+			
+			if (pass->info[LEN][pass->links[indx][i]] > pass->info[LEN][indx] + 1)
+				longest = pass->info[PATH][pass->links[indx][i]];
+		}
+		++i;
+	}
+	delete_path(pass, longest);
+}
+
 static void solve_conflict(t_room *pass, int prev, int indx, int nbr)
 {
-	int	locked;
-
 	if (check_connect(pass, indx, nbr) == FALSE)
 		return ;//returns if start is found;
 	ft_printf("here\n");
 	// if something is free choose that
-	locked = check_neighbors(pass, prev, indx, nbr);
-	if (locked == -1)
+	if (check_neighbors(pass, prev, indx, nbr) == FALSE)
+	{
+		clean_conflict(pass);
 		return ;
+	}
 	// if we reach here it means a path hasn't been choosen / found
 	// check if we can move another path
-
-	if (other_path(pass, locked) == TRUE)
+	ft_printf("conflict, room: %s\n", pass->rooms[indx]);
+	// check nbr of all connections - compare longest nbr value of each path and delete the worst one
+	if (check_connections(pass, indx, nbr) == FALSE)
 	{
-		ft_printf("other path true\n");
-		//do same steps but update values
-		//do same loop as above again and choose the now free path
+		longest_path_delete(pass, prev, indx);
 	}
-	else
-	{
-		// choose to delete a path
-		// 
-	}
+	// exit (0);
+	
+	// if (other_path(pass, locked) == TRUE)
+	// {
+	// 	ft_printf("other path true\n");
+	// 	//do same steps but update values
+	// 	//do same loop as above again and choose the now free path
+	// }
+	// else
+	// {
+	// 	// choose to delete a path
+	// 	// 
+	// }
 }
 
 static void	print_output(t_room *pass)
