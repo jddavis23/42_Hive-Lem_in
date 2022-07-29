@@ -47,7 +47,10 @@ typedef struct  s_room
 	char	**rooms;
 	int		**links;
 	int		*distance;
-	int		*used;
+	int		**info;
+//	int		*used;
+//	int		*path;
+//	int		*len;
 	int		end;
 	int		ants;
 	int		total;
@@ -57,6 +60,14 @@ typedef struct  s_room
 	t_path	*head;
 	t_path	*final_head;
 }				t_room;
+
+typedef enum
+{
+	PATH,
+	PREV,
+	LEN,
+	CURRENT,
+} info;
 
 typedef enum
 {

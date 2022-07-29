@@ -226,7 +226,7 @@ int	initialize_path_finder(t_room *pass, char *input)
 	i = 0;
 	while (i < pass->total)
 	{
-		pass->used[i] = FALSE;
+		pass->info[PREV][i] = FALSE;
 		++i;
 	}
 	i = 0;
@@ -285,15 +285,15 @@ int	initialize_path_finder(t_room *pass, char *input)
 	// 	final = final->next;
 	// }
 	// exit (0);
-	if (pass->links)
-		pass->links = free2d_int(pass->links, pass->total, pass->end);
-	if (pass->distance)
-		free(pass->distance);
-	if (pass->used)
-		free(pass->used);
-	pass->links = NULL;
-	pass->distance = NULL;
-	pass->used = NULL;
+	// if (pass->links)
+	// 	pass->links = free2d_int(pass->links, pass->total, pass->end);
+	// if (pass->distance)
+	// 	free(pass->distance);
+	// if (pass->used)
+	// 	free(pass->used);
+	// pass->links = NULL;
+	// pass->distance = NULL;
+	// pass->used = NULL;
 	return (0);
 }
 
