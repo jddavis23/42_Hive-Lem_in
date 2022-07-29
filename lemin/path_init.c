@@ -14,21 +14,21 @@
 
 /*	checks if end has been correctly sorted	*/
 
-static int	is_sorted(t_room *pass, int indx)
-{
-	int	i;
+// static int	is_sorted(t_room *pass, int indx)
+// {
+// 	int	i;
 
-	i = 0;
-	if (pass->links[indx][i] == -1 || pass->links[indx][i + 1] == -1)
-		return (TRUE);
-	while (pass->links[indx][i + 1] != -1)
-	{
-		if (pass->distance[pass->links[indx][i]] > pass->distance[pass->links[indx][i + 1]])
-			return (FALSE);
-		++i;
-	}
-	return (TRUE);
-}
+// 	i = 0;
+// 	if (pass->links[indx][i] == -1 || pass->links[indx][i + 1] == -1)
+// 		return (TRUE);
+// 	while (pass->links[indx][i + 1] != -1)
+// 	{
+// 		if (pass->distance[pass->links[indx][i]] > pass->distance[pass->links[indx][i + 1]])
+// 			return (FALSE);
+// 		++i;
+// 	}
+// 	return (TRUE);
+// }
 
 static int	is_sorted_end(t_room *pass, int indx)
 {
@@ -63,8 +63,8 @@ static void	sort_distance(t_room *pass)
 	while (indx < pass->total)
 	{
 		i = 0;
-		if (indx == pass->end)
-		{
+		// if (indx == pass->end)
+		// {
 			while (is_sorted_end(pass, indx) == FALSE)
 			{
 				i = 0;
@@ -87,26 +87,26 @@ static void	sort_distance(t_room *pass)
 					++i;
 				}
 			}
-		}
-		else
-		{
-			while (is_sorted(pass, indx) == FALSE)
-			{
-				i = 0;
-				if (pass->links[indx][i] == -1 || pass->links[indx][i + 1] == -1)
-					break ;
-				while (pass->links[indx][i + 1] != -1)
-				{
-					if (pass->distance[pass->links[indx][i]] > pass->distance[pass->links[indx][i + 1]])
-					{
-						temp = pass->links[indx][i];
-						pass->links[indx][i] = pass->links[indx][i + 1];
-					pass->links[indx][i + 1] = temp;
-					}
-					++i;
-				}
-			}
-		}
+		// }
+		// else
+		// {
+		// 	while (is_sorted(pass, indx) == FALSE)
+		// 	{
+		// 		i = 0;
+		// 		if (pass->links[indx][i] == -1 || pass->links[indx][i + 1] == -1)
+		// 			break ;
+		// 		while (pass->links[indx][i + 1] != -1)
+		// 		{
+		// 			if (pass->distance[pass->links[indx][i]] > pass->distance[pass->links[indx][i + 1]])
+		// 			{
+		// 				temp = pass->links[indx][i];
+		// 				pass->links[indx][i] = pass->links[indx][i + 1];
+		// 			pass->links[indx][i + 1] = temp;
+		// 			}
+		// 			++i;
+		// 		}
+		// 	}
+		// }
 		++indx;
 	}
 }

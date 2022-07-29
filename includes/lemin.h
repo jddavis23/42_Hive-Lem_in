@@ -68,6 +68,7 @@ typedef enum
 	LEN,
 	CURRENT,
 	CONNECT,
+	CONFLICT,
 } info;
 
 typedef enum

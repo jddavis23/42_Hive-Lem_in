@@ -440,28 +440,36 @@ static void	update_values(t_room *pass, int i, int indx, int nbr)
 	pass->info[CURRENT][nbr - 1] = pass->links[indx][i];
 }
 
-static void	move_index(t_room *pass, int prev, int indx, int nbr)
+static int check_connect(t_room *pass, int indx, int nbr)
 {
 	int i;
 
 	i = 0;
 	if (!pass->info[CONNECT][indx])
 	{
-		ft_printf("here %d\n", indx);
 		while (pass->distance[pass->links[indx][i]] > 0 || pass->links[indx][i] == 0)
 		{
-			ft_printf("links %d\n", pass->links[indx][i]);
 			pass->info[CONNECT][indx]++;
 			if (pass->links[indx][i] == 0)
 			{
 				//start found;
 				ft_printf("found start\n");
 				pass->info[CURRENT][nbr - 1] = 0;
-				return ;
+				pass->info[CONNECT][indx] = 0;
+				return (FALSE);
 			}
 			i++;
 		}
 	}
+	return (TRUE);
+}
+
+static void	move_index(t_room *pass, int prev, int indx, int nbr)
+{
+	int i;
+
+	if (check_connect(pass, indx, nbr) == FALSE)
+		return ;
 	i = 0;
 	if (pass->info[CONNECT][indx] == 2)
 	{
@@ -472,6 +480,7 @@ static void	move_index(t_room *pass, int prev, int indx, int nbr)
 			{
 				update_values(pass, i, indx, nbr);
 				move_index(pass, indx, pass->links[indx][i], nbr);
+				return ;
 			}
 			++i;
 		}
@@ -486,11 +495,8 @@ static int	all_paths_found(t_room *pass)
 	i = 0;
 	while (i < pass->total)
 	{
-
-		ft_printf("%d ", pass->info[CURRENT][i]);
 		if (pass->info[CURRENT][i] != 0)
 		{
-			exit(0);
 			return (FALSE);
 		}
 		++i;
@@ -517,13 +523,137 @@ how to solve conflict
 				keep the shortest path
 
 */
-static void solve_conflict(t_room *pass)
+
+static int	check_neighbors(t_room *pass, int prev, int indx, int nbr)
 {
 	int	i;
+	int	locked;
 
 	i = 0;
-	if (pass)
+	locked = 0;
+	// if something is free choose that
+	ft_printf("update values: %s\n", pass->rooms[indx]);
+			
+	while (pass->distance[pass->links[indx][i]] >= 0)
+	{
+		ft_printf("update values: %s\n", pass->rooms[pass->links[indx][i]]);
+		if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->info[PATH][pass->links[indx][i]] != prev && \
+			pass->info[PREV][pass->links[indx][i]] == 0)
+		{
+			ft_printf("update values: %s\n", pass->rooms[pass->links[indx][i]]);
+			update_values(pass, i, indx, nbr);
+			return (-1);
+		}
+		else if (pass->info[PATH][pass->links[indx][i]] != prev)
+		{
+			locked = pass->info[PATH][pass->links[indx][i]];
+		}
 		++i;
+	}
+	return (locked);
+}
+
+static int	check_neighbors_recursive(t_room *pass, int prev, int indx, int nbr)
+{
+	int	i;
+	int	locked;
+
+	i = nbr;
+	locked = 0;
+	i = 0;
+	// if something is free choose that
+	while (pass->distance[pass->links[indx][i]] > 0)
+	{
+		if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->info[PATH][pass->links[indx][i]] != prev && \
+			pass->info[PREV][pass->links[indx][i]] == 0)
+		{
+
+			//update_values(pass, i, indx, nbr);
+			return (-1);
+		}
+		else if (pass->info[PATH][pass->links[indx][i]] != prev)
+		{
+			locked = pass->info[PATH][pass->links[indx][i]];
+		}
+		++i;
+	}
+	return (locked);
+}
+
+int	other_path(t_room *pass, int nbr);
+
+static int solve_conflict_recursive(t_room *pass, int prev, int indx, int nbr)
+{
+	int	locked;
+
+	if (check_connect(pass, indx, nbr) == FALSE)
+		return (FALSE);//returns if start is found;
+	// if something is free choose that
+	locked = check_neighbors_recursive(pass, prev, indx, nbr);
+	if (locked == -1)
+		return (TRUE);
+	// if we reach here it means a path hasn't been choosen / found
+	// check if we can move another path
+
+	if (other_path(pass, locked) == TRUE)
+	{
+		//do same steps but update values
+		//do same loop as above again and choose the now free path
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
+int	other_path(t_room *pass, int nbr)
+{
+	int prev;
+
+	prev = pass->info[CURRENT][nbr - 1];
+
+	ft_printf("prev: %s\n", pass->rooms[prev]);
+	if (prev != 0)
+	{
+		while (pass->info[CONNECT][prev] == 2 || pass->info[PREV][prev] == -1)
+		{
+			prev = pass->info[PREV][prev];
+		}
+		// checks if we have reached the end without any crossroads
+		if (pass->info[PREV][prev] == -1)
+			return (FALSE);
+		if (solve_conflict_recursive(pass, pass->info[PREV][prev], prev, nbr) == TRUE)
+			return (TRUE);
+	}
+	return (FALSE);
+	// check number of other path and go to their nearest conflict
+	// if no conflict exit with FALSE
+	// else
+}
+
+static void solve_conflict(t_room *pass, int prev, int indx, int nbr)
+{
+	int	locked;
+
+	if (check_connect(pass, indx, nbr) == FALSE)
+		return ;//returns if start is found;
+	ft_printf("here\n");
+	// if something is free choose that
+	locked = check_neighbors(pass, prev, indx, nbr);
+	if (locked == -1)
+		return ;
+	// if we reach here it means a path hasn't been choosen / found
+	// check if we can move another path
+
+	if (other_path(pass, locked) == TRUE)
+	{
+		ft_printf("other path true\n");
+		//do same steps but update values
+		//do same loop as above again and choose the now free path
+	}
+	else
+	{
+		// choose to delete a path
+		// 
+	}
 }
 
 static void	print_output(t_room *pass)
@@ -563,10 +693,6 @@ void	path_finder(t_path **path, t_room *pass, int i)
 		if (pass->info[PATH][pass->links[pass->end][i]] == 0 && pass->info[PREV][pass->links[pass->end][i]] == 0)
 		{
 			update_values(pass, i, pass->end, i + 1);
-			// pass->info[PATH][pass->links[pass->end][i]] = i + 1;
-			// pass->info[PREV][pass->links[pass->end][i]] = pass->end;
-			// pass->info[LEN][pass->links[pass->end][i]] = pass->info[LEN][pass->end] + 1;
-			// pass->info[CURRENT][i] = pass->links[pass->end][i];
 			move_index(pass, pass->end, pass->links[pass->end][i], i + 1);
 		}
 		++i;
@@ -578,18 +704,29 @@ void	path_finder(t_path **path, t_room *pass, int i)
 		i = 0;
 		while (i < total)
 		{
+			ft_printf("i: %d, current: %s\n", i, pass->rooms[pass->info[CURRENT][i]]);
 			if (pass->info[CURRENT][i] != 0)
-				solve_conflict(pass);
+			{
+				ft_printf("path: %d, %s\n", pass->info[PATH][pass->links[pass->end][i]], pass->rooms[pass->links[pass->end][i]]);
+				solve_conflict(pass, pass->info[PREV][pass->info[CURRENT][i]], pass->info[CURRENT][i], i + 1);
+				print_output(pass);exit (0);
+
+			}
 			++i;
 		}
+		ft_printf("-----\n");
+		
 		i = 0;
 		while (i < total)
 		{
+			ft_printf("i: %d, current: %s\n", i, pass->rooms[pass->info[CURRENT][i]]);
 			if (pass->info[CURRENT][i] != 0)
 				move_index(pass, pass->info[PREV][pass->info[CURRENT][i]], pass->info[CURRENT][i], i + 1);
 			++i;
 		}
 	}
+	print_output(pass);
+	
 	if (*path)
 		++i;
 	// create all the paths and give them the first index
