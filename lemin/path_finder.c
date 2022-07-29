@@ -12,84 +12,86 @@
 
 # include "../includes/lemin.h"
 
-static int	count_moves(t_path *path)
-{
-	int	i;
+// static int	count_moves(t_path *path)
+// {
+// 	int	i;
 
-	i = 0;
-	while (path)
-	{
-		i += path->len;
-		path = path->next;
-	}
-	return (i);
-}
+// 	i = 0;
+// 	while (path)
+// 	{
+// 		i += path->len;
+// 		path = path->next;
+// 	}
+// 	return (i);
+// }
 
-static int	loop_to_end(t_path *file)
-{
-	while (file->next)
-	{
-		file = file->next;
-	}
-	return (file->nbr);
-}
+// static int	loop_to_end(t_path *file)
+// {
+// 	while (file->next)
+// 	{
+// 		file = file->next;
+// 	}
+// 	return (file->nbr);
+// }
 
-static void	printf_struct(t_room *pass)
-{
-	t_path *final;
-	t_index *temp;
-	int i;
-	final = pass->head;
-	i = 0;
-	ft_printf("\n{green}after sort: finalS:{uncolor} \n");
-	while (final)
-	{
-		temp = final->move_head;
-		final->move = final->move_head;
-		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
-		while (final->move)
-		{
-			ft_printf("room: %s\n", pass->rooms[final->move->index]);
-			final->move = final->move->next;
-		}
-		final->move_head = temp;
-		++i;
-		final = final->next;
-	}
-}
+// static void	printf_struct(t_room *pass)
+// {
+// 	t_path *final;
+// 	t_index *temp;
+// 	int i;
+// 	final = pass->head;
+// 	i = 0;
+// 	ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+// 	while (final)
+// 	{
+// 		temp = final->move_head;
+// 		final->move = final->move_head;
+// 		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+// 		while (final->move)
+// 		{
+// 			ft_printf("room: %s\n", pass->rooms[final->move->index]);
+// 			final->move = final->move->next;
+// 		}
+// 		final->move_head = temp;
+// 		++i;
+// 		final = final->next;
+// 	}
+// }
 
-static void	compare_and_copy(t_path **path, t_room *pass)
-{
-	int	final_length;
+// static void	compare_and_copy(t_path **path, t_room *pass)
+// {
+// 	int	final_length;
 
-	// ft_printf("\nfound struct\n\n");
-	// printf_struct(pass);
-	if (pass->final_head)
-	{
-		final_length = loop_to_end(pass->final_head);
-		// if (final_length == 3)
-		// 	exit(0);
-		if (final_length < (*path)->nbr)
-		{
-			del_path(&pass->final_head);
-			pass->final_head = cpy_pth(pass->head);
-			//ft_printf("finish struct!\n");
-		}
-		else if (final_length == (*path)->nbr)
-		{
-			if (count_moves(pass->final_head) > count_moves(pass->head))
-			{
-				del_path(&pass->final_head);
-				pass->final_head = cpy_pth(pass->head);
-			}
+// 	// ft_printf("\nfound struct\n\n");
+// 	// printf_struct(pass);
+// 	if (pass->final_head)
+// 	{
+// 		final_length = loop_to_end(pass->final_head);
+// 		// if (final_length == 3)
+// 		// 	exit(0);
+// 		if (final_length < (*path)->nbr)
+// 		{
+// 			del_path(&pass->final_head);
+// 			pass->final_head = cpy_pth(pass->head);
+// 			//ft_printf("finish struct!\n");
+// 		}
+// 		else if (final_length == (*path)->nbr)
+// 		{
+// 			if (count_moves(pass->final_head) > count_moves(pass->head))
+// 			{
+// 				del_path(&pass->final_head);
+// 				pass->final_head = cpy_pth(pass->head);
+// 			}
 			
-		}
-	}
-	else
-	{
-		pass->final_head = cpy_pth(pass->head);
-	}
-}
+// 		}
+// 	}
+// 	else
+// 	{
+// 		pass->final_head = cpy_pth(pass->head);
+// 	}
+// }
+
+/////
 
 // static void	find_path(t_path **path, t_room *pass, int i, int prev_index, int k)
 // {
@@ -213,7 +215,7 @@ static void	compare_and_copy(t_path **path, t_room *pass)
 // 	//ft_printf("recurse back\n");
 // }
 //////////
-
+/*
 static int	all_paths_found(t_path *path)
 {
 	while (path)
@@ -311,7 +313,7 @@ static t_path	*locate_path_split(t_path *path, t_room *pass, int nbr)
 }
 
 static void	check_other_connection(t_path **path, t_room *pass, int nbr)
-{
+{*/
 	/*
 				make function that finds the path that contains the current index
 					checks if it has other options ex other FREE routes to go down
@@ -327,7 +329,7 @@ static void	check_other_connection(t_path **path, t_room *pass, int nbr)
 							now the checked index should be free and we can give this path the index now.
 						else
 							check ALL the conflicting paths that are being compared and get rid of the longest one
-			*/
+			*//*
 	t_path *temp;
 
 	temp = locate_path_split(*path, pass, nbr);
@@ -426,6 +428,9 @@ static void	recursive(t_path **path, t_room *pass)
 		compare_and_copy(path, pass);
 	}
 }
+*/
+
+//////////////////////////////////////////
 
 static void	update_values(t_room *pass, int i, int indx, int nbr)
 {
@@ -437,20 +442,23 @@ static void	update_values(t_room *pass, int i, int indx, int nbr)
 
 static void	move_index(t_room *pass, int prev, int indx, int nbr)
 {
-	int count;
 	int i;
 
 	i = 0;
 	if (!pass->info[CONNECT][indx])
 	{
-		while (pass->distance[pass->links[indx][i]] > 0)
+		ft_printf("here %d\n", indx);
+		while (pass->distance[pass->links[indx][i]] > 0 || pass->links[indx][i] == 0)
 		{
+			ft_printf("links %d\n", pass->links[indx][i]);
+			pass->info[CONNECT][indx]++;
 			if (pass->links[indx][i] == 0)
 			{
 				//start found;
+				ft_printf("found start\n");
 				pass->info[CURRENT][nbr - 1] = 0;
+				return ;
 			}
-			pass->info[CONNECT][indx]++;
 			i++;
 		}
 	}
@@ -459,7 +467,8 @@ static void	move_index(t_room *pass, int prev, int indx, int nbr)
 	{
 		while (pass->distance[pass->links[indx][i]] > 0)
 		{
-			if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->info[PATH][pass->links[indx][i]] != prev)
+			if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->info[PATH][pass->links[indx][i]] != prev && \
+				pass->info[PREV][pass->links[indx][i]] == 0)
 			{
 				update_values(pass, i, indx, nbr);
 				move_index(pass, indx, pass->links[indx][i], nbr);
@@ -477,27 +486,81 @@ static int	all_paths_found(t_room *pass)
 	i = 0;
 	while (i < pass->total)
 	{
+
+		ft_printf("%d ", pass->info[CURRENT][i]);
 		if (pass->info[CURRENT][i] != 0)
+		{
+			exit(0);
 			return (FALSE);
+		}
 		++i;
 	}
 	return (TRUE);
 }
 
+/*
+
+used = index of previous
+
+how to solve conflict
+	if everything is occupied
+		go to first acted upon conflict of other path
+			if it can choose another path
+				choose the other path
+				move current J to now opened path
+			else if other path is occupied
+				need to check that path if it has other options
+					if it has other option go to that and update current
+					else
+						you look at all the paths uptil this point and delete the longest
+			else if it no other path
+				keep the shortest path
+
+*/
 static void solve_conflict(t_room *pass)
 {
-	
+	int	i;
+
+	i = 0;
+	if (pass)
+		++i;
+}
+
+static void	print_output(t_room *pass)
+{
+	int	i;
+	int	nbr;
+	int	prev;
+
+	i = 0;
+	while (pass->links[0][i] >= 0)
+	{
+		nbr = pass->info[PATH][pass->links[0][i]];
+		if (nbr != 0)
+		{
+			ft_printf("{green}PATH [%d]{uncolor}\n", nbr);
+			prev = pass->info[PREV][pass->links[0][i]];
+			ft_printf("%s\n", pass->rooms[pass->links[0][i]]);
+			while (prev > 0)
+			{
+				ft_printf("%s\n", pass->rooms[prev]);
+				prev = pass->info[PREV][prev];
+			}
+		}
+		++i;
+	}
 }
 
 void	path_finder(t_path **path, t_room *pass, int i)
 {
-	int i;
+	//int i;
 	int	total;
 	
 	i = 0;
+	pass->info[PREV][pass->end] = -1;
 	while (pass->distance[pass->links[pass->end][i]] > 0)
 	{
-		if (pass->info[PATH][pass->links[pass->end][i]] == 0)
+		if (pass->info[PATH][pass->links[pass->end][i]] == 0 && pass->info[PREV][pass->links[pass->end][i]] == 0)
 		{
 			update_values(pass, i, pass->end, i + 1);
 			// pass->info[PATH][pass->links[pass->end][i]] = i + 1;
@@ -509,6 +572,7 @@ void	path_finder(t_path **path, t_room *pass, int i)
 		++i;
 	}
 	total = i;
+	print_output(pass);
 	while (all_paths_found(pass) == FALSE)
 	{
 		i = 0;
@@ -516,6 +580,7 @@ void	path_finder(t_path **path, t_room *pass, int i)
 		{
 			if (pass->info[CURRENT][i] != 0)
 				solve_conflict(pass);
+			++i;
 		}
 		i = 0;
 		while (i < total)
@@ -525,6 +590,8 @@ void	path_finder(t_path **path, t_room *pass, int i)
 			++i;
 		}
 	}
+	if (*path)
+		++i;
 	// create all the paths and give them the first index
 	// create_paths(path, pass);
 	// i = 0;
@@ -583,25 +650,3 @@ try to add:
 
 */
 
-/*
-
-used = index of previous
-
-how to solve conflict
-	if everything is occupied
-		go to first acted upon conflict of other path
-			if it can choose another path
-				choose the other path
-				move current J to now opened path
-			else if other path is occupied
-				need to check that path if it has other options
-					if it has other option go to that and update current
-					else
-						you look at all the paths uptil this point and delete the longest
-			else if it no other path
-				keep the shortest path
-
-used 2d
-- keep count of connections of each room
-
-*/

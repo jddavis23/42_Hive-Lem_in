@@ -67,6 +67,7 @@ typedef enum
 	PREV,
 	LEN,
 	CURRENT,
+	CONNECT,
 } info;
 
 typedef enum
