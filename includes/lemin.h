@@ -42,6 +42,21 @@ typedef struct		s_ants
 	struct s_ants	*prev;
 }					t_ants;
 
+typedef struct		s_i_conf
+{
+	int				index;
+	int				i;
+	struct s_i_conf	*next;
+}					t_i_conf;
+
+typedef struct		s_conflict
+{
+	int					nbr;
+	t_i_conf			*move_head;
+	struct s_i_conf		*move;
+	struct s_conflict	*next;
+}					t_conflict;
+
 typedef struct  s_room
 {
 	char	**rooms;
@@ -59,6 +74,7 @@ typedef struct  s_room
 	int		row;
 	t_path	*head;
 	t_path	*final_head;
+	t_conflict *conf_head;
 }				t_room;
 
 typedef enum
