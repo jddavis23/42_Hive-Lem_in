@@ -360,34 +360,84 @@ make function that loops through struct of the conflicting path
 
 */
 
+int	can_block_change(t_room *pass, int orig, int indx, int nbr);
 
-static int	can_block_change(t_room *pass, int orig, int indx, int nbr)
+static int	recursive(t_room *pass, t_conflict *temp, int indx, int nbr)
+{
+	int	i;
+
+	i = 0;
+	ft_printf("orig room: %s	\n", pass->rooms[temp->move->index]);
+	while (pass->links[temp->move->index][i] != -1 && pass->distance[pass->links[temp->move->index][i]] >= 0)
+	{
+		ft_printf("room: %s	\n", pass->rooms[pass->links[temp->move->index][i]]);
+		if (pass->info[PATH][pass->links[temp->move->index][i]] == 0 && \
+		pass->info[PATH][pass->links[temp->move->index][i]] != nbr && \
+		pass->info[PATH][temp->move->index] != pass->info[PATH][pass->links[temp->move->index][i]] && \
+		pass->links[temp->move->index][i] != pass->end)
+		{
+			ft_printf("free path\n");
+			temp->move = temp->move_head;
+			return (TRUE);
+		}
+		else if (pass->info[PATH][pass->links[temp->move->index][i]] != nbr && \
+		pass->info[PATH][temp->move->index] != pass->info[PATH][pass->links[temp->move->index][i]] && \
+		pass->links[temp->move->index][i] != pass->end)
+		{
+			// want to call this function when having to recurse to next spot to see if we can free a path somewhere else
+			ft_printf("FrEEE\n");
+			if (can_block_change(pass, indx, temp->move->index, pass->info[PATH][temp->move->index]) == TRUE)
+			{
+				ft_printf("FrEEE\n");
+				return (TRUE);
+			}
+		}
+		++i;
+	}
+	if (indx)
+		++i;
+	return (FALSE);
+}
+
+
+int	can_block_change(t_room *pass, int orig, int indx, int nbr)
 {
 	t_conflict *temp;
 	int	i;
 
 	temp = pass->conf_head;
-	while (temp && temp->nbr != nbr)
+	ft_printf("ROOM: %s\n", pass->rooms[indx]);
+	while (temp && temp->nbr != pass->info[PATH][indx])
 	{
 		temp = temp->next;
 	}
 	i = 0;
-	if (indx == pass->info[CURRENT][pass->info[PATH][pass->links[indx][i]] - 1])
+	temp->move = temp->move_head;
+	if (indx == pass->info[CURRENT][pass->info[PATH][indx] - 1])
 	{
-		while (temp->move->index != indx)
-			temp->move = temp->move->next;
-		temp->move = temp->move->next;
-		while (pass->links[temp->move->index][i] != -1 && pass->distance[pass->links[temp->move->index][i]] >= 0)
+		ft_printf("JERE\n");
+		ft_printf("ROOM: %s\n", pass->rooms[temp->move->index]);
+		
+		// while (temp && temp->move->next && temp->move->index != indx)
+		// 	temp->move = temp->move->next;
+		ft_printf("ROOM: %s\n", pass->rooms[temp->move->index]);
+	
+		while (temp->move->next)
 		{
-			if (pass->info[PATH][pass->links[temp->move->index][i]] == 0 && \
-			pass->info[PATH][pass->links[temp->move->index][i]] != nbr && \
-			pass->info[PATH][temp->move->index] != pass->info[PATH][pass->links[temp->move->index][i]])
-			{
-				ft_printf("free path\n");
-				temp->move = temp->move_head;
+			
+			temp->move = temp->move->next;
+			if (recursive(pass, temp, indx, nbr) == TRUE)
 				return (TRUE);
-			}
-			++i;
+		}
+		temp->move = temp->move_head;
+	}
+	else
+	{
+		while (temp->move)
+		{
+			if (recursive(pass, temp, indx, nbr) == TRUE)
+				return (TRUE);
+			temp->move = temp->move->next;
 		}
 		temp->move = temp->move_head;
 	}
