@@ -453,6 +453,13 @@ static void	print_output(t_room *pass)
 		}
 		++i;
 	}
+	i = 0;
+	ft_printf("\n\n------------\nrooms path nbr:\n");
+	while (i < pass->total)
+	{
+		ft_printf("%s: %d \n",pass->rooms[i], pass->info[PATH][i]);
+		++i;
+	}
 }
 
 //////////////////////////////////////////
@@ -503,6 +510,43 @@ static void check_connect_recursive(t_room *pass, int indx)
 	}
 }
 
+static int	future_conflict_free(t_room *pass, int prev, int indx, int nbr)
+{
+	int	i;
+
+	if (check_connect(pass, indx, nbr) == FALSE)
+		return (TRUE);
+	i = 0;
+	if (pass->info[CONNECT][indx] == 2)
+	{
+		while (pass->distance[pass->links[indx][i]] > 0 && pass->links[indx][i] != -1)
+		{
+			if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->links[indx][i] != prev && \
+				pass->info[PREV][pass->links[indx][i]] == 0)
+			{
+				if (future_conflict_free(pass, indx, pass->links[indx][i], nbr) == TRUE)
+				{
+					return (TRUE);
+				}
+			}
+			++i;
+		}
+	}
+	else
+	{
+		while (pass->distance[pass->links[indx][i]] > 0 && pass->links[indx][i] != -1)
+		{
+			if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->links[indx][i] != prev && \
+				pass->info[PREV][pass->links[indx][i]] == 0)
+			{
+				return (TRUE);
+			}
+			++i;
+		}
+	}
+	return (FALSE);
+}
+
 static void	move_index(t_room *pass, int prev, int indx, int nbr)
 {
 	int i;
@@ -514,7 +558,7 @@ static void	move_index(t_room *pass, int prev, int indx, int nbr)
 	{
 		while (pass->distance[pass->links[indx][i]] > 0 && pass->links[indx][i] != -1)
 		{
-			if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->info[PATH][pass->links[indx][i]] != prev && \
+			if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->links[indx][i] != prev && \
 				pass->info[PREV][pass->links[indx][i]] == 0)
 			{
 				update_values(pass, i, indx, nbr);
@@ -572,37 +616,20 @@ static int	check_neighbors(t_room *pass, int prev, int indx, int nbr)
 
 	i = 0;
 	j = 0;
-	// if something is free choose that
 	if (check_connect(pass, indx, nbr) == FALSE)
 		return (TRUE);
-	//ft_printf("update values: %s\n", pass->rooms[indx]);
 	while (pass->distance[pass->links[indx][i]] >= 0 && pass->links[indx][i] != -1)
 	{
-		//ft_printf("links %d i: %d\n", pass->links[indx][i], i);
-		if (ft_strcmp(pass->rooms[pass->links[indx][i]], "tribute") == 0)
-		{
-			pass->info[PATH][pass->links[indx][i]] = 0;
-			pass->info[PREV][pass->links[indx][i]] = 0;
-		}
-		// ft_printf("path_nbr: %d == 0, && path nbr %d != %d, %d == 0\n", pass->info[PATH][pass->links[indx][i]], pass->links[indx][i], pass->info[PREV][indx], pass->info[PREV][pass->links[indx][i]]);
-		// ft_printf("room: %s\n", pass->rooms[pass->links[indx][i]]);
 		if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->links[indx][i] != prev && \
-			pass->info[PREV][pass->links[indx][i]] == 0)
+			pass->info[PREV][pass->links[indx][i]] == 0 && future_conflict_free(pass, indx, pass->links[indx][i], nbr) == TRUE)
 		{
-			ft_printf("here\n");
 			update_values(pass, i, indx, nbr);
 			return (TRUE);
 		}
 		else if (pass->info[PATH][pass->links[indx][i]] != prev)
 		{
-			//THIS STARTED SEGMENTFAULTING FOR SOME REASON
-		// 	ft_printf("links %d i: %d new value: %d\n", pass->links[indx][i], i, pass->info[PATH][pass->links[indx][i]]);
-		// ft_printf("conflict: %d\n", pass->info[CONFLICT][0]);
-			//ft_printf("locked: %s", pass->rooms[pass->links[indx][i]]);
 			pass->info[CONFLICT][j++] = pass->info[PATH][pass->links[indx][i]];
 		}
-		//ft_printf("links %d i: %d\n", pass->links[indx][i], i);
-		
 		++i;
 	}
 	return (FALSE);
@@ -610,78 +637,58 @@ static int	check_neighbors(t_room *pass, int prev, int indx, int nbr)
 
 static int	check_neighbors_recursive(t_room *pass, int prev, int indx, int nbr)
 {
+	// int	i;
+	// int	j = 0;
+
+	// j = 0;
+	// i = nbr;
+	// i = 0;
+
+	// // if something is free choose that
+	// //ft_printf("ROOM COMING IN: %s\n", pass->rooms[indx]);
+	// i = 0;
+	// while (pass->distance[pass->links[indx][i]] > 0 && pass->links[indx][i] != -1)
+	// {
+	// 	if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->links[indx][i] != prev && \
+	// 		pass->info[PREV][pass->links[indx][i]] == 0)
+	// 	{
+	// 		//ft_printf("room: %s", pass->rooms[pass->links[indx][i]]);
+	// 		update_values(pass, i, indx, nbr);
+	// 		return (TRUE);
+	// 	}
+	// 	else if (pass->links[indx][i] != prev && pass->distance[pass->links[indx][i]] > 0)
+	// 	{
+	// 		pass->info[CONFLICT][j++] = pass->info[PATH][pass->links[indx][i]];
+	// 	}
+	// 	++i;
+	// }
+	// return (FALSE);
 	int	i;
 	int	j = 0;
 
 	j = 0;
 	i = nbr;
 	i = 0;
+
 	// if something is free choose that
+	//ft_printf("ROOM COMING IN: %s\n", pass->rooms[indx]);
+	i = 0;
 	while (pass->distance[pass->links[indx][i]] > 0 && pass->links[indx][i] != -1)
 	{
 		if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->links[indx][i] != prev && \
-			pass->info[PREV][pass->links[indx][i]] == 0)
+			pass->info[PREV][pass->links[indx][i]] == 0 && future_conflict_free(pass, prev, pass->links[indx][i], nbr))
 		{
-			ft_printf("room: %s", pass->rooms[pass->links[indx][i]]);
+			//ft_printf("room: %s", pass->rooms[pass->links[indx][i]]);
 			update_values(pass, i, indx, nbr);
 			return (TRUE);
 		}
-		else if (pass->links[indx][i] != prev)
+		else if (pass->links[indx][i] != prev && pass->distance[pass->links[indx][i]] > 0)
 		{
 			pass->info[CONFLICT][j++] = pass->info[PATH][pass->links[indx][i]];
 		}
 		++i;
 	}
 	return (FALSE);
-}
-
-int	other_path(t_room *pass, int nbr);
-
-static int solve_conflict_recursive(t_room *pass, int prev, int indx, int nbr)
-{
-	int	locked;
-
-	if (check_connect(pass, indx, nbr) == FALSE)
-		return (FALSE);//returns if start is found;
-	// if something is free choose that
-	locked = check_neighbors_recursive(pass, prev, indx, nbr);
-	if (locked == -1)
-		return (TRUE);
-	// if we reach here it means a path hasn't been choosen / found
-	// check if we can move another path
-
-	if (other_path(pass, locked) == TRUE)
-	{
-		//do same steps but update values
-		//do same loop as above again and choose the now free path
-		return (TRUE);
-	}
-	return (FALSE);
-}
-
-int	other_path(t_room *pass, int nbr)
-{
-	int prev;
-
-	prev = pass->info[CURRENT][nbr - 1];
-
-	ft_printf("prev: %s\n", pass->rooms[prev]);
-	if (prev != 0)
-	{
-		while (pass->info[CONNECT][prev] == 2 || pass->info[PREV][prev] == -1)
-		{
-			prev = pass->info[PREV][prev];
-		}
-		// checks if we have reached the end without any crossroads
-		if (pass->info[PREV][prev] == -1)
-			return (FALSE);
-		if (solve_conflict_recursive(pass, pass->info[PREV][prev], prev, nbr) == TRUE)
-			return (TRUE);
-	}
-	return (FALSE);
-	// check number of other path and go to their nearest conflict
-	// if no conflict exit with FALSE
-	// else
 }
 
 static void	clean_conflict(t_room *pass)
@@ -720,18 +727,31 @@ static void	longest_path_delete(t_room *pass, int prev, int indx)
 
 	i = 0;
 	longest = pass->info[PATH][indx];
-	while (pass->distance[pass->links[indx][i]] >= 0 && pass->links[indx][i] != -1)
+	while (i < pass->total)
 	{
-		if (pass->links[indx][i] != prev)
+		if (pass->info[CONFLICT][i] != 0 && pass->info[LEN][pass->info[CURRENT][pass->info[CONFLICT][i] - 1]] > pass->info[LEN][indx] + 1)
 		{
-			
-			if (pass->info[LEN][pass->links[indx][i]] > pass->info[LEN][indx] + 1)
-				longest = pass->info[PATH][pass->links[indx][i]];
+			longest = pass->info[LEN][pass->info[CURRENT][pass->info[CONFLICT][i] - 1]];
 		}
 		++i;
 	}
+	// i = 0;
+	// while (pass->distance[pass->links[indx][i]] >= 0 && pass->links[indx][i] != -1)
+	// {
+	// 	ft_printf("deleting longest path: %s\n", pass->rooms[pass->links[indx][i]]);
+	
+	// 	if (pass->links[indx][i] != prev)
+	// 	{
+	// 		if (pass->info[LEN][pass->links[indx][i]] > pass->info[LEN][indx] + 1)
+	// 			longest = pass->info[PATH][pass->links[indx][i]];
+	// 	}
+	// 	++i;
+	// }
+	if (prev)
+		++i;
 	delete_path(pass, longest);
 }
+int	check_connections(t_room *pass, int indx, int nbr);
 
 static int check_non_true_rooms(t_room *pass, int indx, int nbr)
 {
@@ -741,22 +761,42 @@ static int check_non_true_rooms(t_room *pass, int indx, int nbr)
 	ft_printf("ROOM COMING IN: %s\n", pass->rooms[indx]);
 	while (pass->distance[pass->links[indx][i]] > 0 && pass->links[indx][i] != -1)
 	{
-		ft_printf("Rooms: %s, nbr: %d\n", pass->rooms[pass->links[indx][i]],nbr);
-		ft_printf("rooms nbr: %d\n", pass->info[PATH][pass->links[indx][i]]);
-		if (pass->links[indx][i] != 0 && pass->links[indx][i] != pass->end && pass->info[PATH][pass->links[indx][i]] != nbr && \
-		pass->info[PATH][pass->links[indx][i]] != pass->info[PATH][indx])
+		ft_printf("Rooms: %s, nbr: %d\n", pass->rooms[pass->links[indx][i]], nbr);
+		ft_printf("rooms current nbr: %d, %d\n", pass->info[PATH][pass->links[indx][i]], pass->info[PATH][indx]);
+		if (pass->links[indx][i] != 0 && pass->links[indx][i] != pass->end && pass->info[PATH][pass->links[indx][i]] != nbr)// && \
+		//pass->info[PATH][pass->links[indx][i]] != pass->info[PATH][indx])
 		{
-			ft_printf("prev: %s nbr: %s\n", pass->rooms[pass->links[indx][i]], pass->rooms[pass->info[PREV][pass->links[indx][i]]]);
-			
+			ft_printf("prev: %s nbr: %s, nbr(%d) %d %d\n", pass->rooms[pass->links[indx][i]], pass->rooms[pass->info[PREV][pass->links[indx][i]]], pass->info[PATH][pass->links[indx][i]], nbr, pass->info[PATH][indx]);
 			//update_values(pass, i, indx, nbr);
-			return (TRUE);
+			if (check_connections(pass,pass->links[indx][i], pass->info[PATH][indx]) == TRUE)
+				return (TRUE);
 		}
 		++i;
 	}
 	return (FALSE);
 }
 
-int	check_connections(t_room *pass, int indx, int nbr);
+static int check_neighbors_recurs_back(t_room *pass, int prev, int indx, int nbr)
+{
+	int	i;
+
+	i = nbr;
+	i = 0;
+
+	// if something is free choose that
+	ft_printf("ROOM COMING IN: %s\n", pass->rooms[indx]);
+	i = 0;
+	while (pass->distance[pass->links[indx][i]] > 0 && pass->links[indx][i] != -1)
+	{
+		ft_printf("ROOM: %s: PATH NBR: %d == %d, PREV %d != %d, PREV has to be current %d != %d\n", pass->rooms[pass->links[indx][i]], pass->info[PATH][pass->links[indx][i]], nbr, pass->links[indx][i], prev, pass->info[PREV][pass->links[indx][i]], indx);
+		if (pass->info[PATH][pass->links[indx][i]] == nbr && pass->links[indx][i] != pass->info[CURRENT][nbr - 1])
+		{
+			return (TRUE);
+		}
+		++i;
+	}
+	return (FALSE);
+}
 
 static int	check_update_values(t_room *pass, int indx, int i, int prev)
 {
@@ -782,37 +822,7 @@ static int	check_update_values(t_room *pass, int indx, int i, int prev)
 		// 	if (prev == -1)
 		// 		return (FALSE);
 		// }
-		if (pass->info[PREV][prev] == -1)
-			return (FALSE);
-			int k = 0;
-				while (k < pass->total)
-				{
-					ft_printf("1k: %d, current: %s\n", k, pass->rooms[pass->info[CURRENT][k]]);
-					k++;
-			}
-		ft_printf("rooms: %s, previous room: %s, pathnbr: %d\n", pass->rooms[pass->links[indx][i]], pass->rooms[indx], pass->info[PATH][indx]);
-		update_values(pass, pass->links[indx][i], indx, pass->info[PATH][indx]);
-		// NEED TO FIGURE OUT WHY THIS ONE ISN'T WORKING/////////////////
-		// also why tribute sometimes gets a value
-		if (pass->info[PATH][indx] == 4 && ft_strcmp(pass->rooms[indx], "8") == 0 && ft_strcmp(pass->rooms[pass->links[indx][i]], "11") == 0)
-		{
-			pass->info[CURRENT][pass->info[PATH][indx] - 1] = pass->links[indx][i];
-			pass->info[PREV][pass->links[indx][i]] = indx;
-		}
-		// pass->info[PATH][pass->links[indx][i]] = pass->info[PATH][indx];
-		// pass->info[PREV][pass->links[indx][i]] = indx;
-		// pass->info[LEN][pass->links[indx][i]] = pass->info[LEN][indx] + 1;
-		// pass->info[CURRENT][pass->info[PATH][indx] - 1] = pass->links[indx][i];
-		
-		if (pass->info[PREV][prev] == -1)
-			return (FALSE);
-			k = 0;
-				while (k < pass->total)
-				{
-					ft_printf("2k: %d, current: %s\n", k, pass->rooms[pass->info[CURRENT][k]]);
-					k++;
-			}
-		// ft_printf("HERE\n");
+		update_values(pass, i, indx, pass->info[PATH][indx]);
 		return (TRUE);
 	}
 	return (FALSE);
@@ -827,75 +837,44 @@ static int	connection_helper(t_room *pass, int indx, int i, int nbr)
 	// if top of list need to check if we can remove current path nbr and change that ones course
 	prev = pass->info[PREV][pass->links[indx][i]];
 	orig = prev;
+	ft_printf("ROOOOOOM: %s\n", pass->rooms[prev]);
 	while (pass->info[CONNECT][prev] == 2)
 	{
 		prev = pass->info[PREV][prev];
+		if (prev == pass->end)
+		{
+			return (FALSE);
+		}
+	}
+	if (prev == pass->end)
+	{
+		return (FALSE);
 	}
 	ft_printf("first loop room : %s nbr: %d\n", pass->rooms[prev], pass->info[PATH][pass->links[indx][i]]);
-	// result = check_neighbors_recursive(pass, pass->info[PREV][prev], prev, pass->info[PATH][pass->links[indx][i]]) == TRUE;
-	// ft_printf("result: %d\n", result);
-	// if (result == TRUE)
-	// {
-	// 	prev = pass->links[indx][i];
-	// 	pass->info[PATH][prev] = 0;
-	// 	pass->info[LEN][prev] = 0;
-	// 	pass->info[PREV][prev] = 0;
-	// 	ft_printf("info: room: %s, path_nbr: %d, len: %d, prev: %s\n", pass->rooms[prev], pass->info[PATH][prev] = 0, pass->info[LEN][prev] = 0, pass->rooms[pass->info[PREV][prev]]);
-	// 	
-	// 	// while (pass->info[CONNECT][prev] == 2)
-	// 	// {
-	// 	// 	pass->info[PATH][prev] = 0;
-	// 	// 	pass->info[LEN][prev] = 0;
-	// 	// 	pass->info[PREV][prev] = 0;
-	// 	// 	prev = pass->info[PREV][prev];
-	// 	// 	if (prev == -1)
-	// 	// 		return (FALSE);
-	// 	// }
-	// 	if (pass->info[PREV][prev] == -1)
-	// 		return (FALSE);
-	// 		int k = 0;
-	// 			while (k < pass->total)
-	// 			{
-	// 				ft_printf("k: %d, current: %s\n", k, pass->rooms[pass->info[CURRENT][k]]);
-	// 				k++;
-	// 		}
-	// 	ft_printf("rooms: %s, previous room: %s, pathnbr: %d\n", pass->rooms[pass->links[indx][i]], pass->rooms[indx], pass->info[PATH][indx]);
-	// 	update_values(pass, pass->links[indx][i], indx, pass->info[PATH][indx]);
-	// 	// ft_printf("HERE\n");
-	// 	return (TRUE);
-	// }check_update_values
 	if (check_update_values(pass, indx, i, prev) == TRUE)
+	{
 		return (TRUE);
-	// int k = 0;
-	// while (k < pass->total)
-	// {
-	// 	ft_printf("k: %d, current: %s\n", k, pass->rooms[pass->info[CURRENT][k]]);
-	// 	k++;
-	// }
-	
-	//ft_printf("before room: %s, nbr: %d\n", pass->rooms[prev], nbr);
+	}
+	ft_printf("before room: %s, nbr: %s\n", pass->rooms[prev], pass->rooms[indx]);
 	if (check_non_true_rooms(pass, prev, nbr) == TRUE)
 	{
-		//ft_printf("after room: %s, nbr: %d\n", pass->rooms[prev], pass->info[PATH][prev]);
-		if (check_connections(pass, prev, pass->info[PATH][prev]) == TRUE)
-		{
-			//ft_printf("555rooms: %s, previous room: %s, pathnbr: %d\n", pass->rooms[pass->links[indx][i]], pass->rooms[indx], pass->info[PATH][indx]);
-			
-			if (check_update_values(pass, indx, i, prev) == TRUE)
+		// if (check_connections(pass, prev, pass->info[PATH][prev]) == TRUE)
+		// {
+			ft_printf("HERE\n");
+			if (check_neighbors_recurs_back(pass, pass->info[PREV][prev], prev, pass->info[PATH][pass->links[indx][i]]) == TRUE)
 			{
-			// 			 k = 0;
-			// while (k < pass->total)
-			// {
-			// 	ft_printf("55k: %d, current: %s\n", k, pass->rooms[pass->info[CURRENT][k]]);
-			// 	k++;
-			// }
-			return (TRUE);
+				prev = pass->links[indx][i];
+				pass->info[PATH][prev] = 0;
+				pass->info[LEN][prev] = 0;
+				pass->info[PREV][prev] = 0;
+				if (pass->info[PREV][prev] == -1)
+					return (FALSE);
+				update_values(pass, i, indx, pass->info[PATH][indx]);
+				return (TRUE);
 			}
-		}
-		// update_values(pass, pass->links[indx][i], indx, pass->info[PATH][indx]);
-		// if (check_update_values(pass, indx, i, prev) == TRUE)
-		// 	return (TRUE);
-		return (TRUE);
+		// }
+		ft_printf("HERE\n");
+			
 	}
 	return (FALSE);
 }
@@ -908,108 +887,39 @@ int	check_connections(t_room *pass, int indx, int nbr)
 
 	i = 0;
 	longest = pass->info[PATH][indx];
-	ft_printf("cCOUNT: %d-------\n", count++);
+	ft_printf("COUNT: %d-------\n", count++);
 	while (pass->distance[pass->links[indx][i]] >= 0 && pass->links[indx][i] != -1)
 	{
-		ft_printf("LOOP COUNT %s - connect: %d\n", pass->rooms[pass->links[indx][i]], pass->info[CONNECT][pass->links[indx][i]]);
+		//if (count > 5)
+		//	exit(0);
 		if (pass->links[indx][i] != pass->end)
 		{
 			if (!pass->info[CONNECT][pass->links[indx][i]])
 				check_connect_recursive(pass, pass->links[indx][i]);
 			ft_printf("LOOP COUNT %s - connect: %d\n", pass->rooms[pass->links[indx][i]], pass->info[CONNECT][pass->links[indx][i]]);
-			if (pass->links[indx][i] != pass->end && pass->links[indx][i] != pass->info[PREV][indx] && pass->info[CONNECT][pass->links[indx][i]] == 3)
+			if (connection_helper(pass, indx, i, nbr) == TRUE)
 			{
-				if (connection_helper(pass, indx, i, nbr) == TRUE)
-				{
-					//if (check_update_values(pass, indx, i, indx) == TRUE)
-						return (TRUE);
-				}
-					// update_values(pass, pass->links[indx][i], indx, pass->info[PATH][indx]);
-				// ft_printf("first loop %s\n", pass->rooms[pass->links[indx][i]]);
-				// // if top of list need to check if we can remove current path nbr and change that ones course
-				// prev = pass->info[PREV][pass->links[indx][i]];
-				// while (pass->info[CONNECT][prev] == 2)
-				// {
-				// 	prev = pass->info[PREV][prev];
-				// }
-				// ft_printf("first loop room : %s nbr: %d\n", pass->rooms[prev], pass->info[PATH][pass->links[indx][i]]);
-				// result = check_neighbors_recursive(pass, pass->info[PREV][prev], prev, pass->info[PATH][pass->links[indx][i]]) == TRUE;
-				// ft_printf("result: %d\n", result);
-				// if (result == TRUE)
-				// {
-				// 	prev = pass->info[PREV][pass->links[indx][i]];
-				// 	pass->info[PATH][prev] = 0;
-				// 	pass->info[LEN][prev] = 0;
-				// 	pass->info[PREV][prev] = 0;
-				// 	while (pass->info[CONNECT][prev] == 2)
-				// 	{
-				// 		pass->info[PATH][prev] = 0;
-				// 		pass->info[LEN][prev] = 0;
-				// 		pass->info[PREV][prev] = 0;
-				// 		prev = pass->info[PREV][prev];
-				// 		if (prev == -1)
-				// 			return (FALSE);
-				// 	}
-				// 	if (pass->info[PREV][prev] == -1)
-				// 		return (FALSE);
-				// 	update_values(pass, pass->links[indx][i], indx, pass->info[PATH][indx]);
-				// 	return (TRUE);
-				// }
-				// ft_printf("before room: %s, nbr: %d\n", pass->rooms[prev], nbr);
-				// if (check_non_true_rooms(pass, prev, nbr) == TRUE)
-				// {
-				// 	ft_printf("after room: %s, nbr: %d\n", pass->rooms[prev], pass->info[PATH][prev]);
-				// 	check_connections(pass, prev, pass->info[PATH][prev]);
-				// 	return (TRUE);
-				// }
+				if (check_update_values(pass, indx, i, indx) == TRUE)
+					return (TRUE);
 			}
-			else if (pass->links[indx][i] != pass->info[PREV][indx] && pass->info[CONNECT][pass->links[indx][i]] > 3)
-			{
-				if (connection_helper(pass, indx, i, nbr) == TRUE)
-				{
-					//if (check_update_values(pass, indx, i, indx) == TRUE)
-						return (TRUE);
-				}
-					// update_values(pass, pass->links[indx][i], indx, pass->info[PATH][indx]);
-				// prev = pass->info[PREV][pass->links[indx][i]];
-				// ft_printf("secon dloop room : %s\n", pass->rooms[prev]);
-				
-				// while (pass->info[CONNECT][prev] == 2)
-				// {
-				// 	prev = pass->info[PREV][prev];
-				// 	if (prev == -1)
-				// 		return (FALSE);
-				// }
-				// if (pass->info[PREV][prev] == -1)
-				// 	return (FALSE);
-				// ft_printf("secon dloop room : %s\n", pass->rooms[prev]);
-				// result = check_neighbors_recursive(pass, pass->info[PREV][prev], prev, nbr);
-				// if (result == TRUE)
-				// {
-				// 	// might be an issue if it is not a while loop this below
-				// 	prev = pass->info[PREV][pass->links[indx][i]];
-				// 	pass->info[PATH][prev] = 0;
-				// 	pass->info[LEN][prev] = 0;
-				// 	pass->info[PREV][prev] = 0;
-				// 	// probably need some kind of loop if multiple paths connected
-				// 	update_values(pass, pass->links[indx][i], indx, pass->info[PATH][indx]);
-				// 	return (TRUE);
-				// }
-				
-				// ft_printf("room: %s, nbr: %d\n", pass->rooms[prev], pass->info[PATH][prev]);
-				// if (check_non_true_rooms(pass, prev, nbr) == TRUE)
-				// {
-				// 	ft_printf("room: %s, nbr: %d\n", pass->rooms[pass->links[indx][i]], pass->info[PATH][pass->links[indx][i]]);
-				// 	check_connections(pass, prev, pass->info[PATH][prev]);
-				// 	return (TRUE);
-				// }
-				// ft_printf("second loop\nprev: %s, current: %s, nbr: %d", pass->rooms[pass->info[PREV][prev]], pass->rooms[prev], nbr);
-				// if (check_neighbors_recursive(pass, pass->info[PREV][pass->links[indx][i]], pass->links[indx][i], nbr) == TRUE)
-				// {
-				// 	update_values(t_room *pass, pass->info[PATH][indx], indx, pass->info[PATH][indx]);
-				// 	return (TRUE);
-				// }
-			}
+			// if (pass->links[indx][i] != pass->end && pass->links[indx][i] != pass->info[PREV][indx] && pass->info[CONNECT][pass->links[indx][i]] == 3)
+			// {
+			// 	ft_printf("here\n");
+			// 	if (connection_helper(pass, indx, i, nbr) == TRUE)
+			// 	{
+			// 		//if (check_update_values(pass, indx, i, indx) == TRUE)
+			// 			return (TRUE);
+			// 	}
+			// }
+			// else if (pass->links[indx][i] != pass->info[PREV][indx] && pass->info[CONNECT][pass->links[indx][i]] > 3)
+			// {
+			// 	ft_printf("here\n");
+			// 	if (connection_helper(pass, indx, i, nbr) == TRUE)
+			// 	{
+			// 		if (check_update_values(pass, indx, i, indx) == TRUE)
+			// 			return (TRUE);
+			// 	}
+			// }
 		}
 		++i;
 	}
@@ -1020,58 +930,29 @@ static void solve_conflict(t_room *pass, int prev, int indx, int nbr)
 {
 	if (check_connect(pass, indx, nbr) == FALSE)
 		return ;//returns if start is found;
-	ft_printf("here\n");
 	// if something is free choose that
 	if (check_neighbors(pass, prev, indx, nbr) == TRUE)
 	{
-		return ;
-		// THIS STARTED SEGMENTFAULTING
 		clean_conflict(pass);
-		int	i;
-
-	i = 0;
-	while (i < pass->total)
-	{
-		ft_printf("%d ", pass->info[CONFLICT][i++]);
-	}
 		return ;
+		
 	}
-
 	// if we reach here it means a path hasn't been choosen / found
 	// check if we can move another path
 	ft_printf("CONFLICT-----------------------\n");
-	ft_printf("conflict, room: %s\n", pass->rooms[indx]);
+	print_output(pass);
+
+	ft_printf("\n\nconflict, room: %s\n", pass->rooms[indx]);
 	// check nbr of all connections - compare longest nbr value of each path and delete the worst one
 	if (check_connections(pass, indx, nbr) == FALSE)
+	//if (check_connections(pass, indx, nbr) == FALSE)
 	{
 		ft_printf("NEGATIVE\n");
 		longest_path_delete(pass, prev, indx);
 	}
-	else
-	{
-		//check_neighbors(pass, prev, indx, nbr);
-		return ;
-	}
-	ft_printf("END CONFLICT-----------------------\n");
-	/*
-	else
-	{
-
-	}
-	*/
-	// exit (0);
-	
-	// if (other_path(pass, locked) == TRUE)
-	// {
-	// 	ft_printf("other path true\n");
-	// 	//do same steps but update values
-	// 	//do same loop as above again and choose the now free path
-	// }
-	// else
-	// {
-	// 	// choose to delete a path
-	// 	// 
-	// }
+	clean_conflict(pass);
+	print_output(pass);
+	ft_printf("\n\nEND CONFLICT-----------------------\n");
 }
 
 void	path_finder(t_path **path, t_room *pass, int i)
@@ -1098,12 +979,10 @@ void	path_finder(t_path **path, t_room *pass, int i)
 		i = 0;
 		while (i < total)
 		{
-			ft_printf("i: %d, current: %s, connect: %d\n", i, pass->rooms[pass->info[CURRENT][i]], pass->info[CONNECT][i]);
-			if (pass->info[CURRENT][i] != 0 && pass->info[CONNECT][i] != 2)
+			//ft_printf("i: %d, current: %s, connect: %d\n", i, pass->rooms[pass->info[CURRENT][i]], pass->info[CONNECT][i]);
+			if (pass->info[CURRENT][i] != 0 && pass->info[CONNECT][pass->info[CURRENT][i]] != 2)
 			{
-				ft_printf("path: %d, %s\n", pass->info[PATH][pass->links[pass->end][i]], pass->rooms[pass->links[pass->end][i]]);
 				solve_conflict(pass, pass->info[PREV][pass->info[CURRENT][i]], pass->info[CURRENT][i], i + 1);
-				print_output(pass);
 			}
 			++i;
 		}
@@ -1112,7 +991,7 @@ void	path_finder(t_path **path, t_room *pass, int i)
 		i = 0;
 		while (i < total)
 		{
-			ft_printf("i: %d, current: %s\n", i, pass->rooms[pass->info[CURRENT][i]]);
+			//ft_printf("i: %d, current: %s\n", i, pass->rooms[pass->info[CURRENT][i]]);
 			if (pass->info[CURRENT][i] != 0)
 				move_index(pass, pass->info[PREV][pass->info[CURRENT][i]], pass->info[CURRENT][i], i + 1);
 			++i;
