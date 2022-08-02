@@ -37,6 +37,8 @@ static void	minus_newline_collect(t_room *pass, int k, char *input, char *temp)
 	{
 		if (pass->rooms[j] && !ft_strcmp(pass->rooms[j], pass->rooms[k]))
 			++j;
+		if (!pass->rooms[j])
+			break ;
 		if (pass->rooms[j] && !ft_strcmp(arr, pass->rooms[j]))
 		{
 			//ft_printf("FOUND %s  INPPUT %s\n", rooms[j], input);
@@ -93,7 +95,8 @@ void match_in(char *str, char *input, t_room *pass, int k)
 		while (temp && ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'))) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
 		{
 			temp = ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'));
-			minus_newline_collect(pass, k, &input[i], temp);
+			if (temp[-1] == '-' && temp[ft_strlen(str)] == '\n')
+				minus_newline_collect(pass, k, &input[i], temp);
 		}
 		while (input[i] != '\n')
 			++i;

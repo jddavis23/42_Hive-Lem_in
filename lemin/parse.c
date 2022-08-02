@@ -179,20 +179,19 @@ int	create(t_room *pass, char **input)
 					match_in(pass->rooms[j], &((*input)[i]), pass, j);
 					++j;
 				}
-				// while (pass->rooms[p])
-				// {
-				// 	m = 0;
-				// 	ft_printf("room %s count [%i]\n", pass->rooms[p], count_in(pass->rooms[p], &((*input)[i]), pass->rooms));
-				// 	while (m <= count_in(pass->rooms[p], &((*input)[i]), pass->rooms))
-				// 		ft_printf("%i ", pass->links[p][m++]);
-				// 	ft_printf("\n");
-				// 	++p;
-				// }
+				while (pass->rooms[p])
+				{
+					m = 0;
+					ft_printf("room %s count [%i]\n", pass->rooms[p], count_in(pass->rooms[p], &((*input)[i]), pass->rooms));
+					while (m <= count_in(pass->rooms[p], &((*input)[i]), pass->rooms))
+						ft_printf("%s ", pass->rooms[pass->links[p][m++]]);
+					ft_printf("\n\n");
+					++p;
+				}
 				return (0);
 			}
 			++i;
 		}
 	}
-	
 	return (1);
 }
