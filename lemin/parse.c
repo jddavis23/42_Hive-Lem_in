@@ -95,7 +95,7 @@ int	create(t_room *pass, char **input)
 	pass->rooms = NULL;
 	pass->links = NULL;
 	pass->distance = NULL;
-	pass->used = NULL;
+	//pass->used = NULL;
 	pass->total = file_save(pass, input);
 	pass->end = pass->total - 1;
 	if (pass->total == ERROR)
@@ -177,6 +177,8 @@ int	create(t_room *pass, char **input)
 					while (k < count + 1)
 						pass->links[j][k++] = -1;
 					match_in(pass->rooms[j], &((*input)[i]), pass, j);
+					//match_in(pass->rooms[j], &((*input)[i]), pass->rooms, j, pass);
+					
 					++j;
 				}
 				while (pass->rooms[p])

@@ -52,8 +52,8 @@ int	error_free(t_room *pass, char *input, int j, int first)
 		pass->links = free2d_int(pass->links, j, pass->end);
 	if (pass->distance)
 		free(pass->distance);
-	if (pass->used)
-		free(pass->used);
+	// if (pass->used)
+	// 	free(pass->used);
 	if (pass)
 		free(pass);
 	if (input)

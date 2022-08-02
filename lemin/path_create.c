@@ -22,7 +22,10 @@ static t_index	*ft_indexnew(int index)
 	if (!new)
 		return (NULL);
 	new->index = index;
+	new->j = 0;
+	new->prev_split = FALSE;
 	new->next = NULL;
+	new->prev = NULL;
 	return (new);
 }
 
@@ -42,6 +45,7 @@ void	create_index(t_index **move, t_path *path, int i)
 	else
 	{
 		new = ft_indexnew(i);
+		path->move_head->prev = new;
 		new->next = path->move_head;
 		path->move_head = new;
 	}
@@ -76,11 +80,13 @@ void	create_path(t_path **path, t_room *pass)
 	pass->path_nbr++;
 	if (*path)
 	{
+		new->prev = *path;
 		(*path)->next = new;
 		*path = (*path)->next;
 	}
 	else
 	{
+		new->prev = NULL;
 		*path = new;
 		pass->head = *path;
 	}
