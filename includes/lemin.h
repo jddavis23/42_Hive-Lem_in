@@ -72,6 +72,8 @@ typedef struct  s_room
 	int		path_nbr;
 	int		len;
 	int		row;
+	int		longest;
+	int		save;
 	t_path	*head;
 	t_path	*final_head;
 	t_conflict *conf_head;
