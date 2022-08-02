@@ -79,12 +79,11 @@ typedef struct  s_room
 
 typedef enum
 {
-	PATH,
-	PREV,
-	LEN,
-	CURRENT,
-	CONNECT,
-	CONFLICT,
+	PATH,//path nbr in every rooms index
+	PREV,//rooms index we just came from
+	LEN,//len of path in this room
+	CURRENT,//room current path is on
+	CONNECT,//amount of connections in room
 } info;
 
 typedef enum
