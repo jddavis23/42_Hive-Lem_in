@@ -19,22 +19,24 @@ static void	print_output(t_room *pass)
 	int	prev;
 
 	i = 0;
-	while (pass->links[0][i] >= 0)
-	{
-		nbr = pass->info[PATH][pass->links[0][i]];
-		if (nbr != 0)
-		{
-			ft_printf("{green}PATH [%d] LEN[%d]{uncolor}\n", nbr, pass->info[LEN][pass->links[0][i]]);
-			prev = pass->info[PREV][pass->links[0][i]];
-			ft_printf("%s\n", pass->rooms[pass->links[0][i]]);
-			while (prev > 0)
-			{
-				ft_printf("%s\n", pass->rooms[prev]);
-				prev = pass->info[PREV][prev];
-			}
-		}
-		++i;
-	}
+	nbr = 0;
+	prev = 0;
+	// while (pass->links[0][i] >= 0)
+	// {
+	// 	nbr = pass->info[PATH][pass->links[0][i]];
+	// 	if (nbr != 0)
+	// 	{
+	// 		ft_printf("{green}PATH [%d] LEN[%d]{uncolor}\n", nbr, pass->info[LEN][pass->links[0][i]]);
+	// 		prev = pass->info[PREV][pass->links[0][i]];
+	// 		ft_printf("%s\n", pass->rooms[pass->links[0][i]]);
+	// 		while (prev > 0)
+	// 		{
+	// 			ft_printf("%s\n", pass->rooms[prev]);
+	// 			prev = pass->info[PREV][prev];
+	// 		}
+	// 	}
+	// 	++i;
+	// }
 	i = 0;
 	ft_printf("\n\n------------\nrooms path nbr:\n");
 	while (i < pass->total)
@@ -93,10 +95,12 @@ static int	future_conflict_free(t_room *pass, int prev, int indx, int nbr)
 		while (pass->distance[pass->links[indx][i]] > 0 && pass->links[indx][i] != -1)
 		{
 			ft_printf("----room: %s %d\n", pass->rooms[pass->links[indx][i]], pass->info[PATH][pass->links[indx][i]]);
-			if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->links[indx][i] != prev)
+			if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->links[indx][i] != prev && pass->links[indx][i] != pass->end)
 			{
 				if (future_conflict_free(pass, indx, pass->links[indx][i], nbr) == TRUE)
 				{
+					ft_printf("RETURNS TRUE\n");
+		
 					return (TRUE);
 				}
 			}
@@ -105,6 +109,7 @@ static int	future_conflict_free(t_room *pass, int prev, int indx, int nbr)
 		ft_printf("RETURNS FALSE\n");
 		return (FALSE);
 	}
+	ft_printf("RETURNS TRUE\n");
 	return (TRUE);
 	// else
 	// {
@@ -308,7 +313,7 @@ static int	check_neighbors(t_room *pass, int prev, int indx, int nbr)
 	ft_printf("MAIN ROOM: %s\n", pass->rooms[indx]);
 	while (pass->distance[pass->links[indx][i]] >= 0 && pass->links[indx][i] != -1)
 	{
-		ft_printf("roooooom: %s %d\n", pass->rooms[pass->links[indx][i]], pass->info[PATH][pass->links[indx][i]]);
+		ft_printf("roooooom: %s [%d == 0][%d != %d{prev}] %d %d == 1\n", pass->rooms[pass->links[indx][i]], pass->info[PREV][pass->links[indx][i]], pass->links[indx][i], prev, pass->info[PATH][pass->links[indx][i]], future_conflict_free(pass, indx, pass->links[indx][i], nbr));
 		if (pass->info[PATH][pass->links[indx][i]] == 0 && pass->links[indx][i] != prev && \
 			pass->info[PREV][pass->links[indx][i]] == 0 && future_conflict_free(pass, indx, pass->links[indx][i], nbr) == TRUE)
 		{
@@ -391,16 +396,20 @@ static void	removes_path_cur_pos(t_room *pass, int indx, int nbr)
 	//ft_printf("HERE1 %d %d %d\n", element, next, indx);
 	i = 0;
 	int change;
+	int prev;
 	change = indx;
 	pass->info[CURRENT][pass->info[PATH][indx] - 1] = indx;
+	prev = pass->info[PREV][indx];
+	ft_printf("BEFORE rooms 1: %d %d\n", pass->info[PATH][indx], pass->info[PREV][indx]);
 	while (pass->links[change][i] != -1) //next != indx)//loop through links, temp variable in with links
 	{
-		ft_printf("HERE2\n");
+		ft_printf("CUR POS: %s LOOK AT ROOM: %s	%d == %d && %d != %d\n", pass->rooms[change], pass->rooms[pass->links[change][i]], pass->info[PATH][pass->links[change][i]], nbr, pass->links[change][i], pass->info[PREV][change]);
 		//if room contains nbr - 1, set a variable to hold that room, then reset everything
-		if (pass->info[PATH][pass->links[change][i]] == nbr && pass->links[change][i] != pass->info[PREV][change])
+		if (pass->info[PATH][pass->links[change][i]] == nbr && pass->links[change][i] != prev)
 		{
 			//element = next;
 			//next = pass->info[PREV][next];
+			prev = pass->info[PREV][pass->links[change][i]];
 			pass->info[PATH][pass->links[change][i]] = 0;
 			pass->info[LEN][pass->links[change][i]] = 0;
 			pass->info[PREV][pass->links[change][i]] = 0;
@@ -410,7 +419,7 @@ static void	removes_path_cur_pos(t_room *pass, int indx, int nbr)
 		else
 			++i;
 	}
-	ft_printf("HERE4\n");
+	ft_printf("AFTER rooms 1: %d\n", pass->info[PATH][indx]);
 }
 
 /*
@@ -438,23 +447,27 @@ static int	recursive(t_room *pass, t_conflict *temp, int indx, int nbr)
 		{
 			ft_printf("free path BEFORE------\n");
 			// print_output(pass);
-			removes_path_cur_pos(pass, temp->move->index, pass->info[PATH][temp->move->index]);//indx we want the deleting to stop and number of path we want to delete
+			ft_printf("before current of path 1: %s\n", pass->rooms[pass->info[CURRENT][pass->links[temp->move->index][i]-1]]);
+			if (pass->info[CURRENT][pass->info[PATH][pass->links[temp->move->index][i]-1]] != 0)
+				removes_path_cur_pos(pass, temp->move->index, pass->info[PATH][temp->move->index]);//indx we want the deleting to stop and number of path we want to delete
 			ft_printf("free path AFTER-----\n");
 			delete_begin(&temp);
 			update_values(pass, i, temp->move->index, pass->info[PATH][temp->move->index]);
 			// ft_printf("free path AFTER-----\n");
 			// print_output(pass);
+			static int hello = 0;
+			hello++;
+			if (hello > 20)
+				exit(0);
 			temp->move = temp->move_head;
 			return (TRUE);
 		}
-		else if (pass->info[PATH][pass->links[temp->move->index][i]] != nbr && \
-		pass->info[PATH][temp->move->index] != pass->info[PATH][pass->links[temp->move->index][i]] && \
+		else if (pass->info[PATH][pass->links[temp->move->index][i]] != 0 && pass->info[PATH][pass->links[temp->move->index][i]] != pass->info[PATH][indx] && pass->info[PATH][pass->links[temp->move->index][i]] != nbr && \
+		pass->info[PATH][pass->links[temp->move->index][i]] != pass->info[PATH][temp->move->index] && \
 		pass->links[temp->move->index][i] != pass->end)
 		{
 			// want to call this function when having to recurse to next spot to see if we can free a path somewhere else
-			ft_printf("FrEEE room: %s	%d != %d\n", pass->rooms[pass->links[temp->move->index][i]], pass->info[PATH][temp->move->index], pass->info[PATH][pass->links[temp->move->index][i]]);
-			if (ft_strcmp(pass->rooms[pass->links[temp->move->index][i]], "tribute") == 0)
-				exit(0);
+			ft_printf("FrEEE room: %s	[new %d != %d] [new %d != prev %d] [new %d != old %d]\n", pass->rooms[pass->links[temp->move->index][i]], pass->info[PATH][pass->links[temp->move->index][i]], pass->info[PATH][indx], pass->info[PATH][pass->links[temp->move->index][i]], nbr, pass->info[PATH][pass->links[temp->move->index][i]], pass->info[PATH][temp->move->index]);
 			if (can_block_change(pass, temp->move->index, pass->links[temp->move->index][i], pass->info[PATH][temp->move->index]) == TRUE)
 			{
 				recursive(pass, temp, temp->move->index, pass->info[PATH][temp->move->index]);
@@ -477,7 +490,7 @@ int	can_block_change(t_room *pass, int orig, int indx, int nbr)
 	int	i;
 
 	temp = pass->conf_head;
-	ft_printf("ROOM: %s\n", pass->rooms[indx]);
+	ft_printf("ROOM: %s %d %d\n", pass->rooms[indx], pass->info[PATH][indx], nbr);
 	if (pass->info[LEN][indx] > pass->info[LEN][orig])
 		pass->longest = pass->info[PATH][indx];
 	while (temp && temp->nbr != pass->info[PATH][indx])
@@ -488,8 +501,6 @@ int	can_block_change(t_room *pass, int orig, int indx, int nbr)
 	if (temp && temp->move_head)
 	{
 		temp->move = temp->move_head;
-		ft_printf("HIEFJE, \n");
-			
 		if (temp->move->index == pass->info[CURRENT][pass->info[PATH][indx] - 1])
 		{
 			// while (temp && temp->move->next && temp->move->index != indx)
@@ -511,12 +522,20 @@ int	can_block_change(t_room *pass, int orig, int indx, int nbr)
 			
 			while (temp->move)
 			{
+				static int hello = 0;
+				if ( ft_strcmp(pass->rooms[temp->move->index],"Sju1")==0)
+					hello++;
+				if (hello > 20 && ft_strcmp(pass->rooms[temp->move->index],"Sju1")==0)
+					exit(0);
 				if (recursive(pass, temp, indx, nbr) == TRUE)
 				{
+					ft_printf("HERE111\n");
 					//removes_path_cur_pos(pass, 8, 3);//indx we want the deleting to stop and number of path we want to delete
 					return (TRUE);
 				}
 				temp->move = temp->move->next;
+				//print_struct(pass);
+				ft_printf("HERE000\n");
 			}
 			temp->move = temp->move_head;
 		}
@@ -547,10 +566,10 @@ static int	nothing_blocks(t_room *pass, int prev, int indx, int nbr)
 
 	temp = pass->conf_head;
 	i = 0;
-	while (pass->links[indx][i] != -1 && (pass->distance[pass->links[indx][i]] > 0 || pass->links[indx][i] == 0))
+	while (pass->links[indx][i] != -1 && pass->distance[pass->links[indx][i]] > 0)
 	{
 		//future_conflict_free(pass, indx, pass->links[indx][i], nbr) == TRUE
-		
+		ft_printf("CHECK ROOM: %s------%s\n", pass->rooms[pass->links[indx][i]], pass->rooms[prev]);
 		if (pass->links[indx][i] != pass->end)
 		{
 			pass->save = 0;
@@ -562,9 +581,12 @@ static int	nothing_blocks(t_room *pass, int prev, int indx, int nbr)
 				{
 					//change it
 					ft_printf("block can can change: %s, %d\n", pass->rooms[indx], nbr);
-					update_values(pass, i, indx, nbr);
-					move_index(pass, indx, pass->links[indx][i], nbr);
-					
+					ft_printf("current of path 1: %s\n", pass->rooms[pass->info[CURRENT][0]]);
+					if (pass->info[PATH][prev] != 0)//not sure about this one
+					{
+						update_values(pass, i, indx, nbr);
+						move_index(pass, indx, pass->links[indx][i], nbr);
+					}
 					print_struct(pass);
 					print_output(pass);
 					ft_printf("block shouldn't change: %s, %d\n", pass->rooms[pass->links[indx][i]], nbr);
@@ -710,7 +732,7 @@ void	path_finder(t_path **path, t_room *pass, int i)
 		i = 0;
 		while (i < total)
 		{
-			//ft_printf("i: %d, current: %s, connect: %d\n", i, pass->rooms[pass->info[CURRENT][i]], pass->info[CONNECT][i]);
+			ft_printf("i: %d, current: %s, connect: %d\n", i, pass->rooms[pass->info[CURRENT][i]], pass->info[CONNECT][i]);
 			if (pass->info[CURRENT][i] != 0 && pass->info[CONNECT][pass->info[CURRENT][i]] != 2)
 			{
 				solve_conflict(pass, pass->info[PREV][pass->info[CURRENT][i]], pass->info[CURRENT][i], i + 1);
