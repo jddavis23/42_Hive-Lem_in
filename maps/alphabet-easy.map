@@ -6,7 +6,12 @@ abc 1 0
 abcdefg 9 0
 bcdefg 15 0
 3 13 0
+5 20 20
+6 25 25
 abc-abcdefg
 abcdefg-3
+#changed 3---new to 3---abc and it didn't show an error .... --abc is not a room
 3---new
-bcdefg---new
+bcdefg-abcdefg
+bcdefg-5
+5-6

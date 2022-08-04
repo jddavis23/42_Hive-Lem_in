@@ -74,6 +74,7 @@ typedef struct  s_room
 	int		row;
 	int		longest;
 	int		save;
+	int		count;
 	t_path	*head;
 	t_path	*final_head;
 	t_conflict *conf_head;
