@@ -37,12 +37,7 @@ typedef struct  s_room
 	int		end;
 	int		ants;
 	int		total;
-	//int		path_nbr;
-	int		len;
 	int		row;
-	int		longest;
-	int		save;
-	int		count;
 	t_path	*head;
 	t_path	*final_head;
 }				t_room;
