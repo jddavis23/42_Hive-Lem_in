@@ -22,16 +22,13 @@ static t_index	*ft_indexnew(int index)
 	if (!new)
 		return (NULL);
 	new->index = index;
-	new->j = 0;
-	new->prev_split = FALSE;
 	new->next = NULL;
-	new->prev = NULL;
 	return (new);
 }
 
 /*	creates index element and adds it onto path->move's linked list	*/
 
-void	create_index(t_index **move, t_path *path, int i)
+void	create_index(t_index **move, t_path **path, int i)
 {
 	t_index	*new;
 
@@ -39,17 +36,15 @@ void	create_index(t_index **move, t_path *path, int i)
 	if (!(*move))
 	{
 		*move = ft_indexnew(i);
-		path->move_head = *move;
-		path->move = *move;
+		(*path)->move_head = *move;
+		(*path)->move = *move;
 	}
 	else
 	{
 		new = ft_indexnew(i);
-		path->move_head->prev = new;
-		new->next = path->move_head;
-		path->move_head = new;
+		(*path)->move->next = new;
+		(*path)->move = (*path)->move->next;
 	}
-	path->len++;
 }
 
 /*	creates a new path	*/
@@ -69,15 +64,15 @@ static t_path	*ft_pathnew()
 
 /*	creates path element and adds it onto the linked list of paths	*/
 
-void	create_path(t_path **path, t_room *pass)
+void	create_path(t_path **path, t_room *pass, int nbr, int len)
 {
 	t_path *new;
 
 	new = *path;
 	new = ft_pathnew();
-	new->nbr = pass->path_nbr;
-	new->found = FALSE;
-	pass->path_nbr++;
+	new->nbr = nbr;
+	new->len = len;
+	new->move_head = NULL;
 	if (*path)
 	{
 		new->prev = *path;
@@ -88,7 +83,6 @@ void	create_path(t_path **path, t_room *pass)
 	{
 		new->prev = NULL;
 		*path = new;
-		pass->head = *path;
+		pass->final_head = *path;
 	}
-	create_index(&(*path)->move, *path, pass->end);
 }

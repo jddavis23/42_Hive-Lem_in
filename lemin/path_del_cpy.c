@@ -52,7 +52,7 @@ t_path	*cpy_pth(t_path *file)
 	{
 		n_path->nbr = file->nbr;
 		n_path->len = file->len;
-		n_path->found = file->found;
+		//n_path->found = file->found;
 		n_path->move_head = cpy_indx(file, n_path);
 		//temp = file;
 		file = file->next;
@@ -93,41 +93,41 @@ void del_first_index(t_path *file)
 	}
 }
 
-void	free_and_del_path(t_path **path, t_room *pass)
-{
-	(*path)->move = (*path)->move_head;
-	while ((*path)->move)
-		del_first_index(*path);
-	free(*path);
-	*path = NULL;
-	pass->path_nbr--;
-}
+// void	free_and_del_path(t_path **path, t_room *pass)
+// {
+// 	(*path)->move = (*path)->move_head;
+// 	while ((*path)->move)
+// 		del_first_index(*path);
+// 	free(*path);
+// 	*path = NULL;
+// 	//pass->path_nbr--;
+// }
 
-void del_last_path(t_path **path, t_room *pass)
-{
-	t_path	*head;
-	t_path	*prev;
+// void del_last_path(t_path **path, t_room *pass)
+// {
+// 	t_path	*head;
+// 	t_path	*prev;
 
-	head = pass->head;
-	if (!head->next)
-	{
-		(*path)->move = head->move_head;
-		free_and_del_path(path, pass);
-		pass->head = NULL;
-	}
-	else
-	{
-		while (head)
-		{
-			prev = head;
-			if (!head->next->next)
-				break ;
-			head = head->next;
-		}
-		*path = head->next;
-		(*path)->move = (*path)->move_head;
-		free_and_del_path(path, pass);
-		prev->next = NULL;
-		*path = prev;
-	}
-}
+// 	head = pass->head;
+// 	if (!head->next)
+// 	{
+// 		(*path)->move = head->move_head;
+// 		free_and_del_path(path, pass);
+// 		pass->head = NULL;
+// 	}
+// 	else
+// 	{
+// 		while (head)
+// 		{
+// 			prev = head;
+// 			if (!head->next->next)
+// 				break ;
+// 			head = head->next;
+// 		}
+// 		*path = head->next;
+// 		(*path)->move = (*path)->move_head;
+// 		free_and_del_path(path, pass);
+// 		prev->next = NULL;
+// 		*path = prev;
+// 	}
+// }

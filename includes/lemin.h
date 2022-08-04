@@ -6,32 +6,18 @@
 typedef struct		s_index
 {
 	int		index;
-	int		j;
-	int		prev_split;//true or fall
 	struct s_index	*next;
-	struct s_index	*prev;
-	// int				index;
-	// struct s_index	*next;
 }					t_index;
 
 typedef struct		s_path
 {
 	int				nbr;
 	int				len;
-	int				found;
 	int				max_ants;
 	t_index			*move_head;
 	struct s_index	*move;
 	struct s_path	*next;
 	struct s_path	*prev;
-	// int				nbr;
-	// int				len;
-	// int				found;
-	// int				max_ants;
-	// t_index			*move_head;
-	// struct s_index	*move;
-	// struct s_path	*next;
-	// struct s_path	*prev;
 }					t_path;
 
 typedef struct		s_ants
@@ -42,34 +28,16 @@ typedef struct		s_ants
 	struct s_ants	*prev;
 }					t_ants;
 
-typedef struct		s_i_conf
-{
-	int				index;
-	int				i;
-	struct s_i_conf	*next;
-}					t_i_conf;
-
-typedef struct		s_conflict
-{
-	int					nbr;
-	t_i_conf			*move_head;
-	struct s_i_conf		*move;
-	struct s_conflict	*next;
-}					t_conflict;
-
 typedef struct  s_room
 {
 	char	**rooms;
 	int		**links;
 	int		*distance;
 	int		**info;
-//	int		*used;
-//	int		*path;
-//	int		*len;
 	int		end;
 	int		ants;
 	int		total;
-	int		path_nbr;
+	//int		path_nbr;
 	int		len;
 	int		row;
 	int		longest;
@@ -77,7 +45,6 @@ typedef struct  s_room
 	int		count;
 	t_path	*head;
 	t_path	*final_head;
-	t_conflict *conf_head;
 }				t_room;
 
 typedef enum
@@ -122,9 +89,9 @@ int		is_dash(char *str);
 void	distance(t_room *pass);
 int		initialize_path_finder(t_room *pass, char *input);
 int		len_array(int *links);
-void	create_index(t_index **move, t_path *path, int i);
-void	create_path(t_path **path, t_room *pass);
-void	path_finder(t_path **path, t_room *pass, int i);
+void	create_index(t_index **move, t_path **path, int i);
+void	create_path(t_path **path, t_room *pass, int nbr, int len);
+void	path_finder(t_path **path, t_room *pass);
 t_path	*cpy_pth(t_path *file);
 void	del_first_index(t_path *file);
 void	del_last_path(t_path **path, t_room *pass);

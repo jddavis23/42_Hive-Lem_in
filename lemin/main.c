@@ -12,22 +12,22 @@
 
 # include "../includes/lemin.h"
 
-static int	calc_max(int nbr1, int nbr2)
-{
-	if (nbr1 < nbr2)
-		return (nbr1);
-	return (nbr2);
-}
+// static int	calc_max(int nbr1, int nbr2)
+// {
+// 	if (nbr1 < nbr2)
+// 		return (nbr1);
+// 	return (nbr2);
+// }
 
-int	len_array(int *links)
-{
-	int	i;
+// int	len_array(int *links)
+// {
+// 	int	i;
 
-	i = 0;
-	while (links[i] != -1)
-		++i;
-	return (i);
-}
+// 	i = 0;
+// 	while (links[i] != -1)
+// 		++i;
+// 	return (i);
+// }
 
 /*	function checking room is already in use	*/
 
@@ -61,7 +61,7 @@ int	main(int argc, char **argv)
 {
 	t_room	*pass;
 	char	*input;
-	int		max_paths;
+	//int		max_paths;
 
 	if (argc == 1 || (argc == 2 && ft_strcmp(argv[1], "-r") == 0))
 	{
@@ -78,10 +78,10 @@ int	main(int argc, char **argv)
 		if (create_used(pass) == ERROR)
 			return (error_path(pass, input, TRUE));
 		distance(pass);
-		pass->len = len_array(pass->links[pass->end]);
-		max_paths = calc_max(len_array(pass->links[0]), pass->len);
-		if (max_paths < 1)
-			return (ERROR);
+		// pass->len = len_array(pass->links[pass->end]);
+		// max_paths = calc_max(len_array(pass->links[0]), pass->len);
+		// if (max_paths < 1)
+		// 	return (ERROR);
 		if (initialize_path_finder(pass, input) == ERROR)
 			return (0);
 		ft_printf("%s\n", input);
