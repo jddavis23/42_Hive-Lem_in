@@ -55,64 +55,66 @@ void	recurs(t_room *pass, int **links, int dist, int indx)
 	}
 }
 
-// void	recurse_check(t_room *pass, int **links, int dist, int indx, int prev)
-// {
-// 	int	i;
-// 	int	j;
-// 	static int	found = FALSE;
+/* copied from path_finder */
 
-// 	j = 0;
-// 	i = 0;
-// 	while (links[indx][j] >= 0)
-// 	{
-// 		if (links[indx][j] == pass->end)
-// 		{
-// 			//ft_printf("HERE\n");
-// 			return ;
-// 		}
-// 		++j;
-// 	}
-// 	if (j == 1 && indx != 0)
-// 	{
-// 		//ft_printf("He1222\\n");
-// 		return ;
-// 	}
-// 	while (links[indx][i] >= 0)
-// 	{
-// 		if (links[indx][i] == 0 || links[indx][i] == prev)
-// 			++i;
-// 		if (links[indx][i] < 0)
-// 		{
-// 			//ft_printf("gback back\n");
-// 			return ;
-// 		}
-// 		//ft_printf("rooom current: %s, next: %s\n", pass->rooms[indx], pass->rooms[links[indx][i]]);
-// 		// while (links[indx][i] >= 0 && pass->distance[links[indx][i]] != 0) //double check
-// 		// 	++i;
-// 		// if (links[indx][i] < 0)
-// 		// {
-// 		// 	ft_printf("go back\n");
-// 		// 	return ;
-// 		// }
-// 		if (pass->distance[links[indx][i]] >= dist && !pass->used[indx] && links[indx][i] != 0)
-// 		{
-// 			pass->used[indx] = TRUE;
-// 			recurse_check(pass, pass->links, pass->distance[links[indx][i]], links[indx][i], indx);
-// 			pass->used[indx] = FALSE;
-// 		}
-// 		else if (!pass->used[indx] && links[indx][i] != 0)
-// 			found = TRUE;
-// 		if (pass->distance[indx] == pass->distance[links[indx][i]])
-// 			found = FALSE;
-// 		if (found == TRUE && links[indx][i] )
-// 		{
-// 			pass->distance[indx] = pass->distance[links[indx][i]];
-// 			//ft_printf("Heredfefe\n");
-// 			return ;
-// 		}
-// 		++i;
-// 	}
-// }
+static int	current_true(t_room *pass)
+{
+	int i;
+
+	i = 0;
+	while (i < pass->total)
+	{
+		if (pass->info[CURRENT][i] != 0)
+			return (FALSE);
+		++i;
+	}
+	return (TRUE);
+}
+
+static void	breadth_first_distance(t_room *pass, int indx, int i)
+{
+	int	j;
+	int	k;
+
+	j = 0;
+	while (pass->links[indx][j] >= 0)
+	{
+		if (pass->links[indx][j] == pass->end)
+		{
+			pass->info[CURRENT][i] = 0;
+			return ;
+		}
+		++j;
+	}
+	j = 0;
+	while (pass->links[indx][j] >= 0)
+	{
+		if (pass->distance[pass->links[indx][j]] == 0 && pass->links[indx][j] != 0)
+		{
+			pass->distance[pass->links[indx][j]] = pass->distance[indx] + 1;
+			pass->info[CURRENT][i] = pass->links[indx][j];
+			k = 0;
+			while (k < pass->total)
+			{
+				if (pass->info[CURRENT][k] == 0)
+				{
+					i = k;
+					break ;
+				}
+				++k;
+			}
+		}
+		++j;
+	}
+	if (pass->info[CURRENT][i] == indx)
+		pass->info[CURRENT][i] = 0;
+}
+
+static void	initialize_path(t_room *pass, int i)
+{
+	pass->distance[pass->links[0][i]] = 1;
+	pass->info[CURRENT][i] = pass->links[0][i];
+}
 
 void	distance(t_room *pass)
 {
@@ -127,10 +129,31 @@ void	distance(t_room *pass)
 	}
 	while (i < pass->total)
 		pass->distance[i++] = 0;
-	recurs(pass, pass->links, pass->distance[0], 0);
+	i = 0;
+	pass->info[LEN][pass->end] = 1;
+	while (pass->links[0][i] >= 0)
+		initialize_path(pass, i++);
+	while (!current_true(pass))
+	{
+		i = 0;
+		while (i < pass->total)
+		{
+			if (pass->info[CURRENT][i] != 0)
+			{
+				breadth_first_distance(pass, pass->info[CURRENT][i], i);
+			}
+			++i;
+		}
+	}
+	i = 0;
+	while (i < pass->total)
+	{
+		pass->info[CURRENT][i++] = FALSE;
+	}
+	//recurs(pass, pass->links, pass->distance[0], 0);
 	//recurse_check(pass, pass->links, pass->distance[0], 0, 0);
 	pass->distance[pass->end] = pass->total;
-	i = 0;
+	// i = 0;
 	// ft_printf("\n");
 	// while (i < pass->total)
 	// {

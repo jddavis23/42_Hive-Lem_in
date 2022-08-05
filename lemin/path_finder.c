@@ -70,26 +70,30 @@ static void	breadth_first(t_room *pass, int indx, int i)
 	j = 0;
 	while (pass->links[indx][j] >= 0)
 	{
+		ft_printf("checking room %s connections: %s %d\n", pass->rooms[indx], pass->rooms[pass->links[indx][j]], pass->info[PATH][pass->links[indx][j]]);
 		if (pass->info[PATH][pass->links[indx][j]] == 0 && pass->info[PATH][pass->links[indx][j]] != 2)
 		{
 			if (pass->links[indx][j] == pass->end)
 			{
 				pass->info[CURRENT][i] = 0;
-				break;
+				//break;
 			}
-			pass->info[PATH][pass->links[indx][j]] = pass->info[PATH][indx];
-			pass->info[PREV][pass->links[indx][j]] = indx;
-			pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
-			pass->info[CURRENT][i] = pass->links[indx][j];
-			k = 0;
-			while (k < pass->total)
+			else
 			{
-				if (pass->info[CURRENT][k] == 0)
+				pass->info[PATH][pass->links[indx][j]] = pass->info[PATH][indx];
+				pass->info[PREV][pass->links[indx][j]] = indx;
+				pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
+				pass->info[CURRENT][i] = pass->links[indx][j];
+				k = 0;
+				while (k < pass->total)
 				{
-					i = k;
-					break ;
+					if (pass->info[CURRENT][k] == 0)
+					{
+						i = k;
+						break ;
+					}
+					++k;
 				}
-				++k;
 			}
 		}
 		else if (pass->info[LEN][pass->info[PREV][pass->links[indx][j]]] == pass->info[LEN][indx])
@@ -167,13 +171,13 @@ static void	print_output(t_room *pass)
 		}
 		++i;
 	}
-	// i = 0;
-	// ft_printf("\n\n------------\nrooms path nbr:\n");
-	// while (i < pass->total)
-	// {
-	// 	ft_printf("[%s]: [%d] \n",pass->rooms[i], pass->info[PATH][i]);
-	// 	++i;
-	// }
+	i = 0;
+	ft_printf("\n\n------------\nrooms path nbr:\n");
+	while (i < pass->total)
+	{
+		ft_printf("[%s]: [%d] \n",pass->rooms[i], pass->info[PATH][i]);
+		++i;
+	}
 }
 
 static int	compare_function(t_room *pass, int indx, int start)
@@ -305,6 +309,7 @@ static void	copy_to_path(t_room *pass, t_path **path)
 		nbr++;
 	}
 }
+
 static void	printf_struct(t_room *pass)
 {
 	t_path *final;
@@ -361,14 +366,16 @@ void	path_finder(t_path **path, t_room *pass)
 				++i;
 			}
 		}
-		// ft_printf("\n\n\n--------NEW--------\n\n\n");
-		print_output(pass);
+		ft_printf("\n\n\n--------NEW--------\n\n\n");
+		// print_output(pass);
 	}
+	print_output(pass);
 	if (unique_paths(pass) == FALSE)
 		ft_printf("FALSE\n");
 	else
 		ft_printf("TRUE\n");
 	copy_to_path(pass, path);
+	ft_printf("Here\n");
 	printf_struct(pass);
 	// exit(0);
 }
