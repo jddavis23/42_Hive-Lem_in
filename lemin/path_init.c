@@ -148,17 +148,57 @@ static void	sort_distance(t_room *pass)
 // 	}
 // }
 
+static void	create_len(int *array, int **len)
+{
+	int	i;
+
+	i = 0;
+	while (array[i] != -1)
+	{
+		i++;
+	}
+	*len = (int *)malloc(sizeof(int) * (i + 1));
+	i = 0;
+	while (array[i] != -1)
+	{
+		(*len)[i] = 0;
+		++i;
+	}
+	(*len)[i] = -1;
+}
+
 int	initialize_path_finder(t_room *pass, char *input)
 {
 	t_path	*path;
 	t_path	*final;
+	int	*len;
+	int	i;
 
 	path = NULL;
 	final = NULL;
+	len = NULL;
 	sort_distance(pass);
-
+	create_len(pass->links[0], &len);
 	pass->final_head = NULL;
-	path_finder(&path, pass);
+	i = 0;
+	// while (i < 3)
+	// {
+	// 	ft_printf("NUMBER OF TRIES %d\n", i);
+		path_finder(&path, pass, i, &len);
+		// if (pass->final_head)
+		// {
+		// 	del_path(&pass->final_head);
+		// }
+		// int k = 0;
+		// while (k < pass->total)
+		// {
+		// 	pass->info[PATH][k] = FALSE;
+		// 	pass->info[PREV][k] = FALSE;
+		// 	pass->info[LEN][k++] = FALSE;
+		// }
+		//reset len
+	// 	++i;
+	// }
 	if (!pass->final_head)
 		return (error_path(pass, input, TRUE));
 	final = pass->final_head;
@@ -166,6 +206,11 @@ int	initialize_path_finder(t_room *pass, char *input)
 }
 
 /*
+
+Fix one path deletes two paths problem
+- idea 1: go through original copy and eliminate paths
+- idea 2: reset where we start each time
+- idea 3: 
 
 smallest path... based on amount of ants
 
