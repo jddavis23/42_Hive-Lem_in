@@ -52,6 +52,54 @@ static int	other_connections(t_room *pass, int indx)
 	return (FALSE);
 }
 
+// static void	shortest_connect(t_room *pass, int prev, int *shortest)
+// {
+// 	int i;
+
+// 	i = 0;
+// 	while (pass->links[prev][i] != -1)
+// 	{
+// 		if (pass->links[prev][i] != 0 && pass->links[prev][i] != pass->info[PREV][prev] &&\
+// 			pass->info[PATH][pass->links[prev][i]] == 1)
+// 		{
+// 			ft_printf("prev: %s current: %s\n", pass->rooms[pass->info[PREV][prev]], pass->rooms[pass->links[prev][i]]);
+// 			if (*shortest == 0 || pass->info[LEN][*shortest] > pass->info[LEN][pass->links[prev][i]])
+// 				*shortest = pass->links[prev][i];
+// 		}
+// 		++i;
+// 	}
+// }
+
+// static void	delete_or_reset_path(t_room *pass, int indx, int i)
+// {
+// 	int	prev;
+// 	int	shortest;
+
+// 	prev = indx;
+// 	while (prev > 0)
+// 	{
+// 		shortest = 0;
+// 		shortest_connect(pass, prev, &shortest);
+// 		ft_printf("shortest connect: %s\n", pass->rooms[shortest]);
+// 		if (shortest != 0)
+// 		{
+// 			pass->info[PATH][pass->info[PREV][prev]] = 3;
+// 			pass->info[PREV][prev] = shortest;
+// 			ft_printf("RROROOOM: %s: PREV: %s\n", pass->rooms[prev], pass->rooms[shortest]);
+// 			pass->info[LEN][prev] = pass->info[LEN][shortest] + 1;
+// 			pass->info[CURRENT][i] = prev;
+// 			return ;
+// 		}
+// 		else
+// 		{
+// 			pass->info[PREV][prev] = 0;
+// 			pass->info[PATH][prev] = 0;
+// 			pass->info[LEN][prev] = 0;
+// 		}
+// 		prev = pass->info[PREV][prev];
+// 	}
+// }
+
 static void	breadth_first(t_room *pass, int indx, int i, int found)
 {
 	int	j;
@@ -65,13 +113,20 @@ static void	breadth_first(t_room *pass, int indx, int i, int found)
 		{
 			pass->info[PATH][0] = 1;
 			found_count = 0;
+			//ft_printf("----rooooooooom: %s, prev: %s\n", pass->rooms[pass->info[CURRENT][i]], pass->rooms[pass->info[PREV][pass->info[CURRENT][i]]]);
 			return ;
 		}
 		else if (pass->links[indx][j] == 0 && found_count < found)
 		{
 			++found_count;
 			pass->info[CURRENT][i] = 0;
+			//delete_or_reset_path(pass, indx, i);
+			//ft_printf("rooooooooom: %s, prev: %s\n", pass->rooms[pass->info[CURRENT][i]], pass->rooms[pass->info[PREV][pass->info[CURRENT][i]]]);
+			//if (pass->info[CURRENT][i] == 0)
 			return ;
+			// indx = pass->info[CURRENT][i];
+			// ft_printf("rooooooooom: %s\n", pass->rooms[indx]);
+			// j = -1;
 		}
 		++j;
 	}
@@ -100,7 +155,7 @@ static void	breadth_first(t_room *pass, int indx, int i, int found)
 				}
 			}
 		}
-		else if (pass->info[LEN][pass->info[PREV][pass->links[indx][j]]] == pass->info[LEN][indx])
+		else if (pass->info[LEN][pass->info[PREV][pass->links[indx][j]]] == pass->info[LEN][indx] && pass->info[PATH][pass->links[indx][j]] != 2)
 		{
 			if (other_connections(pass, pass->info[PREV][pass->links[indx][j]]) == TRUE)
 				pass->info[PREV][pass->links[indx][j]] = indx;
@@ -474,6 +529,7 @@ static int	better_choise(t_room *pass)
 void	path_finder(t_path **path, t_room *pass, int found, int **len)
 {
 	int	i;
+	int	start_reached;
 
 	i = 0;
 	pass->info[LEN][pass->end] = 1;
@@ -482,6 +538,7 @@ void	path_finder(t_path **path, t_room *pass, int found, int **len)
 	while (!current_true(pass))
 	{
 		i = 0;
+		start_reached = FALSE;
 		while (i < pass->total)
 		{
 			if (pass->info[CURRENT][i] != 0)
@@ -489,18 +546,18 @@ void	path_finder(t_path **path, t_room *pass, int found, int **len)
 				breadth_first(pass, pass->info[CURRENT][i], i, found);
 				if (pass->info[PATH][0] == 1)
 				{
+					//start_reached = TRUE;
 					break ;
 				}
 			}
 			++i;
 		}
+		//if (start_reached == TRUE)
+		//	simulate_ending
 		if (pass->info[PATH][0] == 1)
 		{
 			pass->info[PATH][0] = 0;
 			add_len(pass->info[LEN][pass->info[CURRENT][i]], len);
-			int p = 0;
-			while ((*len)[p] > 0)
-				ft_printf("len: %d\n", (*len)[p++]);
 			if (max_ant_calc(pass->ants, len, pass->info[LEN][pass->info[CURRENT][i]]) == TRUE)
 				break ;
 			delete_non_found_paths(pass, pass->info[CURRENT][i]);
@@ -511,6 +568,7 @@ void	path_finder(t_path **path, t_room *pass, int found, int **len)
 					initialize_path(pass, i);
 				++i;
 			}
+			//current_path(pass);
 			found = 0;
 		}
 		// print_output(pass);
