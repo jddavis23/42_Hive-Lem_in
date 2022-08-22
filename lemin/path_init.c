@@ -179,12 +179,21 @@ static void reset_len(int **len)
 	}
 }
 
+static void	start_connect(t_room *pass, int *connect)
+{
+	while (pass->links[0][*connect] != -1)
+	{
+		(*connect)++;
+	}
+}
+
 int	initialize_path_finder(t_room *pass, char *input)
 {
 	t_path	*path;
 	t_path	*final;
 	int	*len;
 	int	i;
+	int connect;
 
 	path = NULL;
 	final = NULL;
@@ -193,13 +202,17 @@ int	initialize_path_finder(t_room *pass, char *input)
 	create_len(pass->links[0], &len);
 	pass->final_head = NULL;
 	i = 0;
-	while (i < 4)
+	connect = 0;
+	start_connect(pass, &connect);
+	while (i < connect)
 	{
 		ft_printf("NUMBER OF TRIES %d\n", i);
 		path_finder(&path, pass, i, &len);
-		if (pass->final_head)
+		if (pass->final_head && i != connect - 1)
 		{
 			del_path(&pass->final_head);
+			pass->final_head = NULL;
+			path = NULL;
 		}
 		int k = 0;
 		while (k < pass->total)
@@ -224,5 +237,13 @@ Fix one path deletes two paths problem
 - idea 2: reset where we start each time
 
 smallest path... based on amount of ants
+
+*/
+
+/*
+
+- when breath first finds beginning but want to find next shortest path - make sure it acts as we want it to
+
+- decide between paths logic ex update struct or not
 
 */

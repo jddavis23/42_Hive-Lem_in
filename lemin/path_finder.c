@@ -498,6 +498,7 @@ void	path_finder(t_path **path, t_room *pass, int found, int **len)
 	if (!pass->final_head)// && new_path_better(pass, path) == FALSE)
 	{
 		copy_to_path(pass, path);
+		ft_printf("copuy");
 	}
 	else
 	{
