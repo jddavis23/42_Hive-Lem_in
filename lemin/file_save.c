@@ -134,7 +134,9 @@ int	file_save(t_room *pass, char **input)
 		else if (i == 0 && only_digits(line, &i) == TRUE)
 			pass->ants = ft_atoi(line);
 		else if (check_if_valid(line, &i, &total, &command) == ERROR)
+		{
 			return (ERROR);
+		}
 		save_line(input, &line);
 	}
 	return (total);

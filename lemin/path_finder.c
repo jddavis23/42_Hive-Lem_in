@@ -65,9 +65,7 @@ static void	breadth_first(t_room *pass, int indx, int i, int found)
 		{
 			pass->info[PATH][0] = 1;
 			found_count = 0;
-			ft_printf("HERETT\n");
 			return ;
-			found = 0;
 		}
 		else if (pass->links[indx][j] == 0 && found_count < found)
 		{
@@ -404,27 +402,74 @@ static int max_ant_calc(int ants, int **len, int current)
 		return (FALSE);
 	dif = diff_prev(len, (*len)[prev]) + ((current - (*len)[prev]) * i);
 	max_ants = dif + i;
-	ft_printf("TRUE OR FALSE\n");
 	if (ants <= max_ants)
 		return (TRUE);
-	ft_printf("FALSE CONTINUE\n");
 	return (FALSE);
 }
 
-static void	current_path(t_room *pass)
+// static void	current_path(t_room *pass)
+// {
+// 	int i;
+
+// 	i = 0;
+
+// 	ft_printf("PATH LOCKED OR NOT\n");
+// 	while (i < pass->total)
+// 	{
+// 		ft_printf("room %s: %d PREV %s\n", pass->rooms[i], pass->info[PATH][i], pass->rooms[pass->info[PREV][i]]);
+// 		++i;
+// 	}
+// }
+
+static int	compare_struct(t_room *pass, float mean, int count)
 {
-	int i;
+	int	len;
+	float	mean_old;
+	int path_count;
+	t_path *temp;
 
-	i = 0;
-
-	ft_printf("PATH LOCKED OR NOT\n");
-	while (i < pass->total)
+	temp = pass->final_head;
+	len = 0;
+	while (temp)
 	{
-		ft_printf("room %s: %d PREV %s\n", pass->rooms[i], pass->info[PATH][i], pass->rooms[pass->info[PREV][i]]);
-		++i;
+		len += temp->len;
+		path_count = temp->nbr;
+		temp = temp->next;
 	}
+	mean_old = (float)len / (float)path_count;
+	if (path_count < count)
+		return (TRUE);
+	if (path_count > count)
+		return (FALSE);
+	if (mean_old > mean)
+		return (TRUE);
+	return (FALSE);
 }
 
+static int	better_choise(t_room *pass)
+{
+	int i;
+	int	len;
+	int	path_count;
+	float	mean;
+
+	i = 0;
+	len = 0;
+	path_count = 0;
+	while (pass->links[0][i] != -1)
+	{
+		if (pass->info[PATH][pass->links[0][i]] == 2)
+		{
+			len += pass->info[LEN][pass->links[0][i]];
+			++path_count;
+		}
+		++i;
+	}
+	mean = (float)len / (float)path_count;
+	if (compare_struct(pass, mean, path_count) == TRUE)
+		return (TRUE);
+	return (FALSE);
+}
 
 void	path_finder(t_path **path, t_room *pass, int found, int **len)
 {
@@ -458,7 +503,6 @@ void	path_finder(t_path **path, t_room *pass, int found, int **len)
 				ft_printf("len: %d\n", (*len)[p++]);
 			if (max_ant_calc(pass->ants, len, pass->info[LEN][pass->info[CURRENT][i]]) == TRUE)
 				break ;
-			ft_printf("NOWWWW\n");
 			delete_non_found_paths(pass, pass->info[CURRENT][i]);
 			i = 0;
 			while (pass->links[pass->end][i] >= 0)
@@ -472,7 +516,7 @@ void	path_finder(t_path **path, t_room *pass, int found, int **len)
 		// print_output(pass);
 	}
 	//print_output(pass);
-	current_path(pass);
+	//current_path(pass);
 	if (unique_paths(pass) == FALSE)
 		ft_printf("FALSE\n");
 	else
@@ -498,14 +542,13 @@ void	path_finder(t_path **path, t_room *pass, int found, int **len)
 	if (!pass->final_head)// && new_path_better(pass, path) == FALSE)
 	{
 		copy_to_path(pass, path);
-		ft_printf("copuy");
 	}
-	else
+	else if (better_choise(pass) == TRUE)
 	{
 		del_path(&pass->final_head);
+		*path = NULL;
 		copy_to_path(pass, path);
 	}
-	ft_printf("Here\n");
 	printf_struct(pass);
 	//exit(0);
 }

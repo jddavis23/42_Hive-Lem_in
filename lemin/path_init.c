@@ -208,12 +208,12 @@ int	initialize_path_finder(t_room *pass, char *input)
 	{
 		ft_printf("NUMBER OF TRIES %d\n", i);
 		path_finder(&path, pass, i, &len);
-		if (pass->final_head && i != connect - 1)
-		{
-			del_path(&pass->final_head);
-			pass->final_head = NULL;
-			path = NULL;
-		}
+		// if (pass->final_head && i != connect - 1)
+		// {
+		// 	del_path(&pass->final_head);
+		// 	pass->final_head = NULL;
+		// 	path = NULL;
+		// }
 		int k = 0;
 		while (k < pass->total)
 		{
