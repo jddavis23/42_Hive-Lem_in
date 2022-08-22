@@ -95,30 +95,8 @@ int	main(int argc, char **argv)
 
 /*
 
-	Maps that should be considered an error but it accepts
 
-		./lem-in < maps/error/space_at_end.map
 
-	TO DO:
-
-	if amount of ants < len of paths
-		pick path with fewest turns
-
-	do we want to collect the shortest path also?
-
-	try out with example we tried on paper
-
-*/
-
-/*
-
-flowten1.c
-- it keeps looping to find other paths but has already located a path that fits our requirements at first try. needs a quicker way to exit
-
-flowthousand1.c
-- same problem as in flowten1.c
-
-big1.txt
-- same problem as the two above
+Decide when to replace existing path struct
 
 */

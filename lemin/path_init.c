@@ -210,7 +210,6 @@ int	initialize_path_finder(t_room *pass, char *input)
 Fix one path deletes two paths problem
 - idea 1: go through original copy and eliminate paths
 - idea 2: reset where we start each time
-- idea 3: 
 
 smallest path... based on amount of ants
 
