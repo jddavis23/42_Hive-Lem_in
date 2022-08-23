@@ -501,7 +501,7 @@ static int	compare_struct(t_room *pass, float mean, int count)
 	return (FALSE);
 }
 
-static int	better_choise(t_room *pass)
+static int	better_choice(t_room *pass)
 {
 	int i;
 	int	len;
@@ -601,7 +601,7 @@ void	path_finder(t_path **path, t_room *pass, int found, int **len)
 	{
 		copy_to_path(pass, path);
 	}
-	else if (better_choise(pass) == TRUE)
+	else if (better_choice(pass) == TRUE)
 	{
 		del_path(&pass->final_head);
 		*path = NULL;
