@@ -51,6 +51,24 @@ static void	set_correct_current_index(t_room *pass, int *i, int new_indx)
 	}
 }
 
+static int	check_check(t_room *pass, int indx)
+{
+	int	i;
+
+	while (pass->info[PREV][indx] != 0)
+	{
+		indx = pass->info[PREV][indx];
+		i = 0;
+		while (pass->links[indx][i] != -1)
+		{
+			if (pass->info[PATH][pass->links[indx][i]] == 0)
+				return (TRUE); 
+			++i;
+		}
+	}
+	return (FALSE);
+}
+
 static void	breadth_first(t_room *pass, int indx, int i)
 {
 	int	j;
@@ -66,27 +84,65 @@ static void	breadth_first(t_room *pass, int indx, int i)
 		++j;
 	}
 	j = 0;
-	while (pass->links[indx][j] >= 0)
+	if (pass->info[PATH][indx] == 1)
 	{
-		if (pass->info[PATH][pass->links[indx][j]] == 0)
+		while (pass->links[indx][j] >= 0)
 		{
-			if (pass->links[indx][j] == 0)
-				pass->info[CURRENT][i] = 0;
-			else
+			if (pass->info[PATH][pass->links[indx][j]] == 0)
 			{
-				pass->info[PATH][pass->links[indx][j]] = pass->info[PATH][indx];
-				pass->info[PREV][pass->links[indx][j]] = indx;
-				pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
+				if (pass->links[indx][j] == 0)
+					pass->info[CURRENT][i] = 0;
+				else
+				{
+					pass->info[PATH][pass->links[indx][j]] = pass->info[PATH][indx];
+					pass->info[PREV][pass->links[indx][j]] = indx;
+					pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
+					set_correct_current_index(pass, &i, pass->links[indx][j]);
+				}
+			}
+			else if (pass->info[PATH][pass->links[indx][j]] == 2)
+			{
+				pass->info[JUMP][pass->links[indx][j]] = indx;
+				pass->info[PATH][pass->links[indx][j]] = 3;
 				set_correct_current_index(pass, &i, pass->links[indx][j]);
+				//continue_3(pass, &i, indx);
+			}
+			++j;
+		}
+	}
+	else if (pass->info[PATH][indx] == 3)
+	{
+		if (pass->info[JUMP][indx])
+		{
+			j = 0;
+			while (pass->links[indx][j] >= 0)
+			{
+				if (pass->info[PATH][pass->links[indx][j]] == 2)
+				{
+					if (check_check(pass, pass->links[indx][j]))
+						//allow path to continue
+				} 
+				++j;
 			}
 		}
-		else if (pass->info[PATH][pass->links[indx][j]] == 2)
+		else
 		{
-			pass->info[JUMP][pass->links[indx][j]] = indx;
-			pass->info[PATH][pass->links[indx][j]] = 3;
-			set_correct_current_index(pass, &i, pass->links[indx][j]);
+			j = 0;
+			while (pass->links[indx][j] >= 0)
+			{
+				if (pass->info[PATH][pass->links[indx][j]] == 2)
+				{
+					if (check_check(pass, pass->links[indx][j]))
+						//allow path to continue
+				}
+				else if (pass->info[PATH][pass->links[indx][j]] == 0)
+				{
+					//allow to move
+				}
+				else
+				++j;
+			}
 		}
-		++j;
 	}
 	if (pass->info[CURRENT][i] == indx)
 		pass->info[CURRENT][i] = 0;
