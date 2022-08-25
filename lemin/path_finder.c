@@ -17,7 +17,6 @@ static void	initialize_path(t_room *pass, int i)
 	pass->info[PATH][pass->links[0][i]] = 1;
 	pass->info[CURRENT][i] = pass->links[0][i];
 	pass->info[PREV][pass->links[0][i]] = 0;
-	pass->info[LEN][pass->links[0][i]] = pass->info[LEN][0] + 1;
 	ft_printf("%s\n", pass->rooms[pass->links[0][i]]);
 }
 
@@ -77,7 +76,6 @@ static void	breadth_first(t_room *pass, int indx, int i)
 			{
 				pass->info[PATH][pass->links[indx][j]] = pass->info[PATH][indx];
 				pass->info[PREV][pass->links[indx][j]] = indx;
-				pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
 				set_correct_current_index(pass, &i, pass->links[indx][j]);
 			}
 		}
@@ -109,7 +107,7 @@ static void	print_output(t_room *pass)
 		nbr = pass->info[PATH][pass->links[start][i]];
 		if (nbr != 0)
 		{
-			ft_printf("{green}PATH [%d] LEN[%d]{uncolor}\n", new, pass->info[LEN][pass->links[start][i]]);
+			ft_printf("{green}PATH [%d] {uncolor}\n", new);
 			prev = pass->info[PREV][pass->links[start][i]];
 			ft_printf("%s\n", pass->rooms[pass->end]);
 			ft_printf("%s\n", pass->rooms[pass->links[start][i]]);
@@ -469,6 +467,12 @@ static int	better_choice(t_room *pass, int **len)
 		++path_count;
 	}
 	mean = (float)len_total / (float)path_count;
+	/*
+
+	//if (max_ant_calc(pass->ants, len, pass->info[LEN][pass->info[CURRENT][i]]) == TRUE)
+	// 	break ;
+
+	*/
 	if (compare_struct(pass, mean, path_count) == TRUE)
 		return (TRUE);
 	return (FALSE);
@@ -522,9 +526,6 @@ void	path_finder(t_path **path, t_room *pass)
 			//print_output(pass);
 			pass->info[PATH][0] = 0;
 			delete_non_found_paths(pass, pass->info[CURRENT][i]);
-			// add_len(pass->info[LEN][pass->info[CURRENT][i]], len);
-			// if (max_ant_calc(pass->ants, len, pass->info[LEN][pass->info[CURRENT][i]]) == TRUE)
-			// 	break ;
 			ft_printf("----- AFTER CLEAN -----");
 			print_output(pass);
 			nbr++;
