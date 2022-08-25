@@ -184,8 +184,6 @@ int	initialize_path_finder(t_room *pass, char *input)
 	t_path	*path;
 	t_path	*final;
 	int	*len;
-	int	i;
-	int connect;
 
 	path = NULL;
 	final = NULL;
@@ -193,8 +191,7 @@ int	initialize_path_finder(t_room *pass, char *input)
 	sort_distance(pass);
 	create_len(pass->links[0], &len);
 	pass->final_head = NULL;
-	i = 0;
-	path_finder(&path, pass, i, &len);
+	path_finder(&path, pass, &len);
 	//reset_len(&len);
 	if (!pass->final_head)
 		return (error_path(pass, input, TRUE));
