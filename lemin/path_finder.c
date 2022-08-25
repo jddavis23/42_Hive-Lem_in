@@ -99,6 +99,40 @@ static int	other_connections(t_room *pass, int indx)
 // 		prev = pass->info[PREV][prev];
 // 	}
 // }
+static void	lock_path(t_room *pass, int indx)
+{
+	int	hold;
+
+	pass->info[NEXT][indx] = pass->end; 
+	while (pass->info[PREV][indx] != 0)
+	{
+		if (pass->info[PATH][indx] == 3)
+		{
+			hold = pass->info[NEXT][indx];
+			pass->info[NEXT][indx] = pass->info[PREV][indx];
+			indx = hold;
+			while (pass->info[JUMP][indx] != 0)
+			{
+				if (pass->info[PATH][indx] == 3)
+					pass->info[PATH][indx] = 2;
+				indx = pass->info[PREV][indx];
+				//pass->info[NEXT][indx];
+				//if (pass->info[PREV][indx] != pass->info[NEXT][indx])
+			}
+			if (pass->info[JUMP][indx] != 0)
+				pass->info[PREV][indx] = pass->info[JUMP][indx];
+		}
+		pass->info[PATH][indx] = 2;
+		indx = pass->info[PREV][indx];
+	}
+
+}
+
+static void	mod_2_rooms(t_room *pass, int indx, int new)
+{
+	pass->info[JUMP][new] = indx;
+	pass->info[PATH][new] = 3;
+}
 
 static void	breadth_first(t_room *pass, int indx, int i)
 {
@@ -143,7 +177,7 @@ static void	breadth_first(t_room *pass, int indx, int i)
 		}
 		else if (pass->info[PATH][pass->links[indx][j]] == 2)
 		{
-			
+			mod_2_rooms(pass, indx, pass->links[indx][j]);
 		}
 		++j;
 	}
