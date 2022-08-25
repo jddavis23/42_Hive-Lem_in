@@ -43,15 +43,17 @@ static int	create_used(t_room *pass)
 	pass->info[PREV] = (int *) malloc(pass->total * sizeof(int));
 	pass->info[LEN] = (int *) malloc(pass->total * sizeof(int));
 	pass->info[CURRENT] = (int *) malloc(pass->total * sizeof(int));
-	pass->info[CONNECT] = (int *) malloc(pass->total * sizeof(int));
-	if (!pass->info[PATH] || !pass->info[PREV] || !pass->info[LEN] || !pass->info[CURRENT] || !pass->info[CONNECT])
+	pass->info[NEXT] = (int *) malloc(pass->total * sizeof(int));
+	pass->info[JUMP] = (int *) malloc(pass->total * sizeof(int));
+	if (!pass->info[PATH] || !pass->info[PREV] || !pass->info[LEN] || !pass->info[CURRENT] || !pass->info[NEXT] || !pass->info[JUMP])
 		return (ERROR);
 	while (i < pass->total)
 	{
 		pass->info[PATH][i] = FALSE;
 		pass->info[PREV][i] = FALSE;
 		pass->info[LEN][i] = FALSE;
-		pass->info[CONNECT][i] = FALSE;
+		pass->info[NEXT][i] = FALSE;
+		pass->info[JUMP][i] = FALSE;
 		pass->info[CURRENT][i++] = FALSE;
 	}
 	return (0);

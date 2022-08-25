@@ -167,25 +167,17 @@ static void	create_len(int *array, int **len)
 	(*len)[i] = -1;
 }
 
-static void reset_len(int **len)
-{
-	int i;
+// static void reset_len(int **len)
+// {
+// 	int i;
 
-	i = 0;
-	while ((*len)[i] != -1)
-	{
-		(*len)[i] = 0;
-		++i;
-	}
-}
-
-static void	start_connect(t_room *pass, int *connect)
-{
-	while (pass->links[0][*connect] != -1)
-	{
-		(*connect)++;
-	}
-}
+// 	i = 0;
+// 	while ((*len)[i] != -1)
+// 	{
+// 		(*len)[i] = 0;
+// 		++i;
+// 	}
+// }
 
 int	initialize_path_finder(t_room *pass, char *input)
 {
@@ -202,28 +194,8 @@ int	initialize_path_finder(t_room *pass, char *input)
 	create_len(pass->links[0], &len);
 	pass->final_head = NULL;
 	i = 0;
-	connect = 0;
-	start_connect(pass, &connect);
-	while (i < connect)
-	{
-		ft_printf("NUMBER OF TRIES %d\n", i);
-		path_finder(&path, pass, i, &len);
-		// if (pass->final_head && i != connect - 1)
-		// {
-		// 	del_path(&pass->final_head);
-		// 	pass->final_head = NULL;
-		// 	path = NULL;
-		// }
-		int k = 0;
-		while (k < pass->total)
-		{
-			pass->info[PATH][k] = FALSE;
-			pass->info[PREV][k] = FALSE;
-			pass->info[LEN][k++] = FALSE;
-		}
-		reset_len(&len);
-		++i;
-	}
+	path_finder(&path, pass, i, &len);
+	//reset_len(&len);
 	if (!pass->final_head)
 		return (error_path(pass, input, TRUE));
 	final = pass->final_head;
