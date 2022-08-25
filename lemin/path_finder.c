@@ -142,6 +142,9 @@ static void	breadth_first(t_room *pass, int indx, int i)
 			}
 		}
 		else if (pass->info[PATH][pass->links[indx][j]] == 2)
+		{
+			
+		}
 		++j;
 	}
 	if (pass->info[CURRENT][i] == indx)
