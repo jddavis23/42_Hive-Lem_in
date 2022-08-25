@@ -28,7 +28,9 @@ static int	current_true(t_room *pass)
 	while (i < pass->total)
 	{
 		if (pass->info[CURRENT][i] != 0)
+		{
 			return (FALSE);
+		}
 		++i;
 	}
 	return (TRUE);
@@ -55,16 +57,19 @@ static int	check_check(t_room *pass, int indx)
 {
 	int	i;
 
-	while (pass->info[PREV][indx] != 0)
+	while (indx != 0)//pass->info[PREV][indx] != 0)
 	{
-		indx = pass->info[PREV][indx];
 		i = 0;
 		while (pass->links[indx][i] != -1)
 		{
 			if (pass->info[PATH][pass->links[indx][i]] == 0)
+			{
+				ft_printf("room %s  FINDDDDD %s\n", pass->rooms[indx], pass->rooms[pass->links[indx][i]]);
 				return (TRUE); 
+			} 
 			++i;
 		}
+		indx = pass->info[PREV][indx];
 	}
 	return (FALSE);
 }
@@ -100,7 +105,7 @@ static void	breadth_first(t_room *pass, int indx, int i)
 					set_correct_current_index(pass, &i, pass->links[indx][j]);
 				}
 			}
-			else if (pass->info[PATH][pass->links[indx][j]] == 2)
+			else if (pass->info[PATH][pass->links[indx][j]] == 2 && check_check(pass, pass->info[PREV][pass->links[indx][j]]) && ft_printf("NOT3\n"))
 			{
 				pass->info[JUMP][pass->links[indx][j]] = indx;
 				pass->info[PATH][pass->links[indx][j]] = 3;
@@ -112,18 +117,31 @@ static void	breadth_first(t_room *pass, int indx, int i)
 	}
 	else if (pass->info[PATH][indx] == 3)
 	{
+		ft_printf("ROOM %s JUMP INDX %i\n", pass->rooms[indx], pass->info[JUMP][indx]);
 		if (pass->info[JUMP][indx])
 		{
-			j = 0;
-			while (pass->links[indx][j] >= 0)
-			{
-				if (pass->info[PATH][pass->links[indx][j]] == 2)
-				{
-					if (check_check(pass, pass->links[indx][j]))
-						//allow path to continue
-				} 
-				++j;
-			}
+			// j = 0;
+			// while (pass->links[indx][j] >= 0)
+			// {
+			// 	if (pass->info[PATH][pass->links[indx][j]] == 2 && check_check(pass, pass->info[PREV][pass->links[indx][j]]) && ft_printf("333\n"))
+			// 	{
+			// 		//if (!check_check(pass, pass->links[indx][j]))
+			// 		//{
+			// 			ft_printf("--------\n");
+			// 			if (pass->links[indx][j] == 0)
+			// 				pass->info[CURRENT][i] = 0;
+			// 			else
+			// 			{
+			// 				//pass->info[JUMP][pass->links[indx][j]] = indx;
+			// 				pass->info[PATH][pass->links[indx][j]] = pass->info[PATH][indx];
+			// 				set_correct_current_index(pass, &i, pass->links[indx][j]);
+			// 			}
+			// 		//}
+			// 	} 
+			// 	++j;
+			//}
+			pass->info[PATH][pass->info[PREV][indx]] = pass->info[PATH][indx];
+			set_correct_current_index(pass, &i, pass->info[PREV][indx]);//pass->links[indx][j]);
 		}
 		else
 		{
@@ -134,12 +152,26 @@ static void	breadth_first(t_room *pass, int indx, int i)
 				{
 					if (check_check(pass, pass->links[indx][j]))
 						//allow path to continue
+					{
+						if (pass->links[indx][j] == 0)
+							pass->info[CURRENT][i] = 0;
+						else
+						{
+							pass->info[PATH][pass->links[indx][j]] = pass->info[PATH][indx];
+							set_correct_current_index(pass, &i, pass->links[indx][j]);
+						}
+					}
 				}
 				else if (pass->info[PATH][pass->links[indx][j]] == 0)
 				{
 					//allow to move
+					pass->info[PATH][pass->links[indx][j]] = 1;
+					pass->info[PREV][pass->links[indx][j]] = indx;
+					pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
+					set_correct_current_index(pass, &i, pass->links[indx][j]);	
 				}
-				else
+				else //maybe if current needs to be changed
+					pass->info[CURRENT][i] = 0;
 				++j;
 			}
 		}
@@ -552,6 +584,7 @@ void	path_finder(t_path **path, t_room *pass, int **len)
 
 	i = 0;
 	pass->info[LEN][0] = 1;
+	pass->info[PATH][0] = 1;
 	while (pass->links[0][i] >= 0)
 		initialize_path(pass, i++);
 
@@ -570,6 +603,10 @@ void	path_finder(t_path **path, t_room *pass, int **len)
 				{
 					break ;
 				}
+				ft_printf("LOADIIING\n");
+				print_output(pass);
+				//if (pass->info[PREV][9] == 2 && pass->info[PATH][1] == 2)
+				//	exit (0);
 			}
 			++i;
 		}
