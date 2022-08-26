@@ -48,8 +48,8 @@ typedef enum
 	PREV,//rooms index we just came from
 	LEN,//len of path in this room
 	CURRENT,//room current path is on
-	NEXT,
-	JUMP,
+	NEXT,//room index we are going to
+	JUMP,//entry point of non locked path into a locked path
 } info;
 
 typedef enum
