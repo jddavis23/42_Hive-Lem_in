@@ -148,51 +148,17 @@ static void	sort_distance(t_room *pass)
 // 	}
 // }
 
-static void	create_len(int *array, int **len)
-{
-	int	i;
-
-	i = 0;
-	while (array[i] != -1)
-	{
-		i++;
-	}
-	*len = (int *)malloc(sizeof(int) * (i + 1));
-	i = 0;
-	while (array[i] != -1)
-	{
-		(*len)[i] = 0;
-		++i;
-	}
-	(*len)[i] = -1;
-}
-
-// static void reset_len(int **len)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while ((*len)[i] != -1)
-// 	{
-// 		(*len)[i] = 0;
-// 		++i;
-// 	}
-// }
 
 int	initialize_path_finder(t_room *pass, char *input)
 {
 	t_path	*path;
 	t_path	*final;
-	int	*len;
 
 	path = NULL;
 	final = NULL;
-	len = NULL;
 	sort_distance(pass);
-	create_len(pass->links[0], &len);
 	pass->final_head = NULL;
-	path_finder(&path, pass, &len);
-	//reset_len(&len);
+	path_finder(&path, pass);
 	if (!pass->final_head)
 		return (error_path(pass, input, TRUE));
 	final = pass->final_head;

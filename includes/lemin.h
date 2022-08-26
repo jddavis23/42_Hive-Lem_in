@@ -50,6 +50,8 @@ typedef enum
 	CURRENT,//room current path is on
 	NEXT,//room index we are going to
 	JUMP,//entry point of non locked path into a locked path
+	LOCKED,
+	MOVE,
 } info;
 
 typedef enum
@@ -87,7 +89,7 @@ int		initialize_path_finder(t_room *pass, char *input);
 int		len_array(int *links);
 void	create_index(t_index **move, t_path **path, int i);
 void	create_path(t_path **path, t_room *pass, int nbr, int len);
-void	path_finder(t_path **path, t_room *pass, int **len);
+void	path_finder(t_path **path, t_room *pass);
 t_path	*cpy_pth(t_path *file);
 void	del_first_index(t_path *file);
 void	del_last_path(t_path **path, t_room *pass);
