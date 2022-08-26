@@ -50,6 +50,7 @@ typedef enum
 	CURRENT,//room current path is on
 	NEXT,//room index we are going to
 	JUMP,//entry point of non locked path into a locked path
+	LOCKED,
 } info;
 
 typedef enum
