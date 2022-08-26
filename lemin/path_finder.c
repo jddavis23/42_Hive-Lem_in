@@ -673,41 +673,41 @@ void	path_finder(t_path **path, t_room *pass)
 	create_len(pass->links[0], &len);
 	pass->info[LEN][0] = 1;
 	pass->info[PATH][0] = 0;
-	// // b
-	// pass->info[PATH][1] = 2;
-	// pass->info[PREV][1] = 0;
-	// pass->info[NEXT][1] = 2;
-	// // c
-	// pass->info[PATH][2] = 2;
-	// pass->info[PREV][2] = 1;
-	// pass->info[NEXT][2] = 9;
-	// // j
-	// pass->info[PATH][9] = 2;
-	// pass->info[PREV][9] = 2;
-	// pass->info[NEXT][9] = 17;
-	// // o
-	// pass->info[PATH][13] = 2;
-	// pass->info[PREV][13] = 0;
-	// pass->info[NEXT][13] = 3;
-	// // d
-	// pass->info[PATH][3] = 2;
-	// pass->info[PREV][3] = 13;
-	// pass->info[NEXT][3] = 16;
-	// // q
-	// pass->info[PATH][15] = 2;
-	// pass->info[PREV][15] = 16;
-	// pass->info[NEXT][15] = 17;
+	// b
+	pass->info[PATH][1] = 2;
+	pass->info[PREV][1] = 0;
+	pass->info[NEXT][1] = 2;
+	// c
+	pass->info[PATH][2] = 2;
+	pass->info[PREV][2] = 1;
+	pass->info[NEXT][2] = 9;
+	// j
+	pass->info[PATH][9] = 2;
+	pass->info[PREV][9] = 2;
+	pass->info[NEXT][9] = 17;
+	// o
+	pass->info[PATH][13] = 2;
+	pass->info[PREV][13] = 0;
+	pass->info[NEXT][13] = 3;
+	// d
+	pass->info[PATH][3] = 2;
+	pass->info[PREV][3] = 13;
+	pass->info[NEXT][3] = 16;
+	// q
+	pass->info[PATH][15] = 2;
+	pass->info[PREV][15] = 16;
+	pass->info[NEXT][15] = 17;
 
-	// // x
-	// pass->info[PATH][16] = 2;
-	// pass->info[PREV][16] = 3;
-	// pass->info[NEXT][16] = 15;
+	// x
+	pass->info[PATH][16] = 2;
+	pass->info[PREV][16] = 3;
+	pass->info[NEXT][16] = 15;
 
 	while (pass->links[0][i] >= 0)
 	{
-		//if (pass->links[0][i] == 5)
+		if (pass->links[0][i] == 5)
 			initialize_path(pass, i++);
-		//i++;
+		i++;
 	}
 	int nbr = 0;
 	print_output(pass);
