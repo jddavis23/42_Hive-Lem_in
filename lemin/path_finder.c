@@ -286,12 +286,12 @@ static void	lock_path(t_room *pass, int indx)
 		else */if ((pass->info[PATH][indx] == 3 && value == 1) || (pass->info[PATH][indx] == 1 && value == 3) || pass->info[PATH][indx] == 1)
 		{
 			hold = 0;
-			ft_printf("@ [%s]\n", pass->rooms[indx]);
+			//ft_printf("@ [%s]\n", pass->rooms[indx]);
 			if (value == 1 && pass->info[PATH][indx] != 1)
 			{
-				ft_printf("%% [%s]\n", pass->rooms[indx]);
+				//ft_printf("%% [%s]\n", pass->rooms[indx]);
 				next = pass->info[NEXT][indx];
-				hold = 1;
+				//hold = 1;
 			}
 			pass->info[NEXT][indx] = for_now;
 		}
