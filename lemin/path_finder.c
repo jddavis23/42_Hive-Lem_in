@@ -492,6 +492,46 @@ static void reset_len(int **len)
 	}
 }
 
+static void	bubble_len(t_room *pass, int **len)
+{
+	int	a;
+	int	b;
+	int	temp;
+	int	p;
+
+	p = 0;
+	ft_printf("\nNOT SORTED LENNNNNN\n");
+	while ((*len)[p] > 0)
+	{
+		ft_printf("ROOM [%s]   LEN [%i]\n", pass->rooms[(*len)[p]], pass->info[LEN][(*len)[p]]);
+		++p;
+	}
+
+	a = 0;
+	while ((*len)[a]  > 0)
+	{
+		b = a + 1;
+		while ((*len)[b] > 0)
+		{
+			if (pass->info[LEN][(*len)[a]] > pass->info[LEN][(*len)[b]])
+			{
+				temp = (*len)[a];
+				(*len)[a] = (*len)[b];
+				(*len)[b] = temp;
+			}
+			++b;
+		}
+		++a;
+	}
+	p = 0;
+	ft_printf("\nSORTED LENNNNNN\n");
+	while ((*len)[p] > 0)
+	{
+		ft_printf("ROOM [%s]   LEN [%i]\n", pass->rooms[(*len)[p]], pass->info[LEN][(*len)[p]]);
+		++p;
+	}
+
+}
 static void	calc_len(t_room *pass, int **len)
 {
 	int	i;
@@ -518,6 +558,7 @@ static void	calc_len(t_room *pass, int **len)
 		}
 		++i;
 	}
+	bubble_len(pass, len);
 }
 
 static void	copy_to_path(t_room *pass, t_path **path, int **len)
