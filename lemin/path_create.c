@@ -42,8 +42,9 @@ void	create_index(t_index **move, t_path **path, int i)
 	else
 	{
 		new = ft_indexnew(i);
-		(*path)->move->next = new;
-		(*path)->move = (*path)->move->next;
+		new->next = (*path)->move;
+		(*path)->move_head = new;
+		(*path)->move = new;
 	}
 }
 

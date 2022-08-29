@@ -523,7 +523,7 @@ static void	calc_len(t_room *pass, int **len)
 static void	copy_to_path(t_room *pass, t_path **path, int **len)
 {
 	int	i;
-	int	next;
+	int	prev;
 	int	nbr;
 
 	nbr = 1;
@@ -536,13 +536,14 @@ static void	copy_to_path(t_room *pass, t_path **path, int **len)
 	i = 0;
 	while ((*len)[i] > 0)
 	{
-		next = pass->info[NEXT][(*len)[i]];
-		create_path(path, pass, nbr, pass->info[LEN][(*len)[i]]);
+		prev = pass->info[PREV][(*len)[i]];
+		create_path(path, pass, nbr++, pass->info[LEN][(*len)[i]]);
+		create_index(&(*path)->move_head, path, pass->end);
 		create_index(&(*path)->move_head, path, (*len)[i]);
-		while (next > 0)
+		while (prev > 0)
 		{
-			create_index(&(*path)->move_head, path, next);
-			next = pass->info[NEXT][next];
+			create_index(&(*path)->move_head, path, prev);
+			prev = pass->info[PREV][prev];
 		}
 		++i;
 	}
