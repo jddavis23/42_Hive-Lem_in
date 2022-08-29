@@ -479,19 +479,19 @@ static void	calc_len(t_room *pass, int **len)
 
 	i = 0;
 	j = 0;
-	while (pass->links[0][i] != -1)
+	while (pass->links[pass->end][i] != -1)
 	{
-		if (pass->info[PATH][pass->links[0][i]] == 2)
+		if (pass->info[PATH][pass->links[pass->end][i]] == 2)
 		{
 			count = 1;
-			prev = pass->links[0][i];
+			prev = pass->links[pass->end][i];
 			while (prev != 0)
 			{
 				++count;
 				prev = pass->info[PREV][prev];
 			}
-			pass->info[LEN][pass->links[0][i]] = count + 2;
-			(*len)[j++] = pass->links[0][i];
+			pass->info[LEN][pass->links[pass->end][i]] = count + 2;
+			(*len)[j++] = pass->links[pass->end][i];
 		}
 		++i;
 	}
@@ -550,44 +550,43 @@ static void	printf_struct(t_room *pass)
 	}
 }
 
+static int	diff_prev(t_room *pass, int **len, int current)
+{
+	int count;
+	int	i;
 
-// static int	diff_prev(int **len, int current)
-// {
-// 	int count;
-// 	int	i;
+	i = 0;
+	count = 0;
+	while (pass->info[LEN][(*len)[i]] != -1)
+	{
+		if (pass->info[LEN][(*len)[i]] == current)
+			break ;
+		count += current - pass->info[LEN][(*len)[i]];
+		++i;
+	}
+	return (count);
+}
 
-// 	i = 0;
-// 	count = 0;
-// 	while ((*len)[i] != -1)
-// 	{
-// 		if ((*len)[i] == current)
-// 			break ;
-// 		count += current - (*len)[i];
-// 		++i;
-// 	}
-// 	return (count);
-// }
+static int max_ant_calc(t_room *pass, int **len, int current)
+{
+	int	dif;
+	int	i;
+	int	prev;
+	int	max_ants;
 
-// static int max_ant_calc(int ants, int **len, int current)
-// {
-// 	int	dif;
-// 	int	i;
-// 	int	prev;
-// 	int	max_ants;
-
-// 	i = 0;
-// 	dif = 0;
-// 	while ((*len)[i] != 1 && (*len)[i] != 0 && (*len)[i] != current)
-// 		++i;
-// 	prev = i - 1;
-// 	if (prev < 0)
-// 		return (FALSE);
-// 	dif = diff_prev(len, (*len)[prev]) + ((current - (*len)[prev]) * i);
-// 	max_ants = dif + i;
-// 	if (ants <= max_ants)
-// 		return (TRUE);
-// 	return (FALSE);
-// }
+	i = 0;
+	dif = 0;
+	while (pass->info[LEN][(*len)[i]] != 1 && pass->info[LEN][(*len)[i]] != 0 && pass->info[LEN][(*len)[i]] != current)
+		++i;
+	prev = i - 1;
+	if (prev < 0)
+		return (FALSE);
+	dif = diff_prev(pass, len, pass->info[LEN][(*len)[prev]]) + ((current - pass->info[LEN][(*len)[prev]]) * i);
+	max_ants = dif + i;
+	if (pass->ants <= max_ants)
+		return (TRUE);
+	return (FALSE);
+}
 
 // static void	current_path(t_room *pass)
 // {
@@ -672,155 +671,10 @@ void	path_finder(t_path **path, t_room *pass)
 	create_len(pass->links[0], &len);
 	pass->info[LEN][0] = 1;
 	pass->info[PATH][0] = 0;
-	// cnysten 3 -------------------------
-	// // b
-	// pass->info[PATH][1] = 2;
-	// pass->info[PREV][1] = 0;
-	// pass->info[NEXT][1] = 2;
-	// // c
-	// pass->info[PATH][2] = 2;
-	// pass->info[PREV][2] = 1;
-	// pass->info[NEXT][2] = 9;
-	// // j
-	// pass->info[PATH][9] = 2;
-	// pass->info[PREV][9] = 2;
-	// pass->info[NEXT][9] = 17;
-	// // o
-	// pass->info[PATH][13] = 2;
-	// pass->info[PREV][13] = 0;
-	// pass->info[NEXT][13] = 3;
-	// // d
-	// pass->info[PATH][3] = 2;
-	// pass->info[PREV][3] = 13;
-	// pass->info[NEXT][3] = 16;
-	// // q
-	// pass->info[PATH][15] = 2;
-	// pass->info[PREV][15] = 16;
-	// pass->info[NEXT][15] = 17;
-
-	// // x
-	// pass->info[PATH][16] = 2;
-	// pass->info[PREV][16] = 3;
-	// pass->info[NEXT][16] = 15;
-
-	// cnysten 4 ---------------------------
-	// // b
-	// pass->info[PATH][1] = 2;
-	// pass->info[PREV][1] = 0;
-	// pass->info[NEXT][1] = 19;
-
-	// // bc
-	// pass->info[PATH][19] = 2;
-	// pass->info[PREV][19] = 1;
-	// pass->info[NEXT][19] = 2;
-
-	// // c
-	// pass->info[PATH][2] = 2;
-	// pass->info[PREV][2] = 19;
-	// pass->info[NEXT][2] = 18;
-
-	// //jc
-	// pass->info[PATH][18] = 2;
-	// pass->info[PREV][18] = 2;
-	// pass->info[NEXT][18] = 9;
-
-	// // j
-	// pass->info[PATH][9] = 2;
-	// pass->info[PREV][9] = 18;
-	// pass->info[NEXT][9] = 22;
-	// // o
-	// pass->info[PATH][13] = 2;
-	// pass->info[PREV][13] = 0;
-	// pass->info[NEXT][13] = 21;
-
-	// //od
-	// pass->info[PATH][21] = 2;
-	// pass->info[PREV][21] = 13;
-	// pass->info[NEXT][21] = 3;
-
-	// // d
-	// pass->info[PATH][3] = 2;
-	// pass->info[PREV][3] = 21;
-	// pass->info[NEXT][3] = 16;
-
-	// // q
-	// pass->info[PATH][15] = 2;
-	// pass->info[PREV][15] = 16;
-	// pass->info[NEXT][15] =  22;
-
-	// // x
-	// pass->info[PATH][16] = 2;
-	// pass->info[PREV][16] = 3;
-	// pass->info[NEXT][16] = 15;
-
-	// cnysten 5-----------------------------
-	// ab
-	pass->info[PATH][22] = 2;
-	pass->info[PREV][22] = 0;
-	pass->info[NEXT][22] = 1;
-
-	// b
-	pass->info[PATH][1] = 2;
-	pass->info[PREV][1] = 22;
-	pass->info[NEXT][1] = 19;
-
-	// bc
-	pass->info[PATH][19] = 2;
-	pass->info[PREV][19] = 1;
-	pass->info[NEXT][19] = 2;
-
-	// c
-	pass->info[PATH][2] = 2;
-	pass->info[PREV][2] = 19;
-	pass->info[NEXT][2] = 18;
-
-	//jc
-	pass->info[PATH][18] = 2;
-	pass->info[PREV][18] = 2;
-	pass->info[NEXT][18] = 9;
-
-	// j
-	pass->info[PATH][9] = 2;
-	pass->info[PREV][9] = 18;
-	pass->info[NEXT][9] = 24;
-
-	// ao
-	pass->info[PATH][23] = 2;
-	pass->info[PREV][23] = 0;
-	pass->info[NEXT][23] = 13;
-
-	// o
-	pass->info[PATH][13] = 2;
-	pass->info[PREV][13] = 0;
-	pass->info[NEXT][13] = 21;
-
-	//od
-	pass->info[PATH][21] = 2;
-	pass->info[PREV][21] = 13;
-	pass->info[NEXT][21] = 3;
-
-	// d
-	pass->info[PATH][3] = 2;
-	pass->info[PREV][3] = 21;
-	pass->info[NEXT][3] = 16;
-
-	// q
-	pass->info[PATH][15] = 2;
-	pass->info[PREV][15] = 16;
-	pass->info[NEXT][15] = 24;
-
-	// x
-	pass->info[PATH][16] = 2;
-	pass->info[PREV][16] = 3;
-	pass->info[NEXT][16] = 15;
-
 	while (pass->links[0][i] >= 0)
 	{
-		if (pass->links[0][i] == 5)
-			initialize_path(pass, i++);
-		i++;
+		initialize_path(pass, i++);
 	}
-	int nbr = 0;
 	print_output(pass);
 	while (!current_true(pass))
 	{
@@ -847,15 +701,10 @@ void	path_finder(t_path **path, t_room *pass)
 			delete_non_found_paths(pass, pass->info[CURRENT][i]);
 			ft_printf("----- AFTER CLEAN -----");
 			print_output(pass);
-			nbr++;
-			if (nbr == 2)
-				exit(0);
-			/*
-				//if (max_ant_calc(pass->ants, len, pass->info[LEN][pass->info[CURRENT][i]]) == TRUE)
-				// 	break ;
-			*/
 			calc_len(pass, &len);
-			if (!pass->final_head)// && new_path_better(pass, path) == FALSE)
+			if (max_ant_calc(pass, &len, pass->info[LEN][pass->info[CURRENT][i]]) == TRUE)
+				break ;
+			if (!pass->final_head)
 			{
 				copy_to_path(pass, path, &len);
 			}
@@ -880,8 +729,6 @@ void	path_finder(t_path **path, t_room *pass)
 		//print_output(pass);
 	}
 	//print_output(pass);
-	if (*len)
-		i = 0;
 	//current_path(pass);
 	if (unique_paths(pass) == FALSE)
 		ft_printf("FALSE\n");
