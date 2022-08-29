@@ -734,7 +734,6 @@ void	path_finder(t_path **path, t_room *pass)
 		ft_printf("FALSE\n");
 	else
 		ft_printf("TRUE\n");
-	delete_non_found_paths(pass, 0);
 	ft_printf("{green}PRINT PRINT{uncolor}\n");
 	i = 0;
 	while (pass->links[0][i] != -1)
@@ -751,16 +750,6 @@ void	path_finder(t_path **path, t_room *pass)
 			ft_printf("\n");
 		}
 		++i;
-	}
-	if (!pass->final_head)// && new_path_better(pass, path) == FALSE)
-	{
-		copy_to_path(pass, path, &len);
-	}
-	else if (better_choice(pass, &len) == TRUE)
-	{
-		del_path(&pass->final_head);
-		*path = NULL;
-		copy_to_path(pass, path, &len);
 	}
 	printf_struct(pass);
 	//exit(0);
