@@ -272,32 +272,24 @@ static void	lock_path(t_room *pass, int indx)
 		else
 			indx = next;
 		next = 0;
-		/*if (pass->info[PATH][indx] == 1)
-		{
-			pass->info[NEXT][indx] = for_now;
-			hold = 0;
-		}
-		else *//*if ((pass->info[PATH][indx] == 3 && value == 1) || (pass->info[PATH][indx] == 1 && value == 3) || pass->info[PATH][indx] == 1)
-		{
-		{
-			pass->info[NEXT][indx] = for_now;
-			hold = 0;
-		}
-		else */if ((pass->info[PATH][indx] == 3 && value == 1) || (pass->info[PATH][indx] == 1 && value == 3) || pass->info[PATH][indx] == 1)
+		if ((pass->info[PATH][indx] == 3 && value == 1) || (pass->info[PATH][indx] == 1 && value == 3) || pass->info[PATH][indx] == 1)
 		{
 			hold = 0;
-			//ft_printf("@ [%s]\n", pass->rooms[indx]);
+			ft_printf("@ [%s]\n", pass->rooms[indx]);
 			if (value == 1 && pass->info[PATH][indx] != 1)
 			{
-				//ft_printf("%% [%s]\n", pass->rooms[indx]);
 				next = pass->info[NEXT][indx];
 				if (pass->info[JUMP][indx])
+				{
+					ft_printf("%% [%s]\n", pass->rooms[indx]);
 					hold = 1;
+				}
 			}
 			pass->info[NEXT][indx] = for_now;
 		}
 		else if (pass->info[PATH][indx] == 3 && value == 3 && pass->info[JUMP][indx] && !hold)
 		{
+			ft_printf("- [%s]\n", pass->rooms[indx]);
 			if (!hold)
 			{
 				pass->info[PREV][indx] = pass->info[JUMP][indx];
@@ -312,12 +304,14 @@ static void	lock_path(t_room *pass, int indx)
 		}
 		else if (pass->info[PATH][indx] == 3 && value == 3 && pass->info[JUMP][indx] && hold)
 		{
+			ft_printf("= [%s]\n", pass->rooms[indx]);
 			next = pass->info[NEXT][indx];
 			pass->info[NEXT][indx] = for_now;
 			hold = 0;
 		}
 		else if (pass->info[PATH][indx] == 3 && value == 3 && !pass->info[JUMP][indx])
 		{
+			ft_printf("+ [%s]\n", pass->rooms[indx]);
 			next = pass->info[NEXT][indx];
 			if (!hold)
 			{
@@ -497,7 +491,7 @@ static void	bubble_len(t_room *pass, int **len)
 	int	a;
 	int	b;
 	int	temp;
-	int	p;
+	/*int	p;
 
 	p = 0;
 	ft_printf("\nNOT SORTED LENNNNNN\n");
@@ -505,7 +499,7 @@ static void	bubble_len(t_room *pass, int **len)
 	{
 		ft_printf("ROOM [%s]   LEN [%i]\n", pass->rooms[(*len)[p]], pass->info[LEN][(*len)[p]]);
 		++p;
-	}
+	}*/
 
 	a = 0;
 	while ((*len)[a]  > 0)
@@ -523,13 +517,13 @@ static void	bubble_len(t_room *pass, int **len)
 		}
 		++a;
 	}
-	p = 0;
+	/*p = 0;
 	ft_printf("\nSORTED LENNNNNN\n");
 	while ((*len)[p] > 0)
 	{
 		ft_printf("ROOM [%s]   LEN [%i]\n", pass->rooms[(*len)[p]], pass->info[LEN][(*len)[p]]);
 		++p;
-	}
+	}*/
 
 }
 static void	calc_len(t_room *pass, int **len)
