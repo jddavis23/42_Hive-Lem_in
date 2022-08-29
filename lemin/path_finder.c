@@ -521,7 +521,6 @@ static void	copy_to_path(t_room *pass, t_path **path, int **len)
 			create_index(&(*path)->move_head, path, next);
 			next = pass->info[NEXT][next];
 		}
-		pass->info[PATH][(*len)[i]] = 0;
 		++i;
 	}
 	reset_len(len);
@@ -638,19 +637,12 @@ static int	better_choice(t_room *pass, int **len)
 	path_count = 0;
 	len_total = 0;
 	path_count = 0;
-	calc_len(pass, len);
 	while ((*len)[path_count] > 0)
 	{
 		len_total += pass->info[LEN][(*len)[path_count]];
 		++path_count;
 	}
 	mean = (float)len_total / (float)path_count;
-	/*
-
-	//if (max_ant_calc(pass->ants, len, pass->info[LEN][pass->info[CURRENT][i]]) == TRUE)
-	// 	break ;
-
-	*/
 	if (compare_struct(pass, mean, path_count) == TRUE)
 		return (TRUE);
 	return (FALSE);
@@ -858,9 +850,13 @@ void	path_finder(t_path **path, t_room *pass)
 			nbr++;
 			if (nbr == 2)
 				exit(0);
+			/*
+				//if (max_ant_calc(pass->ants, len, pass->info[LEN][pass->info[CURRENT][i]]) == TRUE)
+				// 	break ;
+			*/
+			calc_len(pass, &len);
 			if (!pass->final_head)// && new_path_better(pass, path) == FALSE)
 			{
-				calc_len(pass, &len);
 				copy_to_path(pass, path, &len);
 			}
 			else if (better_choice(pass, &len) == TRUE)
@@ -873,9 +869,9 @@ void	path_finder(t_path **path, t_room *pass)
 			printf_struct(pass);
 			ft_printf("\n\n-------PATH IN STRUCT FINISH-------\n");
 			i = 0;
-			while (pass->links[pass->end][i] >= 0)
+			while (pass->links[0][i] >= 0)
 			{
-				if (pass->info[PATH][pass->links[pass->end][i]] == 0)
+				if (pass->info[PATH][pass->links[0][i]] == 0)
 					initialize_path(pass, i);
 				++i;
 			}
