@@ -361,6 +361,8 @@ static void	delete_non_found_paths(t_room *pass, int indx)
 		{
 			pass->info[PATH][i] = 2;
 			pass->info[JUMP][i] = 0;
+			pass->info[LOCKED][i] = 0;
+			pass->info[MOVE][i] = 0;
 		}
 		pass->info[CURRENT][i] = FALSE;
 		++i;
