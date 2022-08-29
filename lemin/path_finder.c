@@ -127,6 +127,13 @@ static void	find_new_branches(t_room *pass, int indx, int *i)
 		set_correct_current_index(pass, i, pass->info[PREV][indx]);
 		pass->info[MOVE][temp] = TRUE;
 	}
+	else if (pass->info[PATH][pass->info[PREV][indx]] == 2)
+	{
+		ft_printf("move along previous room %s --> %s\n", pass->rooms[indx], pass->rooms[pass->info[PREV][indx]]);
+		pass->info[MOVE][*i] = FALSE;
+		pass->info[PATH][pass->info[PREV][indx]] = 3;
+		set_correct_current_index(pass, i, pass->info[PREV][indx]);
+	}
 	else if (pass->info[MOVE][temp] == TRUE)
 		pass->info[MOVE][temp] = FALSE;
 }
@@ -181,9 +188,9 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 			pass->info[PATH][pass->info[PREV][pass->links[indx][j]]] >= 2)
 		{
 			pass->info[JUMP][pass->links[indx][j]] = indx;
-			pass->info[PATH][pass->links[indx][j]] = 3;
 			pass->info[LOCKED][*i] = TRUE;
-			ft_printf("rooms %s is LOCKED ! pos [%d]", pass->rooms[pass->links[indx][j]], *i);
+			pass->info[PATH][pass->links[indx][j]] = 3;
+			ft_printf("rooms %s[%d] is LOCKED !  pos [%d]", pass->rooms[pass->links[indx][j]], pass->info[PATH][pass->links[indx][j]], *i);
 			set_correct_current_index(pass, i, pass->links[indx][j]);
 		}
 		++j;
@@ -673,30 +680,142 @@ void	path_finder(t_path **path, t_room *pass)
 	create_len(pass->links[0], &len);
 	pass->info[LEN][0] = 1;
 	pass->info[PATH][0] = 0;
+	// cnysten 3 -------------------------
+	// // b
+	// pass->info[PATH][1] = 2;
+	// pass->info[PREV][1] = 0;
+	// pass->info[NEXT][1] = 2;
+	// // c
+	// pass->info[PATH][2] = 2;
+	// pass->info[PREV][2] = 1;
+	// pass->info[NEXT][2] = 9;
+	// // j
+	// pass->info[PATH][9] = 2;
+	// pass->info[PREV][9] = 2;
+	// pass->info[NEXT][9] = 17;
+	// // o
+	// pass->info[PATH][13] = 2;
+	// pass->info[PREV][13] = 0;
+	// pass->info[NEXT][13] = 3;
+	// // d
+	// pass->info[PATH][3] = 2;
+	// pass->info[PREV][3] = 13;
+	// pass->info[NEXT][3] = 16;
+	// // q
+	// pass->info[PATH][15] = 2;
+	// pass->info[PREV][15] = 16;
+	// pass->info[NEXT][15] = 17;
+
+	// // x
+	// pass->info[PATH][16] = 2;
+	// pass->info[PREV][16] = 3;
+	// pass->info[NEXT][16] = 15;
+
+	// cnysten 4 ---------------------------
+	// // b
+	// pass->info[PATH][1] = 2;
+	// pass->info[PREV][1] = 0;
+	// pass->info[NEXT][1] = 19;
+
+	// // bc
+	// pass->info[PATH][19] = 2;
+	// pass->info[PREV][19] = 1;
+	// pass->info[NEXT][19] = 2;
+
+	// // c
+	// pass->info[PATH][2] = 2;
+	// pass->info[PREV][2] = 19;
+	// pass->info[NEXT][2] = 18;
+
+	// //jc
+	// pass->info[PATH][18] = 2;
+	// pass->info[PREV][18] = 2;
+	// pass->info[NEXT][18] = 9;
+
+	// // j
+	// pass->info[PATH][9] = 2;
+	// pass->info[PREV][9] = 18;
+	// pass->info[NEXT][9] = 22;
+	// // o
+	// pass->info[PATH][13] = 2;
+	// pass->info[PREV][13] = 0;
+	// pass->info[NEXT][13] = 21;
+
+	// //od
+	// pass->info[PATH][21] = 2;
+	// pass->info[PREV][21] = 13;
+	// pass->info[NEXT][21] = 3;
+
+	// // d
+	// pass->info[PATH][3] = 2;
+	// pass->info[PREV][3] = 21;
+	// pass->info[NEXT][3] = 16;
+
+	// // q
+	// pass->info[PATH][15] = 2;
+	// pass->info[PREV][15] = 16;
+	// pass->info[NEXT][15] =  22;
+
+	// // x
+	// pass->info[PATH][16] = 2;
+	// pass->info[PREV][16] = 3;
+	// pass->info[NEXT][16] = 15;
+
+	// cnysten 5-----------------------------
+	// ab
+	pass->info[PATH][22] = 2;
+	pass->info[PREV][22] = 0;
+	pass->info[NEXT][22] = 1;
+
 	// b
 	pass->info[PATH][1] = 2;
-	pass->info[PREV][1] = 0;
-	pass->info[NEXT][1] = 2;
+	pass->info[PREV][1] = 22;
+	pass->info[NEXT][1] = 19;
+
+	// bc
+	pass->info[PATH][19] = 2;
+	pass->info[PREV][19] = 1;
+	pass->info[NEXT][19] = 2;
+
 	// c
 	pass->info[PATH][2] = 2;
-	pass->info[PREV][2] = 1;
-	pass->info[NEXT][2] = 9;
+	pass->info[PREV][2] = 19;
+	pass->info[NEXT][2] = 18;
+
+	//jc
+	pass->info[PATH][18] = 2;
+	pass->info[PREV][18] = 2;
+	pass->info[NEXT][18] = 9;
+
 	// j
 	pass->info[PATH][9] = 2;
-	pass->info[PREV][9] = 2;
-	pass->info[NEXT][9] = 17;
+	pass->info[PREV][9] = 18;
+	pass->info[NEXT][9] = 24;
+
+	// ao
+	pass->info[PATH][23] = 2;
+	pass->info[PREV][23] = 0;
+	pass->info[NEXT][23] = 13;
+
 	// o
 	pass->info[PATH][13] = 2;
 	pass->info[PREV][13] = 0;
-	pass->info[NEXT][13] = 3;
+	pass->info[NEXT][13] = 21;
+
+	//od
+	pass->info[PATH][21] = 2;
+	pass->info[PREV][21] = 13;
+	pass->info[NEXT][21] = 3;
+
 	// d
 	pass->info[PATH][3] = 2;
-	pass->info[PREV][3] = 13;
+	pass->info[PREV][3] = 21;
 	pass->info[NEXT][3] = 16;
+
 	// q
 	pass->info[PATH][15] = 2;
 	pass->info[PREV][15] = 16;
-	pass->info[NEXT][15] = 17;
+	pass->info[NEXT][15] = 24;
 
 	// x
 	pass->info[PATH][16] = 2;
