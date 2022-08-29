@@ -129,7 +129,7 @@ static void	find_new_branches(t_room *pass, int indx, int *i)
 	}
 	else if (pass->info[PATH][pass->info[PREV][indx]] == 2)
 	{
-		ft_printf("move along previous room %s --> %s\n", pass->rooms[indx], pass->rooms[pass->info[PREV][indx]]);
+		//ft_printf("move along previous room %s --> %s\n", pass->rooms[indx], pass->rooms[pass->info[PREV][indx]]);
 		pass->info[MOVE][*i] = FALSE;
 		pass->info[PATH][pass->info[PREV][indx]] = 3;
 		set_correct_current_index(pass, i, pass->info[PREV][indx]);
