@@ -279,11 +279,11 @@ static void	lock_path(t_room *pass, int indx)
 			if (value == 1 && pass->info[PATH][indx] != 1)
 			{
 				next = pass->info[NEXT][indx];
-				if (pass->info[JUMP][indx])
-				{
+				//if (pass->info[JUMP][indx])
+				//{
 					ft_printf("%% [%s]\n", pass->rooms[indx]);
-					hold = 1;
-				}
+				//	hold = 1;
+				//}
 			}
 			pass->info[NEXT][indx] = for_now;
 		}
@@ -304,9 +304,10 @@ static void	lock_path(t_room *pass, int indx)
 		}
 		else if (pass->info[PATH][indx] == 3 && value == 3 && pass->info[JUMP][indx] && hold)
 		{
-			ft_printf("= [%s]\n", pass->rooms[indx]);
 			next = pass->info[NEXT][indx];
+			ft_printf("= [%s]\n", pass->rooms[indx]);
 			pass->info[NEXT][indx] = for_now;
+			//pass->info[PREV][indx] = pass->info[JUMP][indx];
 			hold = 0;
 		}
 		else if (pass->info[PATH][indx] == 3 && value == 3 && !pass->info[JUMP][indx])
@@ -710,7 +711,7 @@ static int	current_len(t_room *pass)
 {
 	int i;
 
-	i = pass->total;
+	i = pass->total - 1;
 	while (i > 0)
 	{
 		if (pass->info[CURRENT][i--] != 0)
