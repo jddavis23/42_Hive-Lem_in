@@ -265,6 +265,25 @@ static void	print_output(t_room *pass)
 	}
 }
 
+
+static int	len_check(t_room *pass, int indx)
+{
+	int	i;
+	//int	start;
+
+	i = pass->info[LEN][pass->info[JUMP][indx]] + pass->info[LEN][indx];
+	//start = indx;
+	while (pass->info[NEXT][indx] != pass->end && pass->info[PATH][indx])
+	{
+		//if (pass->info[JUMP][indx])
+		//	ft_printf("CHECKING LENNNN+++++ start [%s]  current [%s] LEN [%i]\n", pass->rooms[start], pass->rooms[indx], pass->info[LEN][pass->info[JUMP][indx]]);
+		indx = pass->info[NEXT][indx];
+		if (pass->info[JUMP][indx] && pass->info[LEN][pass->info[JUMP][indx]] + pass->info[LEN][indx] < i)
+			return (FALSE);
+	}
+	return (TRUE);
+}
+
 static void	lock_path(t_room *pass, int indx)
 {
 	int	hold;
@@ -303,10 +322,20 @@ static void	lock_path(t_room *pass, int indx)
 		else if (pass->info[PATH][indx] == 3 && value == 3 && pass->info[JUMP][indx] && !hold)
 		{
 			ft_printf("- [%s]\n", pass->rooms[indx]);
-			if (!hold)
+			//if (len_check(pass, indx))
+			if (len_check(pass, indx) && !hold)
 			{
+				ft_printf("MADE IT\n");
 				pass->info[PREV][indx] = pass->info[JUMP][indx];
 				hold = 1;
+			}
+			else
+			{
+				ft_printf("MAYBE HERE\n");
+				next = pass->info[NEXT][indx];
+				pass->info[PREV][indx] = 0;
+				pass->info[NEXT][indx] = 0;
+
 			}
 			/*else
 			{
@@ -342,6 +371,28 @@ static void	lock_path(t_room *pass, int indx)
 	}
 }
 
+static void	len_back_front(t_room *pass)
+{
+	int	i;
+	int	prev;
+
+	i = 1;
+	while (pass->links[pass->end][i] != -1)
+	{
+		if (pass->info[PATH][pass->links[pass->end][i]] == 2)
+		{
+			prev = pass->links[pass->end][i];
+			while (prev != 0)
+			{
+				pass->info[LEN][prev] = i++;
+				prev = pass->info[PREV][prev];
+			}
+			i = 1;
+		}
+		++i;
+	}
+}
+
 static void	delete_non_found_paths(t_room *pass, int indx)
 {
 	int	i;
@@ -349,7 +400,7 @@ static void	delete_non_found_paths(t_room *pass, int indx)
 
 	ft_printf("BEFORE LOCKING________   finished path end room [%s]\n", pass->rooms[indx]);
 	print_output(pass);
-
+	len_back_front(pass);
 	lock_path(pass, indx);
 	ft_printf("----LOCKED PATH-----\n");
 	print_output(pass);
@@ -809,7 +860,10 @@ void	path_finder(t_path **path, t_room *pass)
 	//print_output(pass);
 	//current_path(pass);
 	if (unique_paths(pass) == FALSE)
-		ft_printf("FALSE\n");
+	{
+		exit (0);
+	}
+		//ft_printf("FALSE\n");
 	else
 		ft_printf("TRUE\n");
 	ft_printf("{green}PRINT PRINT{uncolor}\n");
