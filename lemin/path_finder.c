@@ -894,14 +894,23 @@ void	path_finder(t_path **path, t_room *pass)
 			}
 			nbr++;
 			printf_struct(pass);
-			if (nbr == 4)
+			if (nbr == 25)
 				break;
 			/*
+			big-superposition
 			1: 5-7 83/83
 			2: 7-10& 54/54
 			3: 7&8&9 89/89
-			4: 4   66/65
-			5 : 12
+			4: 4-5   66/65
+			5 : 12   66/66
+
+			big
+			1: 44/54
+			2: 10   73/72
+			3: 13-14 43/45
+			4: 13-15 48/67
+			5: 17 44/56
+
 			*/
 			//ft_printf("\n\n-------PATH IN STRUCT-------\n");
 			//printf_struct(pass);
