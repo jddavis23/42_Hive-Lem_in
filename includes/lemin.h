@@ -97,6 +97,9 @@ void	copy_to_path(t_room *pass, t_path **path, int **len);
 
 // breadth first
 void	breadth_first(t_room *pass, int indx, int i);
+void	calc_len(t_room *pass, int **len);
+void	create_len(int *array, int **len);
+void	reset_len(t_room *pass, int **len);
 
 void	delete_non_found_paths(t_room *pass, int indx);
 

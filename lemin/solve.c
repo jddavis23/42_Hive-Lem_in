@@ -183,12 +183,6 @@ void	solve(t_room *pass)
 
 /*
 
-NON SOLVER STUFF that need to be done
-
-- need to make sorting function if our path struct happened to be not sorted in order of length
-
-Jeffs help is needed to discuss the logic here
-- do we want to collect the shortest path also? have amount of ants determine what kind of combo of paths we priorities
 
 - adding bonusses
 
