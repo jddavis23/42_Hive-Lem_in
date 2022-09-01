@@ -38,6 +38,7 @@ typedef struct  s_room
 	int		ants;
 	int		total;
 	int		row;
+	int		min_row;
 	t_path	*head;
 	t_path	*final_head;
 }				t_room;

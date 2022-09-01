@@ -805,49 +805,40 @@ static int max_ant_calc(t_room *pass, int **len, int current)
 // 	}
 // }
 
-static int	compare_struct(t_room *pass, float mean, int count)
+static int	 calc_min_row(t_room *pass, int **len)
 {
-	int	len;
-	float	mean_old;
-	int path_count;
-	t_path *temp;
-
-	temp = pass->final_head;
-	len = 0;
-	while (temp)
-	{
-		len += temp->len;
-		path_count = temp->nbr;
-		temp = temp->next;
-	}
-	mean_old = (float)len / (float)path_count;
-	if (path_count < count)
-		return (TRUE);
-	if (path_count > count)
-		return (FALSE);
-	if (mean_old > mean)
-		return (TRUE);
-	return (FALSE);
-}
-
-static int	better_choice(t_room *pass, int **len)
-{
-	int	len_total;
 	int	path_count;
-	float	mean;
-
-	path_count = 0;
-	len_total = 0;
-	path_count = 0;
-	while ((*len)[path_count] > 0)
+	int last_len;
+	int remain_ants;
+	int dif;
+	
+	remain_ants = pass->ants;
+	path_count = 1;
+	if ((*len)[path_count] == 0)
+		return ((pass->info[LEN][(*len)[path_count - 1]] - 1) + remain_ants);
+	while (remain_ants > 0)
 	{
-		len_total += pass->info[LEN][(*len)[path_count]];
+		if (pass->info[LEN][(*len)[path_count]] - pass->info[LEN][(*len)[path_count - 1]] != 0)
+		{
+			ft_printf("value %d - %d != 0\n", pass->info[LEN][(*len)[path_count]], pass->info[LEN][(*len)[path_count - 1]]);
+
+			dif = pass->info[LEN][(*len)[path_count]] - pass->info[LEN][(*len)[path_count - 1]];
+			dif *= path_count;
+			ft_printf("dif [%d] == (%d - %d) * %d\n", dif, pass->info[LEN][(*len)[path_count]], pass->info[LEN][(*len)[path_count - 1]], path_count);
+			remain_ants -= dif;
+			ft_printf("dif == %d	remain_ants: %d\n", dif, remain_ants);
+			
+		}
+		last_len = pass->info[LEN][(*len)[path_count]];
 		++path_count;
+		if ((*len)[path_count] <= 0)
+			break ;
 	}
-	mean = (float)len_total / (float)path_count;
-	if (compare_struct(pass, mean, path_count) == TRUE)
-		return (TRUE);
-	return (FALSE);
+	dif = remain_ants / path_count;
+	ft_printf("dif == %d	remain_ants: %d / path_count: %d\n", dif, remain_ants, path_count);
+	if (remain_ants % path_count != 0)
+		dif += 1;
+	return ((last_len - 1) + dif);
 }
 
 static int	current_len(t_room *pass)
@@ -868,6 +859,8 @@ void	path_finder(t_path **path, t_room *pass)
 	int	i;
 	int	c_len;
 	int	*len;
+	int	increase;
+	int	temp_row;
 
 	i = 0;
 	len = NULL;
@@ -878,6 +871,7 @@ void	path_finder(t_path **path, t_room *pass)
 		initialize_path(pass, i++);
 	}
 	print_output(pass);
+	increase = 0;
 	while (!current_true(pass))
 	{
 		i = 0;
@@ -907,24 +901,38 @@ void	path_finder(t_path **path, t_room *pass)
 			print_output(pass);
 			//ft_printf("BREAK\n");
 			calc_len(pass, &len);
-			
+			temp_row = calc_min_row(pass, &len);
 			if (max_ant_calc(pass, &len, pass->info[LEN][pass->info[CURRENT][i]]) == TRUE)
 				i = 0;
 				//break ;
 			if (!pass->final_head)
 			{
+				pass->min_row = temp_row;
+				ft_printf("-------START ROW COUNT: %d-------\n", pass->min_row);
 				copy_to_path(pass, path, &len);
 			}
-			else if (better_choice(pass, &len) == TRUE)
+			else if (temp_row < pass->min_row)//better_choice(pass, &len, &increase) == TRUE)
 			{
 				del_path(&pass->final_head);
 				*path = NULL;
 				copy_to_path(pass, path, &len);
+				pass->min_row = temp_row;
+				ft_printf("-------NEW ROW COUNT: %d-------\n", pass->min_row);
+
 			}
+			else
+			{
+				ft_printf("-------NO NEW ROW COUNT: %d-------\n", pass->min_row);
+				if (increase++ > 5)
+					break ;
+				ft_printf("increase is now: %d\n", increase);
+			}
+			if (pass->min_row == 44)
+				break ;
 			nbr++;
 			printf_struct(pass);
-			if (nbr == 5)
-				break;
+			// if (nbr == 30)
+			// 	break;
 			/*
 			big-superposition
 			1: 5-7 83/83
@@ -934,7 +942,7 @@ void	path_finder(t_path **path, t_room *pass)
 			5 : 12   66/66
 
 			big
-			1: 44/54
+			1: 44/54	8 54/54
 			2: 11   72/72	old version: 73/72
 			3: 13-14 43/45
 			4: 13-15 48/67
