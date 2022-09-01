@@ -565,31 +565,63 @@ static int	compare_function(t_room *pass, int indx, int start)
 
 static int	unique_paths(t_room *pass)
 {
-	int	i;
+	int	current;
 	int	compare;
-	int	prev;
+	int	i;
+	int	j;
 
-	i = 0;
-	while (pass->links[0][i] != -1)
+	current = 0;
+	while (pass->links[pass->end][current] != -1)
 	{
-		if (pass->info[PATH][pass->links[0][i]] == 2)
+		if (pass->info[NEXT][pass->links[pass->end][current]] == pass->end)
 		{
-			prev = pass->info[PREV][pass->links[0][i]];
-			compare = pass->links[0][i];
-			if (compare_function(pass, compare, pass->links[0][i]) == FALSE)
-				return (FALSE);
-			while (prev > 0 && prev != pass->end)
+			compare = current + 1;
+			while (pass->links[pass->end][compare] != -1)
 			{
-				compare = prev;
-				if (compare_function(pass, compare, pass->links[0][i]) == FALSE)
+				if (pass->info[NEXT][pass->links[pass->end][compare]] == pass->end)
 				{
-					return (FALSE);
+					i = pass->links[pass->end][current];
+					while (i != 0)
+					{
+						j = pass->links[pass->end][compare];
+						while (j != 0)
+						{
+							if (i == j)
+								return (FALSE);
+							j = pass->info[PREV][j];
+						}
+						i = pass->info[PREV][i];
+					}
 				}
-				prev = pass->info[PREV][prev];
+				++compare;
 			}
 		}
-		++i;
+		++current;
 	}
+	// int	compare;
+	// int	prev;
+
+	// i = 0;
+	// while (pass->links[0][i] != -1)
+	// {
+	// 	if (pass->info[PATH][pass->links[0][i]] == 2)
+	// 	{
+	// 		prev = pass->info[PREV][pass->links[0][i]];
+	// 		compare = pass->links[0][i];
+	// 		if (compare_function(pass, compare, pass->links[0][i]) == FALSE)
+	// 			return (FALSE);
+	// 		while (prev > 0 && prev != pass->end)
+	// 		{
+	// 			compare = prev;
+	// 			if (compare_function(pass, compare, pass->links[0][i]) == FALSE)
+	// 			{
+	// 				return (FALSE);
+	// 			}
+	// 			prev = pass->info[PREV][prev];
+	// 		}
+	// 	}
+	// 	++i;
+	// }
 	return (TRUE);
 }
 
