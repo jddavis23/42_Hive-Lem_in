@@ -95,6 +95,10 @@ void	free_and_del_path(t_path **path, t_room *pass);
 void	del_path(t_path **path);
 void	copy_to_path(t_room *pass, t_path **path, int **len);
 
+// path select
+void	initialize_path(t_room *pass, int i);
+void	path_select(t_path **path, t_room *pass, int **len, int *increase);
+
 // breadth first
 void	breadth_first(t_room *pass, int indx, int i);
 void	calc_len(t_room *pass, int **len);

@@ -15,6 +15,7 @@ SRC += $(C)path_init.c
 SRC += $(C)path_finder.c
 SRC += $(C)path_create.c
 SRC += $(C)path_del_cpy.c
+SRC += $(C)path_select.c
 SRC += $(C)breadth_first.c
 SRC += $(C)lock_path.c
 SRC += $(C)path_len.c

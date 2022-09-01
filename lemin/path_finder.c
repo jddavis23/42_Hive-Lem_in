@@ -12,14 +12,6 @@
 
 # include "../includes/lemin.h"
 
-static void	initialize_path(t_room *pass, int i)
-{
-	pass->info[PATH][pass->links[0][i]] = 1;
-	pass->info[CURRENT][i] = pass->links[0][i];
-	pass->info[PREV][pass->links[0][i]] = 0;
-	pass->info[LEN][pass->links[0][i]] = 1;
-}
-
 static int	current_true(t_room *pass)
 {
 	int i;
@@ -96,34 +88,6 @@ static int	current_true(t_room *pass)
 // 	}
 // }
 
-static int	 calc_min_row(t_room *pass, int **len)
-{
-	int	path_count;
-	int last_len;
-	int remain_ants;
-	int dif;
-
-	remain_ants = pass->ants;
-	path_count = 1;
-	if ((*len)[path_count] == 0)
-		return ((pass->info[LEN][(*len)[path_count - 1]] - 1) + remain_ants);
-	while ((*len)[path_count] > 0)
-	{
-		if (pass->info[LEN][(*len)[path_count]] - pass->info[LEN][(*len)[path_count - 1]] != 0)
-		{
-			dif = pass->info[LEN][(*len)[path_count]] - pass->info[LEN][(*len)[path_count - 1]];
-			dif *= path_count;
-			remain_ants -= dif;
-		}
-		last_len = pass->info[LEN][(*len)[path_count]];
-		++path_count;
-	}
-	dif = remain_ants / path_count;
-	if (remain_ants % path_count != 0)
-		dif += 1;
-	return ((last_len - 1) + dif);
-}
-
 static int	current_len(t_room *pass)
 {
 	int i;
@@ -137,13 +101,28 @@ static int	current_len(t_room *pass)
 	return (i + 2);
 }
 
+static void	breadth_first_init(t_room *pass, int *i)
+{
+	int	c_len;
+
+	c_len = current_len(pass);
+	while (*i < c_len)
+	{
+		if (pass->info[CURRENT][*i] != 0)
+		{
+			breadth_first(pass, pass->info[CURRENT][*i], *i);
+			if (pass->info[PATH][pass->end] == 1)
+				return ;
+		}
+		++(*i);
+	}
+}
+
 void	path_finder(t_path **path, t_room *pass)
 {
 	int	i;
-	int	c_len;
 	int	*len;
 	int	increase;
-	int	temp_row;
 
 	i = 0;
 	len = NULL;
@@ -154,69 +133,36 @@ void	path_finder(t_path **path, t_room *pass)
 	while (!current_true(pass))
 	{
 		i = 0;
-		c_len = current_len(pass);
-		while (i < c_len)
-		{
-			if (pass->info[CURRENT][i] != 0)
-			{
-				breadth_first(pass, pass->info[CURRENT][i], i);
-				if (pass->info[PATH][pass->end] == 1)
-					break ;
-			}
-			++i;
-		}
+		breadth_first_init(pass, &i);
 		if (pass->info[PATH][pass->end] == 1)
 		{
 			pass->info[PATH][0] = 0;
 			delete_non_found_paths(pass, pass->info[CURRENT][i]);
 			calc_len(pass, &len);
-			temp_row = calc_min_row(pass, &len);
-			if (!pass->final_head)
-			{
-				copy_to_path(pass, path, &len);
-				pass->min_row = temp_row;
-			}
-			else if (temp_row < pass->min_row)
-			{
-				del_path(&pass->final_head);
-				*path = NULL;
-				copy_to_path(pass, path, &len);
-				pass->min_row = temp_row;
-			}
-			else
-			{
-				if (increase++ > 5)
-					break ;
-			}
-			/*
-			big-superposition
-			1: 5-7 83/83
-			2: 7-10& 54/54
-			3: 7&8&9 89/89
-			4: 5   65/65	oldversion: 66/65
-			5 : 12   66/66
-
-			big
-			1: 44/54	8 54/54
-			2: 11   72/72	old version: 73/72
-			3: 13-14 43/45
-			4: 13-15 48/67
-			5: 17 44/56
-
-			*/
-			//ft_printf("\n\n-------PATH IN STRUCT-------\n");
-			//printf_struct(pass);
-			//ft_printf("\n\n-------PATH IN STRUCT FINISH-------\n");
-			
-			reset_len(pass, &len);
-			i = 0;
-			while (pass->links[0][i] >= 0)
-			{
-				if (pass->info[PATH][pass->links[0][i]] == 0)
-					initialize_path(pass, i);
-				++i;
-			}
+			path_select(path, pass, &len, &increase);
+			if (increase > 5)
+				break ;
 		}
+
+		/*
+		big-superposition
+		1: 5-7 83/83
+		2: 7-10& 54/54
+		3: 7&8&9 89/89
+		4: 5   65/65	oldversion: 66/65
+		5 : 12   66/66
+
+		big
+		1: 44/54	8 54/54
+		2: 11   72/72	old version: 73/72
+		3: 13-14 43/45
+		4: 13-15 48/67
+		5: 17 44/56
+
+		*/
+		//ft_printf("\n\n-------PATH IN STRUCT-------\n");
+		//printf_struct(pass);
+		//ft_printf("\n\n-------PATH IN STRUCT FINISH-------\n");
 	}
 	//print_output(pass);
 	//pass->info[PREV][55] = 39;
