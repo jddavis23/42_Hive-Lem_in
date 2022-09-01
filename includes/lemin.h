@@ -38,6 +38,7 @@ typedef struct  s_room
 	int		ants;
 	int		total;
 	int		row;
+	int		min_row;
 	t_path	*head;
 	t_path	*final_head;
 }				t_room;
@@ -75,6 +76,8 @@ int	error_free(t_room *pass, char *input, int j, int first);
 int	error_path(t_room *pass, char *input, int first);
 int	**free2d_int(int **links, int j, int end);
 
+void	del_first_index(t_path *file);//use in error freeing function
+
 // parsing
 void	match_in(char *str, char *input, t_room *pass, int k);
 //int		match_in(char *str, char *input, char **rooms, int k, t_room *pass);
@@ -87,14 +90,16 @@ int		is_dash(char *str);
 void	distance(t_room *pass);
 int		initialize_path_finder(t_room *pass, char *input);
 int		len_array(int *links);
-void	create_index(t_index **move, t_path **path, int i);
-void	create_path(t_path **path, t_room *pass, int nbr, int len);
 void	path_finder(t_path **path, t_room *pass);
-t_path	*cpy_pth(t_path *file);
-void	del_first_index(t_path *file);
 void	del_last_path(t_path **path, t_room *pass);
 void	solve(t_room *pass);
 void	free_and_del_path(t_path **path, t_room *pass);
 void	del_path(t_path **path);
+void	copy_to_path(t_room *pass, t_path **path, int **len);
+
+// breadth first
+void	breadth_first(t_room *pass, int indx, int i);
+
+void	delete_non_found_paths(t_room *pass, int indx);
 
 #endif
