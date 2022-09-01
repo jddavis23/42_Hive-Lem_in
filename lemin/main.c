@@ -83,11 +83,6 @@ int	main(int argc, char **argv)
 			return (0);
 		if (create_used(pass) == ERROR)
 			return (error_path(pass, input, TRUE));
-		distance(pass);
-		// pass->len = len_array(pass->links[pass->end]);
-		// max_paths = calc_max(len_array(pass->links[0]), pass->len);
-		// if (max_paths < 1)
-		// 	return (ERROR);
 		if (initialize_path_finder(pass, input) == ERROR)
 			return (0);
 		ft_printf("%s\n", input);

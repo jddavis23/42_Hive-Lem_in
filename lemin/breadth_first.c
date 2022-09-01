@@ -150,10 +150,12 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 			set_correct_current_index(pass, i, pass->links[indx][j]);
 		}
 		else if (pass->info[PATH][pass->links[indx][j]] == 1 && \
-			pass->info[LEN][indx] + 1 < pass->info[LEN][pass->links[indx][j]] && \
+			pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->links[indx][j]] && \
 			pass->links[indx][j] != pass->info[PREV][indx]
 		)
 		{
+			// changed later on for it to be [LEN][INDX] + 1 <= pas infoetc...
+			// not quite sure why it helped on big5.txt
 			pass->info[PREV][pass->links[indx][j]] = indx;
 			pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
 			//set_correct_current_index(pass, i, pass->links[indx][j]);

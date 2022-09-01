@@ -32,7 +32,6 @@ typedef struct  s_room
 {
 	char	**rooms;
 	int		**links;
-	int		*distance;
 	int		**info;
 	int		end;
 	int		ants;
@@ -87,7 +86,6 @@ int		dash_in_section(char *full, char *inside);
 int		is_dash(char *str);
 
 // path finder
-void	distance(t_room *pass);
 int		initialize_path_finder(t_room *pass, char *input);
 int		len_array(int *links);
 void	path_finder(t_path **path, t_room *pass);

@@ -94,7 +94,6 @@ int	create(t_room *pass, char **input)
 	hold = ERROR;
 	pass->rooms = NULL;
 	pass->links = NULL;
-	pass->distance = NULL;
 	//pass->used = NULL;
 	pass->total = file_save(pass, input);
 	pass->end = pass->total - 1;

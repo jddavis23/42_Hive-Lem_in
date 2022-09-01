@@ -11,7 +11,6 @@ SRC += $(C)file_check.c
 SRC += $(C)parse.c
 SRC += $(C)parse_count.c
 SRC += $(C)parse_collect.c
-SRC += $(C)distance.c
 SRC += $(C)path_init.c
 SRC += $(C)path_finder.c
 SRC += $(C)path_create.c
