@@ -927,8 +927,6 @@ void	path_finder(t_path **path, t_room *pass)
 					break ;
 				ft_printf("increase is now: %d\n", increase);
 			}
-			if (pass->min_row == 44)
-				break ;
 			nbr++;
 			printf_struct(pass);
 			// if (nbr == 30)
