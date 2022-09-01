@@ -28,7 +28,7 @@ static t_index	*ft_indexnew(int index)
 
 /*	creates index element and adds it onto path->move's linked list	*/
 
-void	create_index(t_index **move, t_path **path, int i)
+static void	create_index(t_index **move, t_path **path, int i)
 {
 	t_index	*new;
 
@@ -65,7 +65,7 @@ static t_path	*ft_pathnew()
 
 /*	creates path element and adds it onto the linked list of paths	*/
 
-void	create_path(t_path **path, t_room *pass, int nbr, int len)
+static void	create_path(t_path **path, t_room *pass, int nbr, int len)
 {
 	t_path *new;
 
@@ -85,5 +85,36 @@ void	create_path(t_path **path, t_room *pass, int nbr, int len)
 		new->prev = NULL;
 		*path = new;
 		pass->final_head = *path;
+	}
+}
+
+void	copy_to_path(t_room *pass, t_path **path, int **len)
+{
+	int	i;
+	int	prev;
+	int	nbr;
+	int m;
+	
+	m = 0;
+	nbr = 1;
+	// was this just a print statement? delete?
+	/*while ((*len)[m] != -1)
+	{
+		ft_printf("%d ", (*len)[m]);
+		m++;
+	}*/
+	i = 0;
+	while ((*len)[i] > 0)
+	{
+		prev = pass->info[PREV][(*len)[i]];
+		create_path(path, pass, nbr++, pass->info[LEN][(*len)[i]]);
+		create_index(&(*path)->move_head, path, pass->end);
+		create_index(&(*path)->move_head, path, (*len)[i]);
+		while (prev > 0)
+		{
+			create_index(&(*path)->move_head, path, prev);
+			prev = pass->info[PREV][prev];
+		}
+		++i;
 	}
 }
