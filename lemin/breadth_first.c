@@ -105,7 +105,6 @@ static void	travel_locked_path(t_room *pass, int indx, int *i)
 	if (pass->info[JUMP][indx] && pass->info[LOCKED][*i] == TRUE)
 	{
 		pass->info[LOCKED][*i] = FALSE;
-		ft_printf("here\n");
 		if (pass->info[PREV][indx] != 0)
 		{
 			pass->info[PATH][pass->info[PREV][indx]] = pass->info[PATH][indx];
@@ -114,8 +113,6 @@ static void	travel_locked_path(t_room *pass, int indx, int *i)
 	}
 	else
 	{
-		ft_printf("%s [%d]\n", pass->rooms[indx], pass->info[PATH][indx]);
-		
 		find_new_branches(pass, indx, i);
 	}
 }
@@ -141,7 +138,6 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 				pass->info[PATH][pass->links[indx][j]] = pass->info[PATH][indx];
 				pass->info[PREV][pass->links[indx][j]] = indx;
 				pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
-				ft_printf("ASSIGN LEN %s [%d] -> %s [%d]\n", pass->rooms[indx], pass->info[LEN][indx], pass->rooms[pass->links[indx][j]], pass->info[LEN][pass->links[indx][j]]);
 				set_correct_current_index(pass, i, pass->links[indx][j]);
 			}
 		}
