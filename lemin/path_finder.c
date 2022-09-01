@@ -90,13 +90,11 @@ static void	find_new_branches(t_room *pass, int indx, int *i)
 	temp = *i;
 	while (pass->links[indx][j] >= 0)
 	{
-		//ft_printf("%s [%d]\n", pass->rooms[pass->links[indx][j]], pass->info[PATH][pass->links[indx][j]]);
 		if (pass->info[PATH][pass->links[indx][j]] == 2 && \
 			pass->info[PATH][pass->info[PREV][pass->links[indx][j]]] >= 2)
 		{
 			if (pass->links[indx][j] != pass->info[PREV][indx])
 			{
-				ft_printf("INTO THIS LOOP\n");
 				pass->info[LOCKED][*i] = TRUE;
 				pass->info[JUMP][pass->links[indx][j]] = indx;
 			}
@@ -117,7 +115,7 @@ static void	find_new_branches(t_room *pass, int indx, int *i)
 				set_correct_current_index(pass, i, pass->links[indx][j]);
 			}
 		}
-		else if (pass->info[PATH][pass->links[indx][j]] == 1 && pass->info[LEN][indx] >= pass->info[LEN][pass->links[indx][j]] && \
+		else if (pass->info[PATH][pass->links[indx][j]] == 1 && pass->info[LEN][indx] < pass->info[LEN][pass->links[indx][j]] && \
 			pass->info[PATH][pass->info[PREV][pass->links[indx][j]]] == 3)
 		{
 			pass->info[PREV][pass->links[indx][j]] = indx;
@@ -200,6 +198,17 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 			pass->info[PATH][pass->links[indx][j]] = 3;
 			//pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
 			set_correct_current_index(pass, i, pass->links[indx][j]);
+		}
+		else if (pass->info[PATH][pass->links[indx][j]] == 1 && \
+			pass->info[LEN][indx] + 1 < pass->info[LEN][pass->links[indx][j]] && \
+			pass->links[indx][j] != pass->info[PREV][indx]
+		)
+		{
+			pass->info[PREV][pass->links[indx][j]] = indx;
+			pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
+			ft_printf("ASSIGN LEN %s [%d] -> %s [%d]\n", pass->rooms[indx], pass->info[LEN][indx], pass->rooms[pass->links[indx][j]], pass->info[LEN][pass->links[indx][j]]);
+				
+			//set_correct_current_index(pass, i, pass->links[indx][j]);
 		}
 		++j;
 	}
@@ -455,6 +464,22 @@ static void	delete_non_found_paths(t_room *pass, int indx)
 				pass->info[PATH][prev] = 2;
 				pass->info[LEN][prev] = count++;
 				prev = pass->info[PREV][prev];
+			}
+		}
+		++i;
+	}
+	i = 0;
+	int next = 0;
+	while (pass->links[0][i] >= 0)
+	{
+		count = 1;
+		if (pass->info[PATH][pass->links[0][i]] == 2)//(pass->info[PATH][pass->links[pass->end][i]] == 1)
+		{
+			next = pass->links[0][i];
+			while (next != 0)
+			{
+				pass->info[LEN][next] = count++;
+				next = pass->info[NEXT][next];
 			}
 		}
 		++i;
@@ -872,13 +897,17 @@ void	path_finder(t_path **path, t_room *pass)
 		}
 		if (pass->info[PATH][pass->end] == 1)
 		{
-			//print_output(pass);
+			ft_printf("BEFORE LOCK FUCTION ---------------\n");
+			print_output(pass);
 			pass->info[PATH][0] = 0;
+			//if (nbr++ == 0)
+			//	exit(0);
 			delete_non_found_paths(pass, pass->info[CURRENT][i]);
 			ft_printf("----- AFTER CLEAN -----");
 			print_output(pass);
 			//ft_printf("BREAK\n");
 			calc_len(pass, &len);
+			
 			if (max_ant_calc(pass, &len, pass->info[LEN][pass->info[CURRENT][i]]) == TRUE)
 				i = 0;
 				//break ;
@@ -894,19 +923,19 @@ void	path_finder(t_path **path, t_room *pass)
 			}
 			nbr++;
 			printf_struct(pass);
-			if (nbr == 25)
+			if (nbr == 5)
 				break;
 			/*
 			big-superposition
 			1: 5-7 83/83
 			2: 7-10& 54/54
 			3: 7&8&9 89/89
-			4: 4-5   66/65
+			4: 5   65/65	oldversion: 66/65
 			5 : 12   66/66
 
 			big
 			1: 44/54
-			2: 10   73/72
+			2: 11   72/72	old version: 73/72
 			3: 13-14 43/45
 			4: 13-15 48/67
 			5: 17 44/56
