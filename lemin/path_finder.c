@@ -26,43 +26,44 @@ static int	current_true(t_room *pass)
 	return (TRUE);
 }
 
-// static void	print_output(t_room *pass)
-// {
-// 	int	i;
-// 	int	nbr;
-// 	int	prev;
-// 	int new;
-// 	int start;
+void	print_output(t_room *pass)
+{
+	int	i;
+	//int	nbr;
+	//int	prev;
+	//int new;
+	//int start;
 
-// 	new = 0;
-// 	i = 0;
-// 	start = pass->end;
-// 	while (pass->links[start][i] >= 0)
-// 	{
-// 		nbr = pass->info[PATH][pass->links[start][i]];
-// 		if (nbr != 0)
-// 		{
-// 			ft_printf("{green}PATH [%d] {uncolor}\n", new);
-// 			prev = pass->info[PREV][pass->links[start][i]];
-// 			ft_printf("%s\n", pass->rooms[pass->end]);
-// 			ft_printf("%s\n", pass->rooms[pass->links[start][i]]);
-// 			while (prev > 0)
-// 			{
-// 				ft_printf("%s\n", pass->rooms[prev]);
-// 				prev = pass->info[PREV][prev];
-// 			}
-// 			new++;
-// 		}
-// 		++i;
-// 	}
-// 	i = 0;
-// 	ft_printf("\n\n------------\nrooms path nbr:	PREV	NEXT	JUMP	LEN\n");
-// 	while (i < pass->total)
-// 	{
-// 		ft_printf("[%s][%d]: [%d] 	[%s]	[%s]	[%s]	[%d]\n",pass->rooms[i], i, pass->info[PATH][i], pass->rooms[pass->info[PREV][i]], pass->rooms[pass->info[NEXT][i]], pass->rooms[pass->info[JUMP][i]], pass->info[LEN][i]);
-// 		++i;
-// 	}
-//}
+	//new = 0;
+	i = 0;
+	//start = pass->end;
+	// while (pass->links[start][i] >= 0)
+	// {
+	// 	nbr = pass->info[PATH][pass->links[start][i]];
+	// 	if (nbr != 0)
+	// 	{
+	// 		ft_printf("{green}PATH [%d] {uncolor}\n", new);
+	// 		prev = pass->info[PREV][pass->links[start][i]];
+	// 		ft_printf("%s\n", pass->rooms[pass->end]);
+	// 		ft_printf("%s\n", pass->rooms[pass->links[start][i]]);
+	// 		while (prev > 0)
+	// 		{
+	// 			ft_printf("%s\n", pass->rooms[prev]);
+	// 			prev = pass->info[PREV][prev];
+	// 		}
+	// 		new++;
+	// 	}
+	// 	++i;
+	// }
+	i = 0;
+	ft_printf("\n\n------------\nrooms path nbr:	PREV	NEXT	JUMP	LEN\n");
+	while (i < pass->total)
+	{
+		if (pass->info[PATH][i] != 0)
+			ft_printf("[%s][%d]: [%d] 	[%s]	[%s]	[%s]	[%d]\n",pass->rooms[i], i, pass->info[PATH][i], pass->rooms[pass->info[PREV][i]], pass->rooms[pass->info[NEXT][i]], pass->rooms[pass->info[JUMP][i]], pass->info[LEN][i]);
+		++i;
+	}
+}
 
 // static void	printf_struct(t_room *pass)
 // {
@@ -101,20 +102,66 @@ static int	current_len(t_room *pass)
 	return (i + 2);
 }
 
+static int	on_lock_path(t_room *pass, int i, int c_len)
+{
+	while (i < c_len)
+	{
+		if (pass->info[PATH][pass->info[CURRENT][i]] >= 2)
+			return (TRUE);
+		++i;
+	}
+	return (FALSE);
+}
+
+// static int	shortest_path(t_room *pass, int i, int c_len)
+// {
+// 	int	shortest;
+
+// 	shortest = 0;
+// 	while (i < c_len)
+// 	{
+// 		if (shortest == 0 || (pass->info[LEN][pass->info[CURRENT][i]] < shortest && pass->info[CURRENT][i] != 0))
+// 		{
+// 			shortest = pass->info[LEN][pass->info[CURRENT][i]];
+// 		}
+// 		++i;
+// 	}
+// 	return (shortest);
+// }
+
 static void	breadth_first_init(t_room *pass, int *i)
 {
 	int	c_len;
+	//int	shortest;
 
 	c_len = current_len(pass);
-	while (*i < c_len)
+	if (on_lock_path(pass, *i, c_len) == TRUE)
 	{
-		if (pass->info[CURRENT][*i] != 0)
+		while (*i < c_len)
 		{
-			breadth_first(pass, pass->info[CURRENT][*i], *i);
-			if (pass->info[PATH][pass->end] == 1)
-				return ;
+			if (pass->info[CURRENT][*i] != 0 && pass->info[PATH][pass->info[CURRENT][*i]] >= 2)
+			{
+				breadth_first(pass, pass->info[CURRENT][*i], *i);
+				if (pass->info[PATH][pass->end] == 1)
+					return ;
+			}
+			++(*i);
 		}
-		++(*i);
+	}
+	else
+	{
+	//shortest = shortest_path(pass, *i, c_len);
+		//ft_printf("CALCULATED SHORTEST: %d\n", shortest);
+		while (*i < c_len)
+		{
+			if (pass->info[CURRENT][*i] != 0)// && pass->info[LEN][pass->info[CURRENT][*i]] == shortest)
+			{
+				breadth_first(pass, pass->info[CURRENT][*i], *i);
+				if (pass->info[PATH][pass->end] == 1)
+					return ;
+			}
+			++(*i);
+		}
 	}
 }
 
@@ -136,12 +183,14 @@ void	path_finder(t_path **path, t_room *pass)
 		breadth_first_init(pass, &i);
 		if (pass->info[PATH][pass->end] == 1)
 		{
-			pass->info[PATH][0] = 0;
+			pass->info[PATH][pass->end] = 0;
 			delete_non_found_paths(pass, pass->info[CURRENT][i]);
 			calc_len(pass, &len);
 			path_select(path, pass, &len, &increase);
 			if (increase > 5)
 				break ;
+			
+			
 		}
 
 		/*
@@ -164,6 +213,8 @@ void	path_finder(t_path **path, t_room *pass)
 		//printf_struct(pass);
 		//ft_printf("\n\n-------PATH IN STRUCT FINISH-------\n");
 	}
+	//exit(0);
+	//print_output(pass);
 	//print_output(pass);
 	//pass->info[PREV][55] = 39;
 

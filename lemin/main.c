@@ -83,6 +83,7 @@ int	main(int argc, char **argv)
 			return (0);
 		if (create_used(pass) == ERROR)
 			return (error_path(pass, input, TRUE));
+		//distance(pass);
 		if (initialize_path_finder(pass, input) == ERROR)
 			return (0);
 		ft_printf("%s\n", input);

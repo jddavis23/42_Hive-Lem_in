@@ -164,7 +164,7 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 	}
 }
 
-/*	
+/*
 **	breadth first algorithm
 **	contains logic of moving through locked and non-locked paths
 */

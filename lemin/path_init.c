@@ -94,5 +94,7 @@ int	initialize_path_finder(t_room *pass, char *input)
 	if (!pass->final_head)
 		return (error_path(pass, input, TRUE));
 	final = pass->final_head;
+	//  printf_struct(pass);
+	//  exit(0);
 	return (0);
 }

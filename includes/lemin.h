@@ -33,6 +33,7 @@ typedef struct  s_room
 	char	**rooms;
 	int		**links;
 	int		**info;
+	//int		*distance;
 	int		end;
 	int		ants;
 	int		total;
@@ -106,5 +107,7 @@ void	create_len(int *array, int **len);
 void	reset_len(t_room *pass, int **len);
 
 void	delete_non_found_paths(t_room *pass, int indx);
+
+void	print_output(t_room *pass);
 
 #endif
