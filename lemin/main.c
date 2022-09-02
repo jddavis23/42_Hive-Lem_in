@@ -12,23 +12,6 @@
 
 # include "../includes/lemin.h"
 
-// static int	calc_max(int nbr1, int nbr2)
-// {
-// 	if (nbr1 < nbr2)
-// 		return (nbr1);
-// 	return (nbr2);
-// }
-
-// int	len_array(int *links)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (links[i] != -1)
-// 		++i;
-// 	return (i);
-// }
-
 /*	function checking room is already in use	*/
 
 static int	create_used(t_room *pass)
@@ -92,11 +75,3 @@ int	main(int argc, char **argv)
 		ft_printf("Usage: ./lem-in < maps/subject.map\n");
 	return (0);
 }
-
-/*
-
-
-
-Decide when to replace existing path struct
-
-*/
