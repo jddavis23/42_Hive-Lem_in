@@ -67,7 +67,6 @@ int	main(int argc, char **argv)
 {
 	t_room	*pass;
 	char	*input;
-	//int		max_paths;
 
 	if (argc == 1 || (argc == 2 && ft_strcmp(argv[1], "-r") == 0))
 	{
@@ -83,7 +82,6 @@ int	main(int argc, char **argv)
 			return (0);
 		if (create_used(pass) == ERROR)
 			return (error_path(pass, input, TRUE));
-		//distance(pass);
 		if (initialize_path_finder(pass, input) == ERROR)
 			return (0);
 		ft_printf("%s\n", input);

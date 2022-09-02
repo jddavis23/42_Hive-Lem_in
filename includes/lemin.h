@@ -33,7 +33,6 @@ typedef struct  s_room
 	char	**rooms;
 	int		**links;
 	int		**info;
-	//int		*distance;
 	int		end;
 	int		ants;
 	int		total;
