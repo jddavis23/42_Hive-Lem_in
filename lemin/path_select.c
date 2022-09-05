@@ -26,7 +26,10 @@ static int	 calc_min_row(t_room *pass, int **len)
 		{
 			dif = pass->info[LEN][(*len)[path_count]] - pass->info[LEN][(*len)[path_count - 1]];
 			dif *= path_count;
-			remain_ants -= dif;
+			if (remain_ants - dif < 0)
+				break ;
+			else
+				remain_ants -= dif;
 		}
 		last_len = pass->info[LEN][(*len)[path_count]];
 		++path_count;
@@ -37,10 +40,35 @@ static int	 calc_min_row(t_room *pass, int **len)
 	return ((last_len - 1) + dif);
 }
 
+// static void	printf_struct(t_room *pass)
+// {
+// 	t_path *final;
+// 	t_index *temp;
+// 	int i;
+// 	final = pass->final_head;
+// 	i = 0;
+// 	ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+// 	while (final)
+// 	{
+// 		temp = final->move_head;
+// 		final->move = final->move_head;
+// 		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+// 		// while (final->move)
+// 		// {
+// 		// 	ft_printf("room: %s\n", pass->rooms[final->move->index]);
+// 		// 	final->move = final->move->next;
+// 		// }
+// 		final->move_head = temp;
+// 		++i;
+// 		final = final->next;
+// 	}
+// }
+
 void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 {
 	int	i;
 	int	temp_row;
+	//static int nbr = 0;
 
 	temp_row = calc_min_row(pass, len);
 	if (!pass->final_head)
@@ -54,6 +82,18 @@ void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 		*path = NULL;
 		copy_to_path(pass, path, len);
 		pass->min_row = temp_row;
+		// ft_printf("NBR %d-----------------\n", nbr);
+			
+		// printf_struct(pass);
+		// nbr++;
+		// ft_printf("temp row: %d	pass->min_row: %d\n", temp_row, pass->min_row);
+			
+		// if (nbr > 20)
+		// {
+		// 	//ft_printf("temp row: %d	pass->min_row: %d\n", temp_row, pass->min_row);
+		// 	exit(0);
+		// 	*increase = 50;
+		// }
 	}
 	else
 		(*increase)++;

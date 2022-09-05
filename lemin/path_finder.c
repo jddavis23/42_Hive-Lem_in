@@ -129,6 +129,7 @@ static int	on_lock_path(t_room *pass, int i, int c_len)
 // 	return (shortest);
 // }
 
+
 static void	breadth_first_init(t_room *pass, int *i)
 {
 	int	c_len;
@@ -150,11 +151,10 @@ static void	breadth_first_init(t_room *pass, int *i)
 	}
 	else
 	{
-	//shortest = shortest_path(pass, *i, c_len);
-		//ft_printf("CALCULATED SHORTEST: %d\n", shortest);
+		//shortest = shortest_path(pass, *i, c_len);
 		while (*i < c_len)
 		{
-			if (pass->info[CURRENT][*i] != 0)// && pass->info[LEN][pass->info[CURRENT][*i]] == shortest)
+			if (pass->info[CURRENT][*i] != 0)//&& pass->info[LEN][pass->info[CURRENT][*i]] == shortest)
 			{
 				breadth_first(pass, pass->info[CURRENT][*i], *i);
 				if (pass->info[PATH][pass->end] == 1)
