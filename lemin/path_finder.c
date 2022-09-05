@@ -189,8 +189,6 @@ void	path_finder(t_path **path, t_room *pass)
 			path_select(path, pass, &len, &increase);
 			if (increase > 5)
 				break ;
-			
-			
 		}
 
 		/*

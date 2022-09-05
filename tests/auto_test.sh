@@ -31,9 +31,9 @@ do
 	then
 		rm big_superposition$COUNT.txt
 		rm results_big_superposition$COUNT.txt
-		printf "GOOD\n"
+		printf "GOOD --- expected [$NUMB]  output [$PLUS2]\n"
 	else
-		printf "ERROR\n"
+		printf "ERROR --- expected [$NUMB]  output [$PLUS2]\n"
 	fi
 	#echo $COUNT
 	COUNT=$((COUNT-1))

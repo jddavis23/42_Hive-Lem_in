@@ -86,6 +86,7 @@ int	initialize_path_finder(t_room *pass, char *input)
 	final = NULL;
 	pass->final_head = NULL;
 	path_finder(&path, pass);
+	// unique path function has to be updated to check paths in struct
 	if (unique_paths(pass) == FALSE)
 	{
 		//ft_printf("FAILED\n");
