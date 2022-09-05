@@ -52,7 +52,7 @@ static int	 calc_min_row(t_room *pass, int **len)
 // 	{
 // 		temp = final->move_head;
 // 		final->move = final->move_head;
-// 		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+// 		ft_printf("\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
 // 		// while (final->move)
 // 		// {
 // 		// 	ft_printf("room: %s\n", pass->rooms[final->move->index]);
@@ -88,7 +88,7 @@ void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 		// nbr++;
 		// ft_printf("temp row: %d	pass->min_row: %d\n", temp_row, pass->min_row);
 			
-		// if (nbr > 20)
+		// if (nbr > 8)
 		// {
 		// 	//ft_printf("temp row: %d	pass->min_row: %d\n", temp_row, pass->min_row);
 		// 	exit(0);

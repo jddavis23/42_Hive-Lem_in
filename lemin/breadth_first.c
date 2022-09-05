@@ -71,12 +71,12 @@ static void	find_new_branches(t_room *pass, int indx, int *i)
 				set_correct_current_index(pass, i, pass->links[indx][j]);
 			}
 		}
-		else if (pass->info[PATH][pass->links[indx][j]] == 1 && pass->info[LEN][indx] < pass->info[LEN][pass->links[indx][j]] && \
+		else if (pass->info[PATH][pass->links[indx][j]] == 1 && pass->info[LEN][indx] + 1 < pass->info[LEN][pass->links[indx][j]] && \
 			pass->info[PATH][pass->info[PREV][pass->links[indx][j]]] == 3)
 		{
 			pass->info[PREV][pass->links[indx][j]] = indx;
 			pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
-			set_correct_current_index(pass, i, pass->links[indx][j]);
+			//set_correct_current_index(pass, i, pass->links[indx][j]);
 		}
 		++j;
 	}
@@ -154,7 +154,7 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 			pass->links[indx][j] != pass->info[PREV][indx]
 		)
 		{
-			// changed later on for it to be [LEN][INDX] + 1 <= pas infoetc...
+			// changed later on for it to be [LEN][INDX] + 1 < pas infoetc...
 			// not quite sure why it helped on big5.txt
 			pass->info[PREV][pass->links[indx][j]] = indx;
 			pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
@@ -180,6 +180,7 @@ void	breadth_first(t_room *pass, int indx, int i)
 		{
 			if (pass->links[indx][j] == pass->end)
 			{
+				//ft_printf("room found end: %s LEN: %d\n", pass->rooms[indx], pass->info[LEN][indx]);
 				pass->info[PATH][pass->end] = 1;
 				return ;
 			}
