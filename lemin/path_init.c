@@ -12,118 +12,6 @@
 
 # include "../includes/lemin.h"
 
-/*	checks if end has been correctly sorted	*/
-
-// static int	is_sorted(t_room *pass, int indx)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (pass->links[indx][i] == -1 || pass->links[indx][i + 1] == -1)
-// 		return (TRUE);
-// 	while (pass->links[indx][i + 1] != -1)
-// 	{
-// 		if (pass->distance[pass->links[indx][i]] > pass->distance[pass->links[indx][i + 1]])
-// 			return (FALSE);
-// 		++i;
-// 	}
-// 	return (TRUE);
-// }
-
-static int	is_sorted(t_room *pass, int indx)
-{
-	int	i;
-
-	i = 0;
-	if (pass->links[indx][i] == -1 || pass->links[indx][i + 1] == -1)
-		return (TRUE);
-	while (pass->links[indx][i + 1] != -1)
-	{
-		if (pass->distance[pass->links[indx][i]] < pass->distance[pass->links[indx][i + 1]] && pass->distance[pass->links[indx][i]] == 0)
-			return (FALSE);
-		if (pass->distance[pass->links[indx][i]] > pass->distance[pass->links[indx][i + 1]] && pass->distance[pass->links[indx][i + 1]] != 0)
-			return (FALSE);
-		++i;
-	}
-	return (TRUE);
-}
-
-static void set_to_minus_one(t_room *pass, int indx)
-{
-	//int	next;
-	int	i;
-
-	i = 0;
-	while (pass->links[indx][i] != -1)
-	{
-		++i;
-	}
-	if (i == 2)
-	{
-		pass->distance[indx] = -1;
-		i = 0;
-		while (pass->links[indx][i] != -1)
-		{
-			if (pass->distance[pass->links[indx][i]] != -1)
-			{
-				set_to_minus_one(pass, pass->links[indx][i]);
-			}
-			++i;
-		}
-	}
-
-}
-
-/*	sorts the links of the end. Shortest paths in the beginning	*/
-
-static void	sort_distance(t_room *pass)
-{
-	int	i;
-	int	temp;
-	int	indx;
-
-	i = 0;
-	indx = 1;
-	// might remove is sorted from while loop and instead put in bottom - depends what is faster - check with bigger values
-	i = 0;
-	while (indx < pass->total)
-	{
-		i = 0;
-		if (pass->links[indx][i] == -1 || (pass->links[indx][i + 1] == -1 && indx != pass->end && indx != 0))
-		{
-			if (pass->links[indx][i] != -1)
-			{
-				pass->distance[indx] = -1;
-				set_to_minus_one(pass, pass->links[indx][i]);
-			}
-		}
-		else
-		{
-			while (is_sorted(pass, indx) == FALSE)
-			{
-				i = 0;
-				while (pass->links[indx][i + 1] != -1)
-				{
-					if (pass->distance[pass->links[indx][i]] > pass->distance[pass->links[indx][i + 1]] && pass->distance[pass->links[indx][i + 1]] != 0)
-					{
-						temp = pass->links[indx][i];
-						pass->links[indx][i] = pass->links[indx][i + 1];
-						pass->links[indx][i + 1] = temp;
-					}
-					else if (pass->distance[pass->links[indx][i]] < pass->distance[pass->links[indx][i + 1]] && pass->distance[pass->links[indx][i]] == 0)
-					{
-						temp = pass->links[indx][i];
-						pass->links[indx][i] = pass->links[indx][i + 1];
-						pass->links[indx][i + 1] = temp;
-					}
-					++i;
-				}
-			}
-		}
-		++indx;
-	}
-}
-
 // static void	printf_struct(t_room *pass)
 // {
 // 	t_path *final;
@@ -148,6 +36,46 @@ static void	sort_distance(t_room *pass)
 // 	}
 // }
 
+static int	unique_paths(t_room *pass)
+{
+	int	current;
+	int	compare;
+	int	i;
+	int	j;
+
+	current = 0;
+	while (pass->links[pass->end][current] != -1)
+	{
+		if (pass->info[NEXT][pass->links[pass->end][current]] == pass->end)
+		{
+			compare = current + 1;
+			while (pass->links[pass->end][compare] != -1)
+			{
+				if (pass->info[NEXT][pass->links[pass->end][compare]] == pass->end)
+				{
+					//ft_printf("          PATH [%i]     \n", current);
+					i = pass->links[pass->end][current];
+					while (i != 0)
+					{
+						//ft_printf("current room [%s]\n", pass->rooms[i]);
+						j = pass->links[pass->end][compare];
+						while (j != 0)
+						{
+							//ft_printf("compare [%s]\n", pass->rooms[j]);
+							if (i == j)
+								return (FALSE);
+							j = pass->info[PREV][j];
+						}
+						i = pass->info[PREV][i];
+					}
+				}
+				++compare;
+			}
+		}
+		++current;
+	}
+	return (TRUE);
+}
 
 int	initialize_path_finder(t_room *pass, char *input)
 {
@@ -156,29 +84,18 @@ int	initialize_path_finder(t_room *pass, char *input)
 
 	path = NULL;
 	final = NULL;
-	sort_distance(pass);
 	pass->final_head = NULL;
 	path_finder(&path, pass);
+	// unique path function has to be updated to check paths in struct
+	if (unique_paths(pass) == FALSE)
+	{
+		//ft_printf("FAILED\n");
+		exit (0);
+	}
 	if (!pass->final_head)
 		return (error_path(pass, input, TRUE));
 	final = pass->final_head;
+	//  printf_struct(pass);
+	//  exit(0);
 	return (0);
 }
-
-/*
-
-Fix one path deletes two paths problem
-- idea 1: go through original copy and eliminate paths
-- idea 2: reset where we start each time
-
-smallest path... based on amount of ants
-
-*/
-
-/*
-
-- when breath first finds beginning but want to find next shortest path - make sure it acts as we want it to
-
-- decide between paths logic ex update struct or not
-
-*/

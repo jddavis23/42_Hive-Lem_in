@@ -94,8 +94,6 @@ int	create(t_room *pass, char **input)
 	hold = ERROR;
 	pass->rooms = NULL;
 	pass->links = NULL;
-	pass->distance = NULL;
-	//pass->used = NULL;
 	pass->total = file_save(pass, input);
 	pass->end = pass->total - 1;
 	if (pass->total == ERROR)
@@ -181,19 +179,19 @@ int	create(t_room *pass, char **input)
 					
 					++j;
 				}
-				int nn;
-				nn = 0;
-				while (pass->rooms[nn])
-				{
-					k = 0;
-					ft_printf("Room %s: ", pass->rooms[nn]);
-					while (pass->links[nn][k] >= 0)
-					{
-						ft_printf(" %s", pass->rooms[pass->links[nn][k++]]);
-					}
-					ft_printf("\n");
-					++nn;
-				}
+				// int nn;
+				// nn = 0;
+				// while (pass->rooms[nn])
+				// {
+				// 	k = 0;
+				// 	ft_printf("Room %s: ", pass->rooms[nn]);
+				// 	while (pass->links[nn][k] >= 0)
+				// 	{
+				// 		ft_printf(" %s", pass->rooms[pass->links[nn][k++]]);
+				// 	}
+				// 	ft_printf("\n");
+				// 	++nn;
+				// }
 				// while (pass->rooms[p])
 				// {
 				// 	m = 0;
