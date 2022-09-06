@@ -188,8 +188,9 @@ void	solve(t_room *pass)
 
 	-h : help  message
 	-l : leaks check
-	-m/lines : prints out amount of move pr line/amount of lines
-	-p : prints amount of paths selected before printing the final movement of the ants
+	-r : row
+	-p : prints amount of paths selected before or instead of printing the final movement of the ants
+	-len: prints amount paths lengths
 	-t : bonus that displays the time it took to run the program
 
 */

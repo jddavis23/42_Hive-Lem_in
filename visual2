@@ -98,37 +98,38 @@ def check_if_anything_block_y(info, j, k):
 
 # draws special connection if other rooms are blocking the path horizontal
 
-def special_connect_draw_y(screen, blockSize, info, i, k):
+def special_connect_draw_y(screen, blockSize, info, i, k, thickness):
 	if check_if_anything_block_x(info, i, k) == True and info[i]["grid_x"] < info[k]["grid_x"]:
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), thickness)
+		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), thickness)
+		pygame.draw.line(screen, (100, 100, 100), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), thickness)
 	elif check_if_anything_block_x(info, i, k) == True and info[i]["grid_x"] > info[k]["grid_x"]:
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), thickness)
+		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), thickness)
+		pygame.draw.line(screen, (100, 100, 100), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), thickness)
 	else:
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), thickness)
 
 # draws special connection if other rooms are blocking the path vertically
 
-def special_connect_draw_x(screen, blockSize, info, i, k):
+def special_connect_draw_x(screen, blockSize, info, i, k, thickness):
 	if check_if_anything_block_y(info, i, k) == True and info[i]["grid_y"] < info[k]["grid_y"]:
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), thickness)
+		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), thickness)
+		pygame.draw.line(screen, (100, 100, 100), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), thickness)
 	elif check_if_anything_block_y(info, i, k) == True and info[i]["grid_y"] > info[k]["grid_y"]:
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), thickness)
+		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), thickness)
+		pygame.draw.line(screen, (100, 100, 100), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), thickness)
 	else:
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), thickness)
 
 # draws connections between all of the rooms
 
 def drawConnections(screen, height, width, blockSize, info):
 	total = info[0]["total"]
 	y_count = 0
+	thickness = 10
 	for y in range(0, height, blockSize):
 		x_count = 0
 		for x in range(0, width, blockSize):
@@ -142,11 +143,11 @@ def drawConnections(screen, height, width, blockSize, info):
 						while k < total:
 							if info[i]["connect"][j] == info[k]["nbr"]:
 								if info[i]["grid_y"] == info[k]["grid_y"]:
-									special_connect_draw_y(screen, blockSize, info, i, k)
+									special_connect_draw_y(screen, blockSize, info, i, k, thickness)
 								elif info[i]["grid_x"] == info[k]["grid_x"]:
-									special_connect_draw_x(screen, blockSize, info, i, k)
+									special_connect_draw_x(screen, blockSize, info, i, k, thickness)
 								else:
-									pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+									pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), thickness)
 							k += 1
 						j += 1
 					break
@@ -160,6 +161,9 @@ def draw_ant(screen, height, width, blockSize, info, start, end, moves, current_
 	total = info[0]["total"]
 	total_moves = len(moves[current_move]["room"])
 	y_count = 0
+	amount_of_paths = len(moves[0]["ant"])
+	k = 0
+	print (amount_of_paths)
 	for y in range(0, height, blockSize):
 		x_count = 0
 		for x in range(0, width, blockSize):
@@ -169,12 +173,23 @@ def draw_ant(screen, height, width, blockSize, info, start, end, moves, current_
 					j = 0
 					while j < total_moves:
 						if moves[current_move]["room"][j] == info[i]["nbr"]:
-							if moves[current_move]["ant"][j] % 2 == 0:
+							if k == 0:
 								color = (0, 0, 200)
-							elif moves[current_move]["ant"][j] % 3 == 0:
+							elif k == 1:
 								color = (0, 200, 0)
 							else:
 								color = (200, 0, 0)
+								k = 0
+							if k != 2:
+								k += 1
+							if k == amount_of_paths:
+								k = 0
+							#if moves[current_move]["ant"][j] % 2 == 0:
+							#	color = (0, 0, 200)
+							#elif moves[current_move]["ant"][j] % 3 == 0:
+							#	color = (0, 200, 0)
+							#else:
+							#	color = (200, 0, 0)
 							pygame.draw.circle(screen, color, [info[i]["grid_x"] + int(blockSize) / 2, info[i]["grid_y"] + int(blockSize) / 2], int(blockSize) / 4)
 						j += 1
 					break
@@ -193,7 +208,7 @@ def drawText(screen, height, width, blockSize, prev, count, moves):
 	rect=text.get_rect()
 	screen.blit(text, [0 + (int(blockSize) / 2), height - int(blockSize)])
 
-def checkIfRoomExist(info, room, end):
+def checkIfRoomExist(info, room):
 	i = 0
 	while i < info[0]["total"]:
 		if info[i]["nbr"] == room:
@@ -201,24 +216,20 @@ def checkIfRoomExist(info, room, end):
 		i += 1
 	return True
 
-def checkIfDuplicates(listOfElems, moves, ants, info, end):
+def checkIfDuplicates(listOfElems, moves, ants, info):
 	for elem in listOfElems:
-		if elem != end and ants == False:
-			if listOfElems.count(elem) > 1:
-				return True
-			if checkIfRoomExist(info, elem, end):
-				return True
-		elif ants == True:
-			if listOfElems.count(elem) > 1:
-				return True
-			if elem > int(moves[0]["total_ants"]):
-				return True
+		if listOfElems.count(elem) > 1:
+			return True
+		if ants == True and elem > int(moves[0]["total_ants"]):
+			return True
+		if ants == False and checkIfRoomExist(info, elem):
+			return True
 	return False
 
-def ant_moves_twice(moves, screen, height, width, blockSize, init, info, end):
+def ant_moves_twice(moves, screen, height, width, blockSize, init, info):
 	i = 0
 	while i < moves[0]["total"]:
-		if checkIfDuplicates(moves[i]["ant"], moves, True, info, end) == True:
+		if checkIfDuplicates(moves[i]["ant"], moves, True, info) == True:
 			font=pygame.font.SysFont('arial', blockSize)
 			text=font.render("ERROR: ant error at " + str(i) + "/" + str(moves[i]["total"]), True, (200, 0, 0))
 			rect=text.get_rect()
@@ -230,10 +241,10 @@ def ant_moves_twice(moves, screen, height, width, blockSize, init, info, end):
 		i += 1
 	return False
 
-def room_error(moves, screen, height, width, blockSize, init, info, end):
+def room_error(moves, screen, height, width, blockSize, init, info):
 	i = 0
 	while i < moves[0]["total"]:
-		if checkIfDuplicates(moves[i]["room"], moves, False, info, end) == True:
+		if checkIfDuplicates(moves[i]["room"], moves, False, info) == True:
 			font=pygame.font.SysFont('arial', blockSize)
 			text=font.render("ERROR: room error at " + str(i) + "/" + str(moves[i]["total"]), True, (200, 0, 0))
 			rect=text.get_rect()
@@ -250,7 +261,7 @@ def get_number_of_elements(list):
 		count += 1
 	return count
 
-def drawErrorCheck(screen, height, width, blockSize, info, moves, init, end):
+def drawErrorCheck(screen, height, width, blockSize, info, moves, init):
 	# error if ant moves twice in a round + error if ants doesn't exist
 	# error if two ants are in the same room + room doesn't exist
 	# error if ant moves from one room to a room it is not connected to
@@ -266,16 +277,50 @@ def drawErrorCheck(screen, height, width, blockSize, info, moves, init, end):
 				print (moves[i])
 			return
 		i += 1
-	if ant_moves_twice(moves, screen, height, width, blockSize, init, info, end) == False:
-		room_error(moves, screen, height, width, blockSize, init, info, end)
+	if ant_moves_twice(moves, screen, height, width, blockSize, init, info) == False:
+		room_error(moves, screen, height, width, blockSize, init, info)
+
+def assignNewCoordinates(window_height, window_width, blockSize, info, start, end):
+	i = 0
+	total = info[i]["total"]
+	print(window_height)
+	print(window_width)
+	x1 = 1
+	y1 = 3
+	x2 = 1
+	y2 = 6
+	while i < total:
+		if info[i]["nbr"] == start:
+			info[i]["x"] = (window_width / (blockSize * 2))
+			info[i]["y"] = 0
+		elif info[i]["nbr"] == end:
+			info[i]["x"] = (window_width / (blockSize * 2))
+			info[i]["y"] = (window_height / blockSize) - 5
+		elif i % 2 == 0:
+			info[i]["x"] = x2
+			info[i]["y"] = y2
+			x2 += blockSize
+			if x2 > window_width:
+				x2 = 1
+				y2 += 6
+		else:
+			info[i]["x"] = x1
+			info[i]["y"] = y1
+			x1 += blockSize
+			if x1 > window_width:
+				x1 = 1
+				y1 += 6
+		i += 1
+
 
 # makes the map and displays it in a new window
 
 def make_map(start, end, info, moves, paths):
-	if (len(sys.argv) > 1 and sys.argv[1] == '-f'):
-		print('FOUDN -f')
-	else:
-		print('did not find -f')
+	window_height = 800
+	window_width = 1200
+	blockSize = 20
+	assignNewCoordinates(window_height, window_width, blockSize, info, start, end)
+	
 	i = 0
 	total = info[i]["total"]
 	minX = info[i]["x"]
@@ -301,15 +346,12 @@ def make_map(start, end, info, moves, paths):
 	black = (0, 0, 0)
 	# Define the dimensions of
 	# screen object(width,height)
-	if maxX > 50 or maxY > 50:
-		blockSize = 20 #Set the size of the grid block
-	elif maxX > 20 or maxY > 20:
-		blockSize = 40
-	else:
-		blockSize = 60
-	window_height = 800
-	window_width = 1200
-
+	#if maxX > 50 or maxY > 50:
+	blockSize = 20 #Set the size of the grid block
+#	elif maxX > 20 or maxY > 20:
+#		blockSize = 40
+	#else:
+	#	blockSize = 60
 	pygame.init()
 	screen = pygame.display.set_mode((window_width, window_height))
 	
@@ -326,21 +368,21 @@ def make_map(start, end, info, moves, paths):
 	space = False
 	space_r = False
 	last = no_ants_on_start(moves)
-	drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, True, end)
+	drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, True)
 	while True:
 		if count <= -1 and prev != -1:
 			collectGridData(screen, window_height, window_width, blockSize, info)
 			drawConnections(screen, window_height, window_width, blockSize, info)
 			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves, last)
 			drawText(screen, window_height, window_width, blockSize, prev, count, moves)
-			drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, False, end)
+			drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, False)
 			prev = -1
 		elif count != prev and count < moves[0]["total"] and count > -1:
 			drawConnections(screen, window_height, window_width, blockSize, info)
 			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves, last)
 			draw_ant(screen, window_height, window_width, blockSize, info, start, end, moves, count)
 			drawText(screen, window_height, window_width, blockSize, prev, count, moves)
-			drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, False, end)
+			drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, False)
 			prev = count
 		if space == True and count < moves[0]["total"]:
 			count += 1
@@ -520,34 +562,23 @@ def check_rooms(info, line, total, last):
 	else:
 		info[i]["connect"].append(line[last + 1:len(line)])
 
-# def store_color_and_path(moves, paths, end):
-# 	i = 0
-# 	color_count = 0
-# 	total = len(moves[i]["ant"])
-# 	print(total)
-# 	while i < total:
-# 		if (color_count == 0):
-# 			color = (0, 0, 200)
-# 			color_count += 1
-# 		elif color_count == 1:
-# 			color = (0, 200, 0)
-# 			color_count += 1
-# 		else:
-# 			color = (200, 200, 200)
-# 			color_count = 0
-# 		paths[i] = {"path_nbr": i, "room": [], "color": color, "total": 0}
-# 		j = 0
-# 		print(moves[i]["room"][j])
-# 		while j < total:
-# 			paths[i]["room"][j] = moves[i]["room"][j]
-# 			print (moves[i]["room"][j])
-# 			j += 1
-# 		i += 1
+
+def store_color_and_path(moves, paths, end):
+	i = 0
+	total = len(moves[i]["ant"])
+	j = 0
+	while i < total:
+		paths[i] = {"path_nbr": i, "room": [], "total": 0}
+		while moves[i]["room"][j] != end:
+			
+			j += 1
+		i += 1
+
 
 # Main loop of collecting all of the information including error checking
 
 def main(argv, argc):
-	if argc == 1 or argc == 2 and sys.argv[1] == '-f':
+	if argc == 1:
 		data=sys.stdin.read().splitlines()
 		info = dict()
 		moves = dict()
@@ -611,8 +642,7 @@ def main(argv, argc):
 			while i < k:
 				moves[i]["total"] = k
 				i += 1
-			#store_color_and_path(moves, paths, end)
-			print(paths)
+			store_color_and_path(moves, paths, end)
 			make_map(start, end, info, moves, paths)
 	else:
 		print("Usage: ./lem-in < maps/subject3.map | ./visu-hex")

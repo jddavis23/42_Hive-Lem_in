@@ -12,29 +12,29 @@
 
 # include "../includes/lemin.h"
 
-// static void	printf_struct(t_room *pass)
-// {
-// 	t_path *final;
-// 	t_index *temp;
-// 	int i;
-// 	final = pass->final_head;
-// 	i = 0;
-// 	ft_printf("\n{green}after sort: finalS:{uncolor} \n");
-// 	while (final)
-// 	{
-// 		temp = final->move_head;
-// 		final->move = final->move_head;
-// 		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
-// 		while (final->move)
-// 		{
-// 			ft_printf("room: %s\n", pass->rooms[final->move->index]);
-// 			final->move = final->move->next;
-// 		}
-// 		final->move_head = temp;
-// 		++i;
-// 		final = final->next;
-// 	}
-// }
+static void	printf_struct(t_room *pass)
+{
+	t_path *final;
+	t_index *temp;
+	int i;
+	final = pass->final_head;
+	i = 0;
+	ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+	while (final)
+	{
+		temp = final->move_head;
+		final->move = final->move_head;
+		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+		while (final->move)
+		{
+			ft_printf("room: %s\n", pass->rooms[final->move->index]);
+			final->move = final->move->next;
+		}
+		final->move_head = temp;
+		++i;
+		final = final->next;
+	}
+}
 
 static int	unique_paths(t_room *pass)
 {
