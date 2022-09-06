@@ -28,6 +28,20 @@ typedef struct		s_ants
 	struct s_ants	*prev;
 }					t_ants;
 
+typedef struct		s_input
+{
+	char			*input;
+	int				capacity;
+	int				current;
+}					t_input;
+
+typedef struct		s_connect
+{
+	int					count;
+	int					current_room;
+	struct s_connect	*next;
+}					t_connect;
+
 typedef struct  s_room
 {
 	char	**rooms;
@@ -38,6 +52,8 @@ typedef struct  s_room
 	int		total;
 	int		row;
 	int		min_row;
+	t_connect	*tmp_con;
+	t_connect	*head_con;
 	t_path	*head;
 	t_path	*final_head;
 }				t_room;
@@ -65,11 +81,11 @@ typedef enum
 } error_message;
 
 // error handling
-int	file_save(t_room *pass, char **input);
+int	file_save(t_room *pass, t_input **build);//char **input);
 int	only_digits(char *str, int *i);
 int	is_coordinates(char *str);
 int	is_connection(char *str);
-int	create(t_room *pass, char **input);
+int	create(t_room *pass, t_input **build, char **input); //char **input);
 int	error(int err);
 int	error_free(t_room *pass, char *input, int j, int first);
 int	error_path(t_room *pass, char *input, int first);
@@ -80,7 +96,7 @@ void	del_first_index(t_path *file);//use in error freeing function
 // parsing
 void	match_in(char *str, char *input, t_room *pass, int k);
 //int		match_in(char *str, char *input, char **rooms, int k, t_room *pass);
-int		count_in(char *str, char *input, char **rooms);
+int		count_in(char *str, char *input, t_room *pass);
 int		addi_diff(char *start, char *finish);
 int		dash_in_section(char *full, char *inside);
 int		is_dash(char *str);
@@ -106,5 +122,8 @@ void	create_len(int *array, int **len);
 void	reset_len(t_room *pass, int **len);
 
 void	delete_non_found_paths(t_room *pass, int indx);
+
+//didnt know where to put
+int	create_connect(t_room *pass, int j);
 
 #endif

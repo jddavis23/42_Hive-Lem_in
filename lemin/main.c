@@ -67,11 +67,15 @@ int	main(int argc, char **argv)
 {
 	t_room	*pass;
 	char	*input;
+	t_input	*build;
 	//int		max_paths;
+
+
 
 	if (argc == 1 || (argc == 2 && ft_strcmp(argv[1], "-r") == 0))
 	{
 		input = NULL;
+		build = NULL;
 		pass = (t_room *) malloc(sizeof(t_room));
 		if (!pass)
 			return (0);
@@ -79,13 +83,14 @@ int	main(int argc, char **argv)
 			pass->row = TRUE;
 		else
 			pass->row = FALSE;
-		if (create(pass, &input) == ERROR)
+		if (create(pass, &build, &input) == ERROR)
 			return (0);
+		//exit (0);
 		if (create_used(pass) == ERROR)
 			return (error_path(pass, input, TRUE));
 		if (initialize_path_finder(pass, input) == ERROR)
 			return (0);
-		ft_printf("%s\n", input);
+		ft_printf("%s\n", build->input);
 		solve(pass);
 		error_path(pass, input, FALSE);
 	}

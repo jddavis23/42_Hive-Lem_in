@@ -18,7 +18,7 @@
 # include<string.h>
 # include <stdarg.h>
 
-# define BUFF_SIZE	32
+# define BUFF_SIZE	60
 # define FD_SIZE	4096
 # define ERROR	-1
 # define TRUE	1
