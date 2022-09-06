@@ -33,7 +33,7 @@ do
 		rm results_big_superposition$COUNT.txt
 		printf "GOOD\n"
 	else
-		printf "ERROR\n"
+		printf "ERROR --- expected $NUMB   output $PLUS2\n"
 	fi
 	#echo $COUNT
 	COUNT=$((COUNT-1))
