@@ -12,7 +12,9 @@
 
 #include "../includes/lemin.h"
 
-static void	create_ants(t_ants **ants_move, int ant, t_index *index)
+/*	mallocs and create the ants movement through the rooms	*/
+
+void	create_ants(t_ants **ants_move, int ant, t_index *index)
 {
 	t_ants	*new;
 
@@ -33,61 +35,6 @@ static void	create_ants(t_ants **ants_move, int ant, t_index *index)
 		new->prev = NULL;
 		*ants_move = new;
 	}
-}
-
-static int	diff_prev(t_room *pass, int len)
-{
-	t_path *path;
-	int		count;
-
-	path = pass->final_head;
-	count = 0;
-	while(path)
-	{
-		if (path->len == len)
-			break ;
-		count += len - path->len;
-		path = path->next;
-	}
-	return (count);
-}
-
-static void	path_calc(int remain_ants, t_path **path)
-{
-	//ft_printf("path->prev: %p\n", (*path)->prev);
-	while (*path && (*path)->prev)
-	{
-		//ft_printf("Here end: %p, remain_ants: %d, max_ants: %d\n", *path, remain_ants, (*path)->max_ants);
-		//if (remain_ants <= (*path)->max_ants)
-		//	break ;
-		if (remain_ants > (*path)->prev->max_ants)
-			break ;
-		*path = (*path)->prev;
-	}
-}
-
-static t_ants	*path_setter(t_ants **ants_move, t_room *pass, t_path **end, t_ants *head)
-{
-	t_path	*path;
-	static int	current_ant = 0;
-
-	path = pass->final_head;
-	if (head && current_ant < pass->ants)
-	{
-		//ft_printf("ants: %d, current_ant: %d\n", pass->ants, current_ant);
-		// if (current_ant >= pass->ants)
-		// 	exit(0);
-		path_calc(pass->ants - current_ant, end);
-	}
-	while (path && path->nbr <= (*end)->nbr && current_ant < pass->ants)
-	{
-		current_ant++;
-		create_ants(ants_move, current_ant, path->move_head);
-		if (!head)
-			head = *ants_move;
-		path = path->next;
-	}
-	return (head);
 }
 
 t_ants	*print_ants_move(t_ants *head,t_room *pass)
@@ -141,23 +88,18 @@ t_ants	*print_ants_move(t_ants *head,t_room *pass)
 
 void	solve(t_room *pass)
 {
-	int dif;
-	t_path	*path;
 	t_ants	*ants_move;
 	t_ants	*head;
-	t_path	*prev;
-
-	path = pass->final_head;
-	prev = NULL;
+	
 	head = NULL;
 	ants_move = NULL;
 	// if start is connected to the end move all ants at the same time
-	if (path->len == 1)
+	if (pass->final_head->len == 1)
 	{
 		int current_ant = 0;
 		while (current_ant < pass->ants)
 		{
-			create_ants(&ants_move, current_ant++, path->move_head);
+			create_ants(&ants_move, current_ant++, pass->final_head->move_head);
 			if (!head)
 				head = ants_move;
 		}
@@ -165,30 +107,31 @@ void	solve(t_room *pass)
 	}
 	else
 	{
-		while (path && path->next)
-		{
-			dif = diff_prev(pass, path->len) + ((path->next->len - path->len) * path->nbr);
-			path->max_ants = dif + path->nbr;
-			path->prev = prev;
+		solve_calc(pass, ants_move, head);
+		// while (path && path->next)
+		// {
+		// 	dif = diff_prev(pass, path->len) + ((path->next->len - path->len) * path->nbr);
+		// 	path->max_ants = dif + path->nbr;
+		// 	path->prev = prev;
 			
-			if (pass->ants <= path->max_ants)
-				break ;
-			prev = path;
-			path = path->next;
-		}
-		path->prev = prev;
-		head = path_setter(&ants_move, pass, &path, head);
-		while (head)
-		{
-			head = print_ants_move(head, pass);
-			if (!head)
-			{
-				ants_move = NULL;
-				head = path_setter(&ants_move, pass, &path, head);
-			}
-			else
-				path_setter(&ants_move, pass, &path, head);
-		}
+		// 	if (pass->ants <= path->max_ants)
+		// 		break ;
+		// 	prev = path;
+		// 	path = path->next;
+		// }
+		// path->prev = prev;
+		// head = path_setter(&ants_move, pass, &path, head);
+		// while (head)
+		// {
+		// 	head = print_ants_move(head, pass);
+		// 	if (!head)
+		// 	{
+		// 		ants_move = NULL;
+		// 		head = path_setter(&ants_move, pass, &path, head);
+		// 	}
+		// 	else
+		// 		path_setter(&ants_move, pass, &path, head);
+		// }
 	}
 }
 

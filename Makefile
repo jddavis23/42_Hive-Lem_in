@@ -20,6 +20,7 @@ SRC += $(C)breadth_first.c
 SRC += $(C)lock_path.c
 SRC += $(C)path_len.c
 SRC += $(C)solve.c
+SRC += $(C)solve_calc.c
 
 MAKELIB = make -C libft/ fclean && make -C libft/
 

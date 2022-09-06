@@ -38,7 +38,6 @@ typedef struct  s_room
 	int		total;
 	int		row;//flag
 	int		min_row;
-	t_path	*head;//i don't think we are using this one
 	t_path	*final_head;
 }				t_room;
 
@@ -90,7 +89,6 @@ int		initialize_path_finder(t_room *pass, char *input);
 int		len_array(int *links);
 void	path_finder(t_path **path, t_room *pass);
 void	del_last_path(t_path **path, t_room *pass);
-void	solve(t_room *pass);
 void	free_and_del_path(t_path **path, t_room *pass);
 void	del_path(t_path **path);
 void	copy_to_path(t_room *pass, t_path **path, int **len);
@@ -110,5 +108,11 @@ void	reset_len(t_room *pass, int **len);
 void	delete_non_found_paths(t_room *pass, int indx);
 
 void	print_output(t_room *pass);
+
+// solve
+void	solve(t_room *pass);
+void	create_ants(t_ants **ants_move, int ant, t_index *index);
+void	solve_calc(t_room *pass, t_ants *ants_move, t_ants *head);
+t_ants	*print_ants_move(t_ants *head,t_room *pass);
 
 #endif
