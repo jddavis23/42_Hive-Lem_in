@@ -1,5 +1,7 @@
 # include "../includes/lemin.h"
 
+/*	function that creates the len array	*/
+
 void	create_len(int *array, int **len)
 {
 	int	i;
@@ -19,9 +21,11 @@ void	create_len(int *array, int **len)
 	(*len)[i] = -1;
 }
 
+/*	resets array to containing all zeros	*/
+
 void	reset_len(t_room *pass, int **len)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while ((*len)[i] != -1)
@@ -38,20 +42,13 @@ void	reset_len(t_room *pass, int **len)
 	}
 }
 
+/*	sorts the len array to make sure the smallest is at the beginning of the array	*/
+
 static void	bubble_len(t_room *pass, int **len)
 {
 	int	a;
 	int	b;
 	int	temp;
-	/*int	p;
-
-	p = 0;
-	ft_printf("\nNOT SORTED LENNNNNN\n");
-	while ((*len)[p] > 0)
-	{
-		ft_printf("ROOM [%s]   LEN [%i]\n", pass->rooms[(*len)[p]], pass->info[LEN][(*len)[p]]);
-		++p;
-	}*/
 
 	a = 0;
 	while ((*len)[a]  > 0)
@@ -69,15 +66,9 @@ static void	bubble_len(t_room *pass, int **len)
 		}
 		++a;
 	}
-	/*p = 0;
-	ft_printf("\nSORTED LENNNNNN\n");
-	while ((*len)[p] > 0)
-	{
-		ft_printf("ROOM [%s]   LEN [%i]\n", pass->rooms[(*len)[p]], pass->info[LEN][(*len)[p]]);
-		++p;
-	}*/
-
 }
+
+/*	array that stores the length of paths as the rooms indx in order	*/
 
 void	calc_len(t_room *pass, int **len)
 {
@@ -100,7 +91,6 @@ void	calc_len(t_room *pass, int **len)
 				prev = pass->info[PREV][prev];
 			}
 			pass->info[LEN][pass->links[pass->end][i]] = count;
-			//ft_printf("ROOM %s LEN: %d\n", pass->rooms[pass->links[pass->end][i]], pass->info[LEN][pass->links[pass->end][i]]);
 			(*len)[j++] = pass->links[pass->end][i];
 		}
 		++i;
