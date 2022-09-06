@@ -28,7 +28,7 @@ static t_index	*ft_indexnew(int index)
 
 /*	creates index element and adds it onto path->move's linked list	*/
 
-static void	create_index(t_index **move, t_path **path, int i)
+void	create_index(t_index **move, t_path **path, int i)
 {
 	t_index	*new;
 
@@ -65,7 +65,7 @@ static t_path	*ft_pathnew()
 
 /*	creates path element and adds it onto the linked list of paths	*/
 
-static void	create_path(t_path **path, t_room *pass, int nbr, int len)
+void	create_path(t_path **path, t_room *pass, int nbr, int len)
 {
 	t_path *new;
 

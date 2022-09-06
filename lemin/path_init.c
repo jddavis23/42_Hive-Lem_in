@@ -12,67 +12,70 @@
 
 # include "../includes/lemin.h"
 
-// static void	printf_struct(t_room *pass)
-// {
-// 	t_path *final;
-// 	t_index *temp;
-// 	int i;
-// 	final = pass->final_head;
-// 	i = 0;
-// 	ft_printf("\n{green}after sort: finalS:{uncolor} \n");
-// 	while (final)
-// 	{
-// 		temp = final->move_head;
-// 		final->move = final->move_head;
-// 		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
-// 		while (final->move)
-// 		{
-// 			ft_printf("room: %s\n", pass->rooms[final->move->index]);
-// 			final->move = final->move->next;
-// 		}
-// 		final->move_head = temp;
-// 		++i;
-// 		final = final->next;
-// 	}
-// }
+static void	printf_struct(t_room *pass)
+{
+	t_path *final;
+	t_index *temp;
+	int i;
+	final = pass->final_head;
+	i = 0;
+	ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+	while (final)
+	{
+		temp = final->move_head;
+		final->move = final->move_head;
+		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+		while (final->move)
+		{
+			ft_printf("room: %s\n", pass->rooms[final->move->index]);
+			final->move = final->move->next;
+		}
+		final->move_head = temp;
+		++i;
+		final = final->next;
+	}
+}
 
 static int	unique_paths(t_room *pass)
 {
-	int	current;
-	int	compare;
-	int	i;
-	int	j;
+	t_path *final;
+	t_path *compare;
+	t_index *temp;
+	int count;
 
-	current = 0;
-	while (pass->links[pass->end][current] != -1)
+	final = pass->final_head;
+	while (final)
 	{
-		if (pass->info[NEXT][pass->links[pass->end][current]] == pass->end)
+		final->move = final->move_head;
+		temp = final->move;
+		while (temp->index != pass->end)
 		{
-			compare = current + 1;
-			while (pass->links[pass->end][compare] != -1)
+			//ft_printf("          PATH [%d]     \n", final->nbr);
+			compare = pass->final_head;
+			count = 0;
+			while (compare)
 			{
-				if (pass->info[NEXT][pass->links[pass->end][compare]] == pass->end)
+				compare->move = compare->move_head;
+				//ft_printf("current room [%s]\n", pass->rooms[temp->index]);
+				while (compare->move->index != pass->end)
 				{
-					//ft_printf("          PATH [%i]     \n", current);
-					i = pass->links[pass->end][current];
-					while (i != 0)
+					if (compare->move->index == temp->index)
 					{
-						//ft_printf("current room [%s]\n", pass->rooms[i]);
-						j = pass->links[pass->end][compare];
-						while (j != 0)
+						++count;
+						//ft_printf("count: %d, room: %d room: %d\n", count, compare->move->index, temp->index);
+						if (count > 1)
 						{
-							//ft_printf("compare [%s]\n", pass->rooms[j]);
-							if (i == j)
-								return (FALSE);
-							j = pass->info[PREV][j];
+							ft_printf("Error: Room %s occurs more than once\n", pass->rooms[compare->move->index]);
+							return (FALSE);
 						}
-						i = pass->info[PREV][i];
 					}
+					compare->move = compare->move->next;
 				}
-				++compare;
+				compare = compare->next;
 			}
+			temp = temp->next;
 		}
-		++current;
+		final = final->next;
 	}
 	return (TRUE);
 }
@@ -86,16 +89,16 @@ int	initialize_path_finder(t_room *pass, char *input)
 	final = NULL;
 	pass->final_head = NULL;
 	path_finder(&path, pass);
-	// unique path function has to be updated to check paths in struct
 	if (unique_paths(pass) == FALSE)
 	{
-		//ft_printf("FAILED\n");
+		ft_printf("FAILED\n");
+		printf_struct(pass);
 		exit (0);
 	}
 	if (!pass->final_head)
 		return (error_path(pass, input, TRUE));
 	final = pass->final_head;
-	//  printf_struct(pass);
+	//printf_struct(pass);
 	//  exit(0);
 	return (0);
 }
