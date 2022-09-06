@@ -98,35 +98,35 @@ def check_if_anything_block_y(info, j, k):
 
 # draws special connection if other rooms are blocking the path horizontal
 
-def special_connect_draw_y(screen, blockSize, info, i, k):
+def special_connect_draw_y(screen, blockSize, info, i, k, color, width):
 	if check_if_anything_block_x(info, i, k) == True and info[i]["grid_x"] < info[k]["grid_x"]:
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+		pygame.draw.line(screen, color, (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), width)
+		pygame.draw.line(screen, color, (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), width)
+		pygame.draw.line(screen, color, (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), width)
 	elif check_if_anything_block_x(info, i, k) == True and info[i]["grid_x"] > info[k]["grid_x"]:
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+		pygame.draw.line(screen, color, (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), width)
+		pygame.draw.line(screen, color, (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), width)
+		pygame.draw.line(screen, color, (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), width)
 	else:
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+		pygame.draw.line(screen, color, (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), width)
 
 # draws special connection if other rooms are blocking the path vertically
 
-def special_connect_draw_x(screen, blockSize, info, i, k):
+def special_connect_draw_x(screen, blockSize, info, i, k, color, width):
 	if check_if_anything_block_y(info, i, k) == True and info[i]["grid_y"] < info[k]["grid_y"]:
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+		pygame.draw.line(screen, color, (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), width)
+		pygame.draw.line(screen, color, (info[i]["grid_x"] + int(blockSize / 2) + int(blockSize), info[i]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), width)
+		pygame.draw.line(screen, color, (info[k]["grid_x"] + int(blockSize / 2) + int(blockSize), info[k]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), width)
 	elif check_if_anything_block_y(info, i, k) == True and info[i]["grid_y"] > info[k]["grid_y"]:
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), 20)
-		pygame.draw.line(screen, (100, 100, 100), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+		pygame.draw.line(screen, color, (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), width)
+		pygame.draw.line(screen, color, (info[i]["grid_x"] + int(blockSize / 2) - int(blockSize), info[i]["grid_y"] + int(blockSize / 2) - int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), width)
+		pygame.draw.line(screen, color, (info[k]["grid_x"] + int(blockSize / 2) - int(blockSize), info[k]["grid_y"] + int(blockSize / 2) + int(blockSize)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), width)
 	else:
-		pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+		pygame.draw.line(screen, color, (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), width)
 
 # draws connections between all of the rooms
 
-def drawConnections(screen, height, width, blockSize, info):
+def drawConnections(screen, height, width, blockSize, info, paths, start, end):
 	total = info[0]["total"]
 	y_count = 0
 	for y in range(0, height, blockSize):
@@ -141,12 +141,33 @@ def drawConnections(screen, height, width, blockSize, info):
 						k = 0
 						while k < total:
 							if info[i]["connect"][j] == info[k]["nbr"]:
+								n = 0
+								color = (100, 100, 100)
+								widthOfLine = 10
+								while n < paths[0]["total"]:
+									m = 0
+									if info[i]["nbr"] == end or info[k]["nbr"] == end:
+										connect = 1
+									elif info[i]["nbr"] == start or info[k]["nbr"] == start:
+										connect = 1
+									else:
+										connect = 0
+									while m < paths[n]["len"]:
+										if paths[n]["room"][m] == info[i]["nbr"]:
+											connect += 1
+										elif paths[n]["room"][m] == info[k]["nbr"]:
+											connect += 1
+										if connect > 1:
+											color = paths[n]["color"]
+											widthOfLine = 20
+										m += 1
+									n += 1
 								if info[i]["grid_y"] == info[k]["grid_y"]:
-									special_connect_draw_y(screen, blockSize, info, i, k)
+									special_connect_draw_y(screen, blockSize, info, i, k, color, widthOfLine)
 								elif info[i]["grid_x"] == info[k]["grid_x"]:
-									special_connect_draw_x(screen, blockSize, info, i, k)
+									special_connect_draw_x(screen, blockSize, info, i, k, color, widthOfLine)
 								else:
-									pygame.draw.line(screen, (100, 100, 100), (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), 20)
+									pygame.draw.line(screen, color, (info[i]["grid_x"] + int(blockSize / 2), info[i]["grid_y"] + int(blockSize / 2)), (info[k]["grid_x"] + int(blockSize / 2), info[k]["grid_y"] + int(blockSize / 2)), widthOfLine)
 							k += 1
 						j += 1
 					break
@@ -169,12 +190,7 @@ def draw_ant(screen, height, width, blockSize, info, start, end, moves, current_
 					j = 0
 					while j < total_moves:
 						if moves[current_move]["room"][j] == info[i]["nbr"]:
-							if moves[current_move]["ant"][j] % 2 == 0:
-								color = (0, 0, 200)
-							elif moves[current_move]["ant"][j] % 3 == 0:
-								color = (0, 200, 0)
-							else:
-								color = (200, 0, 0)
+							color = (100, 100, 100)
 							pygame.draw.circle(screen, color, [info[i]["grid_x"] + int(blockSize) / 2, info[i]["grid_y"] + int(blockSize) / 2], int(blockSize) / 4)
 						j += 1
 					break
@@ -269,55 +285,101 @@ def drawErrorCheck(screen, height, width, blockSize, info, moves, init, end):
 	if ant_moves_twice(moves, screen, height, width, blockSize, init, info, end) == False:
 		room_error(moves, screen, height, width, blockSize, init, info, end)
 
+def assignNewCoordinates(window_height, window_width, blockSize, info, start, end, paths):
+	i = 0
+	width_divide = 50 // (paths[0]["total"] + 1)
+	x = width_divide
+	total = paths[i]["total"]
+	total_info = info[i]["total"]
+	while i < total:
+		len_of_path = paths[i]["len"]
+		j = 0
+		height_divide = 35 // len_of_path
+		y = 2
+		while j < len_of_path:
+			k = 0
+			while k < total_info:
+				if paths[i]["room"][j] == info[k]["nbr"]:
+					info[k]["used"] = 1
+					info[k]["x"] = x
+					info[k]["y"] = y
+					y += height_divide
+					break
+				k += 1
+			j += 1
+		i += 1
+		x += width_divide
+	width_divide = 2#30 // (30 + 2)
+	height_divide = 2#30 // (len_of_path + 2)
+	x = width_divide
+	y = height_divide
+	i = 0
+	while i < total_info:
+		if info[i]["nbr"] == start:
+			info[i]["x"] = (window_width / (blockSize * 2))
+			info[i]["y"] = 0
+		elif info[i]["nbr"] == end:
+			info[i]["x"] = (window_width / (blockSize * 2))
+			info[i]["y"] = (window_height / blockSize) - 5
+			print (info[i]["y"])
+		elif info[i]["used"] == 0:
+			info[i]["x"] = x
+			info[i]["y"] = y
+			y += height_divide
+			if y >= 30:
+				y = height_divide
+				x += width_divide
+		i += 1
+
 # makes the map and displays it in a new window
 
 def make_map(start, end, info, moves, paths):
 	if (len(sys.argv) > 1 and sys.argv[1] == '-f'):
-		print('FOUDN -f')
+		window_height = 800
+		window_width = 1200
+		blockSize = 20
+		assignNewCoordinates(window_height, window_width, blockSize, info, start, end, paths)
 	else:
-		print('did not find -f')
-	i = 0
-	total = info[i]["total"]
-	minX = info[i]["x"]
-	maxX = info[i]["x"]
-	minY = info[i]["y"]
-	maxY = info[i]["y"]
-	while i < total:
-		print(info[i])
-		if info[i]["x"] < minX:
-			minX = info[i]["x"]
-		if info[i]["x"] > maxX:
-			maxX = info[i]["x"]
-		if info[i]["y"] < minY:
-			minY = info[i]["y"]
-		if info[i]["y"] > maxY:
-			maxY = info[i]["y"]
-		i += 1
-	total = moves[0]["total"]
-	i = 0
-	while i < total:
-		print(moves[i])
-		i += 1
-	black = (0, 0, 0)
-	# Define the dimensions of
-	# screen object(width,height)
-	if maxX > 50 or maxY > 50:
-		blockSize = 20 #Set the size of the grid block
-	elif maxX > 20 or maxY > 20:
-		blockSize = 40
-	else:
-		blockSize = 60
-	window_height = 800
-	window_width = 1200
+		i = 0
+		total = info[i]["total"]
+		minX = info[i]["x"]
+		maxX = info[i]["x"]
+		minY = info[i]["y"]
+		maxY = info[i]["y"]
+		while i < total:
+			print(info[i])
+			if info[i]["x"] < minX:
+				minX = info[i]["x"]
+			if info[i]["x"] > maxX:
+				maxX = info[i]["x"]
+			if info[i]["y"] < minY:
+				minY = info[i]["y"]
+			if info[i]["y"] > maxY:
+				maxY = info[i]["y"]
+			i += 1
+		total = moves[0]["total"]
+		i = 0
+		while i < total:
+			print(moves[i])
+			i += 1
+		# Define the dimensions of
+		# screen object(width,height)
+		if maxX > 50 or maxY > 50:
+			blockSize = 20 #Set the size of the grid block
+		elif maxX > 20 or maxY > 20:
+			blockSize = 40
+		else:
+			blockSize = 60
+		window_height = 800
+		window_width = 1200
 
 	pygame.init()
 	screen = pygame.display.set_mode((window_width, window_height))
 	
 	# Set the caption of the screen
 	pygame.display.set_caption('Lem-in')
-	
 	# Fill the background colour to the screen
-	screen.fill(black)
+	screen.fill((0, 0, 0))
 	pygame.display.update()
 	
 	# game loop
@@ -330,13 +392,13 @@ def make_map(start, end, info, moves, paths):
 	while True:
 		if count <= -1 and prev != -1:
 			collectGridData(screen, window_height, window_width, blockSize, info)
-			drawConnections(screen, window_height, window_width, blockSize, info)
+			drawConnections(screen, window_height, window_width, blockSize, info, paths, start, end)
 			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves, last)
 			drawText(screen, window_height, window_width, blockSize, prev, count, moves)
 			drawErrorCheck(screen, window_height, window_width, blockSize, info, moves, False, end)
 			prev = -1
 		elif count != prev and count < moves[0]["total"] and count > -1:
-			drawConnections(screen, window_height, window_width, blockSize, info)
+			drawConnections(screen, window_height, window_width, blockSize, info, paths, start, end)
 			drawGrid(screen, window_height, window_width, blockSize, info, start, end, count, moves, last)
 			draw_ant(screen, window_height, window_width, blockSize, info, start, end, moves, count)
 			drawText(screen, window_height, window_width, blockSize, prev, count, moves)
@@ -520,29 +582,61 @@ def check_rooms(info, line, total, last):
 	else:
 		info[i]["connect"].append(line[last + 1:len(line)])
 
-# def store_color_and_path(moves, paths, end):
-# 	i = 0
-# 	color_count = 0
-# 	total = len(moves[i]["ant"])
-# 	print(total)
-# 	while i < total:
-# 		if (color_count == 0):
-# 			color = (0, 0, 200)
-# 			color_count += 1
-# 		elif color_count == 1:
-# 			color = (0, 200, 0)
-# 			color_count += 1
-# 		else:
-# 			color = (200, 200, 200)
-# 			color_count = 0
-# 		paths[i] = {"path_nbr": i, "room": [], "color": color, "total": 0}
-# 		j = 0
-# 		print(moves[i]["room"][j])
-# 		while j < total:
-# 			paths[i]["room"][j] = moves[i]["room"][j]
-# 			print (moves[i]["room"][j])
-# 			j += 1
-# 		i += 1
+def	color_update(i):
+	if i == 0:
+		color = (150, 0, 0)
+	elif i == 1:
+		color = (0, 150, 150)
+	elif i == 2:
+		color = (150, 150, 0)
+	elif i == 3:
+		color = (100, 0, 0)
+	elif i == 4:
+		color = (100, 150, 0)
+	elif i == 5:
+		color = (0, 100, 150)
+	elif i == 6:
+		color = (100, 0, 150)
+	elif i == 7:
+		color = (50, 0, 0)
+	elif i == 8:
+		color = (50, 50, 0)
+	elif i == 9:
+		color = (0, 50, 50)
+	elif i == 10:
+		color = (50, 0, 50)
+	return color
+
+def store_color_and_path(moves, paths, end):
+	i = 0
+	color_count = 0
+	total = len(moves[i]["ant"])
+	while i < total:
+		color = color_update(color_count)
+		if (color_count == 10):
+			color_count = 0
+		else:
+			color_count += 1
+		paths[i] = {"path_nbr": i, "room": [], "color": color, "len": 0, "total": i + 1}
+		j = 0
+		follow_ant = moves[0]["ant"][i]
+		while j < moves[0]["total"]:
+			len_of_ants = len(moves[j]["ant"])
+			k = 0
+			while k < len_of_ants:
+				if (moves[j]["ant"][k] == follow_ant and moves[j]["room"][k] != end):
+					paths[i]["room"].append(moves[j]["room"][k])
+					paths[i]["len"] += 1
+					break
+				k += 1
+			j += 1
+		i += 1
+	total_paths = 0
+	while total_paths < i:
+		paths[total_paths]["total"] = i
+		print(paths[total_paths])
+		total_paths += 1
+
 
 # Main loop of collecting all of the information including error checking
 
@@ -589,7 +683,7 @@ def main(argv, argc):
 							start = nbr
 						if end == "F":
 							end = nbr
-						info[i] = {"nbr": nbr, "x": x, "y": y, "connect": [], "total": total, "grid_x": 0, "grid_y": 0}
+						info[i] = {"nbr": nbr, "x": x, "y": y, "connect": [], "total": total, "grid_x": 0, "grid_y": 0, "used": 0}
 						i += 1
 					elif line.count(" ") == 0:
 						last = 0
@@ -611,8 +705,7 @@ def main(argv, argc):
 			while i < k:
 				moves[i]["total"] = k
 				i += 1
-			#store_color_and_path(moves, paths, end)
-			print(paths)
+			store_color_and_path(moves, paths, end)
 			make_map(start, end, info, moves, paths)
 	else:
 		print("Usage: ./lem-in < maps/subject3.map | ./visu-hex")
