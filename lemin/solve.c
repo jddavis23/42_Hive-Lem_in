@@ -37,6 +37,8 @@ void	create_ants(t_ants **ants_move, int ant, t_index *index)
 	}
 }
 
+/*	logic when ant has reached the last room	*/
+
 static void	end_room_reached(t_ants **head, t_ants **send, int *i)
 {
 	t_ants	*temp;
@@ -57,6 +59,8 @@ static void	end_room_reached(t_ants **head, t_ants **send, int *i)
 		*send = *head;
 	}
 }
+
+/*	prints one row of moving ants each time function is called	*/
 
 t_ants	*print_ants_move(t_ants *head, t_room *pass, int line)
 {
@@ -85,6 +89,8 @@ t_ants	*print_ants_move(t_ants *head, t_room *pass, int line)
 	}
 	return (send); //careful what returning, could have changed
 }
+
+/*	starting logic of printing ants moving and takes care of edge case	*/
 
 void	solve(t_room *pass)
 {
