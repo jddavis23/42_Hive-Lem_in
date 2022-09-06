@@ -51,9 +51,6 @@ int	main(int argc, char **argv)
 	t_room	*pass;
 	char	*input;
 	t_input	*build;
-	//int		max_paths;
-
-
 
 	if (argc == 1 || (argc == 2 && ft_strcmp(argv[1], "-r") == 0))
 	{
