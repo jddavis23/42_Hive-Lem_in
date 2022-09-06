@@ -117,7 +117,5 @@ int	error_path(t_room *pass, char *input, int first)
 		ft_printf("{red}Error:{uncolor} no paths found\n");
 	if (pass->final_head)
 		del_path(&pass->final_head);
-	//if (pass->head)
-	//	del_path(&pass->head);
 	return (error_free(pass, input, pass->total, TRUE));
 }

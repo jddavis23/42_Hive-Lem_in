@@ -80,6 +80,8 @@ static int	unique_paths(t_room *pass)
 	return (TRUE);
 }
 
+/*	initializes the functions that takes care of finding the paths	*/
+
 int	initialize_path_finder(t_room *pass, char *input)
 {
 	t_path	*path;

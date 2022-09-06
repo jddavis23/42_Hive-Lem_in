@@ -88,13 +88,15 @@ void	create_path(t_path **path, t_room *pass, int nbr, int len)
 	}
 }
 
+/*	copies the paths from the array to the struct	*/
+
 void	copy_to_path(t_room *pass, t_path **path, int **len)
 {
 	int	i;
 	int	prev;
 	int	nbr;
-	int m;
-	
+	int	m;
+
 	m = 0;
 	nbr = 1;
 	// was this just a print statement? delete?
