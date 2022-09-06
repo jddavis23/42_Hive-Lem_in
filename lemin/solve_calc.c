@@ -90,14 +90,16 @@ static void	calc_amount_of_ants(t_room *pass, t_path **path)
 
 void	solve_calc(t_room *pass, t_ants *ants_move, t_ants *head)
 {
-	t_path *path;
+	t_path	*path;
+	int		line;
 
 	path = pass->final_head;
 	calc_amount_of_ants(pass, &path);
 	head = path_setter(&ants_move, pass, &path, head);
+	line = 1;
 	while (head)
 	{
-		head = print_ants_move(head, pass);
+		head = print_ants_move(head, pass, line++);
 		if (!head)
 		{
 			ants_move = NULL;

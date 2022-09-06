@@ -113,6 +113,6 @@ void	print_output(t_room *pass);
 void	solve(t_room *pass);
 void	create_ants(t_ants **ants_move, int ant, t_index *index);
 void	solve_calc(t_room *pass, t_ants *ants_move, t_ants *head);
-t_ants	*print_ants_move(t_ants *head,t_room *pass);
+t_ants	*print_ants_move(t_ants *head, t_room *pass, int line);
 
 #endif

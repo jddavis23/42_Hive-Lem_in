@@ -37,41 +37,41 @@ void	create_ants(t_ants **ants_move, int ant, t_index *index)
 	}
 }
 
-t_ants	*print_ants_move(t_ants *head,t_room *pass)
+static void	end_room_reached(t_ants **head, t_ants **send, int *i)
 {
-	t_ants	*send;
 	t_ants	*temp;
 	t_ants	*prev;
-	int		i;
-	static int	line = 1;
+
+	prev = (*head)->prev;
+	temp = (*head)->next;
+	if (*head)
+		free(*head);
+	*head = temp;
+	if (prev)
+		(prev)->next = *head;
+	if (*head)
+		(*head)->prev = prev;
+	if (*i == 0)
+	{
+		*i = -1;
+		*send = *head;
+	}
+}
+
+t_ants	*print_ants_move(t_ants *head, t_room *pass, int line)
+{
+	t_ants		*send;
+	int			i;
 
 	send = head;
 	i = 0;
 	if (pass->row == TRUE)
 		ft_printf("{purple}row: %d{uncolor}\n", line);
-	++line;
 	while (head)
 	{
 		ft_printf("L%d-%s", head->ant, pass->rooms[head->move->index]);
 		if (head->move->index == pass->end)
-		{
-			prev = head->prev;
-			temp = head->next;
-			if (head)
-				free(head);
-			head = temp;
-			if (prev)
-				prev->next = head;
-			if (head)
-			{
-				head->prev = prev;
-			}
-			if (i == 0)
-			{
-				i = -1;
-				send = head;
-			}
-		}
+			end_room_reached(&head, &send, &i);
 		else
 		{
 			head->move = head->move->next;
@@ -103,36 +103,10 @@ void	solve(t_room *pass)
 			if (!head)
 				head = ants_move;
 		}
-		head = print_ants_move(head, pass);
+		head = print_ants_move(head, pass, 1);
 	}
 	else
-	{
 		solve_calc(pass, ants_move, head);
-		// while (path && path->next)
-		// {
-		// 	dif = diff_prev(pass, path->len) + ((path->next->len - path->len) * path->nbr);
-		// 	path->max_ants = dif + path->nbr;
-		// 	path->prev = prev;
-			
-		// 	if (pass->ants <= path->max_ants)
-		// 		break ;
-		// 	prev = path;
-		// 	path = path->next;
-		// }
-		// path->prev = prev;
-		// head = path_setter(&ants_move, pass, &path, head);
-		// while (head)
-		// {
-		// 	head = print_ants_move(head, pass);
-		// 	if (!head)
-		// 	{
-		// 		ants_move = NULL;
-		// 		head = path_setter(&ants_move, pass, &path, head);
-		// 	}
-		// 	else
-		// 		path_setter(&ants_move, pass, &path, head);
-		// }
-	}
 }
 
 /*
