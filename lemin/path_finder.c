@@ -12,6 +12,8 @@
 
 # include "../includes/lemin.h"
 
+/*	checks if there are anymore alive paths	*/
+
 static int	current_true(t_room *pass)
 {
 	int i;
@@ -89,6 +91,8 @@ void	print_output(t_room *pass)
 // 	}
 // }
 
+/*	reduces the slots we are looking at in CURRENT	*/
+
 static int	current_len(t_room *pass)
 {
 	int i;
@@ -101,6 +105,8 @@ static int	current_len(t_room *pass)
 	}
 	return (i + 2);
 }
+
+/*	checks if CURRENT has any paths that are moving on the locked path	*/
 
 static int	on_lock_path(t_room *pass, int i, int c_len)
 {
@@ -129,6 +135,7 @@ static int	on_lock_path(t_room *pass, int i, int c_len)
 // 	return (shortest);
 // }
 
+/*	breadth first initializer	*/
 
 static void	breadth_first_init(t_room *pass, int *i)
 {
@@ -176,6 +183,8 @@ static void	breadth_first_init(t_room *pass, int *i)
 		// }
 	}
 }
+
+/*	core logic of calling breadth first and locking the paths	*/
 
 void	path_finder(t_path **path, t_room *pass)
 {
