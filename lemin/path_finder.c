@@ -191,6 +191,19 @@ void	path_finder(t_path **path, t_room *pass)
 	increase = 0;
 	//int nbr = 0;
 	//ft_printf("START OF SEARCH ---\n");
+	i = 0;
+	if (pass->info[PATH][pass->end] == 1)
+	{
+		create_path(path, pass, 1, 1);
+		create_index(&(*path)->move_head, path, pass->end);
+		while (i < pass->total)
+		{
+			if (pass->info[CURRENT][i] != 0)
+				pass->info[CURRENT][i] = 0;
+			++i;
+		}
+	}
+	i = 0;
 	while (!current_true(pass))
 	{
 		i = 0;

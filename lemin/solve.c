@@ -149,35 +149,46 @@ void	solve(t_room *pass)
 
 	path = pass->final_head;
 	prev = NULL;
-	while (path && path->next)
-	{
-		dif = diff_prev(pass, path->len) + ((path->next->len - path->len) * path->nbr);
-		path->max_ants = dif + path->nbr;
-		path->prev = prev;
-		
-		if (pass->ants <= path->max_ants)
-			break ;
-		prev = path;
-		path = path->next;
-	}
-	path->prev = prev;
-	ants_move = NULL;
 	head = NULL;
-	head = path_setter(&ants_move, pass, &path, head);
-	t_ants *temp;
-	temp = head;
-	int k;
-	k = 0;
-	while (head)
+	ants_move = NULL;
+	// if start is connected to the end move all ants at the same time
+	if (path->len == 1)
 	{
-		head = print_ants_move(head, pass);
-		if (!head)
+		int current_ant = 0;
+		while (current_ant < pass->ants)
 		{
-			ants_move = NULL;
-			head = path_setter(&ants_move, pass, &path, head);
+			create_ants(&ants_move, current_ant++, path->move_head);
+			if (!head)
+				head = ants_move;
 		}
-		else
-			path_setter(&ants_move, pass, &path, head);
+		head = print_ants_move(head, pass);
+	}
+	else
+	{
+		while (path && path->next)
+		{
+			dif = diff_prev(pass, path->len) + ((path->next->len - path->len) * path->nbr);
+			path->max_ants = dif + path->nbr;
+			path->prev = prev;
+			
+			if (pass->ants <= path->max_ants)
+				break ;
+			prev = path;
+			path = path->next;
+		}
+		path->prev = prev;
+		head = path_setter(&ants_move, pass, &path, head);
+		while (head)
+		{
+			head = print_ants_move(head, pass);
+			if (!head)
+			{
+				ants_move = NULL;
+				head = path_setter(&ants_move, pass, &path, head);
+			}
+			else
+				path_setter(&ants_move, pass, &path, head);
+		}
 	}
 }
 
