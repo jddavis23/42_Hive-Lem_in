@@ -50,11 +50,11 @@ typedef struct  s_room
 	int		end;
 	int		ants;
 	int		total;
-	int		row;
+	int		row;//flag
 	int		min_row;
 	t_connect	*tmp_con;
 	t_connect	*head_con;
-	t_path	*head;
+	t_path	*head;//i don't think we are using this one
 	t_path	*final_head;
 }				t_room;
 
@@ -114,6 +114,8 @@ void	copy_to_path(t_room *pass, t_path **path, int **len);
 // path select
 void	initialize_path(t_room *pass, int i);
 void	path_select(t_path **path, t_room *pass, int **len, int *increase);
+void	create_path(t_path **path, t_room *pass, int nbr, int len);
+void	create_index(t_index **move, t_path **path, int i);
 
 // breadth first
 void	breadth_first(t_room *pass, int indx, int i);

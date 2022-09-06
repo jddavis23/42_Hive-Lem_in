@@ -3,12 +3,12 @@
 COUNT=$1
 while [[ $COUNT -gt 0 ]]
 do
-	/Users/molesen/Desktop/Hive/lemin/generator --big-superposition > big_superposition$COUNT.txt
-	/Users/molesen/Desktop/Hive/lemin/lem-in -r < big_superposition$COUNT.txt > results_big_superposition$COUNT.txt
+	/Users/molesen/Desktop/Hive/lemin/generator --big > big$COUNT.txt
+	/Users/molesen/Desktop/Hive/lemin/lem-in -r < big$COUNT.txt > results_big$COUNT.txt
 	# while read line
 	# do
 		
-	# done <big_superposition$COUNT.txt
+	# done <big$COUNT.txt
 	while read line
 	do
 		if [[ "$line" == *"row"* ]]
@@ -26,11 +26,11 @@ do
 			NUMB=${line//[^0-9]/}
 			#echo $NUMB
 		fi
-	done <results_big_superposition$COUNT.txt
+	done <results_big$COUNT.txt
 	if [[ PLUS2 -le NUMB ]]
 	then
-		rm big_superposition$COUNT.txt
-		rm results_big_superposition$COUNT.txt
+		rm big$COUNT.txt
+		rm results_big$COUNT.txt
 		printf "GOOD --- expected [$NUMB]  output [$PLUS2]\n"
 	else
 		printf "ERROR --- expected [$NUMB]  output [$PLUS2]\n"
