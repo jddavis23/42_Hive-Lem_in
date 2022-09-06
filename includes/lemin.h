@@ -101,6 +101,11 @@ void	create_index(t_index **move, t_path **path, int i);
 
 // breadth first
 void	breadth_first(t_room *pass, int indx, int i);
+void	travel_locked_path(t_room *pass, int indx, int *i);
+void	remove_branch(t_room *pass, int *i);
+void	set_correct_current_index(t_room *pass, int *i, int new_indx);
+void	update_non_locked_path(t_room *pass, int indx, int j, int *i);
+void	update_locked_path(t_room *pass, int indx, int j, int *i);
 void	calc_len(t_room *pass, int **len);
 void	create_len(int *array, int **len);
 void	reset_len(t_room *pass, int **len);
