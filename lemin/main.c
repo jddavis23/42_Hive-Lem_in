@@ -49,12 +49,10 @@ static int	create_used(t_room *pass)
 int	main(int argc, char **argv)
 {
 	t_room	*pass;
-	char	*input;
 	t_input	*build;
 
 	if (argc == 1 || (argc == 2 && ft_strcmp(argv[1], "-r") == 0))
 	{
-		input = NULL;
 		build = NULL;
 		pass = (t_room *) malloc(sizeof(t_room));
 		if (!pass)
@@ -63,16 +61,15 @@ int	main(int argc, char **argv)
 			pass->row = TRUE;
 		else
 			pass->row = FALSE;
-		if (create(pass, &build, &input) == ERROR)
+		if (create(pass, &build) == ERROR)
 			return (0);
-		//exit (0);
 		if (create_used(pass) == ERROR)
-			return (error_path(pass, input, TRUE));
-		if (initialize_path_finder(pass, input) == ERROR)
+			return (error_path(pass, &build, TRUE));
+		if (initialize_path_finder(pass, &build) == ERROR)
 			return (0);
 		ft_printf("%s\n", build->input);
 		solve(pass);
-		error_path(pass, input, FALSE);
+		error_path(pass, &build, FALSE); //need to make sure everything
 	}
 	else if (argv)
 		ft_printf("Usage: ./lem-in < maps/subject.map\n");

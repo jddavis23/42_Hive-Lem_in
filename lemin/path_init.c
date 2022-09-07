@@ -82,7 +82,7 @@ static int	unique_paths(t_room *pass)
 
 /*	initializes the functions that takes care of finding the paths	*/
 
-int	initialize_path_finder(t_room *pass, char *input)
+int	initialize_path_finder(t_room *pass, t_input **build)
 {
 	t_path	*path;
 	t_path	*final;
@@ -98,9 +98,8 @@ int	initialize_path_finder(t_room *pass, char *input)
 		exit (0);
 	}
 	if (!pass->final_head)
-		return (error_path(pass, input, TRUE));
+		return (error_path(pass, build, TRUE));
 	final = pass->final_head;
 	//printf_struct(pass);
-	//  exit(0);
 	return (0);
 }

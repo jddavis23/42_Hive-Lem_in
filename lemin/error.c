@@ -42,21 +42,27 @@ int	**free2d_int(int **links, int j, int end)
 
 /*	frees everything that needs to be freed	*/
 
-int	error_free(t_room *pass, char *input, int j, int first)
+int	error_free(t_room *pass, t_input **build, int j, int first)
 {
-	int i = 0;
 	if (first == FALSE)
 		ft_printf("{red}Error:{uncolor} during parsing phase\n");
-	if (pass->rooms)
-		pass->rooms = ft_free2d(pass->rooms);
-	if (pass->links)
-		pass->links = free2d_int(pass->links, j, pass->end);
+	
 	if (pass)
+	{
+		if (pass->rooms)
+			pass->rooms = ft_free2d(pass->rooms); //does this free start or end out of order
+		if (pass->links)
+			pass->links = free2d_int(pass->links, j, pass->end);
+		if (pass->info)
+			free2d_int(pass->info, pass->total, pass->total);
 		free(pass);
-	if (input)
-		i = 0;
-	//if (input)
-	//	free(input);
+	}
+	if (*build)
+	{
+		if ((*build)->input)
+			free ((*build)->input);
+		free(*build);
+	}
 	return (ERROR);
 }
 
@@ -111,11 +117,11 @@ void	del_path(t_path **path)
 **	upon error in path finding phase or upon finished program
 */
 
-int	error_path(t_room *pass, char *input, int first)
+int	error_path(t_room *pass, t_input **build, int first)
 {
 	if (first == TRUE)
 		ft_printf("{red}Error:{uncolor} no paths found\n");
 	if (pass->final_head)
 		del_path(&pass->final_head);
-	return (error_free(pass, input, pass->total, TRUE));
+	return (error_free(pass, build, pass->total, TRUE));
 }

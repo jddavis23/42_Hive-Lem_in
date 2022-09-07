@@ -2,7 +2,7 @@
 
 /*	function that creates the len array	*/
 
-void	create_len(int *array, int **len)
+int	create_len(int *array, int **len)
 {
 	int	i;
 
@@ -12,6 +12,8 @@ void	create_len(int *array, int **len)
 		i++;
 	}
 	*len = (int *)malloc(sizeof(int) * (i + 1));
+	if (!(*len))
+		return (-1);
 	i = 0;
 	while (array[i] != -1)
 	{
@@ -19,6 +21,7 @@ void	create_len(int *array, int **len)
 		++i;
 	}
 	(*len)[i] = -1;
+	return (1);
 }
 
 /*	resets array to containing all zeros	*/

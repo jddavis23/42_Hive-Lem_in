@@ -186,7 +186,7 @@ static void	breadth_first_init(t_room *pass, int *i)
 
 /*	core logic of calling breadth first and locking the paths	*/
 
-void	path_finder(t_path **path, t_room *pass)
+int	path_finder(t_path **path, t_room *pass)
 {
 	int	i;
 	int	*len;
@@ -194,7 +194,11 @@ void	path_finder(t_path **path, t_room *pass)
 
 	i = 0;
 	len = NULL;
-	create_len(pass->links[0], &len);
+	if (create_len(pass->links[0], &len) == ERROR)//STOPPPED HERE-------------
+	{
+		del_path(&pass->final_head);
+		return (-1);
+	}
 	while (pass->links[0][i] >= 0)
 		initialize_path(pass, i++);
 	increase = 0;
@@ -205,6 +209,7 @@ void	path_finder(t_path **path, t_room *pass)
 	{
 		create_path(path, pass, 1, 1);
 		create_index(&(*path)->move_head, path, pass->end);
+		free(len);
 		return ;
 	}
 	i = 0;
@@ -227,4 +232,6 @@ void	path_finder(t_path **path, t_room *pass)
 				break ;
 		}
 	}
+	free(len);
+	return (1);
 }
