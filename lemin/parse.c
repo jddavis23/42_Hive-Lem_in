@@ -111,6 +111,57 @@ int	create_connect(t_room *pass, int j)
 	return (1);
 }
 
+static int	create_links(t_room *pass, t_input **build, int i)
+{
+	int	j;
+	int	k;
+	int	count;
+	t_connect *temp;
+	char **input = NULL; //just for error function
+
+	if (duplicated(pass->rooms) == ERROR)
+	{
+		ft_printf("here5\n");
+		return (error_free(pass, *input, 0, FALSE));
+	}
+	j = 0;
+	while (pass->rooms[j])
+	{
+
+		if (create_connect(pass, 0) == -1)
+		{
+			//cleaned
+			exit (0);
+		}
+		count = count_in(pass->rooms[j], &(((*build)->input)[i]), pass);
+		if (count == -1)
+			exit (0);
+		pass->links[j] = (int *) malloc((pass->tmp_con->count) * sizeof(int));
+		if (!pass->links[j])
+		{
+			ft_printf("here4\n");
+			return (error_free(pass, *input, j, FALSE));
+		}
+		k = 0;
+		count = pass->tmp_con->count;
+		pass->tmp_con = NULL;
+		while (k < count)
+		{
+			pass->links[j][k] = -1;
+			if (pass->head_con->current_room != -1)
+			{
+				pass->links[j][k] = pass->head_con->current_room;
+			}
+			temp = pass->head_con->next;
+			free(pass->head_con);
+			pass->head_con = temp;
+			k++;
+		}
+		++j;
+	}
+	return (1);
+}
+
 int	create(t_room *pass, t_input **build, char **input)//char **input)
 {
 	int	i;
@@ -118,8 +169,8 @@ int	create(t_room *pass, t_input **build, char **input)//char **input)
 	int	k;
 	int	hold;
 	int p, m;
-	int	count;
-	t_connect *temp;
+	//int	count;
+	//t_connect *temp;
 
 	i = 0;
 	j = 1;
@@ -189,52 +240,52 @@ int	create(t_room *pass, t_input **build, char **input)//char **input)
 			}
 			else if (hold == 2)
 			{
-				if (duplicated(pass->rooms) == ERROR)
-				{
-					ft_printf("here5\n");
-					return (error_free(pass, *input, 0, FALSE));
-				}
-				j = 0;
-				while (pass->rooms[j])
-				{
+				// if (duplicated(pass->rooms) == ERROR)
+				// {
+				// 	ft_printf("here5\n");
+				// 	return (error_free(pass, *input, 0, FALSE));
+				// }
+				// j = 0;
+				// while (pass->rooms[j])
+				// {
 
-					if (create_connect(pass, 0) == -1)
-					{
-						//cleaned
-						exit (0);
-					}
+				// 	if (create_connect(pass, 0) == -1)
+				// 	{
+				// 		//cleaned
+				// 		exit (0);
+				// 	}
 
-					count = count_in(pass->rooms[j], &(((*build)->input)[i]), pass);
-					if (count == -1)
-						exit (0);
-					pass->links[j] = (int *) malloc((pass->tmp_con->count) * sizeof(int));
-					if (!pass->links[j])
-					{
-						ft_printf("here4\n");
-						return (error_free(pass, *input, j, FALSE));
-					}
-					k = 0;
-					count = pass->tmp_con->count;
-					pass->tmp_con = NULL;
-					while (k < count)
-					{
-						pass->links[j][k] = -1;
-						if (pass->head_con->current_room != -1)
-						{
-							pass->links[j][k] = pass->head_con->current_room;
-						}
-						temp = pass->head_con->next;
-						free(pass->head_con);
-						pass->head_con = temp;
-						k++;
-					}
-					++j;
-				}
-				return (0);
+				// 	count = count_in(pass->rooms[j], &(((*build)->input)[i]), pass);
+				// 	if (count == -1)
+				// 		exit (0);
+				// 	pass->links[j] = (int *) malloc((pass->tmp_con->count) * sizeof(int));
+				// 	if (!pass->links[j])
+				// 	{
+				// 		ft_printf("here4\n");
+				// 		return (error_free(pass, *input, j, FALSE));
+				// 	}
+				// 	k = 0;
+				// 	count = pass->tmp_con->count;
+				// 	pass->tmp_con = NULL;
+				// 	while (k < count)
+				// 	{
+				// 		pass->links[j][k] = -1;
+				// 		if (pass->head_con->current_room != -1)
+				// 		{
+				// 			pass->links[j][k] = pass->head_con->current_room;
+				// 		}
+				// 		temp = pass->head_con->next;
+				// 		free(pass->head_con);
+				// 		pass->head_con = temp;
+				// 		k++;
+				// 	}
+				// 	++j;
+				//}
+				//return (0);
+				return (create_links(pass, build, i));
 			}
 			++i;
 		}
 	}
-	
 	return (1);
 }
