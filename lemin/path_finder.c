@@ -205,12 +205,7 @@ void	path_finder(t_path **path, t_room *pass)
 	{
 		create_path(path, pass, 1, 1);
 		create_index(&(*path)->move_head, path, pass->end);
-		while (i < pass->total)
-		{
-			if (pass->info[CURRENT][i] != 0)
-				pass->info[CURRENT][i] = 0;
-			++i;
-		}
+		return ;
 	}
 	i = 0;
 	while (!current_true(pass))
@@ -231,49 +226,5 @@ void	path_finder(t_path **path, t_room *pass)
 			if (increase > 5)
 				break ;
 		}
-
-		/*
-		big-superposition
-		1: 5-7 83/83
-		2: 7-10& 54/54
-		3: 7&8&9 89/89
-		4: 5   65/65	oldversion: 66/65
-		5 : 12   66/66
-
-		big
-		1: 44/54	8 54/54
-		2: 11   72/72	old version: 73/72
-		3: 13-14 43/45
-		4: 13-15 48/67
-		5: 17 44/56
-
-		*/
-		//ft_printf("\n\n-------PATH IN STRUCT-------\n");
-		//printf_struct(pass);
-		//ft_printf("\n\n-------PATH IN STRUCT FINISH-------\n");
 	}
-	//exit(0);
-	//print_output(pass);
-	//print_output(pass);
-	//pass->info[PREV][55] = 39;
-
-	// ft_printf("{green}PRINT PRINT{uncolor}\n");
-	// i = 0;
-	// while (pass->links[0][i] != -1)
-	// {
-	// 	if (pass->info[PATH][pass->links[0][i]] == 2)
-	// 	{
-	// 		ft_printf("rooms: %s\n", pass->rooms[pass->links[0][i]]);
-	// 		int o = pass->info[PREV][pass->links[0][i]];
-	// 		while (o > 0)
-	// 		{
-	// 			ft_printf("prev: %s\n", pass->rooms[o]);
-	// 			o = pass->info[PREV][o];
-	// 		}
-	// 		ft_printf("\n");
-	// 	}
-	// 	++i;
-	// }
-	// printf_struct(pass);
-	//exit(0);
 }
