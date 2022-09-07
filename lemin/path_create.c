@@ -41,10 +41,12 @@ void	create_index(t_index **move, t_path **path, int i)
 	}
 	else
 	{
-		new = ft_indexnew(i);
-		new->next = (*path)->move;
-		(*path)->move_head = new;
-		(*path)->move = new;
+		(*path)->move->next = ft_indexnew(i);
+		(*path)->move = (*path)->move->next;
+		// new = ft_indexnew(i);
+		// new->next = (*path)->move;
+		// (*path)->move_head = new;
+		// (*path)->move = new;
 	}
 }
 
@@ -93,7 +95,7 @@ void	create_path(t_path **path, t_room *pass, int nbr, int len)
 void	copy_to_path(t_room *pass, t_path **path, int **len)
 {
 	int	i;
-	int	prev;
+	int	next;
 	int	nbr;
 	int	m;
 
@@ -106,16 +108,28 @@ void	copy_to_path(t_room *pass, t_path **path, int **len)
 		m++;
 	}*/
 	i = 0;
+	// while ((*len)[i] > 0)
+	// {
+	// 	prev = pass->info[PREV][(*len)[i]];
+	// 	create_path(path, pass, nbr++, pass->info[LEN][(*len)[i]]);
+	// 	create_index(&(*path)->move_head, path, pass->end);
+	// 	create_index(&(*path)->move_head, path, (*len)[i]);
+	// 	while (prev > 0)
+	// 	{
+	// 		create_index(&(*path)->move_head, path, prev);
+	// 		prev = pass->info[PREV][prev];
+	// 	}
+	// 	++i;
+	// }
 	while ((*len)[i] > 0)
 	{
-		prev = pass->info[PREV][(*len)[i]];
+		next = pass->info[NEXT][(*len)[i]];
 		create_path(path, pass, nbr++, pass->info[LEN][(*len)[i]]);
-		create_index(&(*path)->move_head, path, pass->end);
 		create_index(&(*path)->move_head, path, (*len)[i]);
-		while (prev > 0)
+		while (next > 0)
 		{
-			create_index(&(*path)->move_head, path, prev);
-			prev = pass->info[PREV][prev];
+			create_index(&(*path)->move_head, path, next);
+			next = pass->info[NEXT][next];
 		}
 		++i;
 	}

@@ -64,6 +64,30 @@ static int	 calc_min_row(t_room *pass, int **len)
 // 	}
 // }
 
+// static void	printf_struct(t_room *pass)
+// {
+// 	t_path *final;
+// 	t_index *temp;
+// 	int i;
+// 	final = pass->final_head;
+// 	i = 0;
+// 	ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+// 	while (final)
+// 	{
+// 		temp = final->move_head;
+// 		final->move = final->move_head;
+// 		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+// 		// while (final->move)
+// 		// {
+// 		// 	ft_printf("room: %s\n", pass->rooms[final->move->index]);
+// 		// 	final->move = final->move->next;
+// 		// }
+// 		final->move_head = temp;
+// 		++i;
+// 		final = final->next;
+// 	}
+// }
+
 void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 {
 	int	i;
@@ -76,12 +100,20 @@ void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 		copy_to_path(pass, path, len);
 		pass->min_row = temp_row;
 	}
-	else if (temp_row < pass->min_row)
+	else if (temp_row < pass->min_row)// || (temp_row <= pass->min_row && ))
 	{
 		del_path(&pass->final_head);
 		*path = NULL;
 		copy_to_path(pass, path, len);
 		pass->min_row = temp_row;
+		// nbr++;
+		// if (nbr == 4)
+		// {
+		// 	printf_struct(pass);
+		// 	//exit(0);
+		// 	*increase = 21;
+		// }
+		// ft_printf("nbr _ %d\n", nbr);
 		// ft_printf("NBR %d-----------------\n", nbr);
 			
 		// printf_struct(pass);
@@ -96,12 +128,17 @@ void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 		// }
 	}
 	else
+	{
 		(*increase)++;
+	}
 	reset_len(pass, len);
 	i = -1;
 	while (pass->links[0][++i] >= 0)
 	{
 		if (pass->info[PATH][pass->links[0][i]] == 0)
+		{
+			//ft_printf("Room: %s\n", pass->rooms[pass->links[0][i]]);
 			initialize_path(pass, i);
+		}
 	}
 }

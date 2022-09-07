@@ -54,7 +54,7 @@ static void	find_new_branches(t_room *pass, int indx, int *i)
 			update_locked_path(pass, indx, j, i);
 		else if (pass->info[PATH][pass->links[indx][j]] == 0)
 			update_non_locked_path(pass, indx, j, i);
-		else if (pass->info[PATH][pass->links[indx][j]] == 1 && pass->info[LEN][indx] + 1 < pass->info[LEN][pass->links[indx][j]] && \
+		else if (pass->info[PATH][pass->links[indx][j]] == 1 && pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->links[indx][j]] && \
 			pass->info[PATH][pass->info[PREV][pass->links[indx][j]]] == 3)
 		{
 			pass->info[PREV][pass->links[indx][j]] = indx;

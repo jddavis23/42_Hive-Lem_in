@@ -100,7 +100,13 @@ int	initialize_path_finder(t_room *pass, char *input)
 	if (!pass->final_head)
 		return (error_path(pass, input, TRUE));
 	final = pass->final_head;
-	//printf_struct(pass);
-	//  exit(0);
+	// printf_struct(pass);
+	// exit(0);
 	return (0);
 }
+
+/*
+
+make ssure it selects the path 6 and make sure it also use it when printing
+
+*/

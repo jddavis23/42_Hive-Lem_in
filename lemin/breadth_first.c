@@ -74,7 +74,7 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 			pass->info[PATH][pass->info[PREV][pass->links[indx][j]]] >= 2)
 			update_locked_path(pass, indx, j, i);
 		else if (pass->info[PATH][pass->links[indx][j]] == 1 && \
-			pass->info[LEN][indx] + 1 < pass->info[LEN][pass->links[indx][j]] && \
+			pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->links[indx][j]] && \
 			pass->links[indx][j] != pass->info[PREV][indx]
 		)
 		{
