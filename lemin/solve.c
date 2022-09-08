@@ -69,7 +69,7 @@ t_ants	*print_ants_move(t_ants *head, t_room *pass, int line)
 
 	send = head;
 	i = 0;
-	if (pass->row == TRUE)
+	if (pass->print_row == TRUE)
 		ft_printf("{purple}row: %d{uncolor}\n", line);
 	while (head)
 	{

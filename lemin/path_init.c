@@ -12,25 +12,34 @@
 
 # include "../includes/lemin.h"
 
-static void	printf_struct(t_room *pass)
+void	printf_struct(t_room *pass)
 {
-	t_path *final;
-	t_index *temp;
-	int i;
+	t_path	*final;
+	t_index	*temp;
+	int		i;
+
 	final = pass->final_head;
 	i = 0;
 	ft_printf("\n{green}STRUCT: PATHS COLLECTED{uncolor} \n");
 	while (final)
 	{
 		temp = final->move_head;
-		final->move = final->move_head;
-		ft_printf("PATH [%d] (Len: %d	nbr of struct: %d)\n", final->nbr, final->len, i);
-		while (final->move)
+		ft_printf("PATH [%d] (Len: %d - nbr of struct: %d)\n", final->nbr, final->len, i);
+		if (pass->print_paths == TRUE)
 		{
-			ft_printf("room: %s\n", pass->rooms[final->move->index]);
-			final->move = final->move->next;
+			final->move = final->move_head;
+			ft_printf("	Rooms: ");
+			while (final->move)
+			{
+				ft_printf("%s ", pass->rooms[final->move->index]);
+				final->move = final->move->next;
+				if (final->move)
+					ft_printf("-> ");
+				else
+					ft_printf("\n\n");
+			}
+			final->move_head = temp;
 		}
-		final->move_head = temp;
 		++i;
 		final = final->next;
 	}
