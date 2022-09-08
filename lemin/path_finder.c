@@ -143,21 +143,21 @@ static void	breadth_first_init(t_room *pass, int *i)
 	//int	shortest;
 
 	c_len = current_len(pass);
-	if (on_lock_path(pass, *i, c_len) == TRUE)
-	{
-		while (*i < c_len)
-		{
-			if (pass->info[CURRENT][*i] != 0 && pass->info[PATH][pass->info[CURRENT][*i]] >= 2)
-			{
-				breadth_first(pass, pass->info[CURRENT][*i], *i);
-				//if (pass->info[PATH][pass->end] == 1)
-				//	return ;
-			}
-			++(*i);
-		}
-	}
-	else
-	{
+	// if (on_lock_path(pass, *i, c_len) == TRUE)
+	// {
+	// 	while (*i < c_len)
+	// 	{
+	// 		if (pass->info[CURRENT][*i] != 0 && pass->info[PATH][pass->info[CURRENT][*i]] >= 2)
+	// 		{
+	// 			breadth_first(pass, pass->info[CURRENT][*i], *i);
+	// 			//if (pass->info[PATH][pass->end] == 1)
+	// 			//	return ;
+	// 		}
+	// 		++(*i);
+	// 	}
+	// }
+	// else
+	// {
 		// int temp = 0;
 		// shortest = shortest_path(pass, *i, c_len);
 		while (*i < c_len)
@@ -181,7 +181,7 @@ static void	breadth_first_init(t_room *pass, int *i)
 		// 	pass->info[PATH][pass->end] = 1;
 		// 	*i = temp;
 		// }
-	}
+	//}
 }
 
 static void	breadth_first_init2(t_room *pass, int *i, int *end)
@@ -239,6 +239,7 @@ static int	choose_shortest_path(t_room *pass)
 {
 	int	i;
 	int	shortest;
+	//int count = 0;
 
 	i = 0;
 	shortest = 0;
@@ -246,7 +247,12 @@ static int	choose_shortest_path(t_room *pass)
 	{
 		if (pass->info[PATH][pass->links[pass->end][i]] == 1 && (!shortest || pass->info[LEN][pass->links[pass->end][i]] < pass->info[LEN][shortest]))
 		{
+			//count++;
+			//if (count <= 2)
 			shortest = pass->links[pass->end][i];
+			
+			ft_printf("ROOM: %s, PATH: %d, LEN: %d\n", pass->rooms[shortest], pass->info[PATH][shortest], pass->info[LEN][shortest]);
+	
 		}
 		++i;
 	}
@@ -295,7 +301,7 @@ void	path_finder(t_path **path, t_room *pass)
 		return ;
 	}
 	i = 0;
-	while (i != 0 && !current_true(pass))
+	while (!current_true(pass))
 	{
 		i = 0;
 		breadth_first_init(pass, &i);
@@ -314,6 +320,7 @@ void	path_finder(t_path **path, t_room *pass)
 				break ;
 		}
 	}
+	//exit(0);
 	//return ;
 	// trying out new algo to see if this method gives a better result
 	// finish all paths before choosing which path to go with
@@ -353,6 +360,7 @@ void	path_finder(t_path **path, t_room *pass)
 		// }
 		//ft_printf("WHILE BREADTH FIRST\n");
 	}
+	//exit(0);
 	//print_output(pass);
 	//ft_printf("passs end: %d\n", pass->info[PATH][pass->end]);
 	//exit(0);

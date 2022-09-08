@@ -77,11 +77,14 @@ static int	 calc_min_row(t_room *pass, int **len)
 // 		temp = final->move_head;
 // 		final->move = final->move_head;
 // 		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
-// 		// while (final->move)
-// 		// {
-// 		// 	ft_printf("room: %s\n", pass->rooms[final->move->index]);
-// 		// 	final->move = final->move->next;
-// 		// }
+// 		if (!ft_strcmp(pass->rooms[final->move->index], "Tgz6"))
+// 		{
+// 			while (final->move)
+// 			{
+// 				ft_printf("room: %s\n", pass->rooms[final->move->index]);
+// 				final->move = final->move->next;
+// 			}
+// 		}
 // 		final->move_head = temp;
 // 		++i;
 // 		final = final->next;
@@ -95,6 +98,7 @@ void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 	//static int nbr = 0;
 
 	temp_row = calc_min_row(pass, len);
+	//ft_printf("temp: %d prevrow: %d\n", temp_row, pass->min_row);
 	if (!pass->final_head)
 	{
 		copy_to_path(pass, path, len);
@@ -107,9 +111,12 @@ void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 		copy_to_path(pass, path, len);
 		pass->min_row = temp_row;
 		// nbr++;
-		// if (nbr == 1)
+		// ft_printf("\n----------------------\n");
+		// printf_struct(pass);
+		
+		// if (nbr == 10)
 		// {
-		// 	printf_struct(pass);
+		// 	//printf_struct(pass);
 		// 	//exit(0);
 		// 	*increase = 21;
 		// }
