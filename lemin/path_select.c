@@ -107,7 +107,7 @@ void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 		copy_to_path(pass, path, len);
 		pass->min_row = temp_row;
 		// nbr++;
-		// if (nbr == 4)
+		// if (nbr == 1)
 		// {
 		// 	printf_struct(pass);
 		// 	//exit(0);

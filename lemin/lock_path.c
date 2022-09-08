@@ -166,8 +166,22 @@ void	delete_non_found_paths(t_room *pass, int indx)
 		}
 		++i;
 	}
+	int next;
+	// while (pass->links[0][i] >= 0)
+	// {
+	// 	if (pass->info[PATH][pass->links[0][i]] == 4)
+	// 	{
+	// 		next = pass->links[0][i];
+	// 		while (next != 0)
+	// 		{
+	// 			pass->info[PATH][next] = 2;
+	// 			next = pass->info[NEXT][next];
+	// 		}
+	// 		break ;
+	// 	}
+	// 	++i;
+	// }
 	i = 0;
-	int next = 0;
 	while (pass->links[0][i] >= 0)
 	{
 		count = 1;

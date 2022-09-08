@@ -56,6 +56,22 @@ void	update_non_locked_path(t_room *pass, int indx, int j, int *i)
 	}
 }
 
+static void	update_len(t_room *pass, int indx)
+{
+	int	i;
+
+	i = 0;
+	while (pass->links[indx][i] >= 0)
+	{
+		if (pass->info[PREV][pass->links[indx][i]] == indx)
+		{
+			pass->info[LEN][pass->links[indx][i]] = pass->info[LEN][indx] + 1;
+			update_len(pass, pass->links[indx][i]);
+		}
+		++i;
+	}
+}
+
 /*
 **	when moving through a non-locked path it will check for valid rooms to move into
 **	valid rooms contain the value 0 or 2 in the pass->info[PATH]
@@ -82,6 +98,7 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 			// not quite sure why it helped on big5.txt
 			pass->info[PREV][pass->links[indx][j]] = indx;
 			pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
+			update_len(pass, pass->links[indx][j]);
 			//set_correct_current_index(pass, i, pass->links[indx][j]);
 		}
 		++j;
