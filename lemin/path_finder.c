@@ -245,14 +245,14 @@ static int	choose_shortest_path(t_room *pass)
 	shortest = 0;
 	while (pass->links[pass->end][i] >= 0)
 	{
+		// if (pass->info[PATH][pass->links[pass->end][i]] == 1)
+		// 	ft_printf("ROOM: %s, PATH: %d, LEN: %d\n", pass->rooms[pass->links[pass->end][i]], pass->info[PATH][pass->links[pass->end][i]], pass->info[LEN][pass->links[pass->end][i]]);
 		if (pass->info[PATH][pass->links[pass->end][i]] == 1 && (!shortest || pass->info[LEN][pass->links[pass->end][i]] < pass->info[LEN][shortest]))
 		{
 			//count++;
 			//if (count <= 2)
 			shortest = pass->links[pass->end][i];
-			
-			ft_printf("ROOM: %s, PATH: %d, LEN: %d\n", pass->rooms[shortest], pass->info[PATH][shortest], pass->info[LEN][shortest]);
-	
+			//ft_printf("ROOM: %s, PATH: %d, LEN: %d\n", pass->rooms[shortest], pass->info[PATH][shortest], pass->info[LEN][shortest]);
 		}
 		++i;
 	}
@@ -301,7 +301,7 @@ void	path_finder(t_path **path, t_room *pass)
 		return ;
 	}
 	i = 0;
-	while (!current_true(pass))
+	while (i != 0 && !current_true(pass))
 	{
 		i = 0;
 		breadth_first_init(pass, &i);
@@ -316,7 +316,7 @@ void	path_finder(t_path **path, t_room *pass)
 			// 	exit(0);
 			//ft_printf("START OF SEARCH ---\n");
 		
-			if (increase > 5)
+			if (increase > 10)
 				break ;
 		}
 	}

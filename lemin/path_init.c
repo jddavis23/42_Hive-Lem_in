@@ -19,12 +19,12 @@ static void	printf_struct(t_room *pass)
 	int i;
 	final = pass->final_head;
 	i = 0;
-	ft_printf("\n{green}after sort: finalS:{uncolor} \n");
+	ft_printf("\n{green}STRUCT: PATHS COLLECTED{uncolor} \n");
 	while (final)
 	{
 		temp = final->move_head;
 		final->move = final->move_head;
-		ft_printf("final\nnbr: %d	Len: %d	nbr of struct: %d\n", final->nbr, final->len, i);
+		ft_printf("PATH [%d] (Len: %d	nbr of struct: %d)\n", final->nbr, final->len, i);
 		while (final->move)
 		{
 			ft_printf("room: %s\n", pass->rooms[final->move->index]);
