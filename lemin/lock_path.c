@@ -9,15 +9,21 @@ static int	len_check(t_room *pass, int indx)
 	i = pass->info[LEN][pass->info[JUMP][indx]];
 	i += pass->info[LEN][indx];
 	start = indx;
+	ft_printf("\n\n");
 	while (pass->info[NEXT][indx] != pass->end && pass->info[PATH][indx])
 	{
 		indx = pass->info[NEXT][indx];
+		ft_printf("Room-----: %s[%d]	PATH[%d]	PREV: [%d]	NEXT: [%d]	LEN: [%d]\n", pass->rooms[indx], indx, pass->info[PATH][indx], pass->info[PREV][indx], pass->info[NEXT][indx], pass->info[LEN][indx]);
+		if (pass->info[PATH][indx] == 2)
+			return (TRUE);
 		if (pass->info[JUMP][indx] && pass->info[PATH][pass->info[JUMP][indx]] == 1 \
 		 && pass->info[LEN][pass->info[JUMP][indx]] + pass->info[LEN][indx] < i )// && pass->info[JUMP][indx] != start)
 		{
+			ft_printf("EREE\n");
 			return (FALSE);
-		} 
+		}
 	}
+	ft_printf("\n\n");
 	return (TRUE);
 }
 
@@ -35,17 +41,13 @@ static int	len_check(t_room *pass, int indx)
 // 	return (FALSE);
 // }
 
-static void	lock_path_helper(t_room *pass, int indx, int *next, int for_now)
-{
-
-}
-
-static void	lock_path(t_room *pass, int indx)
+void	lock_path(t_room *pass, int indx, int *error)
 {
 	int	hold;
 	int	for_now;
 	int	value;
 	int	next;
+	//int nbr = 0;
 
 	next = 0;
 	hold = 0;
@@ -70,11 +72,16 @@ static void	lock_path(t_room *pass, int indx)
 			{
 				next = pass->info[NEXT][indx];
 			}
+			//ft_printf("Room1: %s[%d]	PATH[%d]	PREV: [%d]	NEXT: [%d]	LEN: [%d]\n", pass->rooms[indx], indx, pass->info[PATH][indx], pass->info[PREV][indx], pass->info[NEXT][indx], pass->info[LEN][indx]);
+		
 			pass->info[NEXT][indx] = for_now;
+			//ft_printf("Room1: %s[%d]	PATH[%d]	PREV: [%d]	NEXT: [%d]	LEN: [%d]\n", pass->rooms[indx], indx, pass->info[PATH][indx], pass->info[PREV][indx], pass->info[NEXT][indx], pass->info[LEN][indx]);
 		}
 		else if (pass->info[PATH][indx] == 3 && value == 3 && \
 			pass->info[JUMP][indx] && !hold)
 		{
+			//ft_printf("Room2: %s[%d]	PATH[%d]	PREV: [%d]	NEXT: [%d]	LEN: [%d]	JUMP: [%d]\n", pass->rooms[indx], indx, pass->info[PATH][indx], pass->info[PREV][indx], pass->info[NEXT][indx], pass->info[LEN][indx], pass->info[JUMP][indx]);
+
 			if ((len_check(pass, indx) && !hold))
 			{
 				pass->info[PREV][indx] = pass->info[JUMP][indx];
@@ -93,6 +100,8 @@ static void	lock_path(t_room *pass, int indx)
 			next = pass->info[NEXT][indx];
 			pass->info[NEXT][indx] = for_now;
 			hold = 0;
+			//ft_printf("Room3: %s[%d]	[%d]	[%d]	[%d]\n", pass->rooms[indx], indx, pass->info[PREV][indx], pass->info[NEXT][indx], pass->info[LEN][indx]);
+
 		}
 		else if (pass->info[PATH][indx] == 3 && value == 3 && \
 			!pass->info[JUMP][indx])
@@ -108,8 +117,24 @@ static void	lock_path(t_room *pass, int indx)
 				pass->info[NEXT][indx] = for_now;
 			}
 			hold = 0;
+			//ft_printf("Room4: %s[%d]	[%d]	[%d]	[%d]\n", pass->rooms[indx], indx, pass->info[PREV][indx], pass->info[NEXT][indx], pass->info[LEN][indx]);
+
 		}
-		else
+		//ft_printf("Room2: %s[%d]	PATH[%d]	PREV: [%d]	NEXT: [%d]	LEN: [%d]	JUMP: [%d]\n", pass->rooms[indx], indx, pass->info[PATH][indx], pass->info[PREV][indx], pass->info[NEXT][indx], pass->info[LEN][indx], pass->info[JUMP][indx]);
+
+		if (pass->info[PREV][indx] != 0 && pass->info[NEXT][indx] == pass->info[PREV][indx])
+		{
+			*error = TRUE;
 			return ;
+		}
+		//else
+		//{
+		//	ft_printf("Room: %s[%d]	[%d]	[%d]	[%d]\n", pass->rooms[indx], indx, pass->info[PREV][indx], pass->info[NEXT][indx]);
+		
+		//	return ;
+		//}
+		//if (indx == 564 && ++nbr > 10)
+		//	exit(0);
+		//ft_printf("Room!: %s[%d]	PATH[%d]	PREV: [%d]	NEXT: [%d]	LEN: [%d]\n", pass->rooms[indx], indx, pass->info[PATH][indx], pass->info[PREV][indx], pass->info[NEXT][indx], pass->info[LEN][indx]);
 	}
 }

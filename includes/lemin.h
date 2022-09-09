@@ -130,6 +130,7 @@ int	create_len(int *array, int **len);
 void	reset_len(t_room *pass, int **len);
 
 void	lock_path_init(t_room *pass, int indx);
+void	lock_path(t_room *pass, int indx, int *error);
 
 //didnt know where to put
 int	create_connect(t_room *pass, int j);

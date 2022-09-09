@@ -29,10 +29,15 @@ void	lock_path_init(t_room *pass, int indx)
 {
 	int	i;
 	int	prev;
+	int	error;
 
 	len_back_front(pass);
-	lock_path(pass, indx);
+	error = FALSE;
+	lock_path(pass, indx, &error);
+	if (error == TRUE)
+		return ;
 	i = 0;
+	ft_printf("HERE\n");
 	while (pass->links[pass->end][i] >= 0)
 	{
 		if (pass->info[NEXT][pass->links[pass->end][i]] == pass->end)
@@ -46,6 +51,7 @@ void	lock_path_init(t_room *pass, int indx)
 		}
 		++i;
 	}
+	ft_printf("HERE\n");
 	i = 0;
 	while (i < pass->total)
 	{
@@ -65,18 +71,7 @@ void	lock_path_init(t_room *pass, int indx)
 			pass->info[LOCKED][i] = 0;
 			pass->info[MOVE][i] = 0;
 		}
-		/*if (pass->info[NEXT][i] && pass->info[PATH][i] == 3)
-			pass->info[PATH][i] = 2;*/
-		/*else if (pass->info[PATH][i] == 3)
-		{
-			pass->info[PATH][i] = 2;
-			pass->info[JUMP][i] = 0;
-			pass->info[LOCKED][i] = 0;
-			pass->info[MOVE][i] = 0;
-		}*/
 		pass->info[CURRENT][i] = FALSE;
 		++i;
 	}
-	
-	//exit (0);
 }
