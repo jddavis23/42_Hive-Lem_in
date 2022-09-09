@@ -57,6 +57,9 @@ static void	print_help(void)
 
 static void	update_flags(int argc, char *str, t_room *pass)
 {
+	pass->print_row = FALSE;
+	pass->print_paths = FALSE;
+	pass->print_len = FALSE;
 	if (argc == 2)
 	{
 		if (!ft_strcmp(str, "-r"))
@@ -65,12 +68,6 @@ static void	update_flags(int argc, char *str, t_room *pass)
 			pass->print_paths = TRUE;
 		else if (!ft_strcmp(str, "-l"))
 			pass->print_len = TRUE;
-	}
-	else
-	{
-		pass->print_row = FALSE;
-		pass->print_paths = FALSE;
-		pass->print_len = FALSE;
 	}
 }
 

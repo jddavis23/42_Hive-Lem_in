@@ -101,6 +101,13 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 			update_len(pass, pass->links[indx][j]);
 			//set_correct_current_index(pass, i, pass->links[indx][j]);
 		}
+		// else if (pass->info[PATH][pass->links[indx][j]] == 3 && \
+		// 	pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->info[JUMP][pass->links[indx][j]]])
+		// {
+		// 	pass->info[JUMP][pass->links[indx][j]] = indx;
+		// 	pass->info[LOCKED][*i] = TRUE;
+		// 	set_correct_current_index(pass, i, pass->links[indx][j]);
+		// }
 		++j;
 	}
 }
