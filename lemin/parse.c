@@ -207,7 +207,7 @@ int	create(t_room *pass, t_input **build, char **input)//char **input)
 					hold = pass->total - 1;
 				if (pass->rooms[hold])
 				{
-					ft_printf("here6\n");
+					//ft_printf("here6\n");
 					return (error_free(pass, *input, 0, FALSE));
 				}
 				pass->rooms[hold] = ft_strnew(ft_strlen_stop(&(((*build)->input)[i]), ' '));
