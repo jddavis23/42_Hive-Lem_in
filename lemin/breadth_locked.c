@@ -1,5 +1,14 @@
 #include "../includes/lemin.h"
 
+/*	removes indx from current aka kills branch	*/
+
+void	remove_branch(t_room *pass, int *i)
+{
+	pass->info[CURRENT][*i] = 0;
+	pass->info[LOCKED][*i] = 0;
+	pass->info[MOVE][*i] = 0;
+}
+
 /*	update the locked path values	*/
 
 void	update_locked_path(t_room *pass, int indx, int j, int *i)

@@ -32,15 +32,6 @@ void	set_correct_current_index(t_room *pass, int *i, int new_indx)
 	}
 }
 
-/*	removes indx from current aka kills branch	*/
-
-void	remove_branch(t_room *pass, int *i)
-{
-	pass->info[CURRENT][*i] = 0;
-	pass->info[LOCKED][*i] = 0;
-	pass->info[MOVE][*i] = 0;
-}
-
 /*	update non-locked path values	*/
 
 void	update_non_locked_path(t_room *pass, int indx, int j, int *i)
@@ -105,8 +96,8 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 		// 	pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->info[JUMP][pass->links[indx][j]]])
 		// {
 		// 	pass->info[JUMP][pass->links[indx][j]] = indx;
-		// 	pass->info[LOCKED][*i] = TRUE;
-		// 	set_correct_current_index(pass, i, pass->links[indx][j]);
+		// 	// pass->info[LOCKED][*i] = TRUE;
+		// 	// set_correct_current_index(pass, i, pass->links[indx][j]);
 		// }
 		++j;
 	}
