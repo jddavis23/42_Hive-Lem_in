@@ -36,6 +36,8 @@ static int	on_lock_path(t_room *pass, int *i, int c_len)
 	return (FALSE);
 }
 
+/*	breadth first initializer with the base logic of the second algorithm	*/
+
 static void	breadth_second_init(t_room *pass, int *i, int *end)
 {
 	int	c_len;
@@ -59,6 +61,11 @@ static void	breadth_second_init(t_room *pass, int *i, int *end)
 	}
 }
 
+/*
+**	runs breadth first through the whole thing and then selects with this
+**	function the shortest of all of the paths
+*/
+
 static int	choose_shortest_path(t_room *pass)
 {
 	int	i;
@@ -74,6 +81,8 @@ static int	choose_shortest_path(t_room *pass)
 	}
 	return (shortest);
 }
+
+/*	second algorithm initializer	*/
 
 int	second_algorithm(t_path **path, t_room *pass, int **len, int i)
 {

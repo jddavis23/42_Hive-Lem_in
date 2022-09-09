@@ -46,7 +46,6 @@ int	error_free(t_room *pass, t_input **build, int j, int first)
 {
 	if (first == FALSE)
 		ft_printf("{red}Error:{uncolor} during parsing phase\n");
-	
 	if (pass)
 	{
 		if (pass->rooms)

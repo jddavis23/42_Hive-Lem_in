@@ -23,27 +23,12 @@ static int	len_check(t_room *pass, int indx)
 	return (TRUE);
 }
 
-// static void	jump_check(t_rooom *pass, int indx)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (pass->links[indx][i] != -1)
-// 	{
-// 		if (pass->info[JUMP][pass->links[indx][i]] == indx)
-// 			return (TRUE);
-// 		++i;
-// 	}
-// 	return (FALSE);
-// }
-
 void	lock_path(t_room *pass, int indx, int *error)
 {
 	int	hold;
 	int	for_now;
 	int	value;
 	int	next;
-	//int nbr = 0;
 
 	next = 0;
 	hold = 0;

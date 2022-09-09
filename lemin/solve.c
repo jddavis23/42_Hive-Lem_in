@@ -124,4 +124,6 @@ void	solve(t_room *pass)
 	}
 	else
 		solve_calc(pass, ants_move, head);
+	if (pass->print_len || pass->print_paths)
+		printf_struct(pass);
 }

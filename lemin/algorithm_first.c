@@ -27,7 +27,7 @@ int	current_len(t_room *pass)
 	return (i + 2);
 }
 
-/*	breadth first initializer	*/
+/*	breadth first initializer with the logic of the first algorithm	*/
 
 static void	breadth_first_init(t_room *pass, int *i)
 {
@@ -45,6 +45,8 @@ static void	breadth_first_init(t_room *pass, int *i)
 		++(*i);
 	}
 }
+
+/*	first algorithm initializer	*/
 
 int	first_algorithm(t_path **path, t_room *pass, int **len)
 {

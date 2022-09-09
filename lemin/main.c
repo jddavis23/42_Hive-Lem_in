@@ -35,18 +35,11 @@ static int	create_used(t_room *pass)
 		!pass->info[LOCKED] || !pass->info[MOVE])
 		return (ERROR);
 	while (i < pass->total)
-	{
-		pass->info[PATH][i] = FALSE;
-		pass->info[PREV][i] = FALSE;
-		pass->info[LEN][i] = FALSE;
-		pass->info[NEXT][i] = FALSE;
-		pass->info[JUMP][i] = FALSE;
-		pass->info[LOCKED][i] = FALSE;
-		pass->info[MOVE][i] = FALSE;
-		pass->info[CURRENT][i++] = FALSE;
-	}
+		info_set_to_zero(pass, i++);
 	return (0);
 }
+
+/*	prints help information about how to use the flags to the terminal	*/
 
 static void	print_help(void)
 {
@@ -57,6 +50,8 @@ static void	print_help(void)
 	ft_printf("		-l :	prints found paths - basic information ex len\n");
 	ft_printf("		-c :	prints total row count without ants movement\n\n");
 }
+
+/*	updates the flags in the struct to either TRUE or FALSE	*/
 
 static void	update_flags(int argc, char *str, t_room *pass)
 {
