@@ -178,6 +178,18 @@ static int	start_and_end(t_room *pass,	int hold, t_input **build, int *i)
 	return (TRUE);
 }
 
+static void	set_val(t_room *pass, t_input **build, int *hold)
+{
+	*hold = ERROR;
+	pass->rooms = NULL;
+	pass->links = NULL;
+	pass->tmp_con = NULL;
+	pass->head_con = NULL;
+	pass->info = NULL;
+	pass->total = file_save(pass, build);//input);
+	pass->end = pass->total - 1;
+}
+
 int	create(t_room *pass, t_input **build)//char **input)
 {
 	int	i;
@@ -186,20 +198,11 @@ int	create(t_room *pass, t_input **build)//char **input)
 
 	i = 0;
 	j = 1;
-	hold = ERROR;
-	pass->rooms = NULL;
-	pass->links = NULL;
-	pass->tmp_con = NULL;
-	pass->head_con = NULL;
-	pass->info = NULL;
-	
-	pass->total = file_save(pass, build);//input);
-	pass->end = pass->total - 1;
+	set_val(pass, build, &hold);
 	if (pass->total == ERROR)
 		return (error_free(pass, build, 0, TRUE));
 	if (pass->total > 0)
 	{
-
 		pass->rooms = (char **) malloc((pass->total + 1) * sizeof(char *));
 		pass->links = (int **) malloc(pass->total * sizeof(int *));
 		if (!pass->rooms || !pass->links)
