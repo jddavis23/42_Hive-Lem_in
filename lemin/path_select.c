@@ -106,7 +106,7 @@ static void	reset_locked_len(t_room *pass)
 	while (pass->links[0][i] >= 0)
 	{
 		count = 1;
-		if (pass->info[PATH][pass->links[0][i]] == 2)//(pass->info[PATH][pass->links[pass->end][i]] == 1)
+		if (pass->info[PATH][pass->links[0][i]] == 2)
 		{
 			next = pass->links[0][i];
 			while (next != 0)
@@ -154,13 +154,7 @@ void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 		// printf_struct(pass);
 		// nbr++;
 		// ft_printf("temp row: %d	pass->min_row: %d\n", temp_row, pass->min_row);
-			
-		// if (nbr > 8)
-		// {
-		// 	//ft_printf("temp row: %d	pass->min_row: %d\n", temp_row, pass->min_row);
-		// 	exit(0);
-		// 	*increase = 50;
-		// }
+		
 	}
 	else
 	{
