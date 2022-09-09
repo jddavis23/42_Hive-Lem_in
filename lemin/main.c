@@ -52,7 +52,8 @@ static void	print_help(void)
 	ft_printf("		-h :	display help\n");
 	ft_printf("		-r :	prints row number\n");
 	ft_printf("		-p :	prints found paths - all information\n");
-	ft_printf("		-l :	prints found paths - basic information ex len\n\n");
+	ft_printf("		-l :	prints found paths - basic information ex len\n");
+	ft_printf("		-c :	prints total row count without ants movement\n\n");
 }
 
 static void	update_flags(int argc, char *str, t_room *pass)
@@ -60,6 +61,7 @@ static void	update_flags(int argc, char *str, t_room *pass)
 	pass->print_row = FALSE;
 	pass->print_paths = FALSE;
 	pass->print_len = FALSE;
+	pass->print_count = FALSE;
 	if (argc == 2)
 	{
 		if (!ft_strcmp(str, "-r"))
@@ -68,6 +70,8 @@ static void	update_flags(int argc, char *str, t_room *pass)
 			pass->print_paths = TRUE;
 		else if (!ft_strcmp(str, "-l"))
 			pass->print_len = TRUE;
+		else if (!ft_strcmp(str, "-c"))
+			pass->print_count = TRUE;
 	}
 }
 
@@ -78,7 +82,8 @@ int	main(int argc, char **argv)
 	t_input	*build;
 
 	if (argc == 1 || (argc == 2 && (!ft_strcmp(argv[1], "-r") || \
-		!ft_strcmp(argv[1], "-p") || !ft_strcmp(argv[1], "-l"))))
+		!ft_strcmp(argv[1], "-p") || !ft_strcmp(argv[1], "-l") || \
+		!ft_strcmp(argv[1], "-c"))))
 	{
 		input = NULL;
 		build = NULL;

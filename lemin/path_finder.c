@@ -112,6 +112,7 @@ static int	on_lock_path(t_room *pass, int i, int c_len)
 {
 	while (i < c_len)
 	{
+		ft_printf("path: %d, i: %d\n", pass->info[PATH][pass->info[CURRENT][i]], i);
 		if (pass->info[PATH][pass->info[CURRENT][i]] >= 2)
 			return (TRUE);
 		++i;
@@ -143,21 +144,21 @@ static void	breadth_first_init(t_room *pass, int *i)
 	//int	shortest;
 
 	c_len = current_len(pass);
-	// if (on_lock_path(pass, *i, c_len) == TRUE)
-	// {
-	// 	while (*i < c_len)
-	// 	{
-	// 		if (pass->info[CURRENT][*i] != 0 && pass->info[PATH][pass->info[CURRENT][*i]] >= 2)
-	// 		{
-	// 			breadth_first(pass, pass->info[CURRENT][*i], *i);
-	// 			//if (pass->info[PATH][pass->end] == 1)
-	// 			//	return ;
-	// 		}
-	// 		++(*i);
-	// 	}
-	// }
-	// else
-	// {
+	if (on_lock_path(pass, *i, c_len) == TRUE)
+	{
+		while (*i < c_len)
+		{
+			if (pass->info[CURRENT][*i] != 0 && pass->info[PATH][pass->info[CURRENT][*i]] >= 2)
+			{
+				breadth_first(pass, pass->info[CURRENT][*i], *i);
+				//if (pass->info[PATH][pass->end] == 1)
+				//	return ;
+			}
+			++(*i);
+		}
+	}
+	else
+	{
 		// int temp = 0;
 		// shortest = shortest_path(pass, *i, c_len);
 		while (*i < c_len)
@@ -181,7 +182,7 @@ static void	breadth_first_init(t_room *pass, int *i)
 		// 	pass->info[PATH][pass->end] = 1;
 		// 	*i = temp;
 		// }
-	//}
+	}
 }
 
 static void	breadth_first_init2(t_room *pass, int *i, int *end)
@@ -190,21 +191,21 @@ static void	breadth_first_init2(t_room *pass, int *i, int *end)
 	//int	shortest;
 
 	c_len = current_len(pass);
-	if (on_lock_path(pass, *i, c_len) == TRUE)
-	{
-		while (*i < c_len)
-		{
-			if (pass->info[CURRENT][*i] != 0 && pass->info[PATH][pass->info[CURRENT][*i]] >= 2)
-			{
-				breadth_first(pass, pass->info[CURRENT][*i], *i);
-				//if (pass->info[PATH][pass->end] == 1)
-				//	return ;
-			}
-			++(*i);
-		}
-	}
-	else
-	{
+	// if (on_lock_path(pass, *i, c_len) == TRUE)
+	// {
+	// 	while (*i < c_len)
+	// 	{
+	// 		if (pass->info[CURRENT][*i] != 0 && pass->info[PATH][pass->info[CURRENT][*i]] >= 2)
+	// 		{
+	// 			breadth_first(pass, pass->info[CURRENT][*i], *i);
+	// 			//if (pass->info[PATH][pass->end] == 1)
+	// 			//	return ;
+	// 		}
+	// 		++(*i);
+	// 	}
+	// }
+	// else
+	// {
 		// int temp = 0;
 		// shortest = shortest_path(pass, *i, c_len);
 		while (*i < c_len)
@@ -232,31 +233,22 @@ static void	breadth_first_init2(t_room *pass, int *i, int *end)
 		// 	pass->info[PATH][pass->end] = 1;
 		// 	*i = temp;
 		// }
-	}
+	//}
 }
 
 static int	choose_shortest_path(t_room *pass)
 {
 	int	i;
 	int	shortest;
-	//int count = 0;
 
 	i = 0;
 	shortest = 0;
 	while (pass->links[pass->end][i] >= 0)
 	{
-		// if (pass->info[PATH][pass->links[pass->end][i]] == 1)
-		// 	ft_printf("ROOM: %s, PATH: %d, LEN: %d\n", pass->rooms[pass->links[pass->end][i]], pass->info[PATH][pass->links[pass->end][i]], pass->info[LEN][pass->links[pass->end][i]]);
 		if (pass->info[PATH][pass->links[pass->end][i]] == 1 && (!shortest || pass->info[LEN][pass->links[pass->end][i]] < pass->info[LEN][shortest]))
-		{
-			//count++;
-			//if (count <= 2)
 			shortest = pass->links[pass->end][i];
-			//ft_printf("ROOM: %s, PATH: %d, LEN: %d\n", pass->rooms[shortest], pass->info[PATH][shortest], pass->info[LEN][shortest]);
-		}
 		++i;
 	}
-	//ft_printf("ROOM: %s, PATH: %d, LEN: %d\n", pass->rooms[shortest], pass->info[PATH][shortest], pass->info[LEN][shortest]);
 	return (shortest);
 }
 
@@ -291,8 +283,6 @@ void	path_finder(t_path **path, t_room *pass)
 	while (pass->links[0][i] >= 0)
 		initialize_path(pass, i++);
 	increase = 0;
-	//int nbr = 0;
-	//ft_printf("START OF SEARCH ---\n");
 	i = 0;
 	if (pass->info[PATH][pass->end] == 1)
 	{
@@ -308,20 +298,13 @@ void	path_finder(t_path **path, t_room *pass)
 		if (pass->info[PATH][pass->end] == 1)
 		{
 			pass->info[PATH][pass->end] = 0;
-			delete_non_found_paths(pass, pass->info[CURRENT][i]);
+			lock_path_init(pass, pass->info[CURRENT][i]);
 			calc_len(pass, &len);
 			path_select(path, pass, &len, &increase);
-			// nbr++;
-			// if (nbr > 20)
-			// 	exit(0);
-			//ft_printf("START OF SEARCH ---\n");
-		
 			if (increase > 10)
 				break ;
 		}
 	}
-	//exit(0);
-	//return ;
 	// trying out new algo to see if this method gives a better result
 	// finish all paths before choosing which path to go with
 	clean_everything(pass);
@@ -333,16 +316,17 @@ void	path_finder(t_path **path, t_room *pass)
 	{
 		i = 0;
 		breadth_first_init2(pass, &i, &pass->info[PATH][pass->end]);
-		//ft_printf("FIRST BREADTH FIRST end %d %d\n", pass->info[PATH][pass->end], current_true(pass));
+		ft_printf("FIRST BREADTH FIRST end %d %d\n", pass->info[PATH][pass->end], current_true(pass));
 		if (pass->info[PATH][pass->end] == 1 && current_true(pass))
 		{
-			//ft_printf("HERE\n");
 			i = choose_shortest_path(pass);
 			//ft_printf("what is choosed %s\n", pass->rooms[i]);
 			pass->info[PATH][pass->end] = 0;
 			//print_output(pass);
 			
-			delete_non_found_paths(pass, i);
+			lock_path_init(pass, i);
+			ft_printf("HERE\n");
+			
 			//print_output(pass);
 			calc_len(pass, &len);
 			path_select(path, pass, &len, &increase);

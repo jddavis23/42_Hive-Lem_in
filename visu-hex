@@ -291,7 +291,6 @@ def assignNewCoordinates(window_height, window_width, blockSize, info, start, en
 	x = width_divide
 	total = paths[i]["total"]
 	total_info = info[i]["total"]
-	print(x)
 	while i < total:
 		len_of_path = paths[i]["len"]
 		j = 0
@@ -313,7 +312,6 @@ def assignNewCoordinates(window_height, window_width, blockSize, info, start, en
 			j += 1
 		i += 1
 		x += width_divide
-		print(x)
 	width_divide = 5#30 // (30 + 2)
 	height_divide = 4#30 // (len_of_path + 2)
 	x = width_divide

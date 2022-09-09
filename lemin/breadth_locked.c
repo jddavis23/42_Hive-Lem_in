@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   breadth_locked.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/09 13:34:50 by molesen           #+#    #+#             */
+/*   Updated: 2022/09/09 13:34:54 by molesen          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lemin.h"
 
 /*	removes indx from current aka kills branch	*/
@@ -68,7 +80,6 @@ static void	find_new_branches(t_room *pass, int indx, int *i)
 		{
 			pass->info[PREV][pass->links[indx][j]] = indx;
 			pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
-			//set_correct_current_index(pass, i, pass->links[indx][j]);
 		}
 		++j;
 	}

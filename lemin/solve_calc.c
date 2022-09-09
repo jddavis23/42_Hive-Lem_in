@@ -108,4 +108,5 @@ void	solve_calc(t_room *pass, t_ants *ants_move, t_ants *head)
 		else
 			path_setter(&ants_move, pass, &path, head);
 	}
+	print_count(pass->print_count, --line);
 }

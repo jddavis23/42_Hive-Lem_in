@@ -54,6 +54,7 @@ typedef struct  s_room
 	int		print_row;//flag
 	int		print_paths;
 	int		print_len;
+	int		print_count;
 	t_connect	*tmp_con;
 	t_connect	*head_con;
 	t_path	*final_head;
@@ -128,7 +129,7 @@ void	calc_len(t_room *pass, int **len);
 void	create_len(int *array, int **len);
 void	reset_len(t_room *pass, int **len);
 
-void	delete_non_found_paths(t_room *pass, int indx);
+void	lock_path_init(t_room *pass, int indx);
 
 //didnt know where to put
 int	create_connect(t_room *pass, int j);
@@ -137,6 +138,7 @@ int	create_connect(t_room *pass, int j);
 void	solve(t_room *pass);
 void	create_ants(t_ants **ants_move, int ant, t_index *index);
 void	solve_calc(t_room *pass, t_ants *ants_move, t_ants *head);
+void	print_count(int	print_count, int line);
 t_ants	*print_ants_move(t_ants *head, t_room *pass, int line);
 
 // print

@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 # include "../includes/lemin.h"
 
 /*	updates current indx	*/
@@ -46,6 +45,8 @@ void	update_non_locked_path(t_room *pass, int indx, int j, int *i)
 		set_correct_current_index(pass, i, pass->links[indx][j]);
 	}
 }
+
+/*	updates remaining of path	*/
 
 static void	update_len(t_room *pass, int indx)
 {
@@ -85,20 +86,10 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 			pass->links[indx][j] != pass->info[PREV][indx]
 		)
 		{
-			// changed later on for it to be [LEN][INDX] + 1 < pas infoetc...
-			// not quite sure why it helped on big5.txt
 			pass->info[PREV][pass->links[indx][j]] = indx;
 			pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
 			update_len(pass, pass->links[indx][j]);
-			//set_correct_current_index(pass, i, pass->links[indx][j]);
 		}
-		// else if (pass->info[PATH][pass->links[indx][j]] == 3 && \
-		// 	pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->info[JUMP][pass->links[indx][j]]])
-		// {
-		// 	pass->info[JUMP][pass->links[indx][j]] = indx;
-		// 	// pass->info[LOCKED][*i] = TRUE;
-		// 	// set_correct_current_index(pass, i, pass->links[indx][j]);
-		// }
 		++j;
 	}
 }
@@ -127,7 +118,10 @@ void	breadth_first(t_room *pass, int indx, int i)
 		travel_non_locked_path(pass, indx, &i);
 	}
 	else if (pass->info[PATH][indx] == 3)
+	{
+		ft_printf("here\n");
 		travel_locked_path(pass, indx, &i);
+	}
 	if (pass->info[CURRENT][i] == indx)
 		remove_branch(pass, &i);
 }
