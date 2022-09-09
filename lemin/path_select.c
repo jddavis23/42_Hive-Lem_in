@@ -96,6 +96,29 @@ static int	 calc_min_row(t_room *pass, int **len)
 // 	}
 // }
 
+static void	reset_locked_len(t_room *pass)
+{
+	int	i;
+	int	count;
+	int	next;
+
+	i = 0;
+	while (pass->links[0][i] >= 0)
+	{
+		count = 1;
+		if (pass->info[PATH][pass->links[0][i]] == 2)//(pass->info[PATH][pass->links[pass->end][i]] == 1)
+		{
+			next = pass->links[0][i];
+			while (next != 0)
+			{
+				pass->info[LEN][next] = count++;
+				next = pass->info[NEXT][next];
+			}
+		}
+		++i;
+	}
+}
+
 void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 {
 	int	i;
@@ -103,7 +126,7 @@ void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 	//static int nbr = 0;
 
 	temp_row = calc_min_row(pass, len);
-	ft_printf("temp: %d prevrow: %d\n", temp_row, pass->min_row);
+	//ft_printf("temp: %d prevrow: %d\n", temp_row, pass->min_row);
 	if (!pass->final_head)
 	{
 		copy_to_path(pass, path, len);
@@ -144,6 +167,7 @@ void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 		(*increase)++;
 	}
 	reset_len(pass, len);
+	reset_locked_len(pass);
 	i = -1;
 	while (pass->links[0][++i] >= 0)
 	{

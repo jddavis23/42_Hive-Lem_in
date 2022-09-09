@@ -301,7 +301,7 @@ void	path_finder(t_path **path, t_room *pass)
 		return ;
 	}
 	i = 0;
-	while (i != 0 && !current_true(pass))
+	while (!current_true(pass))
 	{
 		i = 0;
 		breadth_first_init(pass, &i);

@@ -142,4 +142,7 @@ t_ants	*print_ants_move(t_ants *head, t_room *pass, int line);
 // print
 void	printf_struct(t_room *pass);
 
+//delete this later
+void	print_output(t_room *pass);
+
 #endif

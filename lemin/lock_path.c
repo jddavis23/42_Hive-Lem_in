@@ -150,7 +150,7 @@ void	delete_non_found_paths(t_room *pass, int indx)
 	len_back_front(pass);
 	lock_path(pass, indx);
 	i = 0;
-	int count;
+	//int count;
 	while (pass->links[pass->end][i] >= 0)
 	{
 		//count = 1;
@@ -166,7 +166,7 @@ void	delete_non_found_paths(t_room *pass, int indx)
 		}
 		++i;
 	}
-	int next;
+	//int next;
 	// while (pass->links[0][i] >= 0)
 	// {
 	// 	if (pass->info[PATH][pass->links[0][i]] == 4)
@@ -181,21 +181,21 @@ void	delete_non_found_paths(t_room *pass, int indx)
 	// 	}
 	// 	++i;
 	// }
-	i = 0;
-	while (pass->links[0][i] >= 0)
-	{
-		count = 1;
-		if (pass->info[PATH][pass->links[0][i]] == 2)//(pass->info[PATH][pass->links[pass->end][i]] == 1)
-		{
-			next = pass->links[0][i];
-			while (next != 0)
-			{
-				pass->info[LEN][next] = count++;
-				next = pass->info[NEXT][next];
-			}
-		}
-		++i;
-	}
+	// i = 0;
+	// while (pass->links[0][i] >= 0)
+	// {
+	// 	count = 1;
+	// 	if (pass->info[PATH][pass->links[0][i]] == 2)//(pass->info[PATH][pass->links[pass->end][i]] == 1)
+	// 	{
+	// 		next = pass->links[0][i];
+	// 		while (next != 0)
+	// 		{
+	// 			pass->info[LEN][next] = count++;
+	// 			next = pass->info[NEXT][next];
+	// 		}
+	// 	}
+	// 	++i;
+	// }
 	i = 0;
 	while (i < pass->total)
 	{
