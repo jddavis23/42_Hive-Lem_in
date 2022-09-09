@@ -50,8 +50,10 @@ typedef struct  s_room
 	int		end;
 	int		ants;
 	int		total;
-	int		row;//flag
 	int		min_row;
+	int		print_row;//flag
+	int		print_paths;
+	int		print_len;
 	t_connect	*tmp_con;
 	t_connect	*head_con;
 	t_path	*final_head;
@@ -136,5 +138,11 @@ void	solve(t_room *pass);
 void	create_ants(t_ants **ants_move, int ant, t_index *index);
 void	solve_calc(t_room *pass, t_ants *ants_move, t_ants *head);
 t_ants	*print_ants_move(t_ants *head, t_room *pass, int line);
+
+// print
+void	printf_struct(t_room *pass);
+
+//delete this later
+void	print_output(t_room *pass);
 
 #endif

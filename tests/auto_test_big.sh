@@ -4,8 +4,8 @@ COUNT=$1
 while [[ $COUNT -gt 0 ]]
 do
 	
-	/Users/jdavis/Desktop/projects/lem-in/lem-in_my/generator --big > big$COUNT.txt
-	/Users/jdavis/Desktop/projects/lem-in/lem-in_my/lem-in -r < big$COUNT.txt > results_big$COUNT.txt
+	../generator --big > big$COUNT.txt
+	../lem-in -r < big$COUNT.txt > results_big$COUNT.txt
 	# while read line
 	# do
 		

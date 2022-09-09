@@ -1,5 +1,14 @@
 #include "../includes/lemin.h"
 
+/*	removes indx from current aka kills branch	*/
+
+void	remove_branch(t_room *pass, int *i)
+{
+	pass->info[CURRENT][*i] = 0;
+	pass->info[LOCKED][*i] = 0;
+	pass->info[MOVE][*i] = 0;
+}
+
 /*	update the locked path values	*/
 
 void	update_locked_path(t_room *pass, int indx, int j, int *i)
@@ -54,7 +63,7 @@ static void	find_new_branches(t_room *pass, int indx, int *i)
 			update_locked_path(pass, indx, j, i);
 		else if (pass->info[PATH][pass->links[indx][j]] == 0)
 			update_non_locked_path(pass, indx, j, i);
-		else if (pass->info[PATH][pass->links[indx][j]] == 1 && pass->info[LEN][indx] + 1 < pass->info[LEN][pass->links[indx][j]] && \
+		else if (pass->info[PATH][pass->links[indx][j]] == 1 && pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->links[indx][j]] && \
 			pass->info[PATH][pass->info[PREV][pass->links[indx][j]]] == 3)
 		{
 			pass->info[PREV][pass->links[indx][j]] = indx;

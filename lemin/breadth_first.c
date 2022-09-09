@@ -32,15 +32,6 @@ void	set_correct_current_index(t_room *pass, int *i, int new_indx)
 	}
 }
 
-/*	removes indx from current aka kills branch	*/
-
-void	remove_branch(t_room *pass, int *i)
-{
-	pass->info[CURRENT][*i] = 0;
-	pass->info[LOCKED][*i] = 0;
-	pass->info[MOVE][*i] = 0;
-}
-
 /*	update non-locked path values	*/
 
 void	update_non_locked_path(t_room *pass, int indx, int j, int *i)
@@ -53,6 +44,22 @@ void	update_non_locked_path(t_room *pass, int indx, int j, int *i)
 		pass->info[PREV][pass->links[indx][j]] = indx;
 		pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
 		set_correct_current_index(pass, i, pass->links[indx][j]);
+	}
+}
+
+static void	update_len(t_room *pass, int indx)
+{
+	int	i;
+
+	i = 0;
+	while (pass->links[indx][i] >= 0)
+	{
+		if (pass->info[PREV][pass->links[indx][i]] == indx)
+		{
+			pass->info[LEN][pass->links[indx][i]] = pass->info[LEN][indx] + 1;
+			update_len(pass, pass->links[indx][i]);
+		}
+		++i;
 	}
 }
 
@@ -74,7 +81,7 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 			pass->info[PATH][pass->info[PREV][pass->links[indx][j]]] >= 2)
 			update_locked_path(pass, indx, j, i);
 		else if (pass->info[PATH][pass->links[indx][j]] == 1 && \
-			pass->info[LEN][indx] + 1 < pass->info[LEN][pass->links[indx][j]] && \
+			pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->links[indx][j]] && \
 			pass->links[indx][j] != pass->info[PREV][indx]
 		)
 		{
@@ -82,8 +89,16 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 			// not quite sure why it helped on big5.txt
 			pass->info[PREV][pass->links[indx][j]] = indx;
 			pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
+			update_len(pass, pass->links[indx][j]);
 			//set_correct_current_index(pass, i, pass->links[indx][j]);
 		}
+		// else if (pass->info[PATH][pass->links[indx][j]] == 3 && \
+		// 	pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->info[JUMP][pass->links[indx][j]]])
+		// {
+		// 	pass->info[JUMP][pass->links[indx][j]] = indx;
+		// 	// pass->info[LOCKED][*i] = TRUE;
+		// 	// set_correct_current_index(pass, i, pass->links[indx][j]);
+		// }
 		++j;
 	}
 }
