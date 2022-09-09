@@ -118,10 +118,7 @@ void	breadth_first(t_room *pass, int indx, int i)
 		travel_non_locked_path(pass, indx, &i);
 	}
 	else if (pass->info[PATH][indx] == 3)
-	{
-		ft_printf("here\n");
 		travel_locked_path(pass, indx, &i);
-	}
 	if (pass->info[CURRENT][i] == indx)
 		remove_branch(pass, &i);
 }

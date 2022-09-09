@@ -1,6 +1,5 @@
 # include "../includes/lemin.h"
 
-
 static void	len_back_front(t_room *pass)
 {
 	int	i;
@@ -25,6 +24,7 @@ static void	len_back_front(t_room *pass)
 	}
 }
 
+
 void	lock_path_init(t_room *pass, int indx)
 {
 	int	i;
@@ -37,7 +37,6 @@ void	lock_path_init(t_room *pass, int indx)
 	if (error == TRUE)
 		return ;
 	i = 0;
-	ft_printf("HERE\n");
 	while (pass->links[pass->end][i] >= 0)
 	{
 		if (pass->info[NEXT][pass->links[pass->end][i]] == pass->end)
@@ -51,7 +50,6 @@ void	lock_path_init(t_room *pass, int indx)
 		}
 		++i;
 	}
-	ft_printf("HERE\n");
 	i = 0;
 	while (i < pass->total)
 	{

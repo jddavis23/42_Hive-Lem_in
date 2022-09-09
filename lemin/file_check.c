@@ -29,22 +29,13 @@ static int	below_max_int(char *str, int len)
 int	only_digits(char *str, int *i)
 {
 	if (ft_strcmp("0", str) == 0 || ft_strcmp("\0", str) == 0)
-	{
-		ft_printf("HERE1\n");
 		return (error(NO_ANTS));
-	}
 	if (below_max_int(str, ft_strlen(str)) == FALSE)
-	{
-		ft_printf("HERE2\n");
 		return (error(TOO_MANY_ANTS));
-	}
 	while (*str != '\0')
 	{
 		if (ft_isdigit(*str) == 0)
-		{
-			ft_printf("HERE3\n");
 			return (error(NON_DIGIT_ANTS));
-		}
 		str++;
 	}
 	(*i)++;

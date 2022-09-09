@@ -32,26 +32,26 @@ static int	is_comment(char *str)
 **	the line after has to be a room name and its coordinates
 */
 
-static int	first_start_or_end(char *str, int i, int *command)
-{
-	if (*command == TRUE)
-		return (ERROR);
-	if (ft_strcmp(str, "##start") == 0)
-	{
-		if (i > 1)
-			return (ERROR);
-		else
-			*command = TRUE;
-	}
-	else if (ft_strcmp(str, "##end") == 0)
-	{
-		if (i > 1)
-			return (ERROR);
-		else
-			*command = TRUE;
-	}
-	return (TRUE);
-}
+// static int	first_start_or_end(char *str, int i, int *command)
+// {
+// 	if (*command == TRUE)
+// 		return (ERROR);
+// 	if (ft_strcmp(str, "##start") == 0)
+// 	{
+// 		if (i > 1)
+// 			return (ERROR);
+// 		else
+// 			*command = TRUE;
+// 	}
+// 	else if (ft_strcmp(str, "##end") == 0)
+// 	{
+// 		if (i > 1)
+// 			return (ERROR);
+// 		else
+// 			*command = TRUE;
+// 	}
+// 	return (TRUE);
+// }
 
 /*
 **	checks if valid line
@@ -182,11 +182,11 @@ int	file_save(t_room *pass, t_input **build)
 			break ;
 		if (is_comment(line) >= TRUE)
 		{
-			if (first_start_or_end(line, i, &command) == ERROR)
-			{
-				free(line);
-				return (error(COMMAND));
-			}
+			// if (first_start_or_end(line, i, &command) == ERROR)
+			// {
+			// 	free(line);
+			// 	return (error(COMMAND));
+			// }
 		}
 		else if (i == 0)// && only_digits(line, &i) == TRUE)
 		{

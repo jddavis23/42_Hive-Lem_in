@@ -77,15 +77,14 @@ void	print_output(t_room *pass)
 	ft_printf("\n\n------------\nrooms path nbr:	PREV	NEXT	JUMP	LEN\n");
 	while (i < pass->total)
 	{
-		if (pass->info[PATH][i] != 0)
-			ft_printf("[%s][%d]: [%d] 	[%s]	[%s]	[%s]	[%d]\n",pass->rooms[i], i, pass->info[PATH][i], pass->rooms[pass->info[PREV][i]], pass->rooms[pass->info[NEXT][i]], pass->rooms[pass->info[JUMP][i]], pass->info[LEN][i]);
+		ft_printf("[%s][%d]: [%d] 	[%s]	[%s]	[%s]	[%d]\n",pass->rooms[i], i, pass->info[PATH][i], pass->rooms[pass->info[PREV][i]], pass->rooms[pass->info[NEXT][i]], pass->rooms[pass->info[JUMP][i]], pass->info[LEN][i]);
 		++i;
 	}
 }
 
 /*	makes sure all variables has been set to zero before running the second algorithm	*/
 
-void	clean_everything(t_room *pass)
+static void	clean_everything(t_room *pass)
 {
 	int i = 0;
 
@@ -106,19 +105,16 @@ void	clean_everything(t_room *pass)
 
 int	path_finder(t_path **path, t_room *pass)
 {
-	int	i;
 	int	*len;
 	int	increase;
 
-	i = 0;
 	len = NULL;
 	if (create_len(pass->links[0], &len) == ERROR)
 	{
 		del_path(&pass->final_head);
 		return (ERROR);
 	}
-	while (pass->links[0][i] >= 0)
-		initialize_path(pass, i++);
+	initialize_path(pass);
 	increase = 0;
 	if (pass->info[PATH][pass->end] == 1)
 	{
@@ -128,6 +124,8 @@ int	path_finder(t_path **path, t_room *pass)
 	}
 	if (first_algorithm(path, pass, &len) == ERROR)
 		return (ERROR);
+	clean_everything(pass);
+	initialize_path(pass);
 	if (second_algorithm(path, pass, &len, 0) == ERROR)
 		return (ERROR);
 	return (1);

@@ -9,21 +9,17 @@ static int	len_check(t_room *pass, int indx)
 	i = pass->info[LEN][pass->info[JUMP][indx]];
 	i += pass->info[LEN][indx];
 	start = indx;
-	ft_printf("\n\n");
 	while (pass->info[NEXT][indx] != pass->end && pass->info[PATH][indx])
 	{
 		indx = pass->info[NEXT][indx];
-		ft_printf("Room-----: %s[%d]	PATH[%d]	PREV: [%d]	NEXT: [%d]	LEN: [%d]\n", pass->rooms[indx], indx, pass->info[PATH][indx], pass->info[PREV][indx], pass->info[NEXT][indx], pass->info[LEN][indx]);
 		if (pass->info[PATH][indx] == 2)
 			return (TRUE);
 		if (pass->info[JUMP][indx] && pass->info[PATH][pass->info[JUMP][indx]] == 1 \
 		 && pass->info[LEN][pass->info[JUMP][indx]] + pass->info[LEN][indx] < i )// && pass->info[JUMP][indx] != start)
 		{
-			ft_printf("EREE\n");
 			return (FALSE);
 		}
 	}
-	ft_printf("\n\n");
 	return (TRUE);
 }
 

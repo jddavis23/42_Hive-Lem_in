@@ -13,7 +13,7 @@ int	create_len(int *array, int **len)
 	}
 	*len = (int *)malloc(sizeof(int) * (i + 1));
 	if (!(*len))
-		return (-1);
+		return (ERROR);
 	i = 0;
 	while (array[i] != -1)
 	{
@@ -75,62 +75,28 @@ static void	bubble_len(t_room *pass, int **len)
 
 void	calc_len(t_room *pass, int **len)
 {
-	// int	i;
-	// int	prev;
-	// int	count;
-	// int	j;
-
-	// i = 0;
-	// j = 0;
-	// while (pass->links[pass->end][i] != -1)
-	// {
-	// 	if (pass->info[PATH][pass->links[pass->end][i]] == 2) && pass->info[NEXT][pass->links[pass->end][i]] == pass->end)
-	// 	{
-	// 		count = 1;
-	// 		prev = pass->links[pass->end][i];
-	// 		while (prev != 0)
-	// 		{
-	// 			++count;
-	// 			prev = pass->info[PREV][prev];
-	// 		}
-	// 		pass->info[LEN][pass->links[pass->end][i]] = count;
-	// 		(*len)[j++] = pass->links[pass->end][i];
-	// 	}
-	// 	++i;
-	// }
-	// bubble_len(pass, len);
-	// COLLECTING FROM START INSTEAD OF FOLLOWING PREV ENDING
 	int	i;
 	int	next;
 	int	count;
 	int	j;
-	int	start;
 
 	i = 0;
 	j = 0;
-	start = 0;
-	while (pass->links[start][i] >= 0)
+	while (pass->links[0][i] >= 0)
 	{
-		if (pass->info[PATH][pass->links[start][i]] == 2)// && pass->info[NEXT][pass->links[pass->end][i]] == pass->end)
+		if (pass->info[PATH][pass->links[0][i]] == 2)
 		{
 			count = 1;
-			next = pass->info[NEXT][pass->links[start][i]];
+			next = pass->info[NEXT][pass->links[0][i]];
 			while (next != 0)
 			{
 				++count;
 				next = pass->info[NEXT][next];
 			}
-			pass->info[LEN][pass->links[start][i]] = count;
-			(*len)[j++] = pass->links[start][i];
+			pass->info[LEN][pass->links[0][i]] = count;
+			(*len)[j++] = pass->links[0][i];
 		}
 		++i;
 	}
 	bubble_len(pass, len);
-	// i = 0;
-	// ft_printf("LEN: ");
-	// while ((*len)[i] > 0)
-	// {
-	// 	ft_printf("%d ", pass->info[LEN][(*len)[i++]]);
-	// }
-	// ft_printf("---------------\n");
 }

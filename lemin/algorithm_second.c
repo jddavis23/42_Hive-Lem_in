@@ -79,10 +79,7 @@ int	second_algorithm(t_path **path, t_room *pass, int **len, int i)
 {
 	int	increase;
 
-	clean_everything(pass);
 	increase = 0;
-	while (pass->links[0][i] >= 0)
-		initialize_path(pass, i++);
 	while (!current_true(pass))
 	{
 		i = 0;

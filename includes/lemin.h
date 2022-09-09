@@ -113,7 +113,7 @@ void	del_path(t_path **path);
 int		copy_to_path(t_room *pass, t_path **path, int **len);
 
 // path select
-void	initialize_path(t_room *pass, int i);
+void	initialize_path(t_room *pass);
 int		path_select(t_path **path, t_room *pass, int **len, int *increase);
 int		create_path(t_path **path, t_room *pass, int nbr, int len);
 int		create_index(t_index **move, t_path **path, int i);
@@ -132,7 +132,6 @@ int	current_len(t_room *pass);
 int	current_true(t_room *pass);
 int	first_algorithm(t_path **path, t_room *pass, int **len);
 int	second_algorithm(t_path **path, t_room *pass, int **len, int i);
-void	clean_everything(t_room *pass);
 int	free_len(int **len);
 
 void	lock_path_init(t_room *pass, int indx);
@@ -153,5 +152,4 @@ void	printf_struct(t_room *pass);
 
 //delete this later
 void	print_output(t_room *pass);
-
 #endif

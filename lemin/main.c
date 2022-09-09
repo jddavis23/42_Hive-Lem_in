@@ -30,7 +30,9 @@ static int	create_used(t_room *pass)
 	pass->info[JUMP] = (int *) malloc(pass->total * sizeof(int));
 	pass->info[LOCKED] = (int *) malloc(pass->total * sizeof(int));
 	pass->info[MOVE] = (int *) malloc(pass->total * sizeof(int));
-	if (!pass->info[PATH] || !pass->info[PREV] || !pass->info[LEN] || !pass->info[CURRENT] || !pass->info[NEXT] || !pass->info[JUMP] || !pass->info[LOCKED] || !pass->info[MOVE])
+	if (!pass->info[PATH] || !pass->info[PREV] || !pass->info[LEN] || \
+		!pass->info[CURRENT] || !pass->info[NEXT] || !pass->info[JUMP] || \
+		!pass->info[LOCKED] || !pass->info[MOVE])
 		return (ERROR);
 	while (i < pass->total)
 	{
