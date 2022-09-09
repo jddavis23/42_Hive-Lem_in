@@ -143,7 +143,7 @@ def drawConnections(screen, height, width, blockSize, info, paths, start, end):
 							if info[i]["connect"][j] == info[k]["nbr"]:
 								n = 0
 								color = (100, 100, 100)
-								widthOfLine = 10
+								widthOfLine = 5
 								while n < paths[0]["total"]:
 									m = 0
 									if info[i]["nbr"] == end or info[k]["nbr"] == end:
@@ -159,7 +159,7 @@ def drawConnections(screen, height, width, blockSize, info, paths, start, end):
 											connect += 1
 										if connect > 1:
 											color = paths[n]["color"]
-											widthOfLine = 20
+											widthOfLine = 10
 										m += 1
 									n += 1
 								if info[i]["grid_y"] == info[k]["grid_y"]:
@@ -190,8 +190,8 @@ def draw_ant(screen, height, width, blockSize, info, start, end, moves, current_
 					j = 0
 					while j < total_moves:
 						if moves[current_move]["room"][j] == info[i]["nbr"]:
-							color = (100, 100, 100)
-							pygame.draw.circle(screen, color, [info[i]["grid_x"] + int(blockSize) / 2, info[i]["grid_y"] + int(blockSize) / 2], int(blockSize) / 4)
+							color = (0, 0, 0)
+							pygame.draw.circle(screen, color, [info[i]["grid_x"] + int(blockSize) / 2, info[i]["grid_y"] + int(blockSize) / 2], int(10) / 4)
 						j += 1
 					break
 				i += 1
@@ -287,14 +287,15 @@ def drawErrorCheck(screen, height, width, blockSize, info, moves, init, end):
 
 def assignNewCoordinates(window_height, window_width, blockSize, info, start, end, paths):
 	i = 0
-	width_divide = 50 // (paths[0]["total"] + 1)
+	width_divide = 75 // (paths[0]["total"] + 1)
 	x = width_divide
 	total = paths[i]["total"]
 	total_info = info[i]["total"]
+	print(x)
 	while i < total:
 		len_of_path = paths[i]["len"]
 		j = 0
-		height_divide = 35 // len_of_path
+		height_divide = 2
 		y = 2
 		while j < len_of_path:
 			k = 0
@@ -304,13 +305,17 @@ def assignNewCoordinates(window_height, window_width, blockSize, info, start, en
 					info[k]["x"] = x
 					info[k]["y"] = y
 					y += height_divide
+					if y >= 75:
+						y = height_divide
+						x += 2
 					break
 				k += 1
 			j += 1
 		i += 1
 		x += width_divide
-	width_divide = 2#30 // (30 + 2)
-	height_divide = 2#30 // (len_of_path + 2)
+		print(x)
+	width_divide = 5#30 // (30 + 2)
+	height_divide = 4#30 // (len_of_path + 2)
 	x = width_divide
 	y = height_divide
 	i = 0
@@ -326,7 +331,7 @@ def assignNewCoordinates(window_height, window_width, blockSize, info, start, en
 			info[i]["x"] = x
 			info[i]["y"] = y
 			y += height_divide
-			if y >= 30:
+			if y >= 75:
 				y = height_divide
 				x += width_divide
 		i += 1
@@ -337,25 +342,13 @@ def make_map(start, end, info, moves, paths):
 	if (len(sys.argv) > 1 and sys.argv[1] == '-f'):
 		window_height = 800
 		window_width = 1200
-		blockSize = 20
+		blockSize = 10
 		assignNewCoordinates(window_height, window_width, blockSize, info, start, end, paths)
 	else:
 		i = 0
 		total = info[i]["total"]
-		minX = info[i]["x"]
-		maxX = info[i]["x"]
-		minY = info[i]["y"]
-		maxY = info[i]["y"]
 		while i < total:
 			print(info[i])
-			if info[i]["x"] < minX:
-				minX = info[i]["x"]
-			if info[i]["x"] > maxX:
-				maxX = info[i]["x"]
-			if info[i]["y"] < minY:
-				minY = info[i]["y"]
-			if info[i]["y"] > maxY:
-				maxY = info[i]["y"]
 			i += 1
 		total = moves[0]["total"]
 		i = 0
@@ -364,12 +357,7 @@ def make_map(start, end, info, moves, paths):
 			i += 1
 		# Define the dimensions of
 		# screen object(width,height)
-		if maxX > 50 or maxY > 50:
-			blockSize = 20 #Set the size of the grid block
-		elif maxX > 20 or maxY > 20:
-			blockSize = 40
-		else:
-			blockSize = 60
+		blockSize = 20
 		window_height = 800
 		window_width = 1200
 
@@ -657,13 +645,8 @@ def main(argv, argc):
 		k = 0
 		total = 0
 		ants_move = False
-		print(data)
 		if len(data) != 0:
 			for line in data:
-				print (line)
-				if len(line) >= 6 and line[0][4] == "Error":
-					print ("Error")
-					return
 				if len(line) == 0:
 					ants_move = True
 				elif ants_move == False:
@@ -701,21 +684,22 @@ def main(argv, argc):
 							last = line.find("-")
 						check_rooms(info, line, total, last)
 				else:
-					print("MOVE ANTS")
 					moves[k] = {"ant": [], "room": [], "total": 0, "total_ants": ants}
 					collect_ant_move(line, ants, info, total, moves, k)
 					k += 1
 			i = 0
-			if (info):
-				while i < total:
-					info[i]["total"] = total
-					i += 1
-				i = 0
-				while i < k:
-					moves[i]["total"] = k
-					i += 1
-				store_color_and_path(moves, paths, end)
-				make_map(start, end, info, moves, paths)
+			if ants == -1:
+				print("Error")
+				return
+			while i < total:
+				info[i]["total"] = total
+				i += 1
+			i = 0
+			while i < k:
+				moves[i]["total"] = k
+				i += 1
+			store_color_and_path(moves, paths, end)
+			make_map(start, end, info, moves, paths)
 	else:
 		print("Usage: ./lem-in < maps/subject3.map | ./visu-hex")
 
