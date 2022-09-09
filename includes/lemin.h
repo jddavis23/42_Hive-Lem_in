@@ -87,10 +87,10 @@ int	file_save(t_room *pass, t_input **build);//char **input);
 int	only_digits(char *str, int *i);
 int	is_coordinates(char *str);
 int	is_connection(char *str);
-int	create(t_room *pass, t_input **build, char **input); //char **input);
+int	create(t_room *pass, t_input **build); //char **input);
 int	error(int err);
-int	error_free(t_room *pass, char *input, int j, int first);
-int	error_path(t_room *pass, char *input, int first);
+int	error_free(t_room *pass, t_input **build, int j, int first);
+int	error_path(t_room *pass, t_input **build, int first);
 int	**free2d_int(int **links, int j, int end);
 
 void	del_first_index(t_path *file);//use in error freeing function
@@ -104,19 +104,19 @@ int		dash_in_section(char *full, char *inside);
 int		is_dash(char *str);
 
 // path finder
-int		initialize_path_finder(t_room *pass, char *input);
+int		initialize_path_finder(t_room *pass, t_input **build);
 int		len_array(int *links);
-void	path_finder(t_path **path, t_room *pass);
+int	path_finder(t_path **path, t_room *pass);
 void	del_last_path(t_path **path, t_room *pass);
 void	free_and_del_path(t_path **path, t_room *pass);
 void	del_path(t_path **path);
-void	copy_to_path(t_room *pass, t_path **path, int **len);
+int		copy_to_path(t_room *pass, t_path **path, int **len);
 
 // path select
 void	initialize_path(t_room *pass, int i);
-void	path_select(t_path **path, t_room *pass, int **len, int *increase);
-void	create_path(t_path **path, t_room *pass, int nbr, int len);
-void	create_index(t_index **move, t_path **path, int i);
+int		path_select(t_path **path, t_room *pass, int **len, int *increase);
+int		create_path(t_path **path, t_room *pass, int nbr, int len);
+int		create_index(t_index **move, t_path **path, int i);
 
 // breadth first
 void	breadth_first(t_room *pass, int indx, int i);
@@ -126,7 +126,7 @@ void	set_correct_current_index(t_room *pass, int *i, int new_indx);
 void	update_non_locked_path(t_room *pass, int indx, int j, int *i);
 void	update_locked_path(t_room *pass, int indx, int j, int *i);
 void	calc_len(t_room *pass, int **len);
-void	create_len(int *array, int **len);
+int	create_len(int *array, int **len);
 void	reset_len(t_room *pass, int **len);
 
 void	lock_path_init(t_room *pass, int indx);

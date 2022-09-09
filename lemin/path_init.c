@@ -91,7 +91,7 @@ static int	unique_paths(t_room *pass)
 
 /*	initializes the functions that takes care of finding the paths	*/
 
-int	initialize_path_finder(t_room *pass, char *input)
+int	initialize_path_finder(t_room *pass, t_input **build)
 {
 	t_path	*path;
 	t_path	*final;
@@ -99,18 +99,17 @@ int	initialize_path_finder(t_room *pass, char *input)
 	path = NULL;
 	final = NULL;
 	pass->final_head = NULL;
-	path_finder(&path, pass);
+	if (path_finder(&path, pass) == -1)
+		return (error_path(pass, build, FALSE));
 	if (unique_paths(pass) == FALSE)
 	{
-		ft_printf("FAILED\n");
+		ft_printf("FAILED\n"); //delete before submission??
 		printf_struct(pass);
 		exit (0);
 	}
 	if (!pass->final_head)
-		return (error_path(pass, input, TRUE));
+		return (error_path(pass, build, TRUE));
 	final = pass->final_head;
-	// printf_struct(pass);
-	// exit(0);
 	return (0);
 }
 

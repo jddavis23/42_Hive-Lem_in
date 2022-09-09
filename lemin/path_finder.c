@@ -271,7 +271,7 @@ static void	clean_everything(t_room *pass)
 
 /*	core logic of calling breadth first and locking the paths	*/
 
-void	path_finder(t_path **path, t_room *pass)
+int	path_finder(t_path **path, t_room *pass)
 {
 	int	i;
 	int	*len;
@@ -279,16 +279,29 @@ void	path_finder(t_path **path, t_room *pass)
 
 	i = 0;
 	len = NULL;
-	create_len(pass->links[0], &len);
+	if (create_len(pass->links[0], &len) == ERROR)//STOPPPED HERE-------------
+	{
+		del_path(&pass->final_head);
+		return (-1);
+	}
 	while (pass->links[0][i] >= 0)
 		initialize_path(pass, i++);
 	increase = 0;
 	i = 0;
 	if (pass->info[PATH][pass->end] == 1)
 	{
-		create_path(path, pass, 1, 1);
-		create_index(&(*path)->move_head, path, pass->end);
-		return ;
+		if (create_path(path, pass, 1, 1) == -1)
+		{
+			free(len);
+			return (-1);
+		}
+		if (create_index(&(*path)->move_head, path, pass->end) == -1)
+		{
+			free(len);
+			return (-1);
+		}
+		free(len);
+		return (1);
 	}
 	i = 0;
 	while (!current_true(pass))
@@ -300,7 +313,16 @@ void	path_finder(t_path **path, t_room *pass)
 			pass->info[PATH][pass->end] = 0;
 			lock_path_init(pass, pass->info[CURRENT][i]);
 			calc_len(pass, &len);
-			path_select(path, pass, &len, &increase);
+			if (path_select(path, pass, &len, &increase) == -1)
+			{
+				free(len);
+				return (-1);
+			}
+			// nbr++;
+			// if (nbr > 20)
+			// 	exit(0);
+			//ft_printf("START OF SEARCH ---\n");
+		
 			if (increase > 10)
 				break ;
 		}
@@ -344,8 +366,6 @@ void	path_finder(t_path **path, t_room *pass)
 		// }
 		//ft_printf("WHILE BREADTH FIRST\n");
 	}
-	//exit(0);
-	//print_output(pass);
-	//ft_printf("passs end: %d\n", pass->info[PATH][pass->end]);
-	//exit(0);
+	free(len);
+	return (1);
 }

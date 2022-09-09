@@ -65,7 +65,18 @@ void	lock_path_init(t_room *pass, int indx)
 			pass->info[LOCKED][i] = 0;
 			pass->info[MOVE][i] = 0;
 		}
+		/*if (pass->info[NEXT][i] && pass->info[PATH][i] == 3)
+			pass->info[PATH][i] = 2;*/
+		/*else if (pass->info[PATH][i] == 3)
+		{
+			pass->info[PATH][i] = 2;
+			pass->info[JUMP][i] = 0;
+			pass->info[LOCKED][i] = 0;
+			pass->info[MOVE][i] = 0;
+		}*/
 		pass->info[CURRENT][i] = FALSE;
 		++i;
 	}
+	
+	//exit (0);
 }

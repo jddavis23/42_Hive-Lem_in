@@ -78,7 +78,7 @@ static int	minus_newline(t_room *pass, char *str, char *input, char *temp)
 	ft_strncpy(arr, input, j); //addi_diff(input, &temp[-1]));
 	j = 0;
 	if (!ft_strcmp(pass->rooms[j], str))
-		++j;
+		++j;	
 	while (pass->rooms[j])
 	{
 		if (pass->rooms[j] && !ft_strcmp(pass->rooms[j], str))
@@ -86,6 +86,7 @@ static int	minus_newline(t_room *pass, char *str, char *input, char *temp)
 		if (pass->rooms[j] && !ft_strcmp(arr, pass->rooms[j]))
 		{
 			create_connect(pass, j);
+			free (arr);
 			return (1);
 		}
 		++j;

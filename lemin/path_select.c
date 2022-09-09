@@ -119,7 +119,7 @@ static void	reset_locked_len(t_room *pass)
 	}
 }
 
-void	path_select(t_path **path, t_room *pass, int **len, int *increase)
+int	path_select(t_path **path, t_room *pass, int **len, int *increase)
 {
 	int	i;
 	int	temp_row;
@@ -129,14 +129,16 @@ void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 	//ft_printf("temp: %d prevrow: %d\n", temp_row, pass->min_row);
 	if (!pass->final_head)
 	{
-		copy_to_path(pass, path, len);
+		if (copy_to_path(pass, path, len) == -1)
+			return (-1);
 		pass->min_row = temp_row;
 	}
 	else if (temp_row < pass->min_row)// || (temp_row <= pass->min_row && ))
 	{
 		del_path(&pass->final_head);
 		*path = NULL;
-		copy_to_path(pass, path, len);
+		if (copy_to_path(pass, path, len) == -1)
+			return (-1);
 		pass->min_row = temp_row;
 		// nbr++;
 		// ft_printf("\n----------------------\n");
@@ -171,4 +173,5 @@ void	path_select(t_path **path, t_room *pass, int **len, int *increase)
 			initialize_path(pass, i);
 		}
 	}
+	return (1);
 }

@@ -78,31 +78,26 @@ static void	update_flags(int argc, char *str, t_room *pass)
 int	main(int argc, char **argv)
 {
 	t_room	*pass;
-	char	*input;
 	t_input	*build;
 
 	if (argc == 1 || (argc == 2 && (!ft_strcmp(argv[1], "-r") || \
 		!ft_strcmp(argv[1], "-p") || !ft_strcmp(argv[1], "-l") || \
 		!ft_strcmp(argv[1], "-c"))))
 	{
-		input = NULL;
 		build = NULL;
 		pass = (t_room *) malloc(sizeof(t_room));
 		if (!pass)
 			return (0);
-		update_flags(argc, argv[1], pass);
-		if (create(pass, &build, &input) == ERROR)
+		if (create(pass, &build) == ERROR)
 			return (0);
-		//exit (0);
+		update_flags(argc, argv[1], pass);
 		if (create_used(pass) == ERROR)
-			return (error_path(pass, input, TRUE));
-		if (initialize_path_finder(pass, input) == ERROR)
+			return (error_path(pass, &build, TRUE));
+		if (initialize_path_finder(pass, &build) == ERROR)
 			return (0);
 		ft_printf("%s\n", build->input);
 		solve(pass);
-		if (pass->print_len || pass->print_paths)
-			printf_struct(pass);
-		error_path(pass, input, FALSE);
+		error_path(pass, &build, FALSE); //need to make sure everything
 	}
 	else if (argc == 2 && !ft_strcmp(argv[1], "-h"))
 		print_help();
