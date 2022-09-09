@@ -12,7 +12,9 @@
 
 #include "../includes/lemin.h"
 
-void del_first_index(t_path *file)
+/*	deletes the first index - used in error.c	*/
+
+void	del_first_index(t_path *file)
 {
 	t_index	*temp;
 

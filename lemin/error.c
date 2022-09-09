@@ -44,6 +44,7 @@ int	**free2d_int(int **links, int j, int end)
 
 int	error_free(t_room *pass, char *input, int j, int first)
 {
+	int i = 0;
 	if (first == FALSE)
 		ft_printf("{red}Error:{uncolor} during parsing phase\n");
 	if (pass->rooms)
@@ -53,7 +54,9 @@ int	error_free(t_room *pass, char *input, int j, int first)
 	if (pass)
 		free(pass);
 	if (input)
-		free(input);
+		i = 0;
+	//if (input)
+	//	free(input);
 	return (ERROR);
 }
 
@@ -114,7 +117,5 @@ int	error_path(t_room *pass, char *input, int first)
 		ft_printf("{red}Error:{uncolor} no paths found\n");
 	if (pass->final_head)
 		del_path(&pass->final_head);
-	if (pass->head)
-		del_path(&pass->head);
 	return (error_free(pass, input, pass->total, TRUE));
 }

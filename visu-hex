@@ -582,6 +582,8 @@ def check_rooms(info, line, total, last):
 	else:
 		info[i]["connect"].append(line[last + 1:len(line)])
 
+# colors of the different paths
+
 def	color_update(i):
 	if i == 0:
 		color = (150, 0, 0)
@@ -606,6 +608,8 @@ def	color_update(i):
 	elif i == 10:
 		color = (50, 0, 50)
 	return color
+
+# store the color and path in their own dict
 
 def store_color_and_path(moves, paths, end):
 	i = 0
@@ -638,7 +642,7 @@ def store_color_and_path(moves, paths, end):
 		total_paths += 1
 
 
-# Main loop of collecting all of the information including error checking
+# Main loop of collecting all of the information in dict and also takes care of error checking
 
 def main(argv, argc):
 	if argc == 1 or argc == 2 and sys.argv[1] == '-f':
@@ -653,9 +657,13 @@ def main(argv, argc):
 		k = 0
 		total = 0
 		ants_move = False
+		print(data)
 		if len(data) != 0:
 			for line in data:
 				print (line)
+				if len(line) >= 6 and line[0][4] == "Error":
+					print ("Error")
+					return
 				if len(line) == 0:
 					ants_move = True
 				elif ants_move == False:
@@ -698,15 +706,16 @@ def main(argv, argc):
 					collect_ant_move(line, ants, info, total, moves, k)
 					k += 1
 			i = 0
-			while i < total:
-				info[i]["total"] = total
-				i += 1
-			i = 0
-			while i < k:
-				moves[i]["total"] = k
-				i += 1
-			store_color_and_path(moves, paths, end)
-			make_map(start, end, info, moves, paths)
+			if (info):
+				while i < total:
+					info[i]["total"] = total
+					i += 1
+				i = 0
+				while i < k:
+					moves[i]["total"] = k
+					i += 1
+				store_color_and_path(moves, paths, end)
+				make_map(start, end, info, moves, paths)
 	else:
 		print("Usage: ./lem-in < maps/subject3.map | ./visu-hex")
 

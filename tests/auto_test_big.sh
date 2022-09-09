@@ -3,8 +3,9 @@
 COUNT=$1
 while [[ $COUNT -gt 0 ]]
 do
-	/Users/molesen/Desktop/Hive/lemin/generator --big > big$COUNT.txt
-	/Users/molesen/Desktop/Hive/lemin/lem-in -r < big$COUNT.txt > results_big$COUNT.txt
+	
+	../generator --big > big$COUNT.txt
+	../lem-in -r < big$COUNT.txt > results_big$COUNT.txt
 	# while read line
 	# do
 		

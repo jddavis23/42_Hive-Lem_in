@@ -28,6 +28,20 @@ typedef struct		s_ants
 	struct s_ants	*prev;
 }					t_ants;
 
+typedef struct		s_input
+{
+	char			*input;
+	int				capacity;
+	int				current;
+}					t_input;
+
+typedef struct		s_connect
+{
+	int					count;
+	int					current_room;
+	struct s_connect	*next;
+}					t_connect;
+
 typedef struct  s_room
 {
 	char	**rooms;
@@ -36,9 +50,12 @@ typedef struct  s_room
 	int		end;
 	int		ants;
 	int		total;
-	int		row;//flag
 	int		min_row;
-	t_path	*head;//i don't think we are using this one
+	int		print_row;//flag
+	int		print_paths;
+	int		print_len;
+	t_connect	*tmp_con;
+	t_connect	*head_con;
 	t_path	*final_head;
 }				t_room;
 
@@ -65,11 +82,11 @@ typedef enum
 } error_message;
 
 // error handling
-int	file_save(t_room *pass, char **input);
+int	file_save(t_room *pass, t_input **build);//char **input);
 int	only_digits(char *str, int *i);
 int	is_coordinates(char *str);
 int	is_connection(char *str);
-int	create(t_room *pass, char **input);
+int	create(t_room *pass, t_input **build, char **input); //char **input);
 int	error(int err);
 int	error_free(t_room *pass, char *input, int j, int first);
 int	error_path(t_room *pass, char *input, int first);
@@ -80,7 +97,7 @@ void	del_first_index(t_path *file);//use in error freeing function
 // parsing
 void	match_in(char *str, char *input, t_room *pass, int k);
 //int		match_in(char *str, char *input, char **rooms, int k, t_room *pass);
-int		count_in(char *str, char *input, char **rooms);
+int		count_in(char *str, char *input, t_room *pass);
 int		addi_diff(char *start, char *finish);
 int		dash_in_section(char *full, char *inside);
 int		is_dash(char *str);
@@ -90,7 +107,6 @@ int		initialize_path_finder(t_room *pass, char *input);
 int		len_array(int *links);
 void	path_finder(t_path **path, t_room *pass);
 void	del_last_path(t_path **path, t_room *pass);
-void	solve(t_room *pass);
 void	free_and_del_path(t_path **path, t_room *pass);
 void	del_path(t_path **path);
 void	copy_to_path(t_room *pass, t_path **path, int **len);
@@ -103,12 +119,30 @@ void	create_index(t_index **move, t_path **path, int i);
 
 // breadth first
 void	breadth_first(t_room *pass, int indx, int i);
+void	travel_locked_path(t_room *pass, int indx, int *i);
+void	remove_branch(t_room *pass, int *i);
+void	set_correct_current_index(t_room *pass, int *i, int new_indx);
+void	update_non_locked_path(t_room *pass, int indx, int j, int *i);
+void	update_locked_path(t_room *pass, int indx, int j, int *i);
 void	calc_len(t_room *pass, int **len);
 void	create_len(int *array, int **len);
 void	reset_len(t_room *pass, int **len);
 
 void	delete_non_found_paths(t_room *pass, int indx);
 
+//didnt know where to put
+int	create_connect(t_room *pass, int j);
+
+// solve
+void	solve(t_room *pass);
+void	create_ants(t_ants **ants_move, int ant, t_index *index);
+void	solve_calc(t_room *pass, t_ants *ants_move, t_ants *head);
+t_ants	*print_ants_move(t_ants *head, t_room *pass, int line);
+
+// print
+void	printf_struct(t_room *pass);
+
+//delete this later
 void	print_output(t_room *pass);
 
 #endif
