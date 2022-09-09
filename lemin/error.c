@@ -54,7 +54,7 @@ int	error_free(t_room *pass, t_input **build, int j, int first)
 		if (pass->links)
 			pass->links = free2d_int(pass->links, j, pass->end);
 		if (pass->info)
-			free2d_int(pass->info, pass->total, pass->total);
+		 	free2d_int(pass->info, 8, 7);
 		free(pass);
 	}
 	if (*build)

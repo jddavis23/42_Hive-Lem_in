@@ -28,7 +28,7 @@ static t_index	*ft_indexnew(int index)
 
 /*	creates index element and adds it onto path->move's linked list	*/
 
-void	create_index(t_index **move, t_path **path, int i)
+int	create_index(t_index **move, t_path **path, int i)
 {
 	t_index	*new;
 
@@ -36,16 +36,25 @@ void	create_index(t_index **move, t_path **path, int i)
 	if (!(*move))
 	{
 		*move = ft_indexnew(i);
+		if (!(*move))
+		{
+			return (-1);
+		}
 		(*path)->move_head = *move;
 		(*path)->move = *move;
 	}
 	else
 	{
 		new = ft_indexnew(i);
+		if (!new)
+		{
+			return (-1);
+		}
 		new->next = (*path)->move;
 		(*path)->move_head = new;
 		(*path)->move = new;
 	}
+	return (0);
 }
 
 /*	creates a new path	*/
@@ -65,12 +74,14 @@ static t_path	*ft_pathnew()
 
 /*	creates path element and adds it onto the linked list of paths	*/
 
-void	create_path(t_path **path, t_room *pass, int nbr, int len)
+int	create_path(t_path **path, t_room *pass, int nbr, int len)
 {
 	t_path *new;
 
-	new = *path;
+	//new = *path;
 	new = ft_pathnew();
+	if (!new)
+		return (-1);
 	new->nbr = nbr;
 	new->len = len;
 	new->move_head = NULL;
@@ -86,11 +97,12 @@ void	create_path(t_path **path, t_room *pass, int nbr, int len)
 		*path = new;
 		pass->final_head = *path;
 	}
+	return (1);
 }
 
 /*	copies the paths from the array to the struct	*/
 
-void	copy_to_path(t_room *pass, t_path **path, int **len)
+int	copy_to_path(t_room *pass, t_path **path, int **len)
 {
 	int	i;
 	int	prev;
@@ -109,9 +121,12 @@ void	copy_to_path(t_room *pass, t_path **path, int **len)
 	while ((*len)[i] > 0)
 	{
 		prev = pass->info[PREV][(*len)[i]];
-		create_path(path, pass, nbr++, pass->info[LEN][(*len)[i]]);
-		create_index(&(*path)->move_head, path, pass->end);
-		create_index(&(*path)->move_head, path, (*len)[i]);
+		if (create_path(path, pass, nbr++, pass->info[LEN][(*len)[i]]) == -1)
+			return (-1); //dont know what has been allocated here
+		if (create_index(&(*path)->move_head, path, pass->end) == -1)
+			return (-1);
+		if (create_index(&(*path)->move_head, path, (*len)[i]) == -1)
+			return (-1);
 		while (prev > 0)
 		{
 			create_index(&(*path)->move_head, path, prev);
@@ -119,4 +134,5 @@ void	copy_to_path(t_room *pass, t_path **path, int **len)
 		}
 		++i;
 	}
+	return (1);
 }

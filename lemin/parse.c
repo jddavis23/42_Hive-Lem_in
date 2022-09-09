@@ -191,6 +191,7 @@ int	create(t_room *pass, t_input **build)//char **input)
 	pass->links = NULL;
 	pass->tmp_con = NULL;
 	pass->head_con = NULL;
+	pass->info = NULL;
 	
 	pass->total = file_save(pass, build);//input);
 	pass->end = pass->total - 1;
@@ -229,7 +230,9 @@ int	create(t_room *pass, t_input **build)//char **input)
 					++i;
 			}
 			else if (hold == 2)
+			{
 				return (create_links(pass, build, i));
+			}
 			++i;
 		}
 	}

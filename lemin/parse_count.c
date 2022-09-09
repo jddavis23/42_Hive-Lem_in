@@ -69,6 +69,7 @@ static int	minus_newline(t_room *pass, char *str, char *input, char *temp)
 	char	*hold;
 
 	hold = temp;
+	ft_printf("BACK\n");
 	j = addi_diff(input, &temp[-1]);
 	arr = ft_strnew(j);
 	if (!arr)

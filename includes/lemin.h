@@ -107,13 +107,13 @@ int	path_finder(t_path **path, t_room *pass);
 void	del_last_path(t_path **path, t_room *pass);
 void	free_and_del_path(t_path **path, t_room *pass);
 void	del_path(t_path **path);
-void	copy_to_path(t_room *pass, t_path **path, int **len);
+int		copy_to_path(t_room *pass, t_path **path, int **len);
 
 // path select
 void	initialize_path(t_room *pass, int i);
-void	path_select(t_path **path, t_room *pass, int **len, int *increase);
-void	create_path(t_path **path, t_room *pass, int nbr, int len);
-void	create_index(t_index **move, t_path **path, int i);
+int		path_select(t_path **path, t_room *pass, int **len, int *increase);
+int		create_path(t_path **path, t_room *pass, int nbr, int len);
+int		create_index(t_index **move, t_path **path, int i);
 
 // breadth first
 void	breadth_first(t_room *pass, int indx, int i);

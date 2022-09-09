@@ -90,10 +90,11 @@ int	initialize_path_finder(t_room *pass, t_input **build)
 	path = NULL;
 	final = NULL;
 	pass->final_head = NULL;
-	path_finder(&path, pass);
+	if (path_finder(&path, pass) == -1)
+		return (error_path(pass, build, FALSE));
 	if (unique_paths(pass) == FALSE)
 	{
-		ft_printf("FAILED\n");
+		ft_printf("FAILED\n"); //delete before submission??
 		printf_struct(pass);
 		exit (0);
 	}

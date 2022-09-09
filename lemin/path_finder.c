@@ -207,10 +207,18 @@ int	path_finder(t_path **path, t_room *pass)
 	i = 0;
 	if (pass->info[PATH][pass->end] == 1)
 	{
-		create_path(path, pass, 1, 1);
-		create_index(&(*path)->move_head, path, pass->end);
+		if (create_path(path, pass, 1, 1) == -1)
+		{
+			free(len);
+			return (-1);
+		}
+		if (create_index(&(*path)->move_head, path, pass->end) == -1)
+		{
+			free(len);
+			return (-1);
+		}
 		free(len);
-		return ;
+		return (1);
 	}
 	i = 0;
 	while (!current_true(pass))
@@ -222,7 +230,11 @@ int	path_finder(t_path **path, t_room *pass)
 			pass->info[PATH][pass->end] = 0;
 			delete_non_found_paths(pass, pass->info[CURRENT][i]);
 			calc_len(pass, &len);
-			path_select(path, pass, &len, &increase);
+			if (path_select(path, pass, &len, &increase) == -1)
+			{
+				free(len);
+				return (-1);
+			}
 			// nbr++;
 			// if (nbr > 20)
 			// 	exit(0);
