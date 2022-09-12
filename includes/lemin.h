@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lemin.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/12 10:09:31 by molesen           #+#    #+#             */
+/*   Updated: 2022/09/12 10:09:33 by molesen          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LEMIN_H
 # define LEMIN_H
 
@@ -51,6 +63,8 @@ typedef struct  s_room
 	int		ants;
 	int		total;
 	int		min_row;
+	int		hold;//lock_path
+	int		next;//lock_path
 	int		print_row;//flag
 	int		print_paths;
 	int		print_len;
@@ -83,11 +97,11 @@ typedef enum
 } error_message;
 
 // error handling
-int	file_save(t_room *pass, t_input **build);//char **input);
+int	file_save(t_room *pass, t_input **build);
 int	only_digits(char *str, int *i);
 int	is_coordinates(char *str);
 int	is_connection(char *str);
-int	create(t_room *pass, t_input **build); //char **input);
+int	create(t_room *pass, t_input **build);
 int	error(int err);
 int	error_free(t_room *pass, t_input **build, int j, int first);
 int	error_path(t_room *pass, t_input **build, int first);
