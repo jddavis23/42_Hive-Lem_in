@@ -112,7 +112,7 @@ void	del_first_index(t_path *file);//use in error freeing function
 // parsing
 void	match_in(char *str, char *input, t_room *pass, int k);
 //int		match_in(char *str, char *input, char **rooms, int k, t_room *pass);
-int		count_in(char *str, char *input, t_room *pass);
+int		count_in(int r, char *input, t_room *pass);
 int		addi_diff(char *start, char *finish);
 int		dash_in_section(char *full, char *inside);
 int		is_dash(char *str);

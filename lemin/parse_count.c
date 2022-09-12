@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/lemin.h"
-# include <string.h>
 
 int	is_dash(char *str)
 {
@@ -60,17 +59,34 @@ int	addi_diff(char *start, char *finish) //undefined behaviour if finish is not 
 	}
 	return (count);
 }
+static int	ft_strcmp_stop(const char *str1, const char *str2)
+{
+	size_t	i;
 
-static int	find_connec_room(t_room *pass, char *str, char **arr, int choice)//, char *temp)
+	i = 0;
+	while (str1[i] != '\n' && (str1[i] != '\0' || str2[i] != '\0'))
+	{
+		if (str1[i] != str2[i])
+			return ((unsigned char)str1[i] - (unsigned char)str2[i]);
+		i++;
+	}
+	return (0);
+}
+
+static int	find_connec_room(t_room *pass, int r, char **arr, int choice)//, char *temp)
 {
 	int	j;
+	int	str_len;
+	//int	stop;
 
+	str_len = ft_strlen(pass->rooms[r]) + 1;
+	//stop = ft_strlen_stop(&(*arr)[str_len], '\n');
 	j = 0;
-	if (!ft_strcmp(pass->rooms[j], str))
+	if (j == r)
 		++j;	
 	while (pass->rooms[j])
 	{
-		if (pass->rooms[j] && !ft_strcmp(pass->rooms[j], str))
+		if (j == r)
 			++j;
 		if (choice == 0 && pass->rooms[j] && !ft_strcmp(*arr, pass->rooms[j]))
 		{
@@ -78,32 +94,29 @@ static int	find_connec_room(t_room *pass, char *str, char **arr, int choice)//, 
 			free(*arr);
 			return (1);
 		}
-		else if (choice == 1 && !ft_strncmp(&(*arr)[ft_strlen(str) + 1], pass->rooms[j], ft_strlen_stop(&(*arr)[ft_strlen(str) + 1], '\n')))
+		else if (choice == 1 && pass->rooms[j] && !ft_strcmp_stop(&(*arr)[str_len], pass->rooms[j]))//!ft_strncmp(&(*arr)[str_len], pass->rooms[j], stop))
 		{
 			create_connect(pass, j);
 			return (1);
 		}
 		++j;
 	}
-	//if (*arr)//choice == 0)
-	//	free(*arr);
-	//ft_printf("%s\n", *arr);
 	if (choice == 0)
 		free(*arr);
 	return (-1);
 }
 
-static int	room_finder(t_room *pass, char *str, int j)
+static int	room_finder(t_room *pass, int r, int j)
 {
-	if (pass->rooms[j] && !ft_strcmp(pass->rooms[j], str))
+	if (j == r)//compare index
 		++j;
 	while (pass->rooms[j])
 	{
-		if (pass->rooms[j] && !ft_strcmp(pass->rooms[j], str))
+		if (j == r)
 			++j;
-		if (pass->rooms[j] && ft_strstr(pass->rooms[j], str))
+		if (pass->rooms[j] && ft_strstr(pass->rooms[j], pass->rooms[r]))
 			break ;
-		else if (ft_strstr(str, pass->rooms[j]))
+		else if (ft_strstr(pass->rooms[r], pass->rooms[j]))
 			return (-1);
 		++j;
 	}
@@ -188,7 +201,7 @@ static int	loop_through_rooms(t_room *pass, char *str, char *input, char *temp)
 	return (1);
 }
 
-static int	minus_newline(t_room *pass, char *str, char *input, char *temp)
+static int	minus_newline(t_room *pass, int r, char *input, char *temp)
 {
 	int		j;
 	char	*arr;
@@ -198,12 +211,12 @@ static int	minus_newline(t_room *pass, char *str, char *input, char *temp)
 	if (!arr)
 		return (-1);
 	ft_strncpy(arr, input, j);
-	if (find_connec_room(pass, str, &arr, 0) == 1)
+	if (find_connec_room(pass, r, &arr, 0) == 1)
 		return (1);
 	else 
 	{
 		arr = NULL;
-		if (loop_through_rooms(pass, str, input, temp) == ERROR)
+		if (loop_through_rooms(pass, pass->rooms[r], input, temp) == ERROR)
 			return (ERROR);
 	}
 	if (arr)
@@ -234,13 +247,13 @@ static int	nlm_helper(t_room *pass, int *j, char *help)
 	return (pass->total);
 }
 
-static int	newline_minus(t_room *pass, char *str, char *temp, char *input)
+static int	newline_minus(t_room *pass, int r, char *temp, char *input)
 {
 	int		j;
 	int		i;
 
 	//ft_printf("nlm\n");
-	if (find_connec_room(pass, str, &temp, 1) == 1)
+	if (find_connec_room(pass, r, &temp, 1) == 1)
 		return (1);
 	else
 	{
@@ -248,7 +261,7 @@ static int	newline_minus(t_room *pass, char *str, char *temp, char *input)
 		i = 0;
 		while (pass->rooms[j])
 		{
-			j = room_finder(pass, str, j);
+			j = room_finder(pass, r, j);
 			if (j == -1)
 				return (2); //not an error. returning so show that str is on the other side of search
 			if (pass->rooms[j])
@@ -263,40 +276,49 @@ static int	newline_minus(t_room *pass, char *str, char *temp, char *input)
 	return (2);
 }
 
-static int	found_or_not(t_room *pass, char *str, char *temp, char *input)
+static int	found_or_not(t_room *pass, int r, char *temp, char *input)
 {
-	if (temp && input[0] != '#' && ((temp[-1] == '\n' && temp[ft_strlen(str)] == '-') ||
-		(temp[-1] == '-' && temp[ft_strlen(str)] == '\n')))
+	int	str_len;
+
+	if (temp && input[0] != '#')
 	{
-		if (is_dash(&temp[ft_strlen(str)]) >= 1 && (temp[-1] == '\n' && 
-			temp[ft_strlen(str)] == '-'))
-			return (newline_minus(pass, str, temp,  input));
-		else if (dash_in_section(input, temp) >= 1 && 
-			(temp[-1] == '-' && temp[ft_strlen(str)] == '\n'))
-			return (minus_newline(pass, str, input, temp));
+		str_len = ft_strlen(pass->rooms[r]);
+		if (((temp[-1] == '\n' && temp[str_len] == '-') ||
+			(temp[-1] == '-' && temp[str_len] == '\n')))
+		{
+			if (is_dash(&temp[str_len]) >= 1 && (temp[-1] == '\n' && 
+				temp[str_len] == '-'))
+				return (newline_minus(pass, r, temp,  input));
+			else if (dash_in_section(input, temp) >= 1 && 
+				(temp[-1] == '-' && temp[str_len] == '\n'))
+				return (minus_newline(pass, r, input, temp));
+		}
 	}
 	return (0);
 }
 
-int	count_in(char *str, char *input, t_room *pass)
+int	count_in(int r, char *input, t_room *pass)
 {
 	int		i;
 	char	*temp;
 	int		diff;
+	int		stop;
 
 	i = 0;
 	while (input[i] != '\0')
 	{
-		temp = ft_strnstr(&input[i], str, ft_strlen_stop(&input[i], '\n'));
-		diff = found_or_not(pass, str, temp, &input[i]); //maybe get rid
+		temp = ft_strnstr(&input[i], pass->rooms[r], ft_strlen_stop(&input[i], '\n'));
+		diff = found_or_not(pass, r, temp, &input[i]); //maybe get rid
 		if (diff == -1)
 			return (-1);
-		while (temp && input[i] != '#' && ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n')) && diff == 2) //&& (temp[-1] != '\n' || temp[ft_strlen(str)] != '-') 
+		if (temp)
+			stop = ft_strlen_stop(&temp[1], '\n');
+		while (temp && input[i] != '#' && ft_strnstr(&temp[1], pass->rooms[r], stop) && diff == 2) //&& (temp[-1] != '\n' || temp[ft_strlen(pass->rooms[r])] != '-') 
 		{
-			temp = ft_strnstr(&temp[1], str, ft_strlen_stop(&temp[1], '\n'));
-			if (temp[-1] == '-' && temp[ft_strlen(str)] == '\n')
+			temp = ft_strnstr(&temp[1], pass->rooms[r], stop);
+			if (temp[-1] == '-' && temp[ft_strlen(pass->rooms[r])] == '\n')
 			{
-				if (minus_newline(pass, str, &input[i], temp) == -1)
+				if (minus_newline(pass, r, &input[i], temp) == -1)
 					return (-1);
 			}
 		}

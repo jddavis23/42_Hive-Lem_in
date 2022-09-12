@@ -143,6 +143,7 @@ static int	create_links(t_room *pass, t_input **build, int i)
 	int	j;
 	//char **input = NULL; //just for error function
 
+	//exit (0);
 	if (duplicated(pass->rooms) == ERROR)
 		return (error_free(pass, build, 0, FALSE));
 	j = 0;
@@ -150,7 +151,7 @@ static int	create_links(t_room *pass, t_input **build, int i)
 	{
 		if (create_connect(pass, 0) == -1)
 			return (error_free(pass, build, j, FALSE)); //CHANGE INPUT TO FREE BUILD AND COTENTS
-		if (count_in(pass->rooms[j], &(((*build)->input)[i]), pass) == -1)
+		if (count_in(j, &(((*build)->input)[i]), pass) == -1)
 			return (error_free(pass, build, j, FALSE));
 		pass->links[j] = (int *) malloc((pass->tmp_con->count) * sizeof(int));
 		if (!pass->links[j])
@@ -186,7 +187,7 @@ static void	set_val(t_room *pass, t_input **build, int *hold)
 	pass->tmp_con = NULL;
 	pass->head_con = NULL;
 	pass->info = NULL;
-	pass->total = file_save(pass, build);//input);
+	pass->total = file_save(pass, build);
 	pass->end = pass->total - 1;
 }
 
@@ -195,6 +196,7 @@ int	create(t_room *pass, t_input **build)//char **input)
 	int	i;
 	int	j;
 	int	hold;
+	int	stop;
 
 	i = 0;
 	j = 1;
@@ -225,10 +227,11 @@ int	create(t_room *pass, t_input **build)//char **input)
 			}
 			if (hold == 3)
 			{
-				pass->rooms[j] = ft_strnew(ft_strlen_stop(&(((*build)->input)[i]), ' '));
+				stop = ft_strlen_stop(&(((*build)->input)[i]), ' ');
+				pass->rooms[j] = ft_strnew(stop);
 				if (!pass->rooms[j])
 					return (error_free(pass, build, 0, FALSE));
-				ft_strncat(pass->rooms[j++], &(((*build)->input)[i]), ft_strlen_stop(&(((*build)->input)[i]), ' '));
+				ft_strncat(pass->rooms[j++], &(((*build)->input)[i]), stop);
 				while (((*build)->input)[i] != '\n')
 					++i;
 			}
