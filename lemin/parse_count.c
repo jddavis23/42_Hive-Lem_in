@@ -177,7 +177,7 @@ static int	mnl_helper(t_room *pass, int *j, char *input, char *temp)
 	return (i);
 }
 
-static int	loop_through_rooms(t_room *pass, char *str, char *input, char *temp)
+static int	loop_through_rooms(t_room *pass, int r, char *input, char *temp)
 {
 	char	*hold;
 	int		i;
@@ -188,7 +188,7 @@ static int	loop_through_rooms(t_room *pass, char *str, char *input, char *temp)
 	j = 0;
 	while (pass->rooms[j])
 	{
-		j = room_finder(pass, str, j);
+		j = room_finder(pass, r, j);
 		if (j == -1)
 			return (2); //not an error. returning so show that str is on the other side of search
 		temp = NULL;
@@ -216,7 +216,7 @@ static int	minus_newline(t_room *pass, int r, char *input, char *temp)
 	else 
 	{
 		arr = NULL;
-		if (loop_through_rooms(pass, pass->rooms[r], input, temp) == ERROR)
+		if (loop_through_rooms(pass, r, input, temp) == ERROR)
 			return (ERROR);
 	}
 	if (arr)

@@ -43,12 +43,16 @@ int	by_line(char *input)
 	return (count);
 }
 
-int	duplicated(char **str)
+static int	duplicated(char **str, t_room *pass)
 {
 	int	i;
 	int	j;
 
 	i = 0;
+	if (!pass->rooms[0])//--------doesn't return error when there are no end
+	{
+		return (-1);
+	}
 	while (str[i])
 	{
 		j = i + 1;
@@ -144,7 +148,7 @@ static int	create_links(t_room *pass, t_input **build, int i)
 	//char **input = NULL; //just for error function
 
 	//exit (0);
-	if (duplicated(pass->rooms) == ERROR)
+	if (duplicated(pass->rooms, pass) == ERROR)
 		return (error_free(pass, build, 0, FALSE));
 	j = 0;
 	while (pass->rooms[j])
