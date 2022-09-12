@@ -110,13 +110,37 @@ static int	room_finder(t_room *pass, char *str, int j)
 	return (j);
 }
 
+static int	mnl_found_room(t_room *pass, int *i, char *input, char *temp)
+{
+	char	*arr;
+
+	if (pass->rooms[*i] && !ft_strncmp(input, pass->rooms[*i], ft_strlen(pass->rooms[*i])))//, ft_strlen_stop(&help[ft_strlen(pass->rooms[*j]) + 1], '\n')))
+	{
+		arr = ft_strnew(addi_diff(input, &temp[-1]));
+		if (!arr)
+		{
+			*i = ERROR;
+			return (ERROR);
+		}
+		ft_strncpy(arr, input, addi_diff(input, &temp[-1]));
+		if (ft_strcmp(arr, pass->rooms[*i]))
+		{
+			free(arr);
+			arr = NULL;
+			return (TRUE);
+		}
+		free(arr);
+		arr = NULL;
+	}
+	return (FALSE);
+}
+
 static int	mnl_helper(t_room *pass, int *j, char *input, char *temp)
 {
-	int			i;
-	char		*arr;
 	static int	flag = 0;
+	int			i;
+	int			ret;
 
-	arr = NULL;
 	i = 0;
 	if (pass->rooms[*j] && temp && temp[-1] == '-' && temp[ft_strlen(pass->rooms[*j])] == '\n')
 	{
@@ -127,24 +151,11 @@ static int	mnl_helper(t_room *pass, int *j, char *input, char *temp)
 		{
 			if (pass->rooms[i] && !ft_strcmp(pass->rooms[i], pass->rooms[*j]))
 				++i;
-			if (pass->rooms[i] && !ft_strncmp(input, pass->rooms[i], ft_strlen(pass->rooms[i])))//, ft_strlen_stop(&help[ft_strlen(pass->rooms[*j]) + 1], '\n')))
-			{
-				arr = ft_strnew(addi_diff(input, &temp[-1]));
-				if (!arr)
-					return (-1);
-				ft_strncpy(arr, input, addi_diff(input, &temp[-1]));
-				if (ft_strcmp(arr, pass->rooms[i]))
-					break ;
-				free(arr);
-				arr = NULL;
-			}
+			ret = mnl_found_room(pass, &i, input, temp);
+			if (i == ERROR || ret == TRUE)
+				break ;
 			++i;
 		}
-	}
-	if (arr)
-	{
-		free(arr);
-		arr = NULL;
 	}
 	if (pass->rooms[*j])
 		++(*j);
@@ -153,39 +164,47 @@ static int	mnl_helper(t_room *pass, int *j, char *input, char *temp)
 	return (i);
 }
 
+static int	loop_through_rooms(t_room *pass, char *str, char *input, char *temp)
+{
+	char	*hold;
+	int		i;
+	int		j;
+
+	hold = temp;
+	i = -1;
+	j = 0;
+	while (pass->rooms[j])
+	{
+		j = room_finder(pass, str, j);
+		if (j == -1)
+			return (2); //not an error. returning so show that str is on the other side of search
+		temp = NULL;
+		if (pass->rooms[j])
+			temp = ft_strstr(input, pass->rooms[j]);
+		i = mnl_helper(pass, &j, input, temp);
+	}
+	if ((i != -1 && !pass->rooms[i]) || (i == -1 && hold[-1] == '-'))
+		return (error(CONNECTION));
+	return (1);
+}
+
 static int	minus_newline(t_room *pass, char *str, char *input, char *temp)
 {
 	int		j;
 	char	*arr;
-	int		i;
-	char	*hold;
 
-	hold = temp;
 	j = addi_diff(input, &temp[-1]);
 	arr = ft_strnew(j);
 	if (!arr)
 		return (-1);
 	ft_strncpy(arr, input, j);
-	//ft_printf("mnl\n");
 	if (find_connec_room(pass, str, &arr, 0) == 1)
 		return (1);
-	else
+	else 
 	{
 		arr = NULL;
-		j = 0;
-		i = -1;
-		while (pass->rooms[j])
-		{
-			j = room_finder(pass, str, j);
-			if (j == -1)
-				return (2); //not an error. returning so show that str is on the other side of search
-			temp = NULL;
-			if (pass->rooms[j])
-				temp = ft_strstr(input, pass->rooms[j]);
-			i = mnl_helper(pass, &j, input, temp);
-		}
-		if ((i != -1 && !pass->rooms[i]) || (i == -1 && hold[-1] == '-'))
-			return (error(CONNECTION));
+		if (loop_through_rooms(pass, str, input, temp) == ERROR)
+			return (ERROR);
 	}
 	if (arr)
 		free(arr);
