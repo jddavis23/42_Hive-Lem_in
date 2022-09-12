@@ -30,18 +30,21 @@ void	initialize_path(t_room *pass)
 	}
 }
 
-static int	calc_min_row(t_room *pass, int **len, int path_count, int remain_ants)
+static int	calc_min_row(t_room *pass, int **len, int path_count, \
+	int remain_ants)
 {
-	int last_len;
-	int dif;
+	int	last_len;
+	int	dif;
 
 	if ((*len)[path_count] == 0)
 		return ((pass->info[LEN][(*len)[path_count - 1]] - 1) + remain_ants);
 	while ((*len)[path_count] > 0)
 	{
-		if (pass->info[LEN][(*len)[path_count]] - pass->info[LEN][(*len)[path_count - 1]] != 0)
+		if (pass->info[LEN][(*len)[path_count]] - \
+			pass->info[LEN][(*len)[path_count - 1]] != 0)
 		{
-			dif = pass->info[LEN][(*len)[path_count]] - pass->info[LEN][(*len)[path_count - 1]];
+			dif = pass->info[LEN][(*len)[path_count]] - \
+			pass->info[LEN][(*len)[path_count - 1]];
 			dif *= path_count;
 			if (remain_ants - dif < 0)
 				break ;

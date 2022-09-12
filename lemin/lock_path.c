@@ -14,8 +14,9 @@ static int	len_check(t_room *pass, int indx)
 		indx = pass->info[NEXT][indx];
 		if (pass->info[PATH][indx] == 2)
 			return (TRUE);
-		if (pass->info[JUMP][indx] && pass->info[PATH][pass->info[JUMP][indx]] == 1 \
-		 && pass->info[LEN][pass->info[JUMP][indx]] + pass->info[LEN][indx] < i )// && pass->info[JUMP][indx] != start)
+		if (pass->info[JUMP][indx] && \
+			pass->info[PATH][pass->info[JUMP][indx]] == 1 && \
+			pass->info[LEN][pass->info[JUMP][indx]] + pass->info[LEN][indx] < i)
 			return (FALSE);
 	}
 	return (TRUE);
@@ -82,7 +83,7 @@ void	lock_path(t_room *pass, int indx, int *error)
 
 	pass->next = 0;
 	pass->hold = 0;
-	pass->info[NEXT][indx] = pass->end; 
+	pass->info[NEXT][indx] = pass->end;
 	while (indx != 0)
 	{
 		for_now = indx;
@@ -95,7 +96,8 @@ void	lock_path(t_room *pass, int indx, int *error)
 			indx = pass->next;
 		pass->next = 0;
 		lock_conditions(pass, &value, &indx, &for_now);
-		if (pass->info[PREV][indx] != 0 && pass->info[NEXT][indx] == pass->info[PREV][indx])
+		if (pass->info[PREV][indx] != 0 && \
+			pass->info[NEXT][indx] == pass->info[PREV][indx])
 		{
 			*error = TRUE;
 			return ;

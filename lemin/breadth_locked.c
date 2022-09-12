@@ -41,7 +41,8 @@ void	update_locked_path(t_room *pass, int indx, int j, int *i)
 
 static void	already_locked_path(t_room *pass, int indx, int temp, int *i)
 {
-	if (pass->info[PATH][pass->info[PREV][indx]] == 3 && pass->info[MOVE][temp] == FALSE)
+	if (pass->info[PATH][pass->info[PREV][indx]] == 3 && \
+		pass->info[MOVE][temp] == FALSE)
 	{
 		temp = *i;
 		set_correct_current_index(pass, i, pass->info[PREV][indx]);
@@ -75,9 +76,10 @@ static void	find_new_branches(t_room *pass, int indx, int *i)
 			update_locked_path(pass, indx, j, i);
 		else if (pass->info[PATH][pass->links[indx][j]] == 0)
 			update_non_locked_path(pass, indx, j, i);
-		else if (pass->info[PATH][pass->links[indx][j]] == 1 && pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->links[indx][j]] && \
-			pass->info[PATH][pass->info[PREV][pass->links[indx][j]]] == 3)// && \
-			//pass->info[JUMP][indx] != pass->links[indx][j])
+		else if (pass->info[PATH][pass->links[indx][j]] == 1 && \
+			pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->links[indx][j]] \
+			&& pass->info[PATH][pass->info[PREV][pass->links[indx][j]]] == 3)
+			// && pass->info[JUMP][indx] != pass->links[indx][j])
 		{
 			pass->info[PREV][pass->links[indx][j]] = indx;
 			pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
@@ -87,7 +89,10 @@ static void	find_new_branches(t_room *pass, int indx, int *i)
 	already_locked_path(pass, indx, temp, i);
 }
 
-/*	when moving through a locked_path it will check if it contains a 'jump' from a non-locked path to 	*/
+/*
+**	when moving through a locked_path it will check if it contains a 'jump'
+**	from a non-locked path to
+*/
 
 void	travel_locked_path(t_room *pass, int indx, int *i)
 {

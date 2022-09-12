@@ -53,7 +53,7 @@ int	error_free(t_room *pass, t_input **build, int j, int first)
 		if (pass->links)
 			pass->links = free2d_int(pass->links, j, pass->end);
 		if (pass->info)
-		 	free2d_int(pass->info, 8, 7);
+			free2d_int(pass->info, 8, 7);
 		free(pass);
 	}
 	if (*build)
@@ -81,7 +81,7 @@ int	error(int err)
 		else if (err == NON_DIGIT_ANTS)
 			ft_printf("Non digit detected. Only positive number allowed\n");
 		else if (err == COMMAND)
-			ft_printf("Location incorrect or duplicate ##start or ##end command\n");
+			ft_printf("Location incorrect or duplicate ##start/##end command\n");
 		else if (err == COORDINATES)
 			ft_printf("Incorrect coordinates\n");
 		else if (err == CONNECTION)
@@ -109,7 +109,6 @@ void	del_path(t_path **path)
 		*path = temp;
 	}
 }
-
 
 /*
 **	function called in two scenarious

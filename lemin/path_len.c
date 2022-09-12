@@ -45,7 +45,10 @@ void	reset_len(t_room *pass, int **len)
 	}
 }
 
-/*	sorts the len array to make sure the smallest is at the beginning of the array	*/
+/*
+**	sorts the len array to make sure the smallest is at the beginning
+**	of the array
+*/
 
 static void	bubble_len(t_room *pass, int **len)
 {

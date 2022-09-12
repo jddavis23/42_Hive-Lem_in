@@ -25,7 +25,8 @@ static int	on_lock_path(t_room *pass, int *i, int c_len)
 		{
 			while (*i < c_len)
 			{
-				if (pass->info[CURRENT][*i] != 0 && pass->info[PATH][pass->info[CURRENT][*i]] >= 2)
+				if (pass->info[CURRENT][*i] != 0 && \
+					pass->info[PATH][pass->info[CURRENT][*i]] >= 2)
 					breadth_first(pass, pass->info[CURRENT][*i], *i);
 				++(*i);
 			}
@@ -75,7 +76,9 @@ static int	choose_shortest_path(t_room *pass)
 	shortest = 0;
 	while (pass->links[pass->end][i] >= 0)
 	{
-		if (pass->info[PATH][pass->links[pass->end][i]] == 1 && (!shortest || pass->info[LEN][pass->links[pass->end][i]] < pass->info[LEN][shortest]))
+		if (pass->info[PATH][pass->links[pass->end][i]] == 1 && \
+			(!shortest || pass->info[LEN][pass->links[pass->end][i]] < \
+			pass->info[LEN][shortest]))
 			shortest = pass->links[pass->end][i];
 		++i;
 	}

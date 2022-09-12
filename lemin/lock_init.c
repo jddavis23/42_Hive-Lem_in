@@ -1,6 +1,9 @@
 #include "../includes/lemin.h"
 
-/*	updates the length so the count goes up from end to start of already found paths	*/
+/*
+**	updates the length so the count goes up from end to start of already
+**	found paths
+*/
 
 static void	len_back_front(t_room *pass)
 {
@@ -26,7 +29,10 @@ static void	len_back_front(t_room *pass)
 	}
 }
 
-/*	sets the values to zero - also called from main when function is first called	*/
+/*
+**	sets the values to zero - also called from main when function is
+**	first called
+*/
 
 void	info_set_to_zero(t_room *pass, int i)
 {

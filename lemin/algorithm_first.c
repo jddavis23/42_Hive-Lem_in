@@ -16,13 +16,13 @@
 
 int	current_len(t_room *pass)
 {
-	int i;
+	int	i;
 
 	i = pass->total - 1;
 	while (i > 0)
 	{
 		if (pass->info[CURRENT][i--] != 0)
-			break; 
+			break ;
 	}
 	return (i + 2);
 }

@@ -12,6 +12,21 @@
 
 #include "../includes/lemin.h"
 
+static void	print_rooms(t_path *final, t_room *pass)
+{
+	final->move = final->move_head;
+	ft_printf("	Rooms: ");
+	while (final->move)
+	{
+		ft_printf("%s ", pass->rooms[final->move->index]);
+		final->move = final->move->next;
+		if (final->move)
+			ft_printf("-> ");
+		else
+			ft_printf("\n\n");
+	}
+}
+
 void	printf_struct(t_room *pass)
 {
 	t_path	*final;
@@ -24,33 +39,22 @@ void	printf_struct(t_room *pass)
 	while (final)
 	{
 		temp = final->move_head;
-		ft_printf("PATH [%d] (Len: %d - nbr of struct: %d)\n", final->nbr, final->len, i);
+		ft_printf("PATH [%d] (Len: %d - nbr of struct: %d)\n", final->nbr, \
+		final->len, i);
 		if (pass->print_paths == TRUE)
-		{
-			final->move = final->move_head;
-			ft_printf("	Rooms: ");
-			while (final->move)
-			{
-				ft_printf("%s ", pass->rooms[final->move->index]);
-				final->move = final->move->next;
-				if (final->move)
-					ft_printf("-> ");
-				else
-					ft_printf("\n\n");
-			}
-			final->move_head = temp;
-		}
+			print_rooms(final, pass);
 		++i;
 		final = final->next;
 	}
 }
 
+// ------ should we delete this one??? ------------ //////////
 static int	unique_paths(t_room *pass)
 {
-	t_path *final;
-	t_path *compare;
-	t_index *temp;
-	int count;
+	t_path	*final;
+	t_path	*compare;
+	t_index	*temp;
+	int		count;
 
 	final = pass->final_head;
 	while (final)
@@ -112,9 +116,3 @@ int	initialize_path_finder(t_room *pass, t_input **build)
 	final = pass->final_head;
 	return (0);
 }
-
-/*
-
-make ssure it selects the path 6 and make sure it also use it when printing
-
-*/

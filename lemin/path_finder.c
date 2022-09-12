@@ -32,7 +32,7 @@ static int	start_connect_end(t_path **path, t_room *pass, int **len)
 
 int	current_true(t_room *pass)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < pass->total)
@@ -44,6 +44,7 @@ int	current_true(t_room *pass)
 	return (TRUE);
 }
 
+//------- delete ??? -----------------------///
 void	print_output(t_room *pass)
 {
 	int	i;
@@ -82,12 +83,16 @@ void	print_output(t_room *pass)
 	}
 }
 
-/*	makes sure all variables has been set to zero before running the second algorithm	*/
+/*
+**	makes sure all variables has been set to zero before running
+**	the second algorithm
+*/
 
 static void	clean_everything(t_room *pass)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (i < pass->total)
 	{
 		pass->info[PATH][i] = FALSE;
