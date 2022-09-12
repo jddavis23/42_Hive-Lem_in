@@ -21,7 +21,7 @@ static int	diff_prev(t_room *pass, int len)
 
 	path = pass->final_head;
 	count = 0;
-	while(path)
+	while (path)
 	{
 		if (path->len == len)
 			break ;
@@ -45,7 +45,8 @@ static void	path_calc(int remain_ants, t_path **path)
 
 /*	sets paths of the ants	*/
 
-static t_ants	*path_setter(t_ants **ants_move, t_room *pass, t_path **end, t_ants *head)
+static t_ants	*path_setter(t_ants **ants_move, t_room *pass, t_path **end, \
+	t_ants *head)
 {
 	t_path		*path;
 	static int	current_ant = 0;
@@ -64,7 +65,10 @@ static t_ants	*path_setter(t_ants **ants_move, t_room *pass, t_path **end, t_ant
 	return (head);
 }
 
-/*	calculates max amount of ants to be send down a path before we take the next path in use	*/
+/*
+**	calculates max amount of ants to be send down a path before we take the
+**	next path in use
+*/
 
 static void	calc_amount_of_ants(t_room *pass, t_path **path)
 {
@@ -74,10 +78,10 @@ static void	calc_amount_of_ants(t_room *pass, t_path **path)
 	prev = NULL;
 	while (*path && (*path)->next)
 	{
-		dif = diff_prev(pass, (*path)->len) + (((*path)->next->len - (*path)->len) * (*path)->nbr);
+		dif = diff_prev(pass, (*path)->len) + (((*path)->next->len - \
+		(*path)->len) * (*path)->nbr);
 		(*path)->max_ants = dif + (*path)->nbr;
 		(*path)->prev = prev;
-		
 		if (pass->ants <= (*path)->max_ants)
 			break ;
 		prev = *path;
@@ -86,7 +90,10 @@ static void	calc_amount_of_ants(t_room *pass, t_path **path)
 	(*path)->prev = prev;
 }
 
-/*	calls the functions to calculate amount of ants per path and the printing function	*/
+/*
+**	calls the functions to calculate amount of ants per path and the
+**	printing function
+*/
 
 void	solve_calc(t_room *pass, t_ants *ants_move, t_ants *head)
 {
@@ -108,4 +115,5 @@ void	solve_calc(t_room *pass, t_ants *ants_move, t_ants *head)
 		else
 			path_setter(&ants_move, pass, &path, head);
 	}
+	print_count(pass->print_count, --line);
 }

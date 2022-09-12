@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-# include "../includes/lemin.h"
+#include "../includes/lemin.h"
 
 /*	updates current indx	*/
 
@@ -47,6 +46,8 @@ void	update_non_locked_path(t_room *pass, int indx, int j, int *i)
 	}
 }
 
+/*	updates remaining of path	*/
+
 static void	update_len(t_room *pass, int indx)
 {
 	int	i;
@@ -64,8 +65,8 @@ static void	update_len(t_room *pass, int indx)
 }
 
 /*
-**	when moving through a non-locked path it will check for valid rooms to move into
-**	valid rooms contain the value 0 or 2 in the pass->info[PATH]
+**	when moving through a non-locked path it will check for valid rooms to move
+**	into valid rooms contain the value 0 or 2 in the pass->info[PATH]
 */
 
 static void	travel_non_locked_path(t_room *pass, int indx, int *i)
@@ -81,24 +82,14 @@ static void	travel_non_locked_path(t_room *pass, int indx, int *i)
 			pass->info[PATH][pass->info[PREV][pass->links[indx][j]]] >= 2)
 			update_locked_path(pass, indx, j, i);
 		else if (pass->info[PATH][pass->links[indx][j]] == 1 && \
-			pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->links[indx][j]] && \
-			pass->links[indx][j] != pass->info[PREV][indx]
+			pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->links[indx][j]] \
+			&& pass->links[indx][j] != pass->info[PREV][indx]
 		)
 		{
-			// changed later on for it to be [LEN][INDX] + 1 < pas infoetc...
-			// not quite sure why it helped on big5.txt
 			pass->info[PREV][pass->links[indx][j]] = indx;
 			pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;
 			update_len(pass, pass->links[indx][j]);
-			//set_correct_current_index(pass, i, pass->links[indx][j]);
 		}
-		// else if (pass->info[PATH][pass->links[indx][j]] == 3 && \
-		// 	pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->info[JUMP][pass->links[indx][j]]])
-		// {
-		// 	pass->info[JUMP][pass->links[indx][j]] = indx;
-		// 	// pass->info[LOCKED][*i] = TRUE;
-		// 	// set_correct_current_index(pass, i, pass->links[indx][j]);
-		// }
 		++j;
 	}
 }

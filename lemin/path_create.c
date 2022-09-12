@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/lemin.h"
+#include "../includes/lemin.h"
 
 /*	creates a new index element	*/
 
@@ -49,17 +49,13 @@ int	create_index(t_index **move, t_path **path, int i)
 		if (!((*path)->move->next))
 			return (-1);
 		(*path)->move = (*path)->move->next;
-		// new = ft_indexnew(i);
-		// new->next = (*path)->move;
-		// (*path)->move_head = new;
-		// (*path)->move = new;
 	}
 	return (0);
 }
 
 /*	creates a new path	*/
 
-static t_path	*ft_pathnew()
+static t_path	*ft_pathnew(void)
 {
 	t_path	*new;
 
@@ -76,9 +72,8 @@ static t_path	*ft_pathnew()
 
 int	create_path(t_path **path, t_room *pass, int nbr, int len)
 {
-	t_path *new;
+	t_path	*new;
 
-	//new = *path;
 	new = ft_pathnew();
 	if (!new)
 		return (-1);
@@ -107,30 +102,9 @@ int	copy_to_path(t_room *pass, t_path **path, int **len)
 	int	i;
 	int	next;
 	int	nbr;
-	int	m;
 
-	m = 0;
 	nbr = 1;
-	// was this just a print statement? delete?
-	/*while ((*len)[m] != -1)
-	{
-		ft_printf("%d ", (*len)[m]);
-		m++;
-	}*/
 	i = 0;
-	// while ((*len)[i] > 0)
-	// {
-	// 	prev = pass->info[PREV][(*len)[i]];
-	// 	create_path(path, pass, nbr++, pass->info[LEN][(*len)[i]]);
-	// 	create_index(&(*path)->move_head, path, pass->end);
-	// 	create_index(&(*path)->move_head, path, (*len)[i]);
-	// 	while (prev > 0)
-	// 	{
-	// 		create_index(&(*path)->move_head, path, prev);
-	// 		prev = pass->info[PREV][prev];
-	// 	}
-	// 	++i;
-	// }
 	while ((*len)[i] > 0)
 	{
 		next = pass->info[NEXT][(*len)[i]];

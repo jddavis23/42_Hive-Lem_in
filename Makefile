@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: molesen <marvin@42.fr>                     +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/09/12 10:09:38 by molesen           #+#    #+#              #
+#    Updated: 2022/09/12 10:09:40 by molesen          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = lem-in
 
 CC = gcc -Wall -Wextra -Werror
@@ -16,8 +28,11 @@ SRC += $(C)path_finder.c
 SRC += $(C)path_create.c
 SRC += $(C)path_del_cpy.c
 SRC += $(C)path_select.c
+SRC += $(C)algorithm_first.c
+SRC += $(C)algorithm_second.c
 SRC += $(C)breadth_first.c
 SRC += $(C)breadth_locked.c
+SRC += $(C)lock_init.c
 SRC += $(C)lock_path.c
 SRC += $(C)path_len.c
 SRC += $(C)solve.c

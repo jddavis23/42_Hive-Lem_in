@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/lemin.h"
+#include "../includes/lemin.h"
 
 /*	function checking room is already in use	*/
 
@@ -30,21 +30,16 @@ static int	create_used(t_room *pass)
 	pass->info[JUMP] = (int *) malloc(pass->total * sizeof(int));
 	pass->info[LOCKED] = (int *) malloc(pass->total * sizeof(int));
 	pass->info[MOVE] = (int *) malloc(pass->total * sizeof(int));
-	if (!pass->info[PATH] || !pass->info[PREV] || !pass->info[LEN] || !pass->info[CURRENT] || !pass->info[NEXT] || !pass->info[JUMP] || !pass->info[LOCKED] || !pass->info[MOVE])
+	if (!pass->info[PATH] || !pass->info[PREV] || !pass->info[LEN] || \
+		!pass->info[CURRENT] || !pass->info[NEXT] || !pass->info[JUMP] || \
+		!pass->info[LOCKED] || !pass->info[MOVE])
 		return (ERROR);
 	while (i < pass->total)
-	{
-		pass->info[PATH][i] = FALSE;
-		pass->info[PREV][i] = FALSE;
-		pass->info[LEN][i] = FALSE;
-		pass->info[NEXT][i] = FALSE;
-		pass->info[JUMP][i] = FALSE;
-		pass->info[LOCKED][i] = FALSE;
-		pass->info[MOVE][i] = FALSE;
-		pass->info[CURRENT][i++] = FALSE;
-	}
+		info_set_to_zero(pass, i++);
 	return (0);
 }
+
+/*	prints help information about how to use the flags to the terminal	*/
 
 static void	print_help(void)
 {
@@ -52,14 +47,18 @@ static void	print_help(void)
 	ft_printf("		-h :	display help\n");
 	ft_printf("		-r :	prints row number\n");
 	ft_printf("		-p :	prints found paths - all information\n");
-	ft_printf("		-l :	prints found paths - basic information ex len\n\n");
+	ft_printf("		-l :	prints found paths - basic information ex len\n");
+	ft_printf("		-c :	prints total row count without ants movement\n\n");
 }
+
+/*	updates the flags in the struct to either TRUE or FALSE	*/
 
 static void	update_flags(int argc, char *str, t_room *pass)
 {
 	pass->print_row = FALSE;
 	pass->print_paths = FALSE;
 	pass->print_len = FALSE;
+	pass->print_count = FALSE;
 	if (argc == 2)
 	{
 		if (!ft_strcmp(str, "-r"))
@@ -68,6 +67,8 @@ static void	update_flags(int argc, char *str, t_room *pass)
 			pass->print_paths = TRUE;
 		else if (!ft_strcmp(str, "-l"))
 			pass->print_len = TRUE;
+		else if (!ft_strcmp(str, "-c"))
+			pass->print_count = TRUE;
 	}
 }
 
@@ -77,7 +78,8 @@ int	main(int argc, char **argv)
 	t_input	*build;
 
 	if (argc == 1 || (argc == 2 && (!ft_strcmp(argv[1], "-r") || \
-		!ft_strcmp(argv[1], "-p") || !ft_strcmp(argv[1], "-l"))))
+		!ft_strcmp(argv[1], "-p") || !ft_strcmp(argv[1], "-l") || \
+		!ft_strcmp(argv[1], "-c"))))
 	{
 		build = NULL;
 		pass = (t_room *) malloc(sizeof(t_room));
@@ -90,9 +92,7 @@ int	main(int argc, char **argv)
 			return (error_path(pass, &build, TRUE));
 		if (initialize_path_finder(pass, &build) == ERROR)
 			return (0);
-		ft_printf("%s\n", build->input);
-		solve(pass);
-		error_path(pass, &build, FALSE); //need to make sure everything
+		solve(pass, &build);
 	}
 	else if (argc == 2 && !ft_strcmp(argv[1], "-h"))
 		print_help();

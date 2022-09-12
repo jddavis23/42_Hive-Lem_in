@@ -73,7 +73,8 @@ t_ants	*print_ants_move(t_ants *head, t_room *pass, int line)
 		ft_printf("{purple}row: %d{uncolor}\n", line);
 	while (head)
 	{
-		ft_printf("L%d-%s", head->ant, pass->rooms[head->move->index]);
+		if (!pass->print_count)
+			ft_printf("L%d-%s", head->ant, pass->rooms[head->move->index]);
 		if (head->move->index == pass->end)
 			end_room_reached(&head, &send, &i);
 		else
@@ -81,28 +82,39 @@ t_ants	*print_ants_move(t_ants *head, t_room *pass, int line)
 			head->move = head->move->next;
 			head = head->next;
 		}
-		if (!head)
+		if (!head && !pass->print_count)
 			ft_printf("\n");
-		else
+		else if (!pass->print_count)
 			ft_printf(" ");
 		++i;
 	}
 	return (send); //careful what returning, could have changed
 }
 
+void	print_count(int print_count, int line)
+{
+	if (print_count)
+	{
+		ft_printf("---- FINAL ROW COUNT ----\n");
+		ft_printf("{purple}row: %d{uncolor}\n", line);
+	}
+}
+
 /*	starting logic of printing ants moving and takes care of edge case	*/
 
-void	solve(t_room *pass)
+void	solve(t_room *pass, t_input **build)
 {
 	t_ants	*ants_move;
 	t_ants	*head;
-	
+	int		current_ant;
+
 	head = NULL;
 	ants_move = NULL;
-	// if start is connected to the end move all ants at the same time
+	if (!pass->print_count)
+		ft_printf("%s\n", (*build)->input);
 	if (pass->final_head->len == 1)
 	{
-		int current_ant = 0;
+		current_ant = 0;
 		while (current_ant < pass->ants)
 		{
 			create_ants(&ants_move, current_ant++, pass->final_head->move_head);
@@ -110,20 +122,11 @@ void	solve(t_room *pass)
 				head = ants_move;
 		}
 		head = print_ants_move(head, pass, 1);
+		print_count(pass->print_count, 1);
 	}
 	else
 		solve_calc(pass, ants_move, head);
+	if (pass->print_len || pass->print_paths)
+		printf_struct(pass);
+	error_path(pass, &(*build), FALSE); //need to make sure everything
 }
-
-/*
-
-
-- adding bonusses
-
-	-h : help  message
-	-l : leaks check
-	-m/lines : prints out amount of move pr line/amount of lines
-	-p : prints amount of paths selected before printing the final movement of the ants
-	-t : bonus that displays the time it took to run the program
-
-*/
