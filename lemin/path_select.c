@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/lemin.h"
+#include "../includes/lemin.h"
 
 void	initialize_path(t_room *pass)
 {

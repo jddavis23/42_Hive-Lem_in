@@ -1,4 +1,4 @@
-# include "../includes/lemin.h"
+#include "../includes/lemin.h"
 
 /*	function that creates the len array	*/
 

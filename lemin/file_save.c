@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/lemin.h"
+#include "../includes/lemin.h"
 
 /*	checks if the read line is a comment	*/
 

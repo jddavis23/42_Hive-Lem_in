@@ -91,7 +91,7 @@ t_ants	*print_ants_move(t_ants *head, t_room *pass, int line)
 	return (send); //careful what returning, could have changed
 }
 
-void	print_count(int	print_count, int line)
+void	print_count(int print_count, int line)
 {
 	if (print_count)
 	{
@@ -106,15 +106,15 @@ void	solve(t_room *pass, t_input **build)
 {
 	t_ants	*ants_move;
 	t_ants	*head;
-	
+	int		current_ant;
+
 	head = NULL;
 	ants_move = NULL;
-	// if start is connected to the end move all ants at the same time
 	if (!pass->print_count)
 		ft_printf("%s\n", (*build)->input);
 	if (pass->final_head->len == 1)
 	{
-		int current_ant = 0;
+		current_ant = 0;
 		while (current_ant < pass->ants)
 		{
 			create_ants(&ants_move, current_ant++, pass->final_head->move_head);

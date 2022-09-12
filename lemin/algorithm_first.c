@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/lemin.h"
+#include "../includes/lemin.h"
 
 /*	reduces the slots we are looking at in CURRENT	*/
 

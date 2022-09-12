@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/lemin.h"
+#include "../includes/lemin.h"
 
 /*	frees all the elements in 2d int array	*/
 

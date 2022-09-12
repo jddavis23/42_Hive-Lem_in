@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/lemin.h"
+#include "../includes/lemin.h"
 
 void	printf_struct(t_room *pass)
 {

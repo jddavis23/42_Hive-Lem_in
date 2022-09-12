@@ -1,4 +1,4 @@
-# include "../includes/lemin.h"
+#include "../includes/lemin.h"
 
 /*	updates the length so the count goes up from end to start of already found paths	*/
 

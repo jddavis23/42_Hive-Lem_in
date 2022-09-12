@@ -1,5 +1,5 @@
 
-# include "../includes/lemin.h"
+#include "../includes/lemin.h"
 
 static int	len_check(t_room *pass, int indx)
 {
