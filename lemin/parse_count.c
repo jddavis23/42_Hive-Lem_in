@@ -114,7 +114,7 @@ static int	mnl_found_room(t_room *pass, int *i, char *input, char *temp)
 {
 	char	*arr;
 
-	if (pass->rooms[*i] && !ft_strncmp(input, pass->rooms[*i], ft_strlen(pass->rooms[*i])))//, ft_strlen_stop(&help[ft_strlen(pass->rooms[*j]) + 1], '\n')))
+	if (pass->rooms[*i] && !ft_strncmp(input, pass->rooms[*i], ft_strlen(pass->rooms[*i])))
 	{
 		arr = ft_strnew(addi_diff(input, &temp[-1]));
 		if (!arr)
