@@ -26,30 +26,22 @@ int	current_len(t_room *pass)
 	}
 	return (i + 2);
 }
-//TRY SOMETHIGN NEW
-static int	on_lock_path(t_room *pass, int *i, int c_len)
+
+/*	moves all of the paths in one round	*/
+
+static void	move_paths(t_room *pass, int *i, int c_len)
 {
-	int	j;
-
-	j = 0;
-	while (j < c_len)
+	while (*i < c_len)
 	{
-		if (pass->info[PATH][pass->info[CURRENT][j]] >= 2)
+		if (pass->info[CURRENT][*i] != 0)
 		{
-			while (*i < c_len)
-			{
-				if (pass->info[CURRENT][*i] != 0 && \
-					pass->info[PATH][pass->info[CURRENT][*i]] >= 2)
-					breadth_first(pass, pass->info[CURRENT][*i], *i);
-				++(*i);
-			}
-			return (TRUE);
+			breadth_first(pass, pass->info[CURRENT][*i], *i);
+			if (pass->info[PATH][pass->end] == 1)
+				return ;
 		}
-		++j;
+		++(*i);
 	}
-	return (FALSE);
 }
-
 
 /*	breadth first initializer with the logic of the first algorithm	*/
 
@@ -59,33 +51,34 @@ static void	breadth_first_init(t_room *pass, int *i, int first)
 
 	c_len = current_len(pass);
 	if (first == TRUE)
-	{
-		while (*i < c_len)
-		{
-			if (pass->info[CURRENT][*i] != 0)
-			{
-				breadth_first(pass, pass->info[CURRENT][*i], *i);
-				if (pass->info[PATH][pass->end] == 1)
-					return ;
-			}
-			++(*i);
-		}
-	}
+		move_paths(pass, i, c_len);
 	else
 	{
 		if (!on_lock_path(pass, i, c_len))
-		{
-			while (*i < c_len)
-			{
-				if (pass->info[CURRENT][*i] != 0)
-				{
-					breadth_first(pass, pass->info[CURRENT][*i], *i);
-					if (pass->info[PATH][pass->end] == 1)
-						return ;
-				}
-				++(*i);
-			}
-		}
+			move_paths(pass, i, c_len);
+	}
+}
+
+/*
+**	makes sure all variables has been set to zero before running
+**	the second algorithm
+*/
+
+static void	clean_everything(t_room *pass)
+{
+	int	i;
+
+	i = 0;
+	while (i < pass->total)
+	{
+		pass->info[PATH][i] = FALSE;
+		pass->info[PREV][i] = FALSE;
+		pass->info[LEN][i] = FALSE;
+		pass->info[NEXT][i] = FALSE;
+		pass->info[JUMP][i] = FALSE;
+		pass->info[LOCKED][i] = FALSE;
+		pass->info[MOVE][i] = FALSE;
+		pass->info[CURRENT][i++] = FALSE;
 	}
 }
 
@@ -104,9 +97,7 @@ int	first_algorithm(t_path **path, t_room *pass, int **len, int first)
 		if (pass->info[PATH][pass->end] == 1)
 		{
 			pass->info[PATH][pass->end] = 0;
-			ft_printf("waiting to lock path\n");
 			lock_path_init(pass, pass->info[CURRENT][i]);
-			ft_printf("LOCKED lock path\n");
 			calc_len(pass, len);
 			if (path_select(path, pass, len, &increase) == ERROR)
 				return (free_len(len));
@@ -114,5 +105,7 @@ int	first_algorithm(t_path **path, t_room *pass, int **len, int first)
 				break ;
 		}
 	}
+	clean_everything(pass);
+	initialize_path(pass);
 	return (1);
 }

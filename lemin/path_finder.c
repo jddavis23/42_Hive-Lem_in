@@ -83,29 +83,6 @@ void	print_output(t_room *pass)
 	}
 }
 
-/*
-**	makes sure all variables has been set to zero before running
-**	the second algorithm
-*/
-
-static void	clean_everything(t_room *pass)
-{
-	int	i;
-
-	i = 0;
-	while (i < pass->total)
-	{
-		pass->info[PATH][i] = FALSE;
-		pass->info[PREV][i] = FALSE;
-		pass->info[LEN][i] = FALSE;
-		pass->info[NEXT][i] = FALSE;
-		pass->info[JUMP][i] = FALSE;
-		pass->info[LOCKED][i] = FALSE;
-		pass->info[MOVE][i] = FALSE;
-		pass->info[CURRENT][i++] = FALSE;
-	}
-}
-
 /*	core logic of calling breadth first and locking the paths	*/
 
 int	path_finder(t_path **path, t_room *pass)
@@ -127,19 +104,11 @@ int	path_finder(t_path **path, t_room *pass)
 			return (ERROR);
 		return (1);
 	}
-	ft_printf("HERE1\n");
 	if (first_algorithm(path, pass, &len, TRUE) == ERROR)
 		return (ERROR);
-	clean_everything(pass);
-	initialize_path(pass);
-	ft_printf("HERE2\n");
-	if (first_algorithm(path, pass, &len, TRUE) == ERROR)//1(big209)+1(big263)+1(413)+1(big540)+
+	if (first_algorithm(path, pass, &len, FALSE) == ERROR)//1(big209)+1(big263)+1(413)+1(big540)+
 		return (ERROR);
-	clean_everything(pass);
-	initialize_path(pass);
-	ft_printf("HERE3\n");
 	if (second_algorithm(path, pass, &len, 0) == ERROR)
 		return (ERROR);
-	ft_printf("HERE4\n");
 	return (1);
 }

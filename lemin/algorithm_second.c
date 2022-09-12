@@ -14,7 +14,7 @@
 
 /*	checks if CURRENT has any paths that are moving on the locked path	*/
 
-static int	on_lock_path(t_room *pass, int *i, int c_len)
+int	on_lock_path(t_room *pass, int *i, int c_len)
 {
 	int	j;
 

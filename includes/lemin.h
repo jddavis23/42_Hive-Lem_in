@@ -151,6 +151,7 @@ int		free_len(int **len);
 void	lock_path_init(t_room *pass, int indx);
 void	lock_path(t_room *pass, int indx, int *error);
 void	info_set_to_zero(t_room *pass, int i);
+int		on_lock_path(t_room *pass, int *i, int c_len);
 
 //didnt know where to put
 int		create_connect(t_room *pass, int j);
