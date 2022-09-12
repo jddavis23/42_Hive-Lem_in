@@ -74,7 +74,7 @@ static void	clear_non_found_paths(t_room *pass)
 	i = 0;
 	while (i < pass->total)
 	{
-		if (pass->info[PATH][i] != 2)
+		if (pass->info[PATH][i] != 2 || (pass->info[PATH][i] >= 2 && pass->info[PREV][i] == pass->info[NEXT][i]))
 			info_set_to_zero(pass, i);
 		else if (pass->info[PATH][i] == 2)
 		{
@@ -100,10 +100,9 @@ void	lock_path_init(t_room *pass, int indx)
 
 	len_back_front(pass);
 	error = FALSE;
-	lock_path(pass, indx, &error);
-	if (error == TRUE)
-		return ;
+	lock_path(pass, indx);
 	i = 0;
+	ft_printf("EHREIMOF\n");
 	while (pass->links[pass->end][i] >= 0)
 	{
 		if (pass->info[NEXT][pass->links[pass->end][i]] == pass->end)
@@ -111,8 +110,14 @@ void	lock_path_init(t_room *pass, int indx)
 			prev = pass->links[pass->end][i];
 			while (prev != 0)
 			{
+				if (pass->info[PREV][prev] != 0 && \
+					pass->info[NEXT][prev] == pass->info[PREV][prev])
+					break ;
+				ft_printf("pass->rooms: %s[%d] path: %d, prev: %d, next: %d, jump: %d, end: %d\n", pass->rooms[prev], prev, pass->info[PATH][prev], pass->info[PREV][prev], pass->info[NEXT][prev], pass->info[JUMP][prev], pass->end);
 				pass->info[PATH][prev] = 2;
 				prev = pass->info[PREV][prev];
+				ft_printf("pass->rooms: %s[%d] path: %d, prev: %d, next: %d, jump: %d, end: %d\n", pass->rooms[prev], prev, pass->info[PATH][prev], pass->info[PREV][prev], pass->info[NEXT][prev], pass->info[JUMP][prev], pass->end);
+				
 			}
 		}
 		++i;

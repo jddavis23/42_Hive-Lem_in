@@ -12,11 +12,15 @@
 
 #include "../includes/lemin.h"
 
+/*	free_line and returns ERROR	*/
+
 int	free_len(int **len)
 {
 	free(*len);
 	return (ERROR);
 }
+
+/*	special case where start is connected to the end	*/
 
 static int	start_connect_end(t_path **path, t_room *pass, int **len)
 {
@@ -106,7 +110,7 @@ int	path_finder(t_path **path, t_room *pass)
 	}
 	if (first_algorithm(path, pass, &len, TRUE) == ERROR)
 		return (ERROR);
-	if (first_algorithm(path, pass, &len, FALSE) == ERROR)//1(big209)+1(big263)+1(413)+1(big540)+
+	if (first_algorithm(path, pass, &len, FALSE) == ERROR)
 		return (ERROR);
 	if (second_algorithm(path, pass, &len, 0) == ERROR)
 		return (ERROR);

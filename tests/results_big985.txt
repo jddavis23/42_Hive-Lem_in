@@ -1,0 +1,638 @@
+waiting to lock path
+INDX: 1645----------
+HERE
+ROOM: Wch3 [1645] prev; 1265 next: 2439 jump: 0
+ROOM: Wko8 [1265] prev; 1109 next: 1645 jump: 0
+ROOM: Ks_8 [1109] prev; 1255 next: 1265 jump: 0
+ROOM: Woc9 [1255] prev; 1254 next: 1109 jump: 0
+ROOM: Awy8 [1254] prev; 1110 next: 1255 jump: 0
+ROOM: Asv4 [1110] prev; 1101 next: 1254 jump: 0
+ROOM: Ujj5 [1101] prev; 1076 next: 1110 jump: 0
+ROOM: O_r6 [1076] prev; 1268 next: 1101 jump: 0
+ROOM: Jck5 [1268] prev; 1293 next: 1076 jump: 0
+ROOM: Qmf9 [1293] prev; 960 next: 1268 jump: 0
+ROOM: Zhe1 [960] prev; 1333 next: 1293 jump: 0
+ROOM: Kuu8 [1333] prev; 1410 next: 960 jump: 0
+ROOM: Omx3 [1410] prev; 971 next: 1333 jump: 0
+ROOM: Cxn0 [971] prev; 1434 next: 1410 jump: 0
+ROOM: Nqn9 [1434] prev; 1457 next: 971 jump: 0
+ROOM: Qap9 [1457] prev; 897 next: 1434 jump: 0
+ROOM: J_c3 [897] prev; 0 next: 1457 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 421----------
+HERE
+ROOM: Nmz6 [421] prev; 1660 next: 2439 jump: 0
+ROOM: Zsi2 [1660] prev; 1630 next: 421 jump: 0
+ROOM: Aem9 [1630] prev; 1631 next: 1660 jump: 0
+ROOM: Bhy3 [1631] prev; 1267 next: 1630 jump: 0
+ROOM: Fqh4 [1267] prev; 1102 next: 1631 jump: 0
+ROOM: Sof6 [1102] prev; 1266 next: 1267 jump: 0
+ROOM: X_u2 [1266] prev; 1103 next: 1102 jump: 0
+ROOM: Xr_6 [1103] prev; 1104 next: 1266 jump: 0
+ROOM: Keo3 [1104] prev; 1257 next: 1103 jump: 0
+ROOM: Ijb9 [1257] prev; 1256 next: 1104 jump: 0
+ROOM: Myp1 [1256] prev; 1086 next: 1257 jump: 0
+ROOM: Riw0 [1086] prev; 1041 next: 1256 jump: 0
+ROOM: Rin0 [1041] prev; 1379 next: 1086 jump: 0
+ROOM: T_c9 [1379] prev; 990 next: 1041 jump: 0
+ROOM: Qyw1 [990] prev; 1417 next: 1379 jump: 0
+ROOM: Kjp9 [1417] prev; 1026 next: 990 jump: 0
+ROOM: Pjq2 [1026] prev; 1413 next: 1417 jump: 0
+ROOM: Uvz4 [1413] prev; 1483 next: 1026 jump: 0
+ROOM: Mwn6 [1483] prev; 912 next: 1413 jump: 0
+ROOM: Iiz3 [912] prev; 1495 next: 1483 jump: 0
+ROOM: Zm_5 [1495] prev; 0 next: 912 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 2139----------
+HERE
+ROOM: Iyp1 [2139] prev; 1560 next: 2439 jump: 0
+ROOM: Kvf4 [1560] prev; 1535 next: 2139 jump: 0
+ROOM: D_o3 [1535] prev; 1534 next: 1560 jump: 0
+ROOM: Upl2 [1534] prev; 1510 next: 1535 jump: 0
+ROOM: Gyz3 [1510] prev; 1509 next: 1534 jump: 0
+ROOM: Avm0 [1509] prev; 895 next: 1510 jump: 0
+ROOM: Ykm3 [895] prev; 896 next: 1509 jump: 0
+ROOM: R_y0 [896] prev; 1508 next: 895 jump: 0
+ROOM: Cpa4 [1508] prev; 1249 next: 896 jump: 0
+ROOM: Qzp5 [1249] prev; 1125 next: 1508 jump: 0
+ROOM: Qua5 [1125] prev; 1248 next: 1249 jump: 0
+ROOM: Aza5 [1248] prev; 1247 next: 1125 jump: 0
+ROOM: Zlp6 [1247] prev; 1246 next: 1248 jump: 0
+ROOM: Sdq8 [1246] prev; 1126 next: 1247 jump: 0
+ROOM: Vdy1 [1126] prev; 1245 next: 1246 jump: 0
+ROOM: Tsv7 [1245] prev; 1294 next: 1126 jump: 0
+ROOM: Iuo3 [1294] prev; 994 next: 1245 jump: 0
+ROOM: Wzv3 [994] prev; 1332 next: 1294 jump: 0
+ROOM: Eht4 [1332] prev; 1441 next: 994 jump: 0
+ROOM: U_y2 [1441] prev; 955 next: 1332 jump: 0
+ROOM: Gdv3 [955] prev; 946 next: 1441 jump: 0
+ROOM: Plm6 [946] prev; 1474 next: 955 jump: 0
+ROOM: Z_i7 [1474] prev; 918 next: 946 jump: 0
+ROOM: Zub0 [918] prev; 0 next: 1474 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 406----------
+HERE
+ROOM: Ahu7 [406] prev; 1105 next: 2439 jump: 0
+ROOM: Hxt5 [1105] prev; 1263 next: 406 jump: 0
+ROOM: Cso5 [1263] prev; 1262 next: 1105 jump: 0
+ROOM: Nyw5 [1262] prev; 1106 next: 1263 jump: 0
+ROOM: Eri7 [1106] prev; 1107 next: 1262 jump: 0
+ROOM: Vld8 [1107] prev; 1261 next: 1106 jump: 0
+ROOM: C_f9 [1261] prev; 1260 next: 1107 jump: 0
+ROOM: Ghf8 [1260] prev; 1259 next: 1261 jump: 0
+ROOM: Aiu1 [1259] prev; 1258 next: 1260 jump: 0
+ROOM: Coq4 [1258] prev; 1108 next: 1259 jump: 0
+ROOM: Igz0 [1108] prev; 1298 next: 1258 jump: 0
+ROOM: Gmh6 [1298] prev; 1282 next: 1108 jump: 0
+ROOM: Irx6 [1282] prev; 1280 next: 1298 jump: 0
+ROOM: Bwp0 [1280] prev; 1339 next: 1282 jump: 0
+ROOM: Zmr0 [1339] prev; 1300 next: 1280 jump: 0
+ROOM: Jtx9 [1300] prev; 1000 next: 1339 jump: 0
+ROOM: A_u5 [1000] prev; 1320 next: 1300 jump: 0
+ROOM: Qg_1 [1320] prev; 1035 next: 1000 jump: 0
+ROOM: Trq8 [1035] prev; 1461 next: 1320 jump: 0
+ROOM: Oom3 [1461] prev; 1481 next: 1035 jump: 0
+ROOM: Iet5 [1481] prev; 1491 next: 1461 jump: 0
+ROOM: Wub4 [1491] prev; 904 next: 1481 jump: 0
+ROOM: Mf_7 [904] prev; 0 next: 1491 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 728----------
+HERE
+ROOM: Cjy6 [728] prev; 1708 next: 2439 jump: 0
+ROOM: Eur4 [1708] prev; 1111 next: 728 jump: 0
+ROOM: Nzy9 [1111] prev; 1112 next: 1708 jump: 0
+ROOM: Inp9 [1112] prev; 1113 next: 1111 jump: 0
+ROOM: Jqs4 [1113] prev; 1114 next: 1112 jump: 0
+ROOM: Tcv2 [1114] prev; 1115 next: 1113 jump: 0
+ROOM: Ved5 [1115] prev; 1116 next: 1114 jump: 0
+ROOM: Nem4 [1116] prev; 1117 next: 1115 jump: 0
+ROOM: Ppd2 [1117] prev; 1253 next: 1116 jump: 0
+ROOM: Qsp3 [1253] prev; 1118 next: 1117 jump: 0
+ROOM: Bdc8 [1118] prev; 1119 next: 1253 jump: 0
+ROOM: Pvi2 [1119] prev; 1120 next: 1118 jump: 0
+ROOM: Zmp5 [1120] prev; 1252 next: 1119 jump: 0
+ROOM: Vfj0 [1252] prev; 1121 next: 1120 jump: 0
+ROOM: Anc0 [1121] prev; 1122 next: 1252 jump: 0
+ROOM: Sf_7 [1122] prev; 1123 next: 1121 jump: 0
+ROOM: Buw9 [1123] prev; 1306 next: 1122 jump: 0
+ROOM: R_d6 [1306] prev; 1378 next: 1123 jump: 0
+ROOM: Igl8 [1378] prev; 1048 next: 1306 jump: 0
+ROOM: Zx_9 [1048] prev; 1341 next: 1378 jump: 0
+ROOM: Jks1 [1341] prev; 1034 next: 1048 jump: 0
+ROOM: Zvl7 [1034] prev; 948 next: 1341 jump: 0
+ROOM: Uzm9 [948] prev; 1449 next: 1034 jump: 0
+ROOM: Aqt2 [1449] prev; 1451 next: 948 jump: 0
+ROOM: Uuu4 [1451] prev; 917 next: 1449 jump: 0
+ROOM: Y_a2 [917] prev; 0 next: 1451 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 624----------
+HERE
+ROOM: Qud0 [624] prev; 1124 next: 2439 jump: 0
+ROOM: Ebf8 [1124] prev; 1250 next: 624 jump: 0
+ROOM: Zor3 [1250] prev; 1136 next: 1124 jump: 0
+ROOM: Cho4 [1136] prev; 1137 next: 1250 jump: 0
+ROOM: Xag7 [1137] prev; 1233 next: 1136 jump: 0
+ROOM: Hx_8 [1233] prev; 1138 next: 1137 jump: 0
+ROOM: Evl6 [1138] prev; 1232 next: 1233 jump: 0
+ROOM: Tvp6 [1232] prev; 1231 next: 1138 jump: 0
+ROOM: Znj0 [1231] prev; 1139 next: 1232 jump: 0
+ROOM: Wfz8 [1139] prev; 1230 next: 1231 jump: 0
+ROOM: Jae2 [1230] prev; 1140 next: 1139 jump: 0
+ROOM: C_j1 [1140] prev; 1141 next: 1230 jump: 0
+ROOM: Gjn6 [1141] prev; 1229 next: 1140 jump: 0
+ROOM: Iha8 [1229] prev; 1228 next: 1141 jump: 0
+ROOM: Blq9 [1228] prev; 1142 next: 1229 jump: 0
+ROOM: P_q5 [1142] prev; 1264 next: 1228 jump: 0
+ROOM: Wti5 [1264] prev; 1374 next: 1142 jump: 0
+ROOM: Bsr2 [1374] prev; 1013 next: 1264 jump: 0
+ROOM: Hnu8 [1013] prev; 1080 next: 1374 jump: 0
+ROOM: Q_z7 [1080] prev; 1348 next: 1013 jump: 0
+ROOM: Viy8 [1348] prev; 970 next: 1080 jump: 0
+ROOM: Bkc7 [970] prev; 1384 next: 1348 jump: 0
+ROOM: Jkc2 [1384] prev; 937 next: 970 jump: 0
+ROOM: Mxm5 [937] prev; 1450 next: 1384 jump: 0
+ROOM: Jsa3 [1450] prev; 907 next: 937 jump: 0
+ROOM: Drh5 [907] prev; 0 next: 1450 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 1797----------
+HERE
+ROOM: Ura1 [1797] prev; 1251 next: 2439 jump: 0
+ROOM: Mtc5 [1251] prev; 1244 next: 1797 jump: 0
+ROOM: Ecc6 [1244] prev; 1127 next: 1251 jump: 0
+ROOM: Ewq5 [1127] prev; 1243 next: 1244 jump: 0
+ROOM: Kry8 [1243] prev; 1128 next: 1127 jump: 0
+ROOM: Cim8 [1128] prev; 1242 next: 1243 jump: 0
+ROOM: Ack6 [1242] prev; 1241 next: 1128 jump: 0
+ROOM: F_y4 [1241] prev; 1240 next: 1242 jump: 0
+ROOM: Jhc0 [1240] prev; 1129 next: 1241 jump: 0
+ROOM: I_v7 [1129] prev; 1130 next: 1240 jump: 0
+ROOM: Prt6 [1130] prev; 1131 next: 1129 jump: 0
+ROOM: Mg_1 [1131] prev; 1239 next: 1130 jump: 0
+ROOM: Ssw6 [1239] prev; 1238 next: 1131 jump: 0
+ROOM: Obu5 [1238] prev; 1132 next: 1239 jump: 0
+ROOM: F_d6 [1132] prev; 1237 next: 1238 jump: 0
+ROOM: Isz7 [1237] prev; 1133 next: 1132 jump: 0
+ROOM: Ybv3 [1133] prev; 1134 next: 1237 jump: 0
+ROOM: Jsm0 [1134] prev; 1135 next: 1133 jump: 0
+ROOM: Htb7 [1135] prev; 1236 next: 1134 jump: 0
+ROOM: Ezs0 [1236] prev; 1235 next: 1135 jump: 0
+ROOM: Zs_6 [1235] prev; 1234 next: 1236 jump: 0
+ROOM: Uzs9 [1234] prev; 966 next: 1235 jump: 0
+ROOM: Mfg6 [966] prev; 963 next: 1234 jump: 0
+ROOM: Dbx0 [963] prev; 1467 next: 966 jump: 0
+ROOM: Gvy4 [1467] prev; 1442 next: 963 jump: 0
+ROOM: Ul_5 [1442] prev; 1458 next: 1467 jump: 0
+ROOM: E_c1 [1458] prev; 0 next: 1442 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 2144----------
+HERE
+ROOM: Eb_6 [2144] prev; 288 next: 2439 jump: 0
+ROOM: Po_7 [288] prev; 2143 next: 2144 jump: 0
+ROOM: Jxx8 [2143] prev; 1897 next: 288 jump: 0
+ROOM: Fpz0 [1897] prev; 1507 next: 2143 jump: 0
+ROOM: Pmt3 [1507] prev; 1152 next: 1897 jump: 0
+ROOM: U_e1 [1152] prev; 1153 next: 1507 jump: 0
+ROOM: Pte7 [1153] prev; 1212 next: 1152 jump: 0
+ROOM: Efz5 [1212] prev; 1211 next: 1153 jump: 0
+ROOM: J_s0 [1211] prev; 1210 next: 1212 jump: 0
+ROOM: Pmr0 [1210] prev; 1154 next: 1211 jump: 0
+ROOM: Uyd6 [1154] prev; 1209 next: 1210 jump: 0
+ROOM: Xpo9 [1209] prev; 1208 next: 1154 jump: 0
+ROOM: Quk1 [1208] prev; 1207 next: 1209 jump: 0
+ROOM: Rrm2 [1207] prev; 1155 next: 1208 jump: 0
+ROOM: Ejb3 [1155] prev; 1206 next: 1207 jump: 0
+ROOM: M_h3 [1206] prev; 1205 next: 1155 jump: 0
+ROOM: Vej1 [1205] prev; 1156 next: 1206 jump: 0
+ROOM: Qsy7 [1156] prev; 1335 next: 1205 jump: 0
+ROOM: Yfv7 [1335] prev; 1097 next: 1156 jump: 0
+ROOM: Cqy2 [1097] prev; 1343 next: 1335 jump: 0
+ROOM: Bik3 [1343] prev; 1090 next: 1097 jump: 0
+ROOM: Fcx2 [1090] prev; 1009 next: 1343 jump: 0
+ROOM: Anv9 [1009] prev; 1274 next: 1090 jump: 0
+ROOM: Dio4 [1274] prev; 977 next: 1009 jump: 0
+ROOM: Cxt7 [977] prev; 1471 next: 1274 jump: 0
+ROOM: Gsn4 [1471] prev; 1476 next: 977 jump: 0
+ROOM: Pgh5 [1476] prev; 1455 next: 1471 jump: 0
+ROOM: Bop0 [1455] prev; 0 next: 1476 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 1685----------
+HERE
+ROOM: Xhc3 [1685] prev; 765 next: 2439 jump: 0
+ROOM: Gjk5 [765] prev; 1681 next: 1685 jump: 0
+ROOM: Nqq8 [1681] prev; 773 next: 765 jump: 0
+ROOM: Zho7 [773] prev; 1227 next: 1681 jump: 0
+ROOM: Jhq7 [1227] prev; 1143 next: 773 jump: 0
+ROOM: Yjh4 [1143] prev; 1226 next: 1227 jump: 0
+ROOM: Tvr5 [1226] prev; 1225 next: 1143 jump: 0
+ROOM: D_t0 [1225] prev; 1224 next: 1226 jump: 0
+ROOM: Swv3 [1224] prev; 1223 next: 1225 jump: 0
+ROOM: Wkq2 [1223] prev; 1144 next: 1224 jump: 0
+ROOM: Tvp1 [1144] prev; 1145 next: 1223 jump: 0
+ROOM: Qqc7 [1145] prev; 1146 next: 1144 jump: 0
+ROOM: Iht1 [1146] prev; 1222 next: 1145 jump: 0
+ROOM: Jpu3 [1222] prev; 1221 next: 1146 jump: 0
+ROOM: Bqp1 [1221] prev; 1220 next: 1222 jump: 0
+ROOM: Uvy4 [1220] prev; 1147 next: 1221 jump: 0
+ROOM: Kni1 [1147] prev; 1148 next: 1220 jump: 0
+ROOM: Qus9 [1148] prev; 1219 next: 1147 jump: 0
+ROOM: Tfs4 [1219] prev; 1149 next: 1148 jump: 0
+ROOM: Ph_4 [1149] prev; 1355 next: 1219 jump: 0
+ROOM: Yir6 [1355] prev; 1057 next: 1149 jump: 0
+ROOM: Kgw2 [1057] prev; 1316 next: 1355 jump: 0
+ROOM: Wvo0 [1316] prev; 1021 next: 1057 jump: 0
+ROOM: Rkn3 [1021] prev; 1064 next: 1316 jump: 0
+ROOM: Rzl3 [1064] prev; 962 next: 1021 jump: 0
+ROOM: Y_e9 [962] prev; 958 next: 1064 jump: 0
+ROOM: Gwh3 [958] prev; 1454 next: 962 jump: 0
+ROOM: Uta4 [1454] prev; 925 next: 958 jump: 0
+ROOM: Wcc2 [925] prev; 1447 next: 1454 jump: 0
+ROOM: F_i3 [1447] prev; 1506 next: 925 jump: 0
+ROOM: Rtl9 [1506] prev; 0 next: 1447 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 721----------
+HERE
+ROOM: Yfu5 [721] prev; 722 next: 2439 jump: 0
+ROOM: Mga6 [722] prev; 771 next: 721 jump: 0
+ROOM: Syk0 [771] prev; 773 next: 722 jump: 0
+ROOM: Zho7 [773] prev; 1227 next: 771 jump: 770
+ROOM: Nqq8 [1681] prev; 581 next: 765 jump: 0
+ROOM: Knx7 [581] prev; 1151 next: 1681 jump: 0
+ROOM: Uyl6 [1151] prev; 1216 next: 581 jump: 0
+ROOM: Ifq3 [1216] prev; 1215 next: 1151 jump: 0
+ROOM: Omd3 [1215] prev; 1214 next: 1216 jump: 0
+ROOM: Br_1 [1214] prev; 1826 next: 1215 jump: 0
+ROOM: Cv_6 [1826] prev; 590 next: 1214 jump: 0
+ROOM: Osy7 [590] prev; 1821 next: 1826 jump: 0
+ROOM: Uy_3 [1821] prev; 593 next: 590 jump: 0
+ROOM: Yws6 [593] prev; 1144 next: 1821 jump: 0
+ROOM: Tvp1 [1144] prev; 1145 next: 593 jump: 0
+ROOM: Wkq2 [1223] prev; 0 next: 1224 jump: 1668
+ROOM: Swv3 [1224] prev; 785 next: 1225 jump: 0
+ROOM: Gbo3 [785] prev; 1663 next: 1224 jump: 0
+ROOM: Y_v3 [1663] prev; 788 next: 785 jump: 0
+ROOM: Df_8 [788] prev; 1662 next: 1663 jump: 0
+ROOM: Ccz8 [1662] prev; 2078 next: 788 jump: 0
+ROOM: Orm5 [2078] prev; 363 next: 1662 jump: 0
+ROOM: Jvw1 [363] prev; 365 next: 2078 jump: 0
+ROOM: Iap6 [365] prev; 366 next: 363 jump: 0
+ROOM: Zcj2 [366] prev; 368 next: 365 jump: 0
+ROOM: Qej9 [368] prev; 2064 next: 366 jump: 0
+ROOM: Xjs5 [2064] prev; 372 next: 368 jump: 0
+ROOM: N_y7 [372] prev; 2059 next: 2064 jump: 0
+ROOM: Nly3 [2059] prev; 2056 next: 372 jump: 0
+ROOM: Tdi6 [2056] prev; 378 next: 2059 jump: 0
+ROOM: Ytv8 [378] prev; 2055 next: 2056 jump: 0
+ROOM: Nwg8 [2055] prev; 2054 next: 378 jump: 0
+ROOM: D_a9 [2054] prev; 385 next: 2055 jump: 0
+ROOM: Djt4 [385] prev; 389 next: 2054 jump: 0
+ROOM: Cod8 [389] prev; 2046 next: 385 jump: 0
+ROOM: Ei_2 [2046] prev; 393 next: 389 jump: 0
+ROOM: Rcl2 [393] prev; 397 next: 2046 jump: 0
+ROOM: Txi0 [397] prev; 400 next: 393 jump: 0
+ROOM: Gjb2 [400] prev; 2040 next: 397 jump: 0
+ROOM: Dzx7 [2040] prev; 0 next: 400 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 761----------
+HERE
+ROOM: Nzk3 [761] prev; 762 next: 2439 jump: 0
+ROOM: Brh3 [762] prev; 1218 next: 761 jump: 0
+ROOM: Yyo9 [1218] prev; 1217 next: 762 jump: 0
+ROOM: Yyc4 [1217] prev; 1150 next: 1218 jump: 0
+ROOM: Bkp8 [1150] prev; 1151 next: 1217 jump: 0
+ROOM: Uyl6 [1151] prev; 1216 next: 1150 jump: 0
+ROOM: Knx7 [581] prev; 0 next: 1681 jump: 683
+ROOM: Nqq8 [1681] prev; 1682 next: 765 jump: 0
+ROOM: Tip7 [1682] prev; 470 next: 1681 jump: 0
+ROOM: Hdo2 [470] prev; 1963 next: 1682 jump: 0
+ROOM: Cek9 [1963] prev; 1251 next: 470 jump: 0
+ROOM: Mtc5 [1251] prev; 1244 next: 1963 jump: 475
+ROOM: Ura1 [1797] prev; 621 next: 2439 jump: 0
+ROOM: Ibq0 [621] prev; 344 next: 1797 jump: 0
+ROOM: D_q2 [344] prev; 345 next: 621 jump: 0
+ROOM: Umi8 [345] prev; 2087 next: 344 jump: 0
+ROOM: Idg0 [2087] prev; 2089 next: 345 jump: 0
+ROOM: T_s0 [2089] prev; 1164 next: 2087 jump: 0
+ROOM: Xiu2 [1164] prev; 1200 next: 2089 jump: 0
+ROOM: Ifz0 [1200] prev; 1199 next: 1164 jump: 0
+ROOM: Cdb6 [1199] prev; 1165 next: 1200 jump: 0
+ROOM: Ass4 [1165] prev; 1198 next: 1199 jump: 0
+ROOM: Plb5 [1198] prev; 1166 next: 1165 jump: 0
+ROOM: Sod5 [1166] prev; 1197 next: 1198 jump: 0
+ROOM: Sfa8 [1197] prev; 1167 next: 1166 jump: 0
+ROOM: Ir_2 [1167] prev; 1196 next: 1197 jump: 0
+ROOM: Hzi5 [1196] prev; 1168 next: 1167 jump: 0
+ROOM: Xur7 [1168] prev; 1169 next: 1196 jump: 0
+ROOM: Ury7 [1169] prev; 1170 next: 1168 jump: 0
+ROOM: Hvz0 [1170] prev; 1171 next: 1169 jump: 0
+ROOM: Uxn5 [1171] prev; 1174 next: 1170 jump: 0
+ROOM: Bj_1 [1174] prev; 1191 next: 1171 jump: 0
+ROOM: Gaj1 [1191] prev; 1029 next: 1174 jump: 0
+ROOM: Rdv0 [1029] prev; 1100 next: 1191 jump: 0
+ROOM: Wp_0 [1100] prev; 1095 next: 1029 jump: 0
+ROOM: Hzm1 [1095] prev; 1273 next: 1100 jump: 0
+ROOM: Aki4 [1273] prev; 997 next: 1095 jump: 0
+ROOM: Muv5 [997] prev; 1400 next: 1273 jump: 0
+ROOM: Fnr2 [1400] prev; 978 next: 997 jump: 0
+ROOM: Pcy1 [978] prev; 1486 next: 1400 jump: 0
+ROOM: Wlp6 [1486] prev; 901 next: 978 jump: 0
+ROOM: Arj9 [901] prev; 900 next: 1486 jump: 0
+ROOM: P__5 [900] prev; 0 next: 901 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 1645----------
+HERE
+ROOM: Wch3 [1645] prev; 1265 next: 2439 jump: 0
+ROOM: Wko8 [1265] prev; 1109 next: 1645 jump: 0
+ROOM: Ks_8 [1109] prev; 1255 next: 1265 jump: 0
+ROOM: Woc9 [1255] prev; 1254 next: 1109 jump: 0
+ROOM: Awy8 [1254] prev; 1110 next: 1255 jump: 0
+ROOM: Asv4 [1110] prev; 1101 next: 1254 jump: 0
+ROOM: Ujj5 [1101] prev; 1076 next: 1110 jump: 0
+ROOM: O_r6 [1076] prev; 1268 next: 1101 jump: 0
+ROOM: Jck5 [1268] prev; 1293 next: 1076 jump: 0
+ROOM: Qmf9 [1293] prev; 960 next: 1268 jump: 0
+ROOM: Zhe1 [960] prev; 1333 next: 1293 jump: 0
+ROOM: Kuu8 [1333] prev; 1410 next: 960 jump: 0
+ROOM: Omx3 [1410] prev; 971 next: 1333 jump: 0
+ROOM: Cxn0 [971] prev; 1434 next: 1410 jump: 0
+ROOM: Nqn9 [1434] prev; 1457 next: 971 jump: 0
+ROOM: Qap9 [1457] prev; 897 next: 1434 jump: 0
+ROOM: J_c3 [897] prev; 0 next: 1457 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 421----------
+HERE
+ROOM: Nmz6 [421] prev; 1660 next: 2439 jump: 0
+ROOM: Zsi2 [1660] prev; 1630 next: 421 jump: 0
+ROOM: Aem9 [1630] prev; 1631 next: 1660 jump: 0
+ROOM: Bhy3 [1631] prev; 1267 next: 1630 jump: 0
+ROOM: Fqh4 [1267] prev; 1102 next: 1631 jump: 0
+ROOM: Sof6 [1102] prev; 1266 next: 1267 jump: 0
+ROOM: X_u2 [1266] prev; 1103 next: 1102 jump: 0
+ROOM: Xr_6 [1103] prev; 1104 next: 1266 jump: 0
+ROOM: Keo3 [1104] prev; 1257 next: 1103 jump: 0
+ROOM: Ijb9 [1257] prev; 1256 next: 1104 jump: 0
+ROOM: Myp1 [1256] prev; 1086 next: 1257 jump: 0
+ROOM: Riw0 [1086] prev; 1041 next: 1256 jump: 0
+ROOM: Rin0 [1041] prev; 1379 next: 1086 jump: 0
+ROOM: T_c9 [1379] prev; 990 next: 1041 jump: 0
+ROOM: Qyw1 [990] prev; 1417 next: 1379 jump: 0
+ROOM: Kjp9 [1417] prev; 1026 next: 990 jump: 0
+ROOM: Pjq2 [1026] prev; 1413 next: 1417 jump: 0
+ROOM: Uvz4 [1413] prev; 1483 next: 1026 jump: 0
+ROOM: Mwn6 [1483] prev; 912 next: 1413 jump: 0
+ROOM: Iiz3 [912] prev; 1495 next: 1483 jump: 0
+ROOM: Zm_5 [1495] prev; 0 next: 912 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 406----------
+HERE
+ROOM: Ahu7 [406] prev; 1105 next: 2439 jump: 0
+ROOM: Hxt5 [1105] prev; 1263 next: 406 jump: 0
+ROOM: Cso5 [1263] prev; 1262 next: 1105 jump: 0
+ROOM: Nyw5 [1262] prev; 1106 next: 1263 jump: 0
+ROOM: Eri7 [1106] prev; 1107 next: 1262 jump: 0
+ROOM: Vld8 [1107] prev; 1261 next: 1106 jump: 0
+ROOM: C_f9 [1261] prev; 1260 next: 1107 jump: 0
+ROOM: Ghf8 [1260] prev; 1259 next: 1261 jump: 0
+ROOM: Aiu1 [1259] prev; 1258 next: 1260 jump: 0
+ROOM: Coq4 [1258] prev; 1108 next: 1259 jump: 0
+ROOM: Igz0 [1108] prev; 1298 next: 1258 jump: 0
+ROOM: Gmh6 [1298] prev; 1282 next: 1108 jump: 0
+ROOM: Irx6 [1282] prev; 1280 next: 1298 jump: 0
+ROOM: Bwp0 [1280] prev; 1339 next: 1282 jump: 0
+ROOM: Zmr0 [1339] prev; 1300 next: 1280 jump: 0
+ROOM: Jtx9 [1300] prev; 1000 next: 1339 jump: 0
+ROOM: A_u5 [1000] prev; 1320 next: 1300 jump: 0
+ROOM: Qg_1 [1320] prev; 1035 next: 1000 jump: 0
+ROOM: Trq8 [1035] prev; 1461 next: 1320 jump: 0
+ROOM: Oom3 [1461] prev; 1481 next: 1035 jump: 0
+ROOM: Iet5 [1481] prev; 1491 next: 1461 jump: 0
+ROOM: Wub4 [1491] prev; 904 next: 1481 jump: 0
+ROOM: Mf_7 [904] prev; 0 next: 1491 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 2139----------
+HERE
+ROOM: Iyp1 [2139] prev; 1560 next: 2439 jump: 0
+ROOM: Kvf4 [1560] prev; 1535 next: 2139 jump: 0
+ROOM: D_o3 [1535] prev; 1534 next: 1560 jump: 0
+ROOM: Upl2 [1534] prev; 1510 next: 1535 jump: 0
+ROOM: Gyz3 [1510] prev; 1509 next: 1534 jump: 0
+ROOM: Avm0 [1509] prev; 895 next: 1510 jump: 0
+ROOM: Ykm3 [895] prev; 896 next: 1509 jump: 0
+ROOM: R_y0 [896] prev; 1508 next: 895 jump: 0
+ROOM: Cpa4 [1508] prev; 1249 next: 896 jump: 0
+ROOM: Qzp5 [1249] prev; 1125 next: 1508 jump: 0
+ROOM: Qua5 [1125] prev; 1248 next: 1249 jump: 0
+ROOM: Aza5 [1248] prev; 1247 next: 1125 jump: 0
+ROOM: Zlp6 [1247] prev; 1246 next: 1248 jump: 0
+ROOM: Sdq8 [1246] prev; 1126 next: 1247 jump: 0
+ROOM: Vdy1 [1126] prev; 1245 next: 1246 jump: 0
+ROOM: Tsv7 [1245] prev; 1294 next: 1126 jump: 0
+ROOM: Iuo3 [1294] prev; 994 next: 1245 jump: 0
+ROOM: Wzv3 [994] prev; 1332 next: 1294 jump: 0
+ROOM: Eht4 [1332] prev; 1441 next: 994 jump: 0
+ROOM: U_y2 [1441] prev; 955 next: 1332 jump: 0
+ROOM: Gdv3 [955] prev; 946 next: 1441 jump: 0
+ROOM: Plm6 [946] prev; 1474 next: 955 jump: 0
+ROOM: Z_i7 [1474] prev; 918 next: 946 jump: 0
+ROOM: Zub0 [918] prev; 0 next: 1474 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 624----------
+HERE
+ROOM: Qud0 [624] prev; 1124 next: 2439 jump: 0
+ROOM: Ebf8 [1124] prev; 1250 next: 624 jump: 0
+ROOM: Zor3 [1250] prev; 1136 next: 1124 jump: 0
+ROOM: Cho4 [1136] prev; 1137 next: 1250 jump: 0
+ROOM: Xag7 [1137] prev; 1233 next: 1136 jump: 0
+ROOM: Hx_8 [1233] prev; 1138 next: 1137 jump: 0
+ROOM: Evl6 [1138] prev; 1232 next: 1233 jump: 0
+ROOM: Tvp6 [1232] prev; 1231 next: 1138 jump: 0
+ROOM: Znj0 [1231] prev; 1139 next: 1232 jump: 0
+ROOM: Wfz8 [1139] prev; 1230 next: 1231 jump: 0
+ROOM: Jae2 [1230] prev; 1140 next: 1139 jump: 0
+ROOM: C_j1 [1140] prev; 1141 next: 1230 jump: 0
+ROOM: Gjn6 [1141] prev; 1229 next: 1140 jump: 0
+ROOM: Iha8 [1229] prev; 1228 next: 1141 jump: 0
+ROOM: Blq9 [1228] prev; 1142 next: 1229 jump: 0
+ROOM: P_q5 [1142] prev; 1264 next: 1228 jump: 0
+ROOM: Wti5 [1264] prev; 1374 next: 1142 jump: 0
+ROOM: Bsr2 [1374] prev; 1013 next: 1264 jump: 0
+ROOM: Hnu8 [1013] prev; 1080 next: 1374 jump: 0
+ROOM: Q_z7 [1080] prev; 1348 next: 1013 jump: 0
+ROOM: Viy8 [1348] prev; 970 next: 1080 jump: 0
+ROOM: Bkc7 [970] prev; 1384 next: 1348 jump: 0
+ROOM: Jkc2 [1384] prev; 937 next: 970 jump: 0
+ROOM: Mxm5 [937] prev; 1450 next: 1384 jump: 0
+ROOM: Jsa3 [1450] prev; 907 next: 937 jump: 0
+ROOM: Drh5 [907] prev; 0 next: 1450 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 1797----------
+HERE
+ROOM: Ura1 [1797] prev; 1251 next: 2439 jump: 0
+ROOM: Mtc5 [1251] prev; 1244 next: 1797 jump: 0
+ROOM: Ecc6 [1244] prev; 1127 next: 1251 jump: 0
+ROOM: Ewq5 [1127] prev; 1243 next: 1244 jump: 0
+ROOM: Kry8 [1243] prev; 1128 next: 1127 jump: 0
+ROOM: Cim8 [1128] prev; 1242 next: 1243 jump: 0
+ROOM: Ack6 [1242] prev; 1241 next: 1128 jump: 0
+ROOM: F_y4 [1241] prev; 1240 next: 1242 jump: 0
+ROOM: Jhc0 [1240] prev; 1129 next: 1241 jump: 0
+ROOM: I_v7 [1129] prev; 1130 next: 1240 jump: 0
+ROOM: Prt6 [1130] prev; 1131 next: 1129 jump: 0
+ROOM: Mg_1 [1131] prev; 1239 next: 1130 jump: 0
+ROOM: Ssw6 [1239] prev; 1238 next: 1131 jump: 0
+ROOM: Obu5 [1238] prev; 1132 next: 1239 jump: 0
+ROOM: F_d6 [1132] prev; 1237 next: 1238 jump: 0
+ROOM: Isz7 [1237] prev; 1133 next: 1132 jump: 0
+ROOM: Ybv3 [1133] prev; 1134 next: 1237 jump: 0
+ROOM: Jsm0 [1134] prev; 1135 next: 1133 jump: 0
+ROOM: Htb7 [1135] prev; 1236 next: 1134 jump: 0
+ROOM: Ezs0 [1236] prev; 1235 next: 1135 jump: 0
+ROOM: Zs_6 [1235] prev; 1234 next: 1236 jump: 0
+ROOM: Uzs9 [1234] prev; 966 next: 1235 jump: 0
+ROOM: Mfg6 [966] prev; 963 next: 1234 jump: 0
+ROOM: Dbx0 [963] prev; 1467 next: 966 jump: 0
+ROOM: Gvy4 [1467] prev; 1442 next: 963 jump: 0
+ROOM: Ul_5 [1442] prev; 1458 next: 1467 jump: 0
+ROOM: E_c1 [1458] prev; 0 next: 1442 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 728----------
+HERE
+ROOM: Cjy6 [728] prev; 1708 next: 2439 jump: 0
+ROOM: Eur4 [1708] prev; 1111 next: 728 jump: 0
+ROOM: Nzy9 [1111] prev; 1112 next: 1708 jump: 0
+ROOM: Inp9 [1112] prev; 1113 next: 1111 jump: 0
+ROOM: Jqs4 [1113] prev; 1114 next: 1112 jump: 0
+ROOM: Tcv2 [1114] prev; 1115 next: 1113 jump: 0
+ROOM: Ved5 [1115] prev; 1116 next: 1114 jump: 0
+ROOM: Nem4 [1116] prev; 1117 next: 1115 jump: 0
+ROOM: Ppd2 [1117] prev; 1253 next: 1116 jump: 0
+ROOM: Qsp3 [1253] prev; 1118 next: 1117 jump: 0
+ROOM: Bdc8 [1118] prev; 1119 next: 1253 jump: 0
+ROOM: Pvi2 [1119] prev; 1120 next: 1118 jump: 0
+ROOM: Zmp5 [1120] prev; 1252 next: 1119 jump: 0
+ROOM: Vfj0 [1252] prev; 1121 next: 1120 jump: 0
+ROOM: Anc0 [1121] prev; 1122 next: 1252 jump: 0
+ROOM: Sf_7 [1122] prev; 1123 next: 1121 jump: 0
+ROOM: Buw9 [1123] prev; 1306 next: 1122 jump: 0
+ROOM: R_d6 [1306] prev; 1378 next: 1123 jump: 0
+ROOM: Igl8 [1378] prev; 1048 next: 1306 jump: 0
+ROOM: Zx_9 [1048] prev; 1341 next: 1378 jump: 0
+ROOM: Jks1 [1341] prev; 1034 next: 1048 jump: 0
+ROOM: Zvl7 [1034] prev; 948 next: 1341 jump: 0
+ROOM: Uzm9 [948] prev; 1449 next: 1034 jump: 0
+ROOM: Aqt2 [1449] prev; 1451 next: 948 jump: 0
+ROOM: Uuu4 [1451] prev; 917 next: 1449 jump: 0
+ROOM: Y_a2 [917] prev; 0 next: 1451 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 2144----------
+HERE
+ROOM: Eb_6 [2144] prev; 288 next: 2439 jump: 0
+ROOM: Po_7 [288] prev; 2143 next: 2144 jump: 0
+ROOM: Jxx8 [2143] prev; 1897 next: 288 jump: 0
+ROOM: Fpz0 [1897] prev; 1507 next: 2143 jump: 0
+ROOM: Pmt3 [1507] prev; 1152 next: 1897 jump: 0
+ROOM: U_e1 [1152] prev; 1153 next: 1507 jump: 0
+ROOM: Pte7 [1153] prev; 1212 next: 1152 jump: 0
+ROOM: Efz5 [1212] prev; 1211 next: 1153 jump: 0
+ROOM: J_s0 [1211] prev; 1210 next: 1212 jump: 0
+ROOM: Pmr0 [1210] prev; 1154 next: 1211 jump: 0
+ROOM: Uyd6 [1154] prev; 1209 next: 1210 jump: 0
+ROOM: Xpo9 [1209] prev; 1208 next: 1154 jump: 0
+ROOM: Quk1 [1208] prev; 1207 next: 1209 jump: 0
+ROOM: Rrm2 [1207] prev; 1155 next: 1208 jump: 0
+ROOM: Ejb3 [1155] prev; 1206 next: 1207 jump: 0
+ROOM: M_h3 [1206] prev; 1205 next: 1155 jump: 0
+ROOM: Vej1 [1205] prev; 1156 next: 1206 jump: 0
+ROOM: Qsy7 [1156] prev; 1335 next: 1205 jump: 0
+ROOM: Yfv7 [1335] prev; 1097 next: 1156 jump: 0
+ROOM: Cqy2 [1097] prev; 1343 next: 1335 jump: 0
+ROOM: Bik3 [1343] prev; 1090 next: 1097 jump: 0
+ROOM: Fcx2 [1090] prev; 1009 next: 1343 jump: 0
+ROOM: Anv9 [1009] prev; 1274 next: 1090 jump: 0
+ROOM: Dio4 [1274] prev; 977 next: 1009 jump: 0
+ROOM: Cxt7 [977] prev; 1471 next: 1274 jump: 0
+ROOM: Gsn4 [1471] prev; 1476 next: 977 jump: 0
+ROOM: Pgh5 [1476] prev; 1455 next: 1471 jump: 0
+ROOM: Bop0 [1455] prev; 0 next: 1476 jump: 0
+ROOM: Rul0 [0] prev; 0 next: 0 jump: 0
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 1685----------
+HERE
+ROOM: Xhc3 [1685] prev; 765 next: 2439 jump: 0
+ROOM: Gjk5 [765] prev; 1681 next: 1685 jump: 0
+ROOM: Nqq8 [1681] prev; 773 next: 765 jump: 0
+ROOM: Zho7 [773] prev; 1227 next: 1681 jump: 0
+ROOM: Jhq7 [1227] prev; 1143 next: 773 jump: 0
+ROOM: Yjh4 [1143] prev; 1226 next: 1227 jump: 0
+ROOM: Tvr5 [1226] prev; 1225 next: 1143 jump: 0
+ROOM: D_t0 [1225] prev; 1224 next: 1226 jump: 0
+ROOM: Swv3 [1224] prev; 785 next: 1225 jump: 0
+ROOM: Gbo3 [785] prev; 1663 next: 1224 jump: 0
+ROOM: Y_v3 [1663] prev; 788 next: 785 jump: 0
+ROOM: Df_8 [788] prev; 1631 next: 1663 jump: 0
+ROOM: Bhy3 [1631] prev; 1267 next: 788 jump: 788
+ROOM: Aem9 [1630] prev; 0 next: 0 jump: 0
+ROOM: Zsi2 [1660] prev; 800 next: 421 jump: 0
+ROOM: U_h2 [800] prev; 799 next: 1660 jump: 0
+ROOM: Xea7 [799] prev; 1632 next: 800 jump: 0
+ROOM: Vfl7 [1632] prev; 1267 next: 799 jump: 0
+ROOM: Fqh4 [1267] prev; 1102 next: 1632 jump: 1730
+HERE
+LOCKED lock path
+waiting to lock path
+INDX: 721----------

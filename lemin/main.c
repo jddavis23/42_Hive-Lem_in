@@ -92,6 +92,7 @@ int	main(int argc, char **argv)
 			return (error_path(pass, &build, TRUE));
 		if (initialize_path_finder(pass, &build) == ERROR)
 			return (0);
+		//exit(0);
 		solve(pass, &build);
 	}
 	else if (argc == 2 && !ft_strcmp(argv[1], "-h"))
