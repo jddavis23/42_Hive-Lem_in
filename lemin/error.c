@@ -87,6 +87,8 @@ int	error(int err)
 			ft_printf("Incorrect coordinates\n");
 		else if (err == CONNECTION)
 			ft_printf("Incorrect connection\n");
+		// else if (err == IN_VALID_CONNEC)
+		// 	ft_printf("Invalid connect\n");
 		else
 			ft_printf("\n");
 	}
