@@ -142,7 +142,7 @@ void	info_set_to_zero(t_room *pass, int i);
 int	create_connect(t_room *pass, int j);
 
 // solve
-void	solve(t_room *pass);
+void	solve(t_room *pass, t_input **build);
 void	create_ants(t_ants **ants_move, int ant, t_index *index);
 void	solve_calc(t_room *pass, t_ants *ants_move, t_ants *head);
 void	print_count(int	print_count, int line);

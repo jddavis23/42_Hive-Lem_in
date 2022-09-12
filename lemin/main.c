@@ -92,9 +92,7 @@ int	main(int argc, char **argv)
 			return (error_path(pass, &build, TRUE));
 		if (initialize_path_finder(pass, &build) == ERROR)
 			return (0);
-		ft_printf("%s\n", build->input);
-		solve(pass);
-		error_path(pass, &build, FALSE); //need to make sure everything
+		solve(pass, &build);
 	}
 	else if (argc == 2 && !ft_strcmp(argv[1], "-h"))
 		print_help();

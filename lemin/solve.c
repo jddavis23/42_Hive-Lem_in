@@ -102,7 +102,7 @@ void	print_count(int	print_count, int line)
 
 /*	starting logic of printing ants moving and takes care of edge case	*/
 
-void	solve(t_room *pass)
+void	solve(t_room *pass, t_input **build)
 {
 	t_ants	*ants_move;
 	t_ants	*head;
@@ -110,6 +110,8 @@ void	solve(t_room *pass)
 	head = NULL;
 	ants_move = NULL;
 	// if start is connected to the end move all ants at the same time
+	if (!pass->print_count)
+		ft_printf("%s\n", (*build)->input);
 	if (pass->final_head->len == 1)
 	{
 		int current_ant = 0;
@@ -126,4 +128,5 @@ void	solve(t_room *pass)
 		solve_calc(pass, ants_move, head);
 	if (pass->print_len || pass->print_paths)
 		printf_struct(pass);
+	error_path(pass, &(*build), FALSE); //need to make sure everything
 }
