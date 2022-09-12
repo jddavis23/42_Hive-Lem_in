@@ -12,11 +12,15 @@
 
 #include "../includes/lemin.h"
 
+/*	free_line and returns ERROR	*/
+
 int	free_len(int **len)
 {
 	free(*len);
 	return (ERROR);
 }
+
+/*	special case where start is connected to the end	*/
 
 static int	start_connect_end(t_path **path, t_room *pass, int **len)
 {
@@ -83,29 +87,6 @@ void	print_output(t_room *pass)
 	}
 }
 
-/*
-**	makes sure all variables has been set to zero before running
-**	the second algorithm
-*/
-
-static void	clean_everything(t_room *pass)
-{
-	int	i;
-
-	i = 0;
-	while (i < pass->total)
-	{
-		pass->info[PATH][i] = FALSE;
-		pass->info[PREV][i] = FALSE;
-		pass->info[LEN][i] = FALSE;
-		pass->info[NEXT][i] = FALSE;
-		pass->info[JUMP][i] = FALSE;
-		pass->info[LOCKED][i] = FALSE;
-		pass->info[MOVE][i] = FALSE;
-		pass->info[CURRENT][i++] = FALSE;
-	}
-}
-
 /*	core logic of calling breadth first and locking the paths	*/
 
 int	path_finder(t_path **path, t_room *pass)
@@ -127,10 +108,10 @@ int	path_finder(t_path **path, t_room *pass)
 			return (ERROR);
 		return (1);
 	}
-	if (first_algorithm(path, pass, &len) == ERROR)
+	if (first_algorithm(path, pass, &len, TRUE) == ERROR)
 		return (ERROR);
-	clean_everything(pass);
-	initialize_path(pass);
+	if (first_algorithm(path, pass, &len, FALSE) == ERROR)
+		return (ERROR);
 	if (second_algorithm(path, pass, &len, 0) == ERROR)
 		return (ERROR);
 	return (1);

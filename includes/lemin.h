@@ -144,13 +144,14 @@ int		create_len(int *array, int **len);
 void	reset_len(t_room *pass, int **len);
 int		current_len(t_room *pass);
 int		current_true(t_room *pass);
-int		first_algorithm(t_path **path, t_room *pass, int **len);
+int		first_algorithm(t_path **path, t_room *pass, int **len, int first);
 int		second_algorithm(t_path **path, t_room *pass, int **len, int i);
 int		free_len(int **len);
 
 void	lock_path_init(t_room *pass, int indx);
-void	lock_path(t_room *pass, int indx, int *error);
+void	lock_path(t_room *pass, int indx);
 void	info_set_to_zero(t_room *pass, int i);
+int		on_lock_path(t_room *pass, int *i, int c_len);
 
 //didnt know where to put
 int		create_connect(t_room *pass, int j);

@@ -3,8 +3,8 @@
 COUNT=$1
 while [[ $COUNT -gt 0 ]]
 do
-	../generator --big-superposition > big_superposition$COUNT.txt
-	../lem-in -c < big_superposition$COUNT.txt > results_big_superposition$COUNT.txt
+	./generator --big-superposition > big_superposition$COUNT.txt
+	./lem-in -c < big_superposition$COUNT.txt > results_big_superposition$COUNT.txt
 	# while read line
 	# do
 		
