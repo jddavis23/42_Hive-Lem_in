@@ -1,5 +1,20 @@
 #include "../includes/lemin.h"
 
+static void	path_not_in_use(t_room *pass, int prev)
+{
+	while (prev != 0 || pass->info[NEXT][prev] != prev)
+	{
+		pass->info[PATH][prev] = 0;
+		pass->info[LEN][prev] = 0;
+		pass->info[PREV][prev] = 0;
+		pass->info[NEXT][prev] = 0;
+		prev = pass->info[PREV][prev];
+		if (pass->info[PATH][prev] < 2)
+			return ;
+	//	ft_printf("current: %d [%d]	prev: %d	next: %d\n", prev, pass->info[PATH][prev], pass->info[PREV][prev], pass->info[NEXT][prev]);
+	}
+}
+
 /*
 **	updates the length so the count goes up from end to start of already
 **	found paths
@@ -15,18 +30,32 @@ static void	len_back_front(t_room *pass)
 	j = 0;
 	while (pass->links[pass->end][j] != -1)
 	{
+		//ft_printf("rooms connected to end: %s[indx: %d], j: %d\n", pass->rooms[pass->links[pass->end][j]], pass->links[pass->end][j], j);
 		if (pass->info[NEXT][pass->links[pass->end][j]] == pass->end)
 		{
 			prev = pass->links[pass->end][j];
 			while (prev != 0)
 			{
+				if (pass->info[PATH][prev] < 2)
+				{
+					//exit(0);
+					path_not_in_use(pass, pass->links[pass->end][j]);
+					return ;
+				}
 				pass->info[LEN][prev] = i++;
 				prev = pass->info[PREV][prev];
+				//ft_printf("current: %d [%d]	prev: %d	next: %d\n", prev, pass->info[PATH][prev], pass->info[PREV][prev], pass->info[NEXT][prev]);
+				// if (pass->info[PREV][prev] == pass->info[NEXT][prev] && prev != 0)
+				// 	exit(0);
 			}
+			//ft_printf("I\n");
 			i = 1;
 		}
 		++j;
+		//ft_printf("rooms connected to end: [indx: %d], j: %d\n", pass->links[pass->end][j], j);
+		
 	}
+	//ft_printf("ENDED\n");
 }
 
 /*
@@ -79,9 +108,12 @@ void	lock_path_init(t_room *pass, int indx)
 	int	prev;
 	int	error;
 
+	ft_printf("INDX: %d----------\n", indx);
 	len_back_front(pass);
+	ft_printf("HERE\n");
 	error = FALSE;
 	lock_path(pass, indx, &error);
+	ft_printf("HERE\n");
 	if (error == TRUE)
 		return ;
 	i = 0;

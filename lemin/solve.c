@@ -110,8 +110,7 @@ void	solve(t_room *pass, t_input **build)
 
 	head = NULL;
 	ants_move = NULL;
-	if (!pass->print_count)
-		ft_printf("%s\n", (*build)->input);
+	ft_printf("%s\n", (*build)->input);
 	if (pass->final_head->len == 1)
 	{
 		current_ant = 0;

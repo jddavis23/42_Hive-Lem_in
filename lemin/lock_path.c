@@ -84,6 +84,7 @@ void	lock_path(t_room *pass, int indx, int *error)
 	pass->next = 0;
 	pass->hold = 0;
 	pass->info[NEXT][indx] = pass->end;
+	ft_printf("ROOM: %s [%d] prev; %d next: %d jump: %d\n", pass->rooms[indx], indx, pass->info[PREV][indx], pass->info[NEXT][indx], pass->info[JUMP][indx]);
 	while (indx != 0)
 	{
 		for_now = indx;
@@ -102,5 +103,6 @@ void	lock_path(t_room *pass, int indx, int *error)
 			*error = TRUE;
 			return ;
 		}
+		ft_printf("ROOM: %s [%d] prev; %d next: %d jump: %d\n", pass->rooms[indx], indx, pass->info[PREV][indx], pass->info[NEXT][indx], pass->info[JUMP][indx]);
 	}
 }

@@ -127,11 +127,19 @@ int	path_finder(t_path **path, t_room *pass)
 			return (ERROR);
 		return (1);
 	}
-	if (first_algorithm(path, pass, &len) == ERROR)
+	ft_printf("HERE1\n");
+	if (first_algorithm(path, pass, &len, TRUE) == ERROR)
 		return (ERROR);
 	clean_everything(pass);
 	initialize_path(pass);
+	ft_printf("HERE2\n");
+	if (first_algorithm(path, pass, &len, TRUE) == ERROR)//1(big209)+1(big263)+1(413)+1(big540)+
+		return (ERROR);
+	clean_everything(pass);
+	initialize_path(pass);
+	ft_printf("HERE3\n");
 	if (second_algorithm(path, pass, &len, 0) == ERROR)
 		return (ERROR);
+	ft_printf("HERE4\n");
 	return (1);
 }

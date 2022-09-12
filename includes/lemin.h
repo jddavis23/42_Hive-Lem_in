@@ -144,7 +144,7 @@ int		create_len(int *array, int **len);
 void	reset_len(t_room *pass, int **len);
 int		current_len(t_room *pass);
 int		current_true(t_room *pass);
-int		first_algorithm(t_path **path, t_room *pass, int **len);
+int		first_algorithm(t_path **path, t_room *pass, int **len, int first);
 int		second_algorithm(t_path **path, t_room *pass, int **len, int i);
 int		free_len(int **len);
 
