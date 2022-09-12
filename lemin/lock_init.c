@@ -102,7 +102,6 @@ void	lock_path_init(t_room *pass, int indx)
 	error = FALSE;
 	lock_path(pass, indx);
 	i = 0;
-//	ft_printf("EHREIMOF\n");
 	while (pass->links[pass->end][i] >= 0)
 	{
 		if (pass->info[NEXT][pass->links[pass->end][i]] == pass->end)
