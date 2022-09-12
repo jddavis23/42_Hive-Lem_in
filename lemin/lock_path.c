@@ -62,7 +62,6 @@ static void	update_no_jump_out(t_room *pass, int *indx, int *for_now)
 
 static void	lock_conditions(t_room *pass, int *value, int *indx, int *for_now)
 {
-	//ft_printf("ENTER\n");
 	if ((pass->info[PATH][*indx] == 3 && *value == 1) || \
 		(pass->info[PATH][*indx] == 1 && *value == 3) || \
 		pass->info[PATH][*indx] == 1)
@@ -87,7 +86,6 @@ static void	lock_conditions(t_room *pass, int *value, int *indx, int *for_now)
 	else if (pass->info[PATH][*indx] == 3 && *value == 3 && \
 		!pass->info[JUMP][*indx])
 		update_no_jump_out(pass, indx, for_now);
-	//ft_printf("EXIT\n");
 }
 
 void	lock_path(t_room *pass, int indx)
@@ -98,14 +96,13 @@ void	lock_path(t_room *pass, int indx)
 	pass->next = 0;
 	pass->hold = 0;
 	pass->info[NEXT][indx] = pass->end;
-	//ft_printf("NEW-------\n");
 	while (indx != 0)
 	{
 		for_now = indx;
 		value = pass->info[PATH][indx];
 		if (pass->info[PATH][indx] == 1)
 			pass->info[PATH][indx] = 4;
-		if (!pass->next && pass->info[PATH][pass->info[PREV][indx]] != 4)
+		if (!pass->next)
 			indx = pass->info[PREV][indx];
 		else
 			indx = pass->next;
@@ -113,8 +110,9 @@ void	lock_path(t_room *pass, int indx)
 		//ft_printf("pass->rooms: %s[%d] path: %d, prev: %d, next: %d, jump: %d, end: %d\n", pass->rooms[indx], indx, pass->info[PATH][indx], pass->info[PREV][indx], pass->info[NEXT][indx], pass->info[JUMP][indx], pass->end);
 		
 		lock_conditions(pass, &value, &indx, &for_now);
-		if (pass->info[PREV][indx] != 0 && \
-			pass->info[NEXT][indx] == pass->info[PREV][indx])
+		if ((pass->info[PREV][indx] != 0 && \
+			pass->info[NEXT][indx] == pass->info[PREV][indx]) || \
+			pass->info[PATH][indx] == 4)
 		{
 			//ft_printf("ERROR: pass->rooms: %s[%d] path: %d, prev: %d, next: %d, jump: %d, end: %d\n", pass->rooms[indx], indx, pass->info[PATH][indx], pass->info[PREV][indx], pass->info[NEXT][indx], pass->info[JUMP][indx], pass->end);
 			return ;

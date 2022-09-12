@@ -102,7 +102,7 @@ void	lock_path_init(t_room *pass, int indx)
 	error = FALSE;
 	lock_path(pass, indx);
 	i = 0;
-	ft_printf("EHREIMOF\n");
+//	ft_printf("EHREIMOF\n");
 	while (pass->links[pass->end][i] >= 0)
 	{
 		if (pass->info[NEXT][pass->links[pass->end][i]] == pass->end)
@@ -110,14 +110,13 @@ void	lock_path_init(t_room *pass, int indx)
 			prev = pass->links[pass->end][i];
 			while (prev != 0)
 			{
-				if (pass->info[PREV][prev] != 0 && \
-					pass->info[NEXT][prev] == pass->info[PREV][prev])
+				if ((pass->info[PREV][prev] != 0 && \
+					pass->info[NEXT][prev] == pass->info[PREV][prev]) \
+					|| pass->info[NEXT][prev] == 0)
 					break ;
-				ft_printf("pass->rooms: %s[%d] path: %d, prev: %d, next: %d, jump: %d, end: %d\n", pass->rooms[prev], prev, pass->info[PATH][prev], pass->info[PREV][prev], pass->info[NEXT][prev], pass->info[JUMP][prev], pass->end);
+				//ft_printf("pass->rooms: %s[%d] path: %d, prev: %d, next: %d, jump: %d, end: %d\n", pass->rooms[prev], prev, pass->info[PATH][prev], pass->info[PREV][prev], pass->info[NEXT][prev], pass->info[JUMP][prev], pass->end);
 				pass->info[PATH][prev] = 2;
 				prev = pass->info[PREV][prev];
-				ft_printf("pass->rooms: %s[%d] path: %d, prev: %d, next: %d, jump: %d, end: %d\n", pass->rooms[prev], prev, pass->info[PATH][prev], pass->info[PREV][prev], pass->info[NEXT][prev], pass->info[JUMP][prev], pass->end);
-				
 			}
 		}
 		++i;
