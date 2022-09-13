@@ -3,89 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdavis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 13:20:42 by jdavis            #+#    #+#             */
-/*   Updated: 2022/07/11 13:20:44 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/13 18:15:48 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lemin.h"
-
-static int	check_start(void)
-{
-	static int	start = FALSE;
-
-	if (start == FALSE)
-	{
-		start = TRUE;
-		return (5);
-	}
-	return (-2);
-}
-
-static int	check_end(void)
-{
-	static int	end = FALSE;
-
-	if (end == FALSE)
-	{
-		end = TRUE;
-		return (6);
-	}
-	return (-2);
-}
-
-int	by_line(char *input)
-{
-	int	flag;
-	int	count;
-	int	i;
-
-	i = 0;
-	count = 0;
-	flag = 1;
-	if (!ft_strncmp(&input[i], "##start", 7))
-		return (check_start());
-	else if (!ft_strncmp(&input[i], "##end", 5))
-		return (check_end());
-	else if (input[i] == '#')
-		return (-1);
-	if (!ft_strlchr(input, ' ', ft_strlen_stop(input, '\n')) && ft_strlchr(input, '-', ft_strlen_stop(input, '\n')))
-		return (2);
-	while (input[i] != '\n' && input[i] != '\0')
-	{
-		if (flag && input[i] != ' ')
-		{
-			 flag = 0;
-			 ++count;
-		}
-		if (input[i++] == ' ')
-			flag = 1;
-		//++i;
-	}
-	return (count);
-}
-
-int	duplicated(char **str)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (str[i])
-	{
-		j = i + 1;
-		while (str[j])
-		{
-			if (!ft_strcmp(str[i], str[j]))
-				return (-1);
-			++j;
-		}
-		++i;
-	}
-	return (0);
-}
 
 static void	set_to_null(t_room *pass)
 {
@@ -99,91 +24,6 @@ static void	set_to_null(t_room *pass)
 		++i;
 	}
 	pass->rooms[i] = NULL;
-}
-
-int	create_connect(t_room *pass, int j)
-{
-	if (!pass->tmp_con)
-	{
-		pass->tmp_con = (t_connect *) malloc(sizeof(t_connect));
-		if (!pass->tmp_con)
-		{
-			//clean
-			return (-1);
-		}
-		pass->tmp_con->count = 1;
-		pass->head_con = pass->tmp_con;
-		pass->tmp_con->next = NULL;
-	}
-	else
-	{
-		pass->tmp_con->current_room = j;
-		//ft_printf("-COUNT %i ROOM %s\n", pass->tmp_con->count, pass->rooms[pass->tmp_con->current_room]);
-		pass->tmp_con->next = (t_connect *) malloc (sizeof(t_connect));
-		if (!pass->tmp_con->next)
-		{
-			t_connect *temp;
-			while (pass->head_con)
-			{
-				temp = pass->head_con->next;
-				free(pass->head_con);
-				pass->head_con = temp;
-			}
-			return (-1);
-		}
-		pass->tmp_con->next->next = NULL;
-		pass->tmp_con->next->count = pass->tmp_con->count + 1;
-		pass->tmp_con = pass->tmp_con->next;
-		pass->tmp_con->current_room = -1;
-	}
-	return (1);
-}
-
-static void	connec_to_links(t_room *pass, int j)
-{
-	int	k;
-	int	count;
-	t_connect *temp;
-
-	k = 0;
-	count = pass->tmp_con->count;
-	pass->tmp_con = NULL;
-	while (k < count)
-	{
-		pass->links[j][k] = -1;
-		if (pass->head_con->current_room != -1)
-		{
-			pass->links[j][k] = pass->head_con->current_room;
-		}
-		temp = pass->head_con->next;
-		free(pass->head_con);
-		pass->head_con = temp;
-		k++;
-	}
-}
-
-static int	create_links(t_room *pass, t_input **build, int i)
-{
-	int	j;
-	//char **input = NULL; //just for error function
-
-	//exit (0);
-	if (duplicated(pass->rooms) == ERROR)
-		return (error_free(pass, build, 0, FALSE));
-	j = 0;
-	while (pass->rooms[j])
-	{
-		if (create_connect(pass, 0) == -1)
-			return (error_free(pass, build, j, FALSE)); //CHANGE INPUT TO FREE BUILD AND COTENTS
-		if (count_in(j, &(((*build)->input)[i]), pass) == -1)
-			return (error_free(pass, build, j, FALSE));
-		pass->links[j] = (int *) malloc((pass->tmp_con->count) * sizeof(int));
-		if (!pass->links[j])
-			return (error_free(pass, build, j, FALSE));
-		connec_to_links(pass, j);
-		++j;
-	}
-	return (TRUE);
 }
 
 static int	start_and_end(t_room *pass,	int hold, t_input **build, int *i)
@@ -234,12 +74,27 @@ static int	helper_function(t_room *pass, t_input **build, int *hold, int *i)
 	return (1);
 }
 
+static int	rooms_c_helper(t_room *pass, t_input **build, int *j, int *i)
+{
+	int	stop;
+
+	stop = ft_strlen_stop(&(((*build)->input)[*i]), ' ');
+	if ((*j) == pass->end)
+		return (error_free(pass, build, 0, FALSE));
+	pass->rooms[(*j)] = ft_strnew(stop);
+	if (!pass->rooms[(*j)])
+		return (error_free(pass, build, 0, FALSE));
+	ft_strncat(pass->rooms[(*j)++], &(((*build)->input)[*i]), stop);
+	while (((*build)->input)[*i] != '\n')
+		++(*i);
+	return (0);
+}
+
 static int	create_helper(t_room *pass, t_input **build, int hold)
 {
 	int	i;
 	int	j;
 	int	ret;
-	int	stop;
 
 	i = 0;
 	j = 1;
@@ -252,20 +107,11 @@ static int	create_helper(t_room *pass, t_input **build, int hold)
 			return (error_free(pass, build, j, FALSE));
 		if (hold == 3)
 		{
-			stop = ft_strlen_stop(&(((*build)->input)[i]), ' ');
-			if (j == pass->end)
-				return (error_free(pass, build, 0, FALSE));
-			pass->rooms[j] = ft_strnew(stop);
-			if (!pass->rooms[j])
-				return (error_free(pass, build, 0, FALSE));
-			ft_strncat(pass->rooms[j++], &(((*build)->input)[i]), stop);
-			while (((*build)->input)[i] != '\n')
-				++i;
+			if (rooms_c_helper(pass, build, &j, &i) == -1)
+				return (-1);
 		}
 		else if (hold == 2)
-		{
 			return (create_links(pass, build, i));
-		}
 		++i;
 	}
 	return (1);

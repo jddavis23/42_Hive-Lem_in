@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lemin.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 10:09:31 by molesen           #+#    #+#             */
-/*   Updated: 2022/09/12 10:09:33 by molesen          ###   ########.fr       */
+/*   Updated: 2022/09/13 18:13:20 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int		error_free(t_room *pass, t_input **build, int j, int first);
 int		error_path(t_room *pass, t_input **build, int first);
 int		**free2d_int(int **links, int j, int end);
 char	**ft_free_rooms(t_room *pass, char **dest);
+int		create_connect(t_room *pass, int j);
 
 // parsing
 void	match_in(char *str, char *input, t_room *pass, int k);
@@ -119,6 +120,8 @@ int		count_in(int r, char *input, t_room *pass);
 int		addi_diff(char *start, char *finish);
 int		dash_in_section(char *full, char *inside);
 int		is_dash(char *str);
+int		by_line(char *input);
+int		create_links(t_room *pass, t_input **build, int i);
 
 // path finder
 int		initialize_path_finder(t_room *pass, t_input **build);
