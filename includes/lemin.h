@@ -97,7 +97,8 @@ typedef enum error_message
 }	t_error_message;
 
 // error handling
-int		file_save(t_room *pass, t_input **build);
+int		file_save(t_room *pass, t_input **build, int ret, int total);
+int		file_save_line(t_room *pass, t_input **build, char **line);
 int		only_digits(char *str, int *i);
 int		is_coordinates(char *str);
 int		is_connection(char *str);

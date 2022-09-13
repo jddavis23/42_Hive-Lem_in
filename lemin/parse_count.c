@@ -83,7 +83,7 @@ static int	find_connec_room(t_room *pass, int r, char **arr, int choice)//, char
 	//stop = ft_strlen_stop(&(*arr)[str_len], '\n');
 	j = 0;
 	if (j == r)
-		++j;	
+		++j;
 	while (pass->rooms[j])
 	{
 		if (j == r)

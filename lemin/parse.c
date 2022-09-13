@@ -191,7 +191,7 @@ static void	set_val(t_room *pass, t_input **build, int *hold)
 	pass->tmp_con = NULL;
 	pass->head_con = NULL;
 	pass->info = NULL;
-	pass->total = file_save(pass, build);
+	pass->total = file_save(pass, build, 1, 0);
 	pass->end = pass->total - 1;
 }
 

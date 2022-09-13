@@ -19,6 +19,7 @@ C = lemin/
 SRC = $(C)main.c
 SRC += $(C)error.c
 SRC += $(C)file_save.c
+SRC += $(C)file_save_line.c
 SRC += $(C)file_check.c
 SRC += $(C)parse.c
 SRC += $(C)parse_count.c
