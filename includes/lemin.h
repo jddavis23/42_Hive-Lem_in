@@ -149,8 +149,8 @@ int		first_algorithm(t_path **path, t_room *pass, int **len, int first);
 int		second_algorithm(t_path **path, t_room *pass, int **len, int i);
 int		free_len(int **len);
 
-void	lock_path_init(t_room *pass, int indx);
-void	lock_path(t_room *pass, int indx);
+void	lock_path_init(t_room *pass, int indx, int *error);
+void	lock_path(t_room *pass, int indx, int *error);
 void	info_set_to_zero(t_room *pass, int i);
 int		on_lock_path(t_room *pass, int *i, int c_len);
 

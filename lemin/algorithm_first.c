@@ -86,10 +86,12 @@ static void	clean_everything(t_room *pass)
 
 int	first_algorithm(t_path **path, t_room *pass, int **len, int first)
 {
+	int	error;
 	int	increase;
 	int	i;
 
 	increase = 0;
+	error = FALSE;
 	while (!current_true(pass))
 	{
 		i = 0;
@@ -97,7 +99,9 @@ int	first_algorithm(t_path **path, t_room *pass, int **len, int first)
 		if (pass->info[PATH][pass->end] == 1)
 		{
 			pass->info[PATH][pass->end] = 0;
-			lock_path_init(pass, pass->info[CURRENT][i]);
+			lock_path_init(pass, pass->info[CURRENT][i], &error);
+			if (error == TRUE)
+				break ;
 			calc_len(pass, len);
 			if (path_select(path, pass, len, &increase) == ERROR)
 				return (free_len(len));

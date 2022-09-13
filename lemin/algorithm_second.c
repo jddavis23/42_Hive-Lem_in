@@ -90,8 +90,10 @@ static int	choose_shortest_path(t_room *pass)
 int	second_algorithm(t_path **path, t_room *pass, int **len, int i)
 {
 	int	increase;
+	int	error;
 
 	increase = 0;
+	error = FALSE;
 	while (!current_true(pass))
 	{
 		i = 0;
@@ -100,7 +102,9 @@ int	second_algorithm(t_path **path, t_room *pass, int **len, int i)
 		{
 			i = choose_shortest_path(pass);
 			pass->info[PATH][pass->end] = 0;
-			lock_path_init(pass, i);
+			lock_path_init(pass, i, &error);
+			if (error == TRUE)
+				break ;
 			calc_len(pass, len);
 			if (path_select(path, pass, len, &increase) == ERROR)
 				return (free_len(len));
