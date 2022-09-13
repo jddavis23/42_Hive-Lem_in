@@ -87,6 +87,71 @@ void	print_output(t_room *pass)
 	}
 }
 
+/*	breadth first initializer with the logic of the first algorithm	*/
+
+static void	breadth_first_init_third(t_room *pass, int *i)
+{
+	int	c_len;
+
+	c_len = current_len(pass);
+	while (*i < c_len)
+	{
+		if (pass->info[CURRENT][*i] != 0)
+		{
+			if (pass->info[PATH][pass->info[CURRENT][*i]] < 2)
+			{
+				breadth_first(pass, pass->info[CURRENT][*i], *i);
+				if (pass->info[PATH][pass->end] == 1)
+					return ;
+			}
+			else
+				pass->info[CURRENT][*i] = 0;
+		}
+		++(*i);
+	}
+}
+
+/*	moves all of the paths in one round	*/
+
+static void	move_paths_all(t_room *pass, int *i)
+{
+	int	c_len;
+
+	c_len = current_len(pass);
+	while (*i < c_len)
+	{
+		if (pass->info[CURRENT][*i] != 0)
+		{
+			breadth_first(pass, pass->info[CURRENT][*i], *i);
+			if (pass->info[PATH][pass->end] == 1)
+				return ;
+		}
+		++(*i);
+	}
+}
+
+/*	breadth first initializer with the logic of the first algorithm	*/
+
+static void	breadth_first_move_locked(t_room *pass, int *i)
+{
+	int	c_len;
+
+	c_len = current_len(pass);
+	if (!on_lock_path(pass, i, c_len))
+	{
+		while (*i < c_len)
+		{
+			if (pass->info[CURRENT][*i] != 0)
+			{
+				breadth_first(pass, pass->info[CURRENT][*i], *i);
+				if (pass->info[PATH][pass->end] == 1)
+					return ;
+			}
+			++(*i);
+		}
+	}
+}
+
 /*	core logic of calling breadth first and locking the paths	*/
 
 int	path_finder(t_path **path, t_room *pass)
@@ -108,9 +173,11 @@ int	path_finder(t_path **path, t_room *pass)
 			return (ERROR);
 		return (1);
 	}
-	if (first_algorithm(path, pass, &len, TRUE) == ERROR)
+	if (first_algorithm(path, pass, &len, &move_paths_all) == ERROR)
 		return (ERROR);
-	if (first_algorithm(path, pass, &len, FALSE) == ERROR)
+	if (first_algorithm(path, pass, &len, &breadth_first_move_locked) == ERROR)
+		return (ERROR);
+	if (first_algorithm(path, pass, &len, &breadth_first_init_third) == ERROR)
 		return (ERROR);
 	if (second_algorithm(path, pass, &len, 0) == ERROR)
 		return (ERROR);
