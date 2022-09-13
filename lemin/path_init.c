@@ -12,6 +12,32 @@
 
 #include "../includes/lemin.h"
 
+/*	free_line and returns ERROR	*/
+
+int	free_len(int **len)
+{
+	free(*len);
+	return (ERROR);
+}
+
+/*	checks if there are anymore alive paths	*/
+
+int	current_true(t_room *pass)
+{
+	int	i;
+
+	i = 0;
+	while (i < pass->total)
+	{
+		if (pass->info[CURRENT][i] != 0)
+			return (FALSE);
+		++i;
+	}
+	return (TRUE);
+}
+
+/*	prints rooms if flag -p is activated	*/
+
 static void	print_rooms(t_path *final, t_room *pass)
 {
 	final->move = final->move_head;
@@ -26,6 +52,8 @@ static void	print_rooms(t_path *final, t_room *pass)
 			ft_printf("\n\n");
 	}
 }
+
+/*	prints the whole struct of the paths with the flags -p and -l	*/
 
 void	printf_struct(t_room *pass)
 {

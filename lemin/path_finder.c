@@ -12,14 +12,6 @@
 
 #include "../includes/lemin.h"
 
-/*	free_line and returns ERROR	*/
-
-int	free_len(int **len)
-{
-	free(*len);
-	return (ERROR);
-}
-
 /*	special case where start is connected to the end	*/
 
 static int	start_connect_end(t_path **path, t_room *pass, int **len)
@@ -30,22 +22,6 @@ static int	start_connect_end(t_path **path, t_room *pass, int **len)
 		return (free_len(len));
 	free(*len);
 	return (1);
-}
-
-/*	checks if there are anymore alive paths	*/
-
-int	current_true(t_room *pass)
-{
-	int	i;
-
-	i = 0;
-	while (i < pass->total)
-	{
-		if (pass->info[CURRENT][i] != 0)
-			return (FALSE);
-		++i;
-	}
-	return (TRUE);
 }
 
 //------- delete ??? -----------------------///
@@ -87,6 +63,71 @@ void	print_output(t_room *pass)
 	}
 }
 
+/*	breadth first initializer with the logic of the first algorithm	*/
+
+static void	move_only_non_locked(t_room *pass, int *i)
+{
+	int	c_len;
+
+	c_len = current_len(pass);
+	while (*i < c_len)
+	{
+		if (pass->info[CURRENT][*i] != 0)
+		{
+			if (pass->info[PATH][pass->info[CURRENT][*i]] < 2)
+			{
+				breadth_first(pass, pass->info[CURRENT][*i], *i);
+				if (pass->info[PATH][pass->end] == 1)
+					return ;
+			}
+			else
+				pass->info[CURRENT][*i] = 0;
+		}
+		++(*i);
+	}
+}
+
+/*	logic of moving all of the paths at the same time	*/
+
+static void	move_paths_all(t_room *pass, int *i)
+{
+	int	c_len;
+
+	c_len = current_len(pass);
+	while (*i < c_len)
+	{
+		if (pass->info[CURRENT][*i] != 0)
+		{
+			breadth_first(pass, pass->info[CURRENT][*i], *i);
+			if (pass->info[PATH][pass->end] == 1)
+				return ;
+		}
+		++(*i);
+	}
+}
+
+/*	logic of moving only the locked paths if there are any	*/
+
+static void	move_locked_alone(t_room *pass, int *i)
+{
+	int	c_len;
+
+	c_len = current_len(pass);
+	if (!on_lock_path(pass, i, c_len))
+	{
+		while (*i < c_len)
+		{
+			if (pass->info[CURRENT][*i] != 0)
+			{
+				breadth_first(pass, pass->info[CURRENT][*i], *i);
+				if (pass->info[PATH][pass->end] == 1)
+					return ;
+			}
+			++(*i);
+		}
+	}
+}
+
 /*	core logic of calling breadth first and locking the paths	*/
 
 int	path_finder(t_path **path, t_room *pass)
@@ -102,17 +143,18 @@ int	path_finder(t_path **path, t_room *pass)
 	}
 	initialize_path(pass);
 	increase = 0;
-	if (pass->info[PATH][pass->end] == 1)
+	if (pass->info[PATH][pass->end] == 1 && start_connect_end(path, pass, &len) == ERROR)
+		return (ERROR);
+	else if (!pass->info[PATH][pass->end])
 	{
-		if (start_connect_end(path, pass, &len) == ERROR)
+		if (first_algorithm(path, pass, &len, &move_paths_all) == ERROR)
 			return (ERROR);
-		return (1);
+		if (first_algorithm(path, pass, &len, &move_locked_alone) == ERROR)
+			return (ERROR);
+		if (first_algorithm(path, pass, &len, &move_only_non_locked) == ERROR)
+			return (ERROR);
+		if (second_algorithm(path, pass, &len, 0) == ERROR)
+			return (ERROR);
 	}
-	if (first_algorithm(path, pass, &len, TRUE) == ERROR)
-		return (ERROR);
-	if (first_algorithm(path, pass, &len, FALSE) == ERROR)
-		return (ERROR);
-	if (second_algorithm(path, pass, &len, 0) == ERROR)
-		return (ERROR);
 	return (1);
 }
