@@ -21,10 +21,7 @@ static int	check_start(void)
 		start = TRUE;
 		return (5);
 	}
-	else
-	{
-		return (-2);
-	}
+	return (-2);
 }
 
 static int	check_end(void)
@@ -36,10 +33,7 @@ static int	check_end(void)
 		end = TRUE;
 		return (6);
 	}
-	else
-	{
-		return (-2);
-	}
+	return (-2);
 }
 
 int	by_line(char *input)
@@ -57,7 +51,8 @@ int	by_line(char *input)
 		return (check_end());
 	else if (input[i] == '#')
 		return (-1);
-	if (!ft_strlchr(input, ' ', ft_strlen_stop(input, '\n')) && ft_strlchr(input, '-', ft_strlen_stop(input, '\n')))
+	if (!ft_strlchr(input, ' ', ft_strlen_stop(input, '\n')) && \
+		ft_strlchr(input, '-', ft_strlen_stop(input, '\n')))
 		return (2);
 	while (input[i] != '\n' && input[i] != '\0')
 	{
@@ -68,7 +63,6 @@ int	by_line(char *input)
 		}
 		if (input[i++] == ' ')
 			flag = 1;
-		//++i;
 	}
 	return (count);
 }

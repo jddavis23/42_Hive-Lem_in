@@ -135,5 +135,7 @@ int	file_save(t_room *pass, t_input **build, int ret, int total)
 		if (file_save_line(pass, build, &line) == ERROR)
 			return (ERROR);
 	}
+	if (i < 2)
+		return (error(CONNECTION));
 	return (total);
 }

@@ -63,6 +63,7 @@ int	error_free(t_room *pass, t_input **build, int j, int first)
 		ft_printf("{red}Error:{uncolor} during parsing phase\n");
 	if (pass)
 	{
+		
 		if (pass->rooms)
 			pass->rooms = ft_free_rooms(pass, pass->rooms); //does this free start or end out of order
 		if (pass->links)
@@ -70,6 +71,7 @@ int	error_free(t_room *pass, t_input **build, int j, int first)
 		if (pass->info)
 			free2d_int(pass->info, 8, 7);
 		free(pass);
+		exit(0);
 	}
 	if (*build)
 	{

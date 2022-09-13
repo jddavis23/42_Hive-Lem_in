@@ -1,0 +1,37 @@
+13
+C 10 30
+D 10 10
+##start
+S 50 10
+A 40 10
+##end
+E 30 10
+B 20 10
+F 50 50
+G 60 60
+H 70 70
+I 80 80
+J 90 90
+K 80 90
+M 70 90
+N 60 90
+O 50 90
+P 40 90
+S-A
+S-B
+A-C
+K-C
+B-D
+D-E
+S-F
+F-G
+G-E
+S-H
+H-I
+I-J
+J-K
+K-M
+M-N
+N-O
+O-P
+P-E

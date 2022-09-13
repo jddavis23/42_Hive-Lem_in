@@ -177,6 +177,19 @@ static int	mnl_helper(t_room *pass, int *j, char *input, char *temp)
 	return (i);
 }
 
+int	free_connect(t_room *pass)
+{
+	t_connect *tp;
+
+	while (pass->head_con)
+	{
+		tp = pass->head_con->next;
+		free(pass->head_con);
+		pass->head_con = tp;
+	}
+	return (ERROR);
+}
+
 static int	loop_through_rooms(t_room *pass, int r, char *input, char *temp)
 {
 	char	*hold;
@@ -197,7 +210,7 @@ static int	loop_through_rooms(t_room *pass, int r, char *input, char *temp)
 		i = mnl_helper(pass, &j, input, temp);
 	}
 	if ((i != -1 && !pass->rooms[i]) || (i == -1 && hold[-1] == '-'))
-		return (error(CONNECTION));
+		return (free_connect(pass));
 	return (1);
 }
 
@@ -252,7 +265,6 @@ static int	newline_minus(t_room *pass, int r, char *temp, char *input)
 	int		j;
 	int		i;
 
-	//ft_printf("nlm\n");
 	if (find_connec_room(pass, r, &temp, 1) == 1)
 		return (1);
 	else
@@ -271,7 +283,7 @@ static int	newline_minus(t_room *pass, int r, char *temp, char *input)
 				break;
 		}
 		if (!pass->rooms[i] || !pass->rooms[j])
-			return (error(CONNECTION));
+			return (free_connect(pass));
 	}
 	return (2);
 }
@@ -312,25 +324,28 @@ int	count_in(int r, char *input, t_room *pass)
 		diff = found_or_not(pass, r, temp, &input[i]); //maybe get rid
 		if (diff == -1)
 			return (-1);
-		if (temp)
-			stop = ft_strlen_stop(&temp[1], '\n');
-		while (temp && input[i] != '#' && ft_strnstr(&temp[1], pass->rooms[r], stop) && diff == 2) //&& (temp[-1] != '\n' || temp[ft_strlen(pass->rooms[r])] != '-') 
+		if (temp && input[i] != '#')
 		{
-			temp = ft_strnstr(&temp[1], pass->rooms[r], stop);
-			if (temp[-1] == '-' && temp[ft_strlen(pass->rooms[r])] == '\n')
+			stop = ft_strlen_stop(&temp[1], '\n');
+			while (ft_strnstr(&temp[1], pass->rooms[r], stop) && diff == 2) //&& (temp[-1] != '\n' || temp[ft_strlen(pass->rooms[r])] != '-') 
 			{
-				if (minus_newline(pass, r, &input[i], temp) == -1)
-					return (-1);
+				temp = ft_strnstr(&temp[1], pass->rooms[r], stop);
+				if (temp[-1] == '-' && temp[ft_strlen(pass->rooms[r])] == '\n')
+				{
+					if (minus_newline(pass, r, &input[i], temp) == -1)
+						return (-1);
+				}
 			}
 		}
-		while (input[i] != '\n')
+		else
 		{
 			if (!ft_strncmp(&input[i], "##start\n", 8))
 				return (ERROR);
 			else if (!ft_strncmp(&input[i], "##end\n", 6))
 				return (ERROR);
-			++i;
 		}
+		while (input[i] != '\n')
+			++i;
 		++i;
 	}
 	if (count++ == 1)
