@@ -83,96 +83,44 @@ static int	check_if_valid(char *str, int *i, int *total, int *command)
 	return (TRUE);
 }
 
-static int	grow(t_input *build, char *line, int len)
+static int	check_comment_or_ant(t_room *pass, char *line, int *i)
 {
-	char	*temp;
-	int		factor;
-
-	temp = NULL;
-	if ((build->current + len) < (build->capacity * 2))
-		factor = 2;
-	else
-		factor = len;
-	temp = (char *) malloc((build->capacity * factor) * sizeof(char));
-	if (!temp)
-		return (-1);
-	ft_bzero(temp, build->capacity * factor);
-	//ft_printf("capacity(new) %i     capacity(old) %i   current(int) %i    currrent(string) %i\n", build->capacity * factor, build->capacity, build->current, ft_strlen(build->input));
-	temp = ft_strcpy(temp, build->input);
-	ft_strcat(&temp[build->current - 1], line);
-	ft_strcat(&temp[build->current + len - 1], "\n");
-	free(build->input);
-	build->input = temp;
-	build->capacity = build->capacity * factor;
-	build->current = build->current + len;
-	return (0);
-}
-
-/*	saves line to input	*/
-
-static int	save_line(t_room *pass, t_input **build, char **line)
-{
-	int	len;
-
-	len = ft_strlen(*line) + 1;
-	if (!(*build))
+	if (is_comment(line) >= TRUE)
 	{
-		*build = (t_input *) malloc(sizeof(t_input));
-		if (!(*build))
-		{
-			//clean up
-			free(*line);
-			return (error_free(pass, build, 0, 0));
-		}
-		(*build)->input = (char *) malloc((len + 2) * sizeof(char));
-		if (!(*build)->input)
-		{
-			//clean up
-			free (*line);
-			return (error_free(pass, build, 0, 0));
-		}
-		ft_bzero((*build)->input, len + 2);
-		ft_strcat(ft_strcpy((*build)->input, *line), "\n");
-		(*build)->capacity = len;
-		(*build)->current = len;
+		// if (first_start_or_end(line, i, &command) == ERROR)
+		// {
+		// 	free(line);
+		// 	return (error(COMMAND));
+		// }
+		return (TRUE);
 	}
-	else
+	else if (*i == 0)
 	{
-		if ((*build)->current + len >= (*build)->capacity)
+		if (only_digits(line, i) == TRUE)
 		{
-			if (grow(*build, *line, len) == -1)
-			{
-				//clean up
-				free(*line);
-				return (error_free(pass, build, 0, 0));
-			}
+			pass->ants = ft_atoi(line);
+			return (TRUE);
 		}
 		else
 		{
-			ft_strcat(&(*build)->input[((*build)->current - 1)], *line);
-			ft_strcat(&(*build)->input[((*build)->current + len - 1)], "\n");
-			(*build)->current = (*build)->current + len;
+			exit (0);//have to free pass and line?
 		}
 	}
-	free(*line);
-	return (1);
+	return (FALSE);
 }
 
 /*	reads file and stores in string and checks if invalid file	*/
 
-int	file_save(t_room *pass, t_input **build)
+int	file_save(t_room *pass, t_input **build, int ret, int total)
 {
-	int		ret;
+	char	*line;
 	int		i;
 	int		command;
-	char	*line;
-	int		total;
+	int		found;
 
-	ret = 1;
 	line = NULL;
 	i = 0;
 	command = FALSE;
-	total = 0;
 	while (ret == 1)
 	{
 		ret = get_next_line(0, &line);
@@ -180,27 +128,17 @@ int	file_save(t_room *pass, t_input **build)
 			return (ERROR);
 		if (!line)
 			break ;
-		if (is_comment(line) >= TRUE)
-		{
-			// if (first_start_or_end(line, i, &command) == ERROR)
-			// {
-			// 	free(line);
-			// 	return (error(COMMAND));
-			// }
-		}
-		else if (i == 0)// && only_digits(line, &i) == TRUE)
-		{
-			if (only_digits(line, &i) == TRUE)
-				pass->ants = ft_atoi(line);
-			else
-				exit (0);//have to free pass and line?
-		}
-		else if (check_if_valid(line, &i, &total, &command) == ERROR)
-		{
+		found = check_comment_or_ant(pass, line, &i);
+		if (found == ERROR)
 			return (ERROR);
-		}
-		if (save_line(pass, build, &line) == -1)
-			return (-1);
+		else if (found == FALSE && \
+			check_if_valid(line, &i, &total, &command) == ERROR)
+			return (ERROR);
+		if (file_save_line(pass, build, &line) == ERROR)
+			return (ERROR);
 	}
+	pass->line = i - 1; 
+	if (i < 2)
+		return (error(CONNECTION));
 	return (total);
 }

@@ -52,13 +52,16 @@ typedef struct s_connect
 	int					count;
 	int					current_room;
 	struct s_connect	*next;
-}					t_connect;
+}						t_connect;
 
 typedef struct s_room
 {
 	char		**rooms;
 	int			**links;
 	int			**info;
+	int			line;
+	int			*line_check;
+	int			con_prev;
 	int			end;
 	int			ants;
 	int			total;
@@ -97,7 +100,8 @@ typedef enum error_message
 }	t_error_message;
 
 // error handling
-int		file_save(t_room *pass, t_input **build);
+int		file_save(t_room *pass, t_input **build, int ret, int total);
+int		file_save_line(t_room *pass, t_input **build, char **line);
 int		only_digits(char *str, int *i);
 int		is_coordinates(char *str);
 int		is_connection(char *str);
@@ -106,13 +110,12 @@ int		error(int err);
 int		error_free(t_room *pass, t_input **build, int j, int first);
 int		error_path(t_room *pass, t_input **build, int first);
 int		**free2d_int(int **links, int j, int end);
-
-void	del_first_index(t_path *file);//use in error freeing function
+char	**ft_free_rooms(t_room *pass, char **dest);
 
 // parsing
 void	match_in(char *str, char *input, t_room *pass, int k);
 //int		match_in(char *str, char *input, char **rooms, int k, t_room *pass);
-int		count_in(char *str, char *input, t_room *pass);
+int		count_in(int r, char *input, t_room *pass);
 int		addi_diff(char *start, char *finish);
 int		dash_in_section(char *full, char *inside);
 int		is_dash(char *str);
@@ -148,8 +151,8 @@ int		first_algorithm(t_path **path, t_room *pass, int **len, int first);
 int		second_algorithm(t_path **path, t_room *pass, int **len, int i);
 int		free_len(int **len);
 
-void	lock_path_init(t_room *pass, int indx);
-void	lock_path(t_room *pass, int indx);
+void	lock_path_init(t_room *pass, int indx, int *error);
+void	lock_path(t_room *pass, int indx, int *error);
 void	info_set_to_zero(t_room *pass, int i);
 int		on_lock_path(t_room *pass, int *i, int c_len);
 

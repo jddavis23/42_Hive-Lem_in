@@ -92,15 +92,17 @@ static void	clear_non_found_paths(t_room *pass)
 **	follows prev from end to start to set new paths to correct value of 2
 */
 
-void	lock_path_init(t_room *pass, int indx)
+void	lock_path_init(t_room *pass, int indx, int *error)
 {
 	int	i;
 	int	prev;
-	int	error;
+	//int	error;
 
 	len_back_front(pass);
-	error = FALSE;
-	lock_path(pass, indx);
+	//error = FALSE;
+	lock_path(pass, indx, error);
+	if (*error == TRUE)
+		return ;
 	i = 0;
 	while (pass->links[pass->end][i] >= 0)
 	{
@@ -109,10 +111,10 @@ void	lock_path_init(t_room *pass, int indx)
 			prev = pass->links[pass->end][i];
 			while (prev != 0)
 			{
-				if ((pass->info[PREV][prev] != 0 && \
-					pass->info[NEXT][prev] == pass->info[PREV][prev]) \
-					|| pass->info[NEXT][prev] == 0)
-					break ;
+				// if ((pass->info[PREV][prev] != 0 && \
+				// 	pass->info[NEXT][prev] == pass->info[PREV][prev]) \
+				// 	|| pass->info[NEXT][prev] == 0)
+				// 	break ;
 				//ft_printf("pass->rooms: %s[%d] path: %d, prev: %d, next: %d, jump: %d, end: %d\n", pass->rooms[prev], prev, pass->info[PATH][prev], pass->info[PREV][prev], pass->info[NEXT][prev], pass->info[JUMP][prev], pass->end);
 				pass->info[PATH][prev] = 2;
 				prev = pass->info[PREV][prev];

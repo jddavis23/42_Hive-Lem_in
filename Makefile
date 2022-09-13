@@ -18,7 +18,9 @@ C = lemin/
 
 SRC = $(C)main.c
 SRC += $(C)error.c
+SRC += $(C)error_free.c
 SRC += $(C)file_save.c
+SRC += $(C)file_save_line.c
 SRC += $(C)file_check.c
 SRC += $(C)parse.c
 SRC += $(C)parse_count.c
@@ -26,7 +28,6 @@ SRC += $(C)parse_collect.c
 SRC += $(C)path_init.c
 SRC += $(C)path_finder.c
 SRC += $(C)path_create.c
-SRC += $(C)path_del_cpy.c
 SRC += $(C)path_select.c
 SRC += $(C)algorithm_first.c
 SRC += $(C)algorithm_second.c

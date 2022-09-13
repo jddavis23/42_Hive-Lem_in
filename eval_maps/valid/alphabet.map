@@ -1,0 +1,10 @@
+3
+##start
+abc 1 0
+##end
+--new 5 0
+abc-defg 9 0
+3 13 0
+abc-abc-defg
+abc-defg-3
+3---new
