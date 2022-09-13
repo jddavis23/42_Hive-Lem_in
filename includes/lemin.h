@@ -59,6 +59,9 @@ typedef struct s_room
 	char		**rooms;
 	int			**links;
 	int			**info;
+	int			line;
+	int			*line_check;
+	int			con_prev;
 	int			end;
 	int			ants;
 	int			total;
