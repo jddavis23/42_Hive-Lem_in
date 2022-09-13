@@ -103,7 +103,6 @@ static int	check_comment_or_ant(t_room *pass, char *line, int *i)
 		}
 		else
 		{
-			ft_printf("no ants?\n");
 			exit (0);//have to free pass and line?
 		}
 	}
@@ -124,29 +123,20 @@ int	file_save(t_room *pass, t_input **build, int ret, int total)
 	command = FALSE;
 	while (ret == 1)
 	{
-		ft_printf("enters loop\n");
 		ret = get_next_line(0, &line);
 		if (ret == ERROR)
-		{
-			ft_printf("exits from reading get next line\n");
 			return (ERROR);
-		}
 		if (!line)
 			break ;
 		found = check_comment_or_ant(pass, line, &i);
 		if (found == ERROR)
-		{
-			ft_printf("found == ERROR\n");
 			return (ERROR);
-		}
 		else if (found == FALSE && \
 			check_if_valid(line, &i, &total, &command) == ERROR)
 			return (ERROR);
 		if (file_save_line(pass, build, &line) == ERROR)
 			return (ERROR);
 	}
-	// ft_printf("i == %i\n", i);
-	// exit (0);
 	pass->line = i - 1; 
 	if (i < 2)
 		return (error(CONNECTION));

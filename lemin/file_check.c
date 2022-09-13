@@ -80,8 +80,10 @@ int	is_coordinates(char *str)
 	if (*str == 'L' || *str == ' ')
 		return (FALSE);
 	i = 0;
-	while (str[i] != ' ')
+	while (str[i] != ' ' && str[i] != '\0')
 		++i;
+	if (str[i] == '\0')
+		return (FALSE);
 	if (is_digit_or_minus(str, &i) == FALSE)
 		return (FALSE);
 	return (TRUE);
