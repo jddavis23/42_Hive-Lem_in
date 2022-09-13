@@ -44,17 +44,30 @@ int	only_digits(char *str, int *i)
 
 /*	checks coordinates only consist of digits and space as seperator	*/
 
-static int	is_digit_and_below_max_int(char *str, int *i)
+static int	is_digit_or_minus(char *str, int *i)
 {
+	int	count;
+
+	count = 1;
 	(*i)++;
-	if (below_max_int(&str[*i], ft_strlen_stop(&str[*i], ' ')) == FALSE)
-		return (FALSE);
-	while (str[*i] != ' ' && str[*i] != '\0')
-	{
-		if (ft_isdigit(str[*i]) == 0)
-			return (FALSE);
+	if (str[*i] == '-')
 		(*i)++;
+	while (str[*i] != '\0')
+	{
+		if (str[*i] == ' ' && ft_isdigit(str[(*i) - 1]))
+		{
+			++count;
+			(*i)++;
+			if (str[*i] == '-')
+				(*i)++;
+		}
+		else if (ft_isdigit(str[*i]) == 0)
+			return (FALSE);
+		else
+			(*i)++;
 	}
+	if (count != 2)
+		return (FALSE);
 	return (TRUE);
 }
 
@@ -66,14 +79,10 @@ int	is_coordinates(char *str)
 
 	if (*str == 'L' || *str == ' ')
 		return (FALSE);
-	if (ft_word_count(str, ' ') != 3)
-		return (FALSE);
 	i = 0;
 	while (str[i] != ' ')
 		++i;
-	if (is_digit_and_below_max_int(str, &i) == FALSE)
-		return (FALSE);
-	if (is_digit_and_below_max_int(str, &i) == FALSE)
+	if (is_digit_or_minus(str, &i) == FALSE)
 		return (FALSE);
 	return (TRUE);
 }

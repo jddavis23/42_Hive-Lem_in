@@ -340,9 +340,9 @@ int	count_in(int r, char *input, t_room *pass)
 		else
 		{
 			if (!ft_strncmp(&input[i], "##start\n", 8))
-				return (ERROR);
+				return (free_connect(pass));
 			else if (!ft_strncmp(&input[i], "##end\n", 6))
-				return (ERROR);
+				return (free_connect(pass));
 		}
 		while (input[i] != '\n')
 			++i;

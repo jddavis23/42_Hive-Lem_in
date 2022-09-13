@@ -91,6 +91,8 @@ t_ants	*print_ants_move(t_ants *head, t_room *pass, int line)
 	return (send); //careful what returning, could have changed
 }
 
+/*	prints result of flag -c to terminal	*/
+
 void	print_count(int print_count, int line)
 {
 	if (print_count)

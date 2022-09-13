@@ -52,7 +52,7 @@ typedef struct s_connect
 	int					count;
 	int					current_room;
 	struct s_connect	*next;
-}					t_connect;
+}						t_connect;
 
 typedef struct s_room
 {
@@ -107,8 +107,6 @@ int		error(int err);
 int		error_free(t_room *pass, t_input **build, int j, int first);
 int		error_path(t_room *pass, t_input **build, int first);
 int		**free2d_int(int **links, int j, int end);
-
-void	del_first_index(t_path *file);//use in error freeing function
 
 // parsing
 void	match_in(char *str, char *input, t_room *pass, int k);

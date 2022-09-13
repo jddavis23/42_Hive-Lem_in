@@ -12,49 +12,6 @@
 
 #include "../includes/lemin.h"
 
-/*	frees all the elements in 2d int array	*/
-
-int	**free2d_int(int **links, int j, int end)
-{
-	int	i;
-
-	i = 0;
-	if (links[i])
-	{
-		free(links[i]);
-		links[i] = NULL;
-	}
-	++i;
-	while (i < j)
-	{
-		free(links[i]);
-		links[i] = NULL;
-		++i;
-	}
-	if (links[end])
-	{
-		free(links[end]);
-		links[end] = NULL;
-	}
-	free(links);
-	return (NULL);
-}
-
-char	**ft_free_rooms(t_room *pass, char **dest)
-{
-	int	i;
-
-	i = 0;
-	while (i < pass->total)
-	{
-		if (dest[i])
-			ft_strdel(&dest[i]);
-		i++;
-	}
-	free(dest);
-	return (NULL);
-}
-
 /*	frees everything that needs to be freed	*/
 
 int	error_free(t_room *pass, t_input **build, int j, int first)
@@ -110,6 +67,32 @@ int	error(int err)
 			ft_printf("\n");
 	}
 	return (ERROR);
+}
+
+/*	deletes the first index - used in error.c	*/
+
+static void	del_first_index(t_path *file)
+{
+	t_index	*temp;
+
+	if (file->move_head)
+	{
+		file->move = file->move_head;
+		temp = file->move;
+		if (file->move->next)
+		{
+			file->move = file->move->next;
+			free(temp);
+			file->move_head = file->move;
+			file->len--;
+		}
+		else
+		{
+			free(temp);
+			file->move = NULL;
+			file->move_head = NULL;
+		}
+	}
 }
 
 /*	frees and deletes a path struct	*/
