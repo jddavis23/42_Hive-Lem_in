@@ -309,15 +309,43 @@ static int	found_or_not(t_room *pass, int r, char *temp, char *input)
 	return (0);
 }
 
+static int	wrong_line(t_room *pass, int r, int *j, char *input)
+{
+	int i;
+
+	if (r == 0 && *j == 0)
+	{
+		pass->line_check = (int *) malloc (pass->line * sizeof(int));
+		if (!pass->line_check)
+			return (free_connect(pass));
+		i = 0;
+		while (i < pass->line)
+			pass->line_check[i++] = '\0';
+	}
+	if (pass->con_prev != pass->tmp_con->count)
+		pass->line_check[*j] = 1;
+	if (r == pass->end)
+	{
+		if (pass->line_check[*j] == 0 && input[0] != '#')
+			return (free_connect(pass));
+	}
+	if (input[0] != '#')
+		++(*j);
+	pass->con_prev = pass->tmp_con->count;
+	return (0);
+}
+
 int	count_in(int r, char *input, t_room *pass)
 {
 	int		i;
 	char	*temp;
 	int		diff;
 	int		stop;
-	int	count = 0;
+	int		j;
 
 	i = 0;
+	j = 0;
+	pass->con_prev = pass->tmp_con->count;
 	while (input[i] != '\0')
 	{
 		temp = ft_strnstr(&input[i], pass->rooms[r], ft_strlen_stop(&input[i], '\n'));
@@ -339,22 +367,14 @@ int	count_in(int r, char *input, t_room *pass)
 		}
 		else
 		{
-			if (!ft_strncmp(&input[i], "##start\n", 8))
-			{
-				ft_printf("HERE - start\n");
+			if (!ft_strncmp(&input[i], "##start\n", 8) || !ft_strncmp(&input[i], "##end\n", 6))
 				return (free_connect(pass));
-			}
-			else if (!ft_strncmp(&input[i], "##end\n", 6))
-			{
-				ft_printf("HERE - end\n");
-				return (free_connect(pass));
-			}
 		}
+		if (wrong_line(pass, r, &j, &input[i]) == ERROR)
+			return (-1);
 		while (input[i] != '\n')
 			++i;
 		++i;
 	}
-	if (count++ == 1)
-		exit(0);
 	return (0);
 }

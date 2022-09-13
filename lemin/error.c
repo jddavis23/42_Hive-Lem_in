@@ -26,6 +26,8 @@ int	error_free(t_room *pass, t_input **build, int j, int first)
 			pass->links = free2d_int(pass->links, j, pass->end);
 		if (pass->info)
 			free2d_int(pass->info, 8, 7);
+		if (pass->line_check)
+			free(pass->line_check);
 		free(pass);
 	}
 	if (*build)
