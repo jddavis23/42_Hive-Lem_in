@@ -81,6 +81,30 @@ static void	set_to_null(t_room *pass)
 	pass->rooms[i] = NULL;
 }
 
+static int	create_connect_helper(t_room *pass, int j)
+{
+	t_connect *temp;
+
+	pass->tmp_con->current_room = j;
+	//ft_printf("-COUNT %i ROOM %s\n", pass->tmp_con->count, pass->rooms[pass->tmp_con->current_room]);
+	pass->tmp_con->next = (t_connect *) malloc (sizeof(t_connect));
+	if (!pass->tmp_con->next)
+	{
+		while (pass->head_con)
+		{
+			temp = pass->head_con->next;
+			free(pass->head_con);
+			pass->head_con = temp;
+		}
+		return (-1);
+	}
+	pass->tmp_con->next->next = NULL;
+	pass->tmp_con->next->count = pass->tmp_con->count + 1;
+	pass->tmp_con = pass->tmp_con->next;
+	pass->tmp_con->current_room = -1;
+	return (1);
+}
+
 int	create_connect(t_room *pass, int j)
 {
 	if (!pass->tmp_con)
@@ -97,24 +121,26 @@ int	create_connect(t_room *pass, int j)
 	}
 	else
 	{
-		pass->tmp_con->current_room = j;
-		//ft_printf("-COUNT %i ROOM %s\n", pass->tmp_con->count, pass->rooms[pass->tmp_con->current_room]);
-		pass->tmp_con->next = (t_connect *) malloc (sizeof(t_connect));
-		if (!pass->tmp_con->next)
-		{
-			t_connect *temp;
-			while (pass->head_con)
-			{
-				temp = pass->head_con->next;
-				free(pass->head_con);
-				pass->head_con = temp;
-			}
-			return (-1);
-		}
-		pass->tmp_con->next->next = NULL;
-		pass->tmp_con->next->count = pass->tmp_con->count + 1;
-		pass->tmp_con = pass->tmp_con->next;
-		pass->tmp_con->current_room = -1;
+		if (create_connect_helper(pass, j) == ERROR)
+			return (ERROR);
+		// pass->tmp_con->current_room = j;
+		// //ft_printf("-COUNT %i ROOM %s\n", pass->tmp_con->count, pass->rooms[pass->tmp_con->current_room]);
+		// pass->tmp_con->next = (t_connect *) malloc (sizeof(t_connect));
+		// if (!pass->tmp_con->next)
+		// {
+		// 	t_connect *temp;
+		// 	while (pass->head_con)
+		// 	{
+		// 		temp = pass->head_con->next;
+		// 		free(pass->head_con);
+		// 		pass->head_con = temp;
+		// 	}
+		// 	return (-1);
+		// }
+		// pass->tmp_con->next->next = NULL;
+		// pass->tmp_con->next->count = pass->tmp_con->count + 1;
+		// pass->tmp_con = pass->tmp_con->next;
+		// pass->tmp_con->current_room = -1;
 	}
 	return (1);
 }
@@ -195,15 +221,71 @@ static void	set_val(t_room *pass, t_input **build, int *hold)
 	pass->end = pass->total - 1;
 }
 
-int	create(t_room *pass, t_input **build)//char **input)
+static int	helper_function(t_room *pass, t_input **build, int *hold, int *i)
+{
+	if (*hold == 5 || *hold == 6)
+	{
+		if (start_and_end(pass, *hold, build, i) == ERROR)
+			return (ERROR);
+	}
+	*hold = by_line(&(((*build)->input)[*i]));
+	if (*hold < 2 || *hold == 5 || *hold == 6)
+	{
+		while (((*build)->input)[*i] != '\n')
+			++(*i);
+	}
+	return (1);
+}
+
+static int	create_helper(t_room *pass, t_input **build, int hold)
 {
 	int	i;
 	int	j;
-	int	hold;
 	int	stop;
 
 	i = 0;
 	j = 1;
+	while (((*build)->input)[i] != '\0')
+	{
+		if (helper_function(pass, build, &hold, &i) == ERROR)
+			return (ERROR);
+		// if (hold == 5 || hold == 6)
+		// {
+		// 	if (start_and_end(pass, hold, build, &i) == -1)
+		// 		return (-1);
+		// }
+		// hold = by_line(&(((*build)->input)[i]));
+		// if (hold < 2 || hold == 5 || hold == 6)
+		// {
+		// 	while (((*build)->input)[i] != '\n')
+		// 		++i;
+		// }
+		if (hold == 3)
+		{
+			stop = ft_strlen_stop(&(((*build)->input)[i]), ' ');
+			pass->rooms[j] = ft_strnew(stop);
+			if (!pass->rooms[j])
+				return (error_free(pass, build, 0, FALSE));
+			ft_strncat(pass->rooms[j++], &(((*build)->input)[i]), stop);
+			while (((*build)->input)[i] != '\n')
+				++i;
+		}
+		else if (hold == 2)
+			return (create_links(pass, build, i));
+		++i;
+	}
+	return (1);
+}
+
+int	create(t_room *pass, t_input **build)//char **input)
+{
+	//int	i;
+	//int	j;
+	int	hold;
+	//int	stop;
+
+	//i = 0;
+	//j = 1;
 	set_val(pass, build, &hold);
 	if (pass->total == ERROR)
 		return (error_free(pass, build, 0, TRUE));
@@ -216,35 +298,37 @@ int	create(t_room *pass, t_input **build)//char **input)
 			return (error_free(pass, build, 0, FALSE)); //add BUILD
 		}
 		set_to_null(pass);
-		while (((*build)->input)[i] != '\0')
-		{
-			if (hold == 5 || hold == 6)
-			{
-				if (start_and_end(pass, hold, build, &i) == -1)
-					return (-1);
-			}
-			hold = by_line(&(((*build)->input)[i]));
-			if (hold < 2 || hold == 5 || hold == 6)
-			{
-				while (((*build)->input)[i] != '\n')
-					++i;
-			}
-			if (hold == 3)
-			{
-				stop = ft_strlen_stop(&(((*build)->input)[i]), ' ');
-				pass->rooms[j] = ft_strnew(stop);
-				if (!pass->rooms[j])
-					return (error_free(pass, build, 0, FALSE));
-				ft_strncat(pass->rooms[j++], &(((*build)->input)[i]), stop);
-				while (((*build)->input)[i] != '\n')
-					++i;
-			}
-			else if (hold == 2)
-			{
-				return (create_links(pass, build, i));
-			}
-			++i;
-		}
+		if (create_helper(pass, build, hold) == ERROR)
+			return (ERROR);
+		// while (((*build)->input)[i] != '\0')
+		// {
+		// 	if (hold == 5 || hold == 6)
+		// 	{
+		// 		if (start_and_end(pass, hold, build, &i) == -1)
+		// 			return (-1);
+		// 	}
+		// 	hold = by_line(&(((*build)->input)[i]));
+		// 	if (hold < 2 || hold == 5 || hold == 6)
+		// 	{
+		// 		while (((*build)->input)[i] != '\n')
+		// 			++i;
+		// 	}
+		// 	if (hold == 3)
+		// 	{
+		// 		stop = ft_strlen_stop(&(((*build)->input)[i]), ' ');
+		// 		pass->rooms[j] = ft_strnew(stop);
+		// 		if (!pass->rooms[j])
+		// 			return (error_free(pass, build, 0, FALSE));
+		// 		ft_strncat(pass->rooms[j++], &(((*build)->input)[i]), stop);
+		// 		while (((*build)->input)[i] != '\n')
+		// 			++i;
+		// 	}
+		// 	else if (hold == 2)
+		// 	{
+		// 		return (create_links(pass, build, i));
+		// 	}
+		// 	++i;
+		// }
 	}
 	return (1); //not sure what to return here
 }
