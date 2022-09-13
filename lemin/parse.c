@@ -21,6 +21,7 @@ static int	check_start(void)
 		start = TRUE;
 		return (5);
 	}
+	ft_printf("HERE - start2\n");
 	return (-2);
 }
 
@@ -33,6 +34,7 @@ static int	check_end(void)
 		end = TRUE;
 		return (6);
 	}
+	ft_printf("HERE - end2\n");
 	return (-2);
 }
 
@@ -241,7 +243,9 @@ static void	set_val(t_room *pass, t_input **build, int *hold)
 	pass->tmp_con = NULL;
 	pass->head_con = NULL;
 	pass->info = NULL;
+	ft_printf("enters file save\n");
 	pass->total = file_save(pass, build, 1, 0);
+	ft_printf("exits file save\n");
 	pass->end = pass->total - 1;
 }
 
@@ -256,7 +260,10 @@ static int	helper_function(t_room *pass, t_input **build, int *hold, int *i)
 	if (*hold < 2 || *hold == 5 || *hold == 6)
 	{
 		if (*hold == -2)
+		{
+			ft_printf("returns 2\n");
 			return (-2);
+		}
 		while (((*build)->input)[*i] != '\n')
 			++(*i);
 	}
@@ -276,9 +283,15 @@ static int	create_helper(t_room *pass, t_input **build, int hold)
 	{
 		ret = helper_function(pass, build, &hold, &i);
 		if (ret == ERROR)
+		{
+			ft_printf("ERROR PLACE 1\n");
 			return (ERROR);
+		}
 		if (ret == -2)
+		{
+			ft_printf("ERROR PLACE 2\n");
 			return (error_free(pass, build, j, FALSE));
+		}
 		// if (hold == 5 || hold == 6)
 		// {
 		// 	if (start_and_end(pass, hold, build, &i) == -1)
@@ -294,16 +307,25 @@ static int	create_helper(t_room *pass, t_input **build, int hold)
 		{
 			stop = ft_strlen_stop(&(((*build)->input)[i]), ' ');
 			if (j == pass->end)
+			{
+				ft_printf("ERROR PLACE 3\n");
 				return (error_free(pass, build, 0, FALSE));
+			}
 			pass->rooms[j] = ft_strnew(stop);
 			if (!pass->rooms[j])
+			{
+				ft_printf("ERROR PLACE 4\n");
 				return (error_free(pass, build, 0, FALSE));
+			}
 			ft_strncat(pass->rooms[j++], &(((*build)->input)[i]), stop);
 			while (((*build)->input)[i] != '\n')
 				++i;
 		}
 		else if (hold == 2)
+		{
+			ft_printf("ERROR PLACE 5\n");
 			return (create_links(pass, build, i));
+		}
 		++i;
 	}
 	return (1);
@@ -319,19 +341,27 @@ int	create(t_room *pass, t_input **build)//char **input)
 	//i = 0;
 	//j = 1;
 	set_val(pass, build, &hold);
+	ft_printf("pass->total: %d\n", pass->total);
 	if (pass->total == ERROR)
+	{
+		ft_printf("exit 1\n");
 		return (error_free(pass, build, 0, TRUE));
+	}
 	if (pass->total > 0)
 	{
 		pass->rooms = (char **) malloc((pass->total + 1) * sizeof(char *));
 		pass->links = (int **) malloc(pass->total * sizeof(int *));
 		if (!pass->rooms || !pass->links)
 		{
+			ft_printf("exit 2\n");
 			return (error_free(pass, build, 0, FALSE)); //add BUILD
 		}
 		set_to_null(pass);
 		if (create_helper(pass, build, hold) == ERROR)
+		{
+			ft_printf("exit 3\n");
 			return (ERROR);
+		}
 		// while (((*build)->input)[i] != '\0')
 		// {
 		// 	if (hold == 5 || hold == 6)
@@ -362,5 +392,6 @@ int	create(t_room *pass, t_input **build)//char **input)
 		// 	++i;
 		// }
 	}
+	ft_printf("ended parsing\n");
 	return (1); //not sure what to return here
 }

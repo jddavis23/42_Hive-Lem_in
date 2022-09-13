@@ -85,8 +85,13 @@ int	main(int argc, char **argv)
 		pass = (t_room *) malloc(sizeof(t_room));
 		if (!pass)
 			return (0);
+		ft_printf("Entered create\n");
 		if (create(pass, &build) == ERROR)
+		{
+			ft_printf("ERROR\n");
 			return (0);
+		}
+		ft_printf("Exited create\n");
 		update_flags(argc, argv[1], pass);
 		if (create_used(pass) == ERROR)
 			return (error_path(pass, &build, TRUE));

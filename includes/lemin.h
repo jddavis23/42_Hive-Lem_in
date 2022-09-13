@@ -107,6 +107,7 @@ int		error(int err);
 int		error_free(t_room *pass, t_input **build, int j, int first);
 int		error_path(t_room *pass, t_input **build, int first);
 int		**free2d_int(int **links, int j, int end);
+char	**ft_free_rooms(t_room *pass, char **dest);
 
 // parsing
 void	match_in(char *str, char *input, t_room *pass, int k);
