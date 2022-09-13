@@ -40,6 +40,21 @@ int	**free2d_int(int **links, int j, int end)
 	return (NULL);
 }
 
+char	**ft_free_rooms(t_room *pass, char **dest)
+{
+	int	i;
+
+	i = 0;
+	while (i < pass->total)
+	{
+		if (dest[i])
+			ft_strdel(&dest[i]);
+		i++;
+	}
+	free(dest);
+	return (NULL);
+}
+
 /*	frees everything that needs to be freed	*/
 
 int	error_free(t_room *pass, t_input **build, int j, int first)
@@ -49,7 +64,7 @@ int	error_free(t_room *pass, t_input **build, int j, int first)
 	if (pass)
 	{
 		if (pass->rooms)
-			pass->rooms = ft_free2d(pass->rooms); //does this free start or end out of order
+			pass->rooms = ft_free_rooms(pass, pass->rooms); //does this free start or end out of order
 		if (pass->links)
 			pass->links = free2d_int(pass->links, j, pass->end);
 		if (pass->info)
@@ -62,6 +77,7 @@ int	error_free(t_room *pass, t_input **build, int j, int first)
 			free ((*build)->input);
 		free(*build);
 	}
+	exit(0);
 	return (ERROR);
 }
 

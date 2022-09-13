@@ -12,6 +12,36 @@
 
 #include "../includes/lemin.h"
 
+static int	check_start(void)
+{
+	static int	start = FALSE;
+
+	if (start == FALSE)
+	{
+		start = TRUE;
+		return (5);
+	}
+	else
+	{
+		return (-2);
+	}
+}
+
+static int	check_end(void)
+{
+	static int	end = FALSE;
+
+	if (end == FALSE)
+	{
+		end = TRUE;
+		return (6);
+	}
+	else
+	{
+		return (-2);
+	}
+}
+
 int	by_line(char *input)
 {
 	int	flag;
@@ -21,10 +51,10 @@ int	by_line(char *input)
 	i = 0;
 	count = 0;
 	flag = 1;
-	if (!ft_strncmp(&input[i], "##start", 7))
-		return (5);
-	else if (!ft_strncmp(&input[i], "##end", 5))
-		return (6);
+	if (!ft_strncmp(&input[i], "##start\n", 8))
+		return (check_start());
+	else if (!ft_strncmp(&input[i], "##end\n", 6))
+		return (check_end());
 	else if (input[i] == '#')
 		return (-1);
 	if (!ft_strlchr(input, ' ', ft_strlen_stop(input, '\n')) && ft_strlchr(input, '-', ft_strlen_stop(input, '\n')))
@@ -231,6 +261,8 @@ static int	helper_function(t_room *pass, t_input **build, int *hold, int *i)
 	*hold = by_line(&(((*build)->input)[*i]));
 	if (*hold < 2 || *hold == 5 || *hold == 6)
 	{
+		if (*hold == -2)
+			return (-2);
 		while (((*build)->input)[*i] != '\n')
 			++(*i);
 	}
@@ -242,13 +274,17 @@ static int	create_helper(t_room *pass, t_input **build, int hold)
 	int	i;
 	int	j;
 	int	stop;
+	int	ret;
 
 	i = 0;
 	j = 1;
 	while (((*build)->input)[i] != '\0')
 	{
-		if (helper_function(pass, build, &hold, &i) == ERROR)
+		ret = helper_function(pass, build, &hold, &i);
+		if (ret == ERROR)
 			return (ERROR);
+		if (ret == -2)
+			return (error_free(pass, build, j, FALSE));
 		// if (hold == 5 || hold == 6)
 		// {
 		// 	if (start_and_end(pass, hold, build, &i) == -1)
@@ -263,6 +299,8 @@ static int	create_helper(t_room *pass, t_input **build, int hold)
 		if (hold == 3)
 		{
 			stop = ft_strlen_stop(&(((*build)->input)[i]), ' ');
+			if (j == pass->end)
+				return (error_free(pass, build, 0, FALSE));
 			pass->rooms[j] = ft_strnew(stop);
 			if (!pass->rooms[j])
 				return (error_free(pass, build, 0, FALSE));

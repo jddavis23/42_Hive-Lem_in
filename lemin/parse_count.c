@@ -303,6 +303,7 @@ int	count_in(int r, char *input, t_room *pass)
 	char	*temp;
 	int		diff;
 	int		stop;
+	int	count = 0;
 
 	i = 0;
 	while (input[i] != '\0')
@@ -323,8 +324,16 @@ int	count_in(int r, char *input, t_room *pass)
 			}
 		}
 		while (input[i] != '\n')
+		{
+			if (!ft_strncmp(&input[i], "##start\n", 8))
+				return (ERROR);
+			else if (!ft_strncmp(&input[i], "##end\n", 6))
+				return (ERROR);
 			++i;
+		}
 		++i;
 	}
+	if (count++ == 1)
+		exit(0);
 	return (0);
 }
