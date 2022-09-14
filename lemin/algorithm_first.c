@@ -50,9 +50,16 @@ static void	clean_everything(t_room *pass)
 	}
 }
 
+static void	clean_and_restart(t_room *pass)
+{
+	clean_everything(pass);
+	initialize_path(pass);
+}
+
 /*	first algorithm initializer	*/
 
-int	first_algorithm(t_path **path, t_room *pass, int **len, void (*f)(t_room *, int *))
+int	first_algorithm(t_path **path, t_room *pass, int **len, \
+	void (*f)(t_room *, int *))
 {
 	int	error;
 	int	increase;
@@ -77,7 +84,6 @@ int	first_algorithm(t_path **path, t_room *pass, int **len, void (*f)(t_room *, 
 				break ;
 		}
 	}
-	clean_everything(pass);
-	initialize_path(pass);
+	clean_and_restart(pass);
 	return (1);
 }
