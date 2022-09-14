@@ -88,7 +88,7 @@ t_ants	*print_ants_move(t_ants *head, t_room *pass, int line)
 			ft_printf(" ");
 		++i;
 	}
-	return (send); //careful what returning, could have changed
+	return (send);
 }
 
 /*	prints result of flag -c to terminal	*/
