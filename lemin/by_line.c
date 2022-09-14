@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 18:07:15 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/13 18:07:53 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/14 11:24:02 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	by_line(char *input)
 	int	flag;
 	int	count;
 	int	i;
-	int j;
+	int	j;
 
 	i = 0;
 	count = 0;
@@ -60,8 +60,8 @@ int	by_line(char *input)
 	j = comment_start_end(&input[i]);
 	if (j != 0)
 		return (j);
-	if (!ft_strlchr(input, ' ', ft_strlen_stop(input, '\n'))\
-		 && ft_strlchr(input, '-', ft_strlen_stop(input, '\n')))
+	if (!ft_strlchr(input, ' ', ft_strlen_stop(input, '\n')) \
+		&& ft_strlchr(input, '-', ft_strlen_stop(input, '\n')))
 		return (2);
 	while (input[i] != '\n' && input[i] != '\0')
 	{

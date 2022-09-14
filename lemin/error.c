@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:11:17 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/01 16:11:20 by molesen          ###   ########.fr       */
+/*   Updated: 2022/09/14 11:28:41 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	error_free(t_room *pass, t_input **build, int j, int first)
 	if (pass)
 	{
 		if (pass->rooms)
-			pass->rooms = ft_free_rooms(pass, pass->rooms); //does this free start or end out of order
+			pass->rooms = ft_free_rooms(pass, pass->rooms);
 		if (pass->links)
 			pass->links = free2d_int(pass->links, j, pass->end);
 		if (pass->info)
@@ -60,8 +60,6 @@ int	error(int err)
 			ft_printf("Incorrect coordinates\n");
 		else if (err == CONNECTION)
 			ft_printf("Incorrect connection\n");
-		// else if (err == IN_VALID_CONNEC)
-		// 	ft_printf("Invalid connect\n");
 		else
 			ft_printf("\n");
 	}

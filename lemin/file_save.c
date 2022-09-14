@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_save.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 11:10:17 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/06 11:10:19 by molesen          ###   ########.fr       */
+/*   Updated: 2022/09/14 11:35:08 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,36 +27,9 @@ static int	is_comment(char *str)
 }
 
 /*
-**	counts the amount of times the command start and end has been found
-**	start and end only can occur once
-**	the line after has to be a room name and its coordinates
-*/
-
-// static int	first_start_or_end(char *str, int i, int *command)
-// {
-// 	if (*command == TRUE)
-// 		return (ERROR);
-// 	if (ft_strcmp(str, "##start") == 0)
-// 	{
-// 		if (i > 1)
-// 			return (ERROR);
-// 		else
-// 			*command = TRUE;
-// 	}
-// 	else if (ft_strcmp(str, "##end") == 0)
-// 	{
-// 		if (i > 1)
-// 			return (ERROR);
-// 		else
-// 			*command = TRUE;
-// 	}
-// 	return (TRUE);
-// }
-
-/*
 **	checks if valid line
 **	valid line and their order: number of ants, coordinates, connections
-**	comments/commands can occur anywhere (also before ants?????)
+**	comments/commands can occur anywhere
 */
 
 static int	check_if_valid(char *str, int *i, int *total, int *command)
@@ -86,14 +59,7 @@ static int	check_if_valid(char *str, int *i, int *total, int *command)
 static int	check_comment_or_ant(t_room *pass, char *line, int *i)
 {
 	if (is_comment(line) >= TRUE)
-	{
-		// if (first_start_or_end(line, i, &command) == ERROR)
-		// {
-		// 	free(line);
-		// 	return (error(COMMAND));
-		// }
 		return (TRUE);
-	}
 	else if (*i == 0)
 	{
 		if (only_digits(line, i) == TRUE)
@@ -103,10 +69,18 @@ static int	check_comment_or_ant(t_room *pass, char *line, int *i)
 		}
 		else
 		{
-			exit (0);//have to free pass and line?
+			return (ERROR);
 		}
 	}
 	return (FALSE);
+}
+
+static int	returning(t_room *pass, int i, int total)
+{
+	pass->line = i - 1;
+	if (i < 2)
+		return (error(CONNECTION));
+	return (total);
 }
 
 /*	reads file and stores in string and checks if invalid file	*/
@@ -137,8 +111,5 @@ int	file_save(t_room *pass, t_input **build, int ret, int total)
 		if (file_save_line(pass, build, &line) == ERROR)
 			return (ERROR);
 	}
-	pass->line = i - 1; 
-	if (i < 2)
-		return (error(CONNECTION));
-	return (total);
+	return (returning(pass, i, total));
 }

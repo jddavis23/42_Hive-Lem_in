@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lock_init.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/14 11:37:55 by jdavis            #+#    #+#             */
+/*   Updated: 2022/09/14 11:38:41 by jdavis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lemin.h"
 
 static void	path_not_in_use(t_room *pass, int prev)
@@ -74,7 +86,8 @@ static void	clear_non_found_paths(t_room *pass)
 	i = 0;
 	while (i < pass->total)
 	{
-		if (pass->info[PATH][i] != 2 || (pass->info[PATH][i] >= 2 && pass->info[PREV][i] == pass->info[NEXT][i]))
+		if (pass->info[PATH][i] != 2 || (pass->info[PATH][i] >= 2 \
+			&& pass->info[PREV][i] == pass->info[NEXT][i]))
 			info_set_to_zero(pass, i);
 		else if (pass->info[PATH][i] == 2)
 		{
@@ -96,10 +109,8 @@ void	lock_path_init(t_room *pass, int indx, int *error)
 {
 	int	i;
 	int	prev;
-	//int	error;
 
 	len_back_front(pass);
-	//error = FALSE;
 	lock_path(pass, indx, error);
 	if (*error == TRUE)
 		return ;
@@ -111,11 +122,6 @@ void	lock_path_init(t_room *pass, int indx, int *error)
 			prev = pass->links[pass->end][i];
 			while (prev != 0)
 			{
-				// if ((pass->info[PREV][prev] != 0 && \
-				// 	pass->info[NEXT][prev] == pass->info[PREV][prev]) \
-				// 	|| pass->info[NEXT][prev] == 0)
-				// 	break ;
-				//ft_printf("pass->rooms: %s[%d] path: %d, prev: %d, next: %d, jump: %d, end: %d\n", pass->rooms[prev], prev, pass->info[PATH][prev], pass->info[PREV][prev], pass->info[NEXT][prev], pass->info[JUMP][prev], pass->end);
 				pass->info[PATH][prev] = 2;
 				prev = pass->info[PREV][prev];
 			}

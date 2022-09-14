@@ -6,7 +6,7 @@
 #    By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/12 10:09:38 by molesen           #+#    #+#              #
-#    Updated: 2022/09/14 11:16:19 by jdavis           ###   ########.fr        #
+#    Updated: 2022/09/14 12:18:11 by jdavis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,6 @@ SRC += $(C)file_save_line.c
 SRC += $(C)file_check.c
 SRC += $(C)parse.c
 SRC += $(C)parse_count.c
-SRC += $(C)parse_collect.c
 SRC += $(C)path_init.c
 SRC += $(C)path_finder.c
 SRC += $(C)path_create.c
@@ -42,6 +41,9 @@ SRC += $(C)create_connect.c
 SRC += $(C)by_line.c
 SRC += $(C)create_links.c
 SRC += $(C)set_vals.c
+SRC += $(C)room_finder.c
+SRC += $(C)locate_room_pos.c
+SRC += $(C)wrong_line_plus.c
 
 MAKELIB = make -C libft/ fclean && make -C libft/
 
