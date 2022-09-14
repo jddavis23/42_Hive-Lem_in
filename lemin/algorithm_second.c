@@ -108,7 +108,7 @@ int	second_algorithm(t_path **path, t_room *pass, int **len, int i)
 			calc_len(pass, len);
 			if (path_select(path, pass, len, &increase) == ERROR)
 				return (free_len(len));
-			if (increase > 20)
+			if (increase > 15)
 				break ;
 		}
 	}

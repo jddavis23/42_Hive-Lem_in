@@ -27,38 +27,6 @@ int	current_len(t_room *pass)
 	return (i + 2);
 }
 
-/*	moves all of the paths in one round	*/
-
-static void	move_paths(t_room *pass, int *i, int c_len)
-{
-	while (*i < c_len)
-	{
-		if (pass->info[CURRENT][*i] != 0)
-		{
-			breadth_first(pass, pass->info[CURRENT][*i], *i);
-			if (pass->info[PATH][pass->end] == 1)
-				return ;
-		}
-		++(*i);
-	}
-}
-
-/*	breadth first initializer with the logic of the first algorithm	*/
-
-static void	breadth_first_init(t_room *pass, int *i, int first)
-{
-	int	c_len;
-
-	c_len = current_len(pass);
-	if (first == TRUE)
-		move_paths(pass, i, c_len);
-	else
-	{
-		if (!on_lock_path(pass, i, c_len))
-			move_paths(pass, i, c_len);
-	}
-}
-
 /*
 **	makes sure all variables has been set to zero before running
 **	the second algorithm
@@ -84,7 +52,7 @@ static void	clean_everything(t_room *pass)
 
 /*	first algorithm initializer	*/
 
-int	first_algorithm(t_path **path, t_room *pass, int **len, int first)
+int	first_algorithm(t_path **path, t_room *pass, int **len, void (*f)(t_room *, int *))
 {
 	int	error;
 	int	increase;
@@ -95,7 +63,7 @@ int	first_algorithm(t_path **path, t_room *pass, int **len, int first)
 	while (!current_true(pass))
 	{
 		i = 0;
-		breadth_first_init(pass, &i, first);
+		f(pass, &i);
 		if (pass->info[PATH][pass->end] == 1)
 		{
 			pass->info[PATH][pass->end] = 0;
