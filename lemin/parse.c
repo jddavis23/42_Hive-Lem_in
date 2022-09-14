@@ -6,25 +6,25 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 13:20:42 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/13 18:15:48 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/14 11:14:46 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lemin.h"
 
-static void	set_to_null(t_room *pass)
-{
-	int	i;
+// static void	set_to_null(t_room *pass)
+// {
+// 	int	i;
 
-	i = 0;
-	while (i < pass->total)
-	{
-		pass->rooms[i] = NULL;
-		pass->links[i] = NULL;
-		++i;
-	}
-	pass->rooms[i] = NULL;
-}
+// 	i = 0;
+// 	while (i < pass->total)
+// 	{
+// 		pass->rooms[i] = NULL;
+// 		pass->links[i] = NULL;
+// 		++i;
+// 	}
+// 	pass->rooms[i] = NULL;
+// }
 
 static int	start_and_end(t_room *pass,	int hold, t_input **build, int *i)
 {
@@ -43,18 +43,18 @@ static int	start_and_end(t_room *pass,	int hold, t_input **build, int *i)
 	return (TRUE);
 }
 
-static void	set_val(t_room *pass, t_input **build, int *hold)
-{
-	*hold = ERROR;
-	pass->line_check = NULL;
-	pass->rooms = NULL;
-	pass->links = NULL;
-	pass->tmp_con = NULL;
-	pass->head_con = NULL;
-	pass->info = NULL;
-	pass->total = file_save(pass, build, 1, 0);
-	pass->end = pass->total - 1;
-}
+// static void	set_val(t_room *pass, t_input **build, int *hold)
+// {
+// 	*hold = ERROR;
+// 	pass->line_check = NULL;
+// 	pass->rooms = NULL;
+// 	pass->links = NULL;
+// 	pass->tmp_con = NULL;
+// 	pass->head_con = NULL;
+// 	pass->info = NULL;
+// 	pass->total = file_save(pass, build, 1, 0);
+// 	pass->end = pass->total - 1;
+// }
 
 static int	helper_function(t_room *pass, t_input **build, int *hold, int *i)
 {

@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 10:09:31 by molesen           #+#    #+#             */
-/*   Updated: 2022/09/13 18:13:20 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/14 11:15:59 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ int		dash_in_section(char *full, char *inside);
 int		is_dash(char *str);
 int		by_line(char *input);
 int		create_links(t_room *pass, t_input **build, int i);
+void	set_to_null(t_room *pass);
+void	set_val(t_room *pass, t_input **build, int *hold);
 
 // path finder
 int		initialize_path_finder(t_room *pass, t_input **build);

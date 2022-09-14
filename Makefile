@@ -6,7 +6,7 @@
 #    By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/12 10:09:38 by molesen           #+#    #+#              #
-#    Updated: 2022/09/13 18:14:14 by jdavis           ###   ########.fr        #
+#    Updated: 2022/09/14 11:16:19 by jdavis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC += $(C)solve_calc.c
 SRC += $(C)create_connect.c
 SRC += $(C)by_line.c
 SRC += $(C)create_links.c
+SRC += $(C)set_vals.c
 
 MAKELIB = make -C libft/ fclean && make -C libft/
 
