@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solve.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdavis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 10:59:22 by jdavis            #+#    #+#             */
-/*   Updated: 2022/07/20 12:10:08 by molesen          ###   ########.fr       */
+/*   Updated: 2022/09/14 17:56:52 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,5 +129,5 @@ void	solve(t_room *pass, t_input **build)
 		solve_calc(pass, ants_move, head);
 	if (pass->print_len || pass->print_paths)
 		printf_struct(pass);
-	error_path(pass, &(*build), FALSE); //need to make sure everything
+	error_path(pass, &(*build), FALSE);
 }

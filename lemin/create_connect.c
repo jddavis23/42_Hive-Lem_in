@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 15:31:48 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/14 12:10:20 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/14 17:59:45 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,16 @@ int	find_connec_room(t_room *pass, int r, char **arr, int choice)
 
 	str_len = ft_strlen(pass->rooms[r]) + 1;
 	j = 0;
-	if (j == r)
-		++j;
 	while (pass->rooms[j])
 	{
-		if (j == r)
-			++j;
-		if (choice == 0 && pass->rooms[j] && !ft_strcmp(*arr, pass->rooms[j]))
+		if (choice == 0 && j != r && pass->rooms[j] && \
+			!ft_strcmp(*arr, pass->rooms[j]))
 		{
 			create_connect(pass, j);
 			free(*arr);
 			return (1);
 		}
-		else if (choice == 1 && pass->rooms[j] && \
+		else if (choice == 1 && j != r && pass->rooms[j] && \
 			!ft_strcmp_stop(&(*arr)[str_len], pass->rooms[j]))
 		{
 			create_connect(pass, j);
@@ -60,7 +57,7 @@ int	find_connec_room(t_room *pass, int r, char **arr, int choice)
 
 int	free_connect(t_room *pass)
 {
-	t_connect *tp;
+	t_connect	*tp;
 
 	while (pass->head_con)
 	{
@@ -78,15 +75,7 @@ static int	extend_connec(t_room *pass, int j)
 	pass->tmp_con->current_room = j;
 	pass->tmp_con->next = (t_connect *) malloc (sizeof(t_connect));
 	if (!pass->tmp_con->next)
-	{
-		while (pass->head_con)
-		{
-			temp = pass->head_con->next;
-			free(pass->head_con);
-			pass->head_con = temp;
-		}
-		return (-1);
-	}
+		return (free_connect(pass));
 	pass->tmp_con->next->next = NULL;
 	pass->tmp_con->next->count = pass->tmp_con->count + 1;
 	pass->tmp_con = pass->tmp_con->next;
@@ -100,10 +89,7 @@ int	create_connect(t_room *pass, int j)
 	{
 		pass->tmp_con = (t_connect *) malloc(sizeof(t_connect));
 		if (!pass->tmp_con)
-		{
-			//clean
 			return (-1);
-		}
 		pass->tmp_con->count = 1;
 		pass->head_con = pass->tmp_con;
 		pass->tmp_con->next = NULL;

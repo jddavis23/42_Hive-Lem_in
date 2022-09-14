@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 12:16:14 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/14 12:18:13 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/14 17:57:08 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	is_dash(char *str)
 	}
 	return (count);
 }
-
 
 int	dash_in_section(char *full, char *inside)
 {
@@ -62,7 +61,7 @@ int	addi_diff(char *start, char *finish)
 
 int	wrong_line(t_room *pass, int r, int *j, char *input)
 {
-	int i;
+	int	i;
 
 	if (r == 0 && *j == 0)
 	{

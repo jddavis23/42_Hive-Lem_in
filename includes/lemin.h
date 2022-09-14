@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 10:09:31 by molesen           #+#    #+#             */
-/*   Updated: 2022/09/14 12:19:24 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/14 17:11:58 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,5 @@ int		room_finder(t_room *pass, int r, int j);
 int		minus_newline(t_room *pass, int r, char *input, char *temp);
 int		newline_minus(t_room *pass, int r, char *temp, char *input);
 int		wrong_line(t_room *pass, int r, int *j, char *input);
-
 
 #endif
