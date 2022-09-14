@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   file_save_line.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/14 11:35:52 by jdavis            #+#    #+#             */
+/*   Updated: 2022/09/14 11:37:06 by jdavis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lemin.h"
 
 /*	logic of growing the build->input	*/
@@ -16,7 +28,6 @@ static int	grow(t_input *build, char *line, int len)
 	if (!temp)
 		return (-1);
 	ft_bzero(temp, build->capacity * factor);
-	//ft_printf("capacity(new) %i     capacity(old) %i   current(int) %i    currrent(string) %i\n", build->capacity * factor, build->capacity, build->current, ft_strlen(build->input));
 	temp = ft_strcpy(temp, build->input);
 	ft_strcat(&temp[build->current - 1], line);
 	ft_strcat(&temp[build->current + len - 1], "\n");
@@ -35,14 +46,12 @@ static int	save_no_prev_build(t_room *pass, t_input **build, char **line, \
 	*build = (t_input *) malloc(sizeof(t_input));
 	if (!(*build))
 	{
-		//clean up
 		free(*line);
 		return (error_free(pass, build, 0, 0));
 	}
 	(*build)->input = (char *) malloc((len + 2) * sizeof(char));
 	if (!(*build)->input)
 	{
-		//clean up
 		free (*line);
 		return (error_free(pass, build, 0, 0));
 	}
@@ -62,7 +71,6 @@ static int	save_have_prev_build(t_room *pass, t_input **build, char **line, \
 	{
 		if (grow(*build, *line, len) == -1)
 		{
-			//clean up
 			free(*line);
 			return (error_free(pass, build, 0, 0));
 		}

@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 13:20:42 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/14 11:17:45 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/14 11:44:16 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ static int	start_and_end(t_room *pass,	int hold, t_input **build, int *i)
 		hold = pass->total - 1;
 	if (pass->rooms[hold])
 		return (error_free(pass, build, 0, FALSE));
-	pass->rooms[hold] = ft_strnew(ft_strlen_stop(&(((*build)->input)[*i]), ' '));
+	pass->rooms[hold] = \
+		ft_strnew(ft_strlen_stop(&(((*build)->input)[*i]), ' '));
 	if (!pass->rooms[hold])
 		return (error_free(pass, build, 0, FALSE));
-	ft_strncat(pass->rooms[hold], &(((*build)->input)[*i]), ft_strlen_stop(&(((*build)->input)[*i]), ' '));
+	ft_strncat(pass->rooms[hold], &(((*build)->input)[*i]), \
+		ft_strlen_stop(&(((*build)->input)[*i]), ' '));
 	while (((*build)->input)[*i] != '\n')
 		++(*i);
 	return (TRUE);
@@ -90,7 +92,7 @@ static int	create_helper(t_room *pass, t_input **build, int hold)
 	return (1);
 }
 
-int	create(t_room *pass, t_input **build)//char **input)
+int	create(t_room *pass, t_input **build)
 {
 	int	hold;
 
@@ -102,10 +104,10 @@ int	create(t_room *pass, t_input **build)//char **input)
 		pass->rooms = (char **) malloc((pass->total + 1) * sizeof(char *));
 		pass->links = (int **) malloc(pass->total * sizeof(int *));
 		if (!pass->rooms || !pass->links)
-			return (error_free(pass, build, 0, FALSE)); //add BUILD
+			return (error_free(pass, build, 0, FALSE));
 		set_to_null(pass);
 		if (create_helper(pass, build, hold) == ERROR)
 			return (ERROR);
 	}
-	return (1); //not sure what to return here
+	return (1);
 }

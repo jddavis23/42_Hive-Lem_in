@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   breadth_locked.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 13:34:50 by molesen           #+#    #+#             */
-/*   Updated: 2022/09/09 13:34:54 by molesen          ###   ########.fr       */
+/*   Updated: 2022/09/14 11:22:28 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ static void	find_new_branches(t_room *pass, int indx, int *i)
 		else if (pass->info[PATH][pass->links[indx][j]] == 1 && \
 			pass->info[LEN][indx] + 1 <= pass->info[LEN][pass->links[indx][j]] \
 			&& pass->info[PATH][pass->info[PREV][pass->links[indx][j]]] == 3)
-			// && pass->info[JUMP][indx] != pass->links[indx][j])
 		{
 			pass->info[PREV][pass->links[indx][j]] = indx;
 			pass->info[LEN][pass->links[indx][j]] = pass->info[LEN][indx] + 1;

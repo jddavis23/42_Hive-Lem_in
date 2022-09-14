@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 18:11:48 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/13 18:15:28 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/14 11:27:41 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static int	duplicated(char **str)
 
 static void	connec_to_links(t_room *pass, int j)
 {
-	int	k;
-	int	count;
-	t_connect *temp;
+	int			k;
+	int			count;
+	t_connect	*temp;
 
 	k = 0;
 	count = pass->tmp_con->count;
@@ -58,16 +58,14 @@ static void	connec_to_links(t_room *pass, int j)
 int	create_links(t_room *pass, t_input **build, int i)
 {
 	int	j;
-	//char **input = NULL; //just for error function
 
-	//exit (0);
 	if (duplicated(pass->rooms) == ERROR)
 		return (error_free(pass, build, 0, FALSE));
 	j = 0;
 	while (pass->rooms[j])
 	{
 		if (create_connect(pass, 0) == -1)
-			return (error_free(pass, build, j, FALSE)); //CHANGE INPUT TO FREE BUILD AND COTENTS
+			return (error_free(pass, build, j, FALSE));
 		if (count_in(j, &(((*build)->input)[i]), pass) == -1)
 			return (error_free(pass, build, j, FALSE));
 		pass->links[j] = (int *) malloc((pass->tmp_con->count) * sizeof(int));
