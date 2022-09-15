@@ -69,6 +69,7 @@ static int	check_comment_or_ant(t_room *pass, char *line, int *i)
 		}
 		else
 		{
+			free(line);
 			return (ERROR);
 		}
 	}
