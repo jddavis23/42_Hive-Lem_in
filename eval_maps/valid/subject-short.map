@@ -8,3 +8,4 @@ end 4 6
 start-1
 1-2
 2-end
+##expected rows: 6
