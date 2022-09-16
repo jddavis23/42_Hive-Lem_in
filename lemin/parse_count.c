@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 13:20:20 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/14 17:50:10 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/15 11:37:29 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	found_or_not(t_room *pass, int r, char *temp, char *input)
 				return (minus_newline(pass, r, input, temp));
 		}
 	}
-	return (0);
+	return (2);
 }
 
 static int	count_in_helper(t_room *pass, char *input, int r, char *temp)
@@ -40,7 +40,7 @@ static int	count_in_helper(t_room *pass, char *input, int r, char *temp)
 	if (temp && input[0] != '#')
 	{
 		stop = ft_strlen_stop(&temp[1], '\n');
-		while (ft_strnstr(&temp[1], pass->rooms[r], stop))
+		while (ft_strnstr(&temp[1], pass->rooms[r], stop) && pass->diff == 2)
 		{
 			temp = ft_strnstr(&temp[1], pass->rooms[r], stop);
 			if (temp[-1] == '-' && temp[ft_strlen(pass->rooms[r])] == '\n')
@@ -72,7 +72,8 @@ int	count_in(int r, char *input, t_room *pass)
 	{
 		temp = ft_strnstr(&input[i], pass->rooms[r], \
 			ft_strlen_stop(&input[i], '\n'));
-		if (found_or_not(pass, r, temp, &input[i]) == -1)
+		pass->diff = found_or_not(pass, r, temp, &input[i]);
+		if (pass->diff == -1)
 			return (-1);
 		if (count_in_helper(pass, &input[i], r, temp) == -1)
 			return (-1);

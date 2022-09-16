@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 15:31:48 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/14 17:59:45 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/15 12:15:04 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ int	free_connect(t_room *pass)
 
 static int	extend_connec(t_room *pass, int j)
 {
-	t_connect	*temp;
-
 	pass->tmp_con->current_room = j;
 	pass->tmp_con->next = (t_connect *) malloc (sizeof(t_connect));
 	if (!pass->tmp_con->next)
@@ -93,6 +91,7 @@ int	create_connect(t_room *pass, int j)
 		pass->tmp_con->count = 1;
 		pass->head_con = pass->tmp_con;
 		pass->tmp_con->next = NULL;
+		pass->tmp_con->current_room = -1;
 	}
 	else
 	{

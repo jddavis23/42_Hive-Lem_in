@@ -40,7 +40,8 @@ static int	nlm_helper(t_room *pass, int *j, char *help)
 	int	i;
 	int	stop;
 
-	stop = ft_strlen(pass->rooms[*j]);
+	if (pass->rooms[*j])
+		stop = ft_strlen(pass->rooms[*j]);
 	if (pass->rooms[*j] && help && help[-1] == '\n' && \
 		help[stop] == '-')
 	{
