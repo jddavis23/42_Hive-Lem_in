@@ -31,3 +31,14 @@ The goal of the program is to get an ant colony from the 'start' room to the 'en
      it will in this case generate 10 big-superposition maps and run it with the lem-in outside this folder.
 		
 		./auto_test.sh 10
+
+
+## HOW TO RUN VISUALIZER
+
+In order to run the visualizer make sure you have python3 and pygame installed. Below visualizer is run by pressing space bar and or by using the arrow keys left and right to show the different stages of the ants movements. The visualizer only works with the maps specified in the visual folder.
+
+This visualizer is not very useful but it does have some nice colors!
+
+	1. be in the root repository and run the following command
+	
+		./lem-in < visual/subject2-0.map | ./visual/visu-hex
