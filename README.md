@@ -39,6 +39,6 @@ In order to run the visualizer make sure you have python3 and pygame installed. 
 
 This visualizer is not very useful but it does have some nice colors!
 
-	1. be in the root repository and run the following command
+	1. be in the root of this repository and run the following command
 	
 		./lem-in < visual/subject2-0.map | ./visual/visu-hex
