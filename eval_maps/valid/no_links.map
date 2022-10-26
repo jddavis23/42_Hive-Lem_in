@@ -7,5 +7,11 @@ school 9 0
 3 13 0
 jeff-3
 3-eff
+<<<<<<< HEAD
 school-eff
 school-jeff
+=======
+school--eff
+school--jeff
+#expected rows: 4
+>>>>>>> f21b904985dd74a592aa13eaae9f019695d103a8

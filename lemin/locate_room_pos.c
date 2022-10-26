@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 12:12:50 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/16 13:26:38 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/10/26 12:55:48 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static int	nlm_helper(t_room *pass, int *j, char *help)
 	int	i;
 	int	stop;
 
-	stop = ft_strlen(pass->rooms[*j]);
+	if (pass->rooms[*j])
+		stop = ft_strlen(pass->rooms[*j]);
 	if (pass->rooms[*j] && help && help[-1] == '\n' && \
 		help[stop] == '-')
 	{
@@ -89,5 +90,6 @@ int	newline_minus(t_room *pass, int r, char *temp, char *input)
 		if (!pass->rooms[i] || !pass->rooms[j])
 			return (free_connect(pass));
 	}
+
 	return (2);
 }

@@ -69,6 +69,7 @@ typedef struct s_room
 	int			min_row;
 	int			hold;
 	int			next;
+	int			diff;
 	int			print_row;
 	int			print_paths;
 	int			print_len;

@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 12:02:28 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/14 17:56:07 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/15 11:23:24 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static int	mnl_helper(t_room *pass, int *j, char *input, char *temp)
 	static int	flag = 0;
 	int			i;
 
+	i = -1;
 	if (pass->rooms[*j] && temp && temp[-1] == '-' && \
 		temp[ft_strlen(pass->rooms[*j])] == '\n')
 	{
@@ -83,6 +84,7 @@ int	loop_through_rooms(t_room *pass, int r, char *input, char *temp)
 	char	*hold;
 	int		i;
 	int		j;
+	int		value;
 
 	hold = temp;
 	i = -1;
@@ -95,7 +97,9 @@ int	loop_through_rooms(t_room *pass, int r, char *input, char *temp)
 		temp = NULL;
 		if (pass->rooms[j])
 			temp = ft_strstr(input, pass->rooms[j]);
-		i = mnl_helper(pass, &j, input, temp);
+		value = mnl_helper(pass, &j, input, temp);
+		if (value >= 0)
+			i = value;
 	}
 	if ((i != -1 && !pass->rooms[i]) || (i == -1 && hold[-1] == '-'))
 		return (free_connect(pass));

@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 13:20:20 by jdavis            #+#    #+#             */
-/*   Updated: 2022/10/26 12:29:26 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/10/26 13:01:19 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,12 @@ int	count_in(char *input, t_room *pass)
 		stop = ft_strlen_stop(&input[i], '\n');
 		j = 0;
 		j += dash_in_section(&input[i + j], &input[i + stop]);
-		while (input[i] != '#' && input[i + j] != '\n')
+		while (input[i + j] != '\n')
 		{
 			if (search_connec(pass, j, &input[i]) == 2)
 				break ;
 			j += dash_in_section(&input[i + j], &input[i + stop]);
-			if (input[i + j] == '\n')
+			if (input[i + j] == '\n' && input[i] != '#')
 			 	return (-1);
 		}
 		if (count_in_helper(pass, &input[i]) == -1)

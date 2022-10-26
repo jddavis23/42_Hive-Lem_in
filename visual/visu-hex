@@ -235,13 +235,6 @@ def ant_moves_twice(moves, screen, height, width, blockSize, init, info, end):
 	i = 0
 	while i < moves[0]["total"]:
 		if checkIfDuplicates(moves[i]["ant"], moves, True, info, end) == True:
-			font=pygame.font.SysFont('arial', blockSize)
-			text=font.render("ERROR: ant error at " + str(i) + "/" + str(moves[i]["total"]), True, (200, 0, 0))
-			rect=text.get_rect()
-			screen.blit(text, [0 + (int(blockSize) / 2), height - (int(blockSize) * 2)])
-			if init == True:
-				print ("ERROR")
-				print (moves[i])
 			return True
 		i += 1
 	return False
@@ -250,13 +243,6 @@ def room_error(moves, screen, height, width, blockSize, init, info, end):
 	i = 0
 	while i < moves[0]["total"]:
 		if checkIfDuplicates(moves[i]["room"], moves, False, info, end) == True:
-			font=pygame.font.SysFont('arial', blockSize)
-			text=font.render("ERROR: room error at " + str(i) + "/" + str(moves[i]["total"]), True, (200, 0, 0))
-			rect=text.get_rect()
-			screen.blit(text, [0 + (int(blockSize) / 2), height - (int(blockSize) * 2)])
-			if init == True:
-				print ("ERROR")
-				print (moves[i])
 			return
 		i += 1
 
@@ -267,19 +253,9 @@ def get_number_of_elements(list):
 	return count
 
 def drawErrorCheck(screen, height, width, blockSize, info, moves, init, end):
-	# error if ant moves twice in a round + error if ants doesn't exist
-	# error if two ants are in the same room + room doesn't exist
-	# error if ant moves from one room to a room it is not connected to
 	i = 0
 	while i < moves[0]["total"]:
 		if get_number_of_elements(moves[i]["ant"]) != get_number_of_elements(moves[i]["room"]):
-			font=pygame.font.SysFont('arial', blockSize)
-			text=font.render("ERROR: ant and room error " + str(i) + "/" + str(moves[i]["total"]), True, (200, 0, 0))
-			rect=text.get_rect()
-			screen.blit(text, [0 + (int(blockSize) / 2), height - (int(blockSize) * 2)])
-			if init == True:
-				print ("ERROR")
-				print (moves[i])
 			return
 		i += 1
 	if ant_moves_twice(moves, screen, height, width, blockSize, init, info, end) == False:
@@ -312,8 +288,8 @@ def assignNewCoordinates(window_height, window_width, blockSize, info, start, en
 			j += 1
 		i += 1
 		x += width_divide
-	width_divide = 5#30 // (30 + 2)
-	height_divide = 4#30 // (len_of_path + 2)
+	width_divide = 5
+	height_divide = 4
 	x = width_divide
 	y = height_divide
 	i = 0
@@ -346,29 +322,19 @@ def make_map(start, end, info, moves, paths):
 		i = 0
 		total = info[i]["total"]
 		while i < total:
-			print(info[i])
 			i += 1
 		total = moves[0]["total"]
 		i = 0
 		while i < total:
-			print(moves[i])
 			i += 1
-		# Define the dimensions of
-		# screen object(width,height)
 		blockSize = 20
 		window_height = 800
 		window_width = 1200
-
 	pygame.init()
 	screen = pygame.display.set_mode((window_width, window_height))
-	
-	# Set the caption of the screen
 	pygame.display.set_caption('Lem-in')
-	# Fill the background colour to the screen
 	screen.fill((0, 0, 0))
 	pygame.display.update()
-	
-	# game loop
 	count = -1
 	prev = 0
 	space = False
@@ -410,20 +376,15 @@ def make_map(start, end, info, moves, paths):
 				if event.key == pygame.K_LEFT and count >= 0:
 					space = False
 					space_r = True
-					print("left key was pressed. display previous move...")
 				if event.key == pygame.K_RIGHT and count < moves[0]["total"]:
-					print("right key was pressed. display next move...")
 					space = True
 					space_r = False
 				if event.key == pygame.K_SPACE and count < moves[0]["total"]:
 					if space == False:
-						print("space was pressed. auto play started...")
 						space = True
 					elif space == True:
-						print("space was pressed. auto play stopped...")
 						space = False
 				if event.key == pygame.K_r:
-					print("r was pressed. reset to initial state...")
 					count = -1
 					space = False
 				if event.key == pygame.K_ESCAPE:
@@ -624,7 +585,6 @@ def store_color_and_path(moves, paths, end):
 	total_paths = 0
 	while total_paths < i:
 		paths[total_paths]["total"] = i
-		print(paths[total_paths])
 		total_paths += 1
 
 
@@ -687,7 +647,6 @@ def main(argv, argc):
 					k += 1
 			i = 0
 			if ants == -1:
-				print("Error")
 				return
 			while i < total:
 				info[i]["total"] = total
