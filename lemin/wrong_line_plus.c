@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 12:16:14 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/14 17:57:08 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/10/26 12:29:59 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,15 @@ int	dash_in_section(char *full, char *inside)
 	int	i;
 	int	count;
 
-	i = 0;
+	i = 1;
 	count = 0;
 	while (&full[i] != inside)
 	{
 		if (full[i] == '-')
-			++count;
+			break ;
 		++i;
 	}
-	return (count);
+	return (i);
 }
 
 int	addi_diff(char *start, char *finish)

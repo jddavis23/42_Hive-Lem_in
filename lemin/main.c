@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: molesen <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:11:31 by molesen           #+#    #+#             */
-/*   Updated: 2022/07/19 12:42:13 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/10/25 11:56:13 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,6 @@ int	main(int argc, char **argv)
 		print_help();
 	else if (argv)
 		ft_printf("Usage: ./lem-in < maps/subject.map\n");
+
 	return (0);
 }

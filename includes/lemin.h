@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 10:09:31 by molesen           #+#    #+#             */
-/*   Updated: 2022/09/14 17:11:58 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/16 11:53:27 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_connect
 {
 	int					count;
 	int					current_room;
+	struct s_connect	*head;
 	struct s_connect	*next;
 }						t_connect;
 
@@ -72,6 +73,7 @@ typedef struct s_room
 	int			print_paths;
 	int			print_len;
 	int			print_count;
+	t_connect	**con_arr;
 	t_connect	*tmp_con;
 	t_connect	*head_con;
 	t_path		*final_head;
@@ -110,8 +112,8 @@ int		error_free(t_room *pass, t_input **build, int j, int first);
 int		error_path(t_room *pass, t_input **build, int first);
 int		**free2d_int(int **links, int j, int end);
 char	**ft_free_rooms(t_room *pass, char **dest);
-int		create_connect(t_room *pass, int j);
-int		count_in(int r, char *input, t_room *pass);
+int		create_connect(t_room *pass, int i, int j);
+int		count_in(char *input, t_room *pass);
 int		addi_diff(char *start, char *finish);
 int		dash_in_section(char *full, char *inside);
 int		is_dash(char *str);
@@ -149,7 +151,7 @@ void	lock_path_init(t_room *pass, int indx, int *error);
 void	lock_path(t_room *pass, int indx, int *error);
 void	info_set_to_zero(t_room *pass, int i);
 int		on_lock_path(t_room *pass, int *i, int c_len);
-int		create_connect(t_room *pass, int j);
+//int		create_connect(t_room *pass, int j);
 void	solve(t_room *pass, t_input **build);
 void	create_ants(t_ants **ants_move, int ant, t_index *index);
 void	solve_calc(t_room *pass, t_ants *ants_move, t_ants *head);

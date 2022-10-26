@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 11:14:26 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/14 11:14:56 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/16 12:56:16 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,5 @@ void	set_val(t_room *pass, t_input **build, int *hold)
 	pass->info = NULL;
 	pass->total = file_save(pass, build, 1, 0);
 	pass->end = pass->total - 1;
+	pass->con_arr = NULL;
 }

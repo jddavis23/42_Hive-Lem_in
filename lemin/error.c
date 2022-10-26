@@ -6,14 +6,34 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:11:17 by molesen           #+#    #+#             */
-/*   Updated: 2022/09/14 11:28:41 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/10/26 12:19:39 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lemin.h"
 
-/*	frees everything that needs to be freed	*/
+/*	Freeing t_connect array of linked lists	*/
+static t_connect	**free2d_t_connect(t_connect **connect, int total)
+{
+	int			i;
+	t_connect	*temp;
 
+	i = 0;
+	while (connect[i] && i < total)
+	{
+		while (connect[i]->head)
+		{
+			temp = connect[i]->head;
+			connect[i]->head = connect[i]->head->next;
+			free(temp);
+		}
+		++i;
+	}
+	free(connect);
+	return (NULL);
+}
+
+/*	frees everything that needs to be freed	*/
 int	error_free(t_room *pass, t_input **build, int j, int first)
 {
 	if (first == FALSE)
@@ -28,6 +48,8 @@ int	error_free(t_room *pass, t_input **build, int j, int first)
 			free2d_int(pass->info, 8, 7);
 		if (pass->line_check)
 			free(pass->line_check);
+		if (pass->con_arr)
+		 	pass->con_arr = free2d_t_connect(pass->con_arr, pass->total);
 		free(pass);
 	}
 	if (*build)

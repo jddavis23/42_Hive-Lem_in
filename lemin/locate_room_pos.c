@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 12:12:50 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/14 17:30:53 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/09/16 13:26:38 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,11 @@ int	newline_minus(t_room *pass, int r, char *temp, char *input)
 {
 	int		j;
 	int		i;
+	int x = -1;
 
 	if (find_connec_room(pass, r, &temp, 1) == 1)
 		return (1);
-	else
+	else if (x == 0)
 	{
 		j = 0;
 		i = 0;

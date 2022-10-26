@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 13:20:42 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/14 17:50:32 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/10/25 11:53:32 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,6 @@ int	create(t_room *pass, t_input **build)
 		if (create_helper(pass, build, hold) == ERROR)
 			return (ERROR);
 	}
+
 	return (1);
 }

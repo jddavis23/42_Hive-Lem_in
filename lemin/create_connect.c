@@ -6,7 +6,7 @@
 /*   By: jdavis <jdavis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 15:31:48 by jdavis            #+#    #+#             */
-/*   Updated: 2022/09/14 17:59:45 by jdavis           ###   ########.fr       */
+/*   Updated: 2022/10/26 12:12:31 by jdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ int	find_connec_room(t_room *pass, int r, char **arr, int choice)
 		if (choice == 0 && j != r && pass->rooms[j] && \
 			!ft_strcmp(*arr, pass->rooms[j]))
 		{
-			create_connect(pass, j);
+			create_connect(pass, r, j);
 			free(*arr);
 			return (1);
 		}
 		else if (choice == 1 && j != r && pass->rooms[j] && \
 			!ft_strcmp_stop(&(*arr)[str_len], pass->rooms[j]))
 		{
-			create_connect(pass, j);
+			create_connect(pass, r, j);
 			return (1);
 		}
 		++j;
@@ -68,35 +68,54 @@ int	free_connect(t_room *pass)
 	return (ERROR);
 }
 
-static int	extend_connec(t_room *pass, int j)
+static int	extend_connec(t_room *pass, int i, int j)
 {
-	t_connect	*temp;
-
-	pass->tmp_con->current_room = j;
-	pass->tmp_con->next = (t_connect *) malloc (sizeof(t_connect));
-	if (!pass->tmp_con->next)
+	pass->con_arr[i]->current_room = j;
+	pass->con_arr[i]->next = (t_connect *) malloc (sizeof(t_connect));
+	if (!pass->con_arr[i]->next)
 		return (free_connect(pass));
-	pass->tmp_con->next->next = NULL;
-	pass->tmp_con->next->count = pass->tmp_con->count + 1;
-	pass->tmp_con = pass->tmp_con->next;
-	pass->tmp_con->current_room = -1;
+	pass->con_arr[i]->next->next = NULL;
+	pass->con_arr[i]->next->count = pass->con_arr[i]->count + 1;
+	pass->con_arr[i]->next->head = pass->con_arr[i]->head;
+	pass->con_arr[i] = pass->con_arr[i]->next;
+	pass->con_arr[i]->current_room = -1;
+	pass->con_arr[j]->current_room = i;
+	pass->con_arr[j]->next = (t_connect *) malloc (sizeof(t_connect));
+	if (!pass->con_arr[j]->next)
+		return (free_connect(pass));
+	pass->con_arr[j]->next->next = NULL;
+	pass->con_arr[j]->next->count = pass->con_arr[j]->count + 1;
+	pass->con_arr[j]->next->head = pass->con_arr[j]->head;
+	pass->con_arr[j] = pass->con_arr[j]->next;
+	pass->con_arr[j]->current_room = -1;
 	return (0);
 }
 
-int	create_connect(t_room *pass, int j)
+int	create_connect(t_room *pass, int i, int j)
 {
-	if (!pass->tmp_con)
+	int	x;
+
+	if (!pass->con_arr)
 	{
-		pass->tmp_con = (t_connect *) malloc(sizeof(t_connect));
-		if (!pass->tmp_con)
+		pass->con_arr = (t_connect **) malloc(pass->total * sizeof(t_connect *));
+		if (!pass->con_arr)
 			return (-1);
-		pass->tmp_con->count = 1;
-		pass->head_con = pass->tmp_con;
-		pass->tmp_con->next = NULL;
+		x = 0;
+		while (x < pass->total)
+		{
+			pass->con_arr[x] = (t_connect *) malloc(sizeof(t_connect));
+			if (!pass->con_arr[x])
+				return (-1);
+			pass->con_arr[x]->count = 1;
+			pass->con_arr[x]->head = pass->con_arr[x];
+			pass->con_arr[x]->next = NULL;
+			pass->con_arr[x]->current_room = -1;
+			x++;
+		}
 	}
 	else
 	{
-		if (extend_connec(pass, j) == -1)
+		if (extend_connec(pass, i, j) == -1)
 			return (-1);
 	}
 	return (1);
